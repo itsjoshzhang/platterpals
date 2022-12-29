@@ -1,2 +1,0 @@
-# tastebuddies
-The TasteBuddies App.
