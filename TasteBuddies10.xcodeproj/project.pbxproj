@@ -10,11 +10,18 @@
 		31164b8b5fde0ce0fad9ee6ad9def596 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = cff4be6425200d27fff0992a840dde74 /* Settings.swift */; };
 		37f2e1003a6b61103d3870dfe150cbfb /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = b44ea3774057f863247ceade2fe0129a /* Assets.xcassets */; };
 		3d31ff6ac74e25ac41fea6e69e838492 /* NewPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6d9a362ba6eb5392f3962f6b9a7c2ffe /* NewPost.swift */; };
-		F222EE99295A9497009712DE /* TasteBuddies.swift in Sources */ = {isa = PBXBuildFile; fileRef = F222EE93295A9496009712DE /* TasteBuddies.swift */; };
 		F222EE9B295A9497009712DE /* ChatDM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F222EE95295A9497009712DE /* ChatDM.swift */; };
 		F222EE9C295A9497009712DE /* Chats.swift in Sources */ = {isa = PBXBuildFile; fileRef = F222EE96295A9497009712DE /* Chats.swift */; };
 		F222EE9D295A9497009712DE /* NewChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = F222EE97295A9497009712DE /* NewChat.swift */; };
 		F222EEA2295A9FBB009712DE /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F222EEA1295A9FBB009712DE /* AppData.swift */; };
+		F23EDC5B295D4BB200863B38 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23EDC5A295D4BB200863B38 /* Login.swift */; };
+		F23EDC5D295D58F900863B38 /* Suggests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23EDC5C295D58F900863B38 /* Suggests.swift */; };
+		F265A088295D147000A233C5 /* Onboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F265A087295D147000A233C5 /* Onboard.swift */; };
+		F27B97E4295D764400205BB2 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27B97E3295D764400205BB2 /* Loading.swift */; };
+		F2B0830A295D3A7200F1F542 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B08309295D3A7200F1F542 /* Buttons.swift */; };
+		F2B0830C295D3BF300F1F542 /* AppInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B0830B295D3BF300F1F542 /* AppInit.swift */; };
+		F2EBC1A3295D1B960057C5FD /* Splash.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2EBC1A2295D1B960057C5FD /* Splash.swift */; };
+		F2EBC1A5295D1E740057C5FD /* pacifico.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F2EBC1A4295D1E730057C5FD /* pacifico.ttf */; };
 		a3e622a58b551c590c5c0a3b70cf4414 /* ProfilePosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088995dacdc6d04a15d757c13afda9c9 /* ProfilePosts.swift */; };
 		a5778401e9063294f51347b8c930277a /* FeedProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ba3ac343bd238b20dcc6863a1cef68d /* FeedProfile.swift */; };
 		d6d32b55f0cf4837449f38559856f184 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = ff9dea69e8448d4210ee382a4c853011 /* Feed.swift */; };
@@ -29,11 +36,19 @@
 		6d9a362ba6eb5392f3962f6b9a7c2ffe /* NewPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPost.swift; sourceTree = "<group>"; };
 		8bc783cd71dfe92c1e2486726982053a /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		94adaa953257bfab01b0991269bb569b /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
-		F222EE93295A9496009712DE /* TasteBuddies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasteBuddies.swift; sourceTree = "<group>"; };
 		F222EE95295A9497009712DE /* ChatDM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDM.swift; sourceTree = "<group>"; };
 		F222EE96295A9497009712DE /* Chats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chats.swift; sourceTree = "<group>"; };
 		F222EE97295A9497009712DE /* NewChat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChat.swift; sourceTree = "<group>"; };
 		F222EEA1295A9FBB009712DE /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
+		F23EDC5A295D4BB200863B38 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		F23EDC5C295D58F900863B38 /* Suggests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Suggests.swift; sourceTree = "<group>"; };
+		F265A087295D147000A233C5 /* Onboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboard.swift; sourceTree = "<group>"; };
+		F27B97E3295D764400205BB2 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
+		F2B08309295D3A7200F1F542 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		F2B0830B295D3BF300F1F542 /* AppInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInit.swift; sourceTree = "<group>"; };
+		F2EBC1A2295D1B960057C5FD /* Splash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Splash.swift; sourceTree = "<group>"; };
+		F2EBC1A4295D1E730057C5FD /* pacifico.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = pacifico.ttf; sourceTree = "<group>"; };
+		F2EBC1A6295D1EE10057C5FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		b44ea3774057f863247ceade2fe0129a /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		cff4be6425200d27fff0992a840dde74 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		ff9dea69e8448d4210ee382a4c853011 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
@@ -104,13 +119,45 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		F265A085295D142400A233C5 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				F265A087295D147000A233C5 /* Onboard.swift */,
+				F2EBC1A2295D1B960057C5FD /* Splash.swift */,
+				F23EDC5A295D4BB200863B38 /* Login.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		F265A086295D143D00A233C5 /* Backend */ = {
+			isa = PBXGroup;
+			children = (
+				F2B0830B295D3BF300F1F542 /* AppInit.swift */,
+				F222EEA1295A9FBB009712DE /* AppData.swift */,
+				F2EBC1A4295D1E730057C5FD /* pacifico.ttf */,
+			);
+			path = Backend;
+			sourceTree = "<group>";
+		};
+		F2B08308295D39F700F1F542 /* Software */ = {
+			isa = PBXGroup;
+			children = (
+				F2B08309295D3A7200F1F542 /* Buttons.swift */,
+				F23EDC5C295D58F900863B38 /* Suggests.swift */,
+				F27B97E3295D764400205BB2 /* Loading.swift */,
+			);
+			path = Software;
+			sourceTree = "<group>";
+		};
 		ac3b0cdbd69456da8384e34318551edc /* TasteBuddies10 */ = {
 			isa = PBXGroup;
 			children = (
-				F222EE93295A9496009712DE /* TasteBuddies.swift */,
-				F222EEA1295A9FBB009712DE /* AppData.swift */,
-				F222EE9E295A987F009712DE /* Chats */,
+				F2EBC1A6295D1EE10057C5FD /* Info.plist */,
+				F2B08308295D39F700F1F542 /* Software */,
+				F265A086295D143D00A233C5 /* Backend */,
+				F265A085295D142400A233C5 /* Login */,
 				F222EE9F295A988C009712DE /* Home */,
+				F222EE9E295A987F009712DE /* Chats */,
 				F222EEA0295A989A009712DE /* Profile */,
 				b44ea3774057f863247ceade2fe0129a /* Assets.xcassets */,
 				95D39704291C4B3A0053F8C8 /* Preview Content */,
@@ -176,6 +223,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2EBC1A5295D1E740057C5FD /* pacifico.ttf in Resources */,
 				ee9f3546aa38d27092b3e536a7a85016 /* Preview Assets.xcassets in Resources */,
 				37f2e1003a6b61103d3870dfe150cbfb /* Assets.xcassets in Resources */,
 			);
@@ -189,16 +237,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				e14b8dab8c60b830927961503f95f3cc /* Profile.swift in Sources */,
+				F27B97E4295D764400205BB2 /* Loading.swift in Sources */,
 				d6d32b55f0cf4837449f38559856f184 /* Feed.swift in Sources */,
 				a5778401e9063294f51347b8c930277a /* FeedProfile.swift in Sources */,
 				3d31ff6ac74e25ac41fea6e69e838492 /* NewPost.swift in Sources */,
 				F222EEA2295A9FBB009712DE /* AppData.swift in Sources */,
 				a3e622a58b551c590c5c0a3b70cf4414 /* ProfilePosts.swift in Sources */,
 				F222EE9B295A9497009712DE /* ChatDM.swift in Sources */,
-				F222EE99295A9497009712DE /* TasteBuddies.swift in Sources */,
+				F23EDC5D295D58F900863B38 /* Suggests.swift in Sources */,
+				F2B0830A295D3A7200F1F542 /* Buttons.swift in Sources */,
+				F2B0830C295D3BF300F1F542 /* AppInit.swift in Sources */,
 				31164b8b5fde0ce0fad9ee6ad9def596 /* Settings.swift in Sources */,
+				F265A088295D147000A233C5 /* Onboard.swift in Sources */,
 				F222EE9D295A9497009712DE /* NewChat.swift in Sources */,
 				F222EE9C295A9497009712DE /* Chats.swift in Sources */,
+				F2EBC1A3295D1B960057C5FD /* Splash.swift in Sources */,
+				F23EDC5B295D4BB200863B38 /* Login.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,6 +384,7 @@
 				DEVELOPMENT_TEAM = DU7ZKD3PP7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TasteBuddies10/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -359,6 +414,7 @@
 				DEVELOPMENT_TEAM = DU7ZKD3PP7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TasteBuddies10/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
