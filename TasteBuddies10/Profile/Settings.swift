@@ -19,22 +19,23 @@ struct Settings: View {
             .navigationTitle("Settings")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("< Back") {
+                    Button("\(Image(systemName: "chevron.backward")) Back") {
                         dismiss()
                     }
                 }
             }
-            Button("Exit app", action: {
+            Button("Exit app") {
                 showAction = true
-            })
+            }
             .buttonStyle(.borderedProminent)
         }
         .actionSheet(isPresented: $showAction) {
-            ActionSheet(title: Text("Exit app"), buttons: [
+            ActionSheet(title: Text("Exit app"),
+                buttons: [
                 .destructive(Text("Log out")),
                 .destructive(Text("Switch Account")),
-                .cancel(Text("Cancel")),
-            ])
+                .cancel(Text("Cancel"))]
+            )
         }
 	}
 }

@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct Profile: View {
+    var user = "Josh"
     @State private var showSettings = false
     @State private var showPosts = false
     @State private var showAction = false
@@ -13,7 +14,7 @@ struct Profile: View {
                         
                         Image("Josh")
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .scaledToFit()
                             .clipShape(Circle())
                             .frame(width: 80)
                             .padding(.leading, 20.0)
@@ -21,17 +22,17 @@ struct Profile: View {
                         Text("I don't like writing bio's either")
                     }
                     HStack(spacing: 16.0) {
-                        Button("Sync data", action: {
+                        Button("Sync data") {
                             showAction = true
-                        })
+                        }
                         .buttonStyle(.borderedProminent)
                         
-                        Button("Edit bio", action: {})
+                        Button("Edit bio") {}
                         .buttonStyle(.bordered)
                     }
                     .padding(.horizontal, 20)
                     
-                    Text("Top 3 Favorite Foods:")
+                    Text("Top 3 favorite foods:")
                         .font(.headline)
                         .padding(.horizontal, 20.0)
                     
@@ -42,7 +43,7 @@ struct Profile: View {
                         }
                 }
             }
-            .navigationTitle("Josh Z.")
+            .navigationTitle("Your Profile")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Settings") {
@@ -55,14 +56,15 @@ struct Profile: View {
                 Settings()
             }
             .fullScreenCover(isPresented: $showPosts) {
-                ProfilePosts()
+                ProfilePosts(user: user)
             }
             .actionSheet(isPresented: $showAction) {
-                ActionSheet(title: Text("Sync Data"), buttons: [
+                ActionSheet(title: Text("Sync Data"),
+                    buttons: [
                     .destructive(Text("Log in to DoorDash")),
                     .default(Text("Upload DoorDash data")),
-                    .cancel(Text("Cancel")),
-                ])}}}}
+                    .cancel(Text("Cancel"))]
+                )}}}}
 
 
 struct Profile_Previews: PreviewProvider {

@@ -11,9 +11,9 @@ struct Chats: View {
             List {
                 ForEach(items) { item in
                     NavigationLink(value: item) {
-                        Row(headline: item.headline,
+                        Row(user: item.user,
                             caption: item.caption,
-                            image: Image(item.imageName))
+                            image: Image(item.user))
                     }
                 }
                 .onDelete(perform: deleteItems(atOffsets:))
@@ -25,21 +25,23 @@ struct Chats: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("New Chat") {
                         showNewChat = true
-                    }.buttonStyle(.borderedProminent)
+                    }
+                    .buttonStyle(.borderedProminent)
                 }
             }
             .navigationDestination(for: ChatsItem.self) { item in
-                ChatDM()
+                ChatDM(user: item.user)
             }
             .fullScreenCover(isPresented: $showNewChat) {
                 NewChat()
             }
             .actionSheet(isPresented: $showAction) {
-                ActionSheet(title: Text("Modify all chats"), buttons: [
+                ActionSheet(title: Text("Modify all chats"),
+                    buttons: [
                     .destructive(Text("Delete all chats")),
                     .default(Text("Mark all as read")),
-                    .cancel(Text("Cancel")),
-            ])}}}}
+                    .cancel(Text("Cancel"))]
+            )}}}}
 
 
 private extension Chats {
@@ -56,7 +58,7 @@ private extension Chats {
 extension Chats {
     struct Row: View {
         
-        let headline: String
+        let user: String
         let caption: String
         let image: Image
         
@@ -68,7 +70,7 @@ extension Chats {
                     .clipShape(Circle())
                 
                 VStack(alignment: .leading, spacing: 4.0) {
-                    Text(headline)
+                    Text(user)
                         .font(.headline)
                     Text(caption)
                         .font(.subheadline)

@@ -9,14 +9,19 @@ struct NewChat: View {
         NavigationStack {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 16.0) {
-                    
-                    Image("Saira")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .clipShape(Circle())
-                        .frame(width: 250, height: 250)
-                        .frame(maxWidth: .infinity)
-                    
+                    ZStack {
+                        Image(systemName: "person.crop.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundColor(.pink)
+                            .frame(width: 80)
+                        
+                        Image(input)
+                            .resizable()
+                            .scaledToFit()
+                            .clipShape(Circle())
+                            .frame(width: 80)
+                    }
                     Text(input)
                         .font(.largeTitle)
                         .padding(.horizontal, 20.0)
@@ -29,7 +34,9 @@ struct NewChat: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding(.horizontal, 20.0)
                     
-                    Button("Send chat", action: {})
+                    Button("Send chat") {
+                        dismiss()
+                    }
                         .buttonStyle(.borderedProminent)
                 }
             }

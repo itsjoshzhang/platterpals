@@ -2,8 +2,10 @@ import SwiftUI
 
 struct FeedProfile: View {
     
+    var user: String
     @State private var showAction = false
     @State private var showNewChat = false
+    @State private var showPosts = false
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -13,9 +15,9 @@ struct FeedProfile: View {
                     
                     HStack(spacing: 16.0) {
                         
-                        Image("Albert")
+                        Image(user)
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .scaledToFit()
                             .clipShape(Circle())
                             .frame(width: 80)
                             .padding(.leading, 20.0)
@@ -24,28 +26,31 @@ struct FeedProfile: View {
                     }
                     
                     HStack(spacing: 16.0) {
-                        Button("Follow", action: {})
+                        Button("Follow") {}
                         .buttonStyle(.borderedProminent)
                         
-                        Button("Notifications", action: {
+                        Button("Notifications") {
                             showAction = true
-                        })
+                        }
                         .buttonStyle(.bordered)
                     }
                     .padding(.horizontal, 20)
                     
-                    Text("Top 3 Favorite Foods:")
+                    Text("Top 3 favorite foods:")
                         .font(.headline)
                         .padding(.horizontal, 20.0)
                     
                     Carousel()
                     Grid()
+                        .onTapGesture {
+                            showPosts = true
+                        }
                 }
             }
-            .navigationTitle("Albert Y.")
+            .navigationTitle(user)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("< Back") {
+                    Button("\(Image(systemName: "chevron.backward")) Back") {
                         dismiss()
                     }
                 }
@@ -57,18 +62,22 @@ struct FeedProfile: View {
                 }
             }
             .fullScreenCover(isPresented: $showNewChat) {
-                ChatDM()
+                ChatDM(user: user)
+            }
+            .fullScreenCover(isPresented: $showPosts) {
+                ProfilePosts(user: user)
             }
             .actionSheet(isPresented: $showAction) {
-                ActionSheet(title: Text("Notifications"), buttons: [
+                ActionSheet(title: Text("Notifications"),
+                    buttons: [
                     .destructive(Text("Don't show their posts")),
                     .default(Text("Don't show them my posts")),
-                    .cancel(Text("Cancel")),
-                ])}}}}
+                    .cancel(Text("Cancel"))]
+                )}}}}
 
 
 struct FeedProfile_Previews: PreviewProvider {
 	static var previews: some View {
-        FeedProfile()
+        FeedProfile(user: "Albert")
 	}
 }

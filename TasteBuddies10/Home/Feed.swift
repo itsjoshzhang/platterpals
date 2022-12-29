@@ -5,17 +5,30 @@ struct Feed: View {
 	
 	var body: some View {
         NavigationStack {
-            ScrollView(.vertical) {
-                
-                LazyVStack(alignment: .leading, spacing: 10.0) {
-                    Post(user: "Saira", food: "lasagna")
-                    Post(user: "Albert", food: "salmon")
+            ZStack {
+                ScrollView(.vertical) {
+                    
+                    BigButton(text: "What should I order today?", route: "Suggests")
+                    
+                    LazyVStack(alignment: .leading, spacing: 10.0) {
+                        Post(user: "Saira", food: "lasagna")
+                        Post(user: "Josh", food: "tacos")
+                        Post(user: "Albert", food: "salmon")
+                        Post(user: "Saathvik", food: "gnocchi")
+                    }
+                    .padding(.horizontal, 20.0)
                 }
-                .padding(.horizontal, 20.0)
+                
+                VStack { Spacer()
+                    HStack { Spacer()
+                        CircleButton(route: "Suggests")
+                    }
+                }
             }
             .navigationTitle("Taste Buddies")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
+                    
                     Button("New Post") {
                         showNewPost = true
                     }
@@ -32,17 +45,19 @@ struct Post: View {
     
     @State private var input: String = ""
     @State private var showProfile = false
-    let user: String
-    let food: String
+    var user: String
+    var food: String
     
     var body: some View {
         Divider()
         HStack(spacing: 16.0) {
+            
             Image(user)
                 .resizable()
-                .aspectRatio(contentMode: .fit)
+                .scaledToFit()
                 .clipShape(Circle())
                 .frame(width: 40)
+
             Button {
                 showProfile = true
             } label: {
@@ -51,17 +66,17 @@ struct Post: View {
             }
         }
         .fullScreenCover(isPresented: $showProfile) {
-            FeedProfile()
+            FeedProfile(user: user)
         }
         Image(food)
             .resizable()
-            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
         HStack {
             Image(systemName: "heart")
             Image(systemName: "message")
             Image(systemName: "paperplane")
         }
-        Text("Beef Lasagna - Pasta Bene")
+        Text("Had this \(food) today, tasted just fantastic!")
         Text("13 mins ago")
             .foregroundColor(.secondary)
         

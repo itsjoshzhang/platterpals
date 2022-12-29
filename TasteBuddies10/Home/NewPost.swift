@@ -12,24 +12,26 @@ struct NewPost: View {
                     Divider()
                     Image("gnocchi")
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
+                        .scaledToFit()
                     
                     HStack(spacing: 16.0) {
-                        Button("Edit Image", action: {})
+                        Button("Edit Image") {}
                             .buttonStyle(.bordered)
                         
-                        Button("Upload More", action: {})
+                        Button("Upload More") {}
                             .buttonStyle(.bordered)
                         
-                        Button("Visibility", action: {})
+                        Button("Visibility") {}
                             .buttonStyle(.bordered)
                     }
                     Text(input)
                     TextField("Write a caption", text: $input)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     
-                    Button("Send post", action: {})
-                        .buttonStyle(.borderedProminent)
+                    Button("Send post") {
+                        dismiss()
+                    }
+                    .buttonStyle(.borderedProminent)
                 }
                 .padding(.horizontal, 20.0)
             }
