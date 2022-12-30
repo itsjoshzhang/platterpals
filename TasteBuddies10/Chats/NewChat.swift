@@ -26,31 +26,30 @@ struct NewChat: View {
                     }
                     Text(input)
                         .font(.largeTitle)
-                        .padding(.horizontal, 20.0)
                     
                     TextField("Username", text: $input)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.horizontal, 20.0)
                     
                     TextField("Send a chat", text: $input2)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.horizontal, 20.0)
                     
                     Button("Send chat") {
                         dismiss()
                     }
                     .buttonStyle(.borderedProminent)
                     
-                    Text("Know someone who's not here yet? Send them an invite link!")
+                    Text("Know someone who's not on the app yet?")
+                        .font(.headline)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
-                        .padding(20.0)
+                        .padding(.vertical, 20.0)
                     
-                    Button("Copy link") {
+                    Button("Send invite link") {
                         showAction = true
                     }
                     .buttonStyle(.bordered)
                 }
+                .padding(.horizontal, 20.0)
             }
             .navigationTitle("New Chat")
             .toolbar {

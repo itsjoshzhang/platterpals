@@ -7,8 +7,8 @@ struct Feed: View {
         NavigationStack {
             ZStack {
                 ScrollView(.vertical) {
-                    
-                    BigButton(text: "What should I order today?", route: "Suggests")
+                    BigButton(text: "What should I order today?",
+                        route: "suggests")
                     
                     LazyVStack(alignment: .leading, spacing: 10.0) {
                         Post(user: "Saira", food: "lasagna")
@@ -18,17 +18,16 @@ struct Feed: View {
                     }
                     .padding(.horizontal, 20.0)
                 }
-                
                 VStack { Spacer()
                     HStack { Spacer()
-                        CircleButton(route: "Suggests")
+                        CircleButton(image: "wand.and.stars",
+                            route: "suggests")
                     }
                 }
             }
             .navigationTitle("Taste Buddies")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    
                     Button("New Post") {
                         showNewPost = true
                     }
@@ -56,7 +55,7 @@ struct Post: View {
                 .resizable()
                 .scaledToFit()
                 .clipShape(Circle())
-                .frame(width: 40)
+                .frame(width: 40.0)
 
             Button {
                 showProfile = true

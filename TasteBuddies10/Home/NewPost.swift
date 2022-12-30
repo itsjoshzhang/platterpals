@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct NewPost: View {
+    
     @State private var input: String = ""
     @Environment(\.dismiss) private var dismiss
     
@@ -8,8 +9,8 @@ struct NewPost: View {
         NavigationStack {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 16.0) {
-                    
                     Divider()
+                    
                     Image("gnocchi")
                         .resizable()
                         .scaledToFit()

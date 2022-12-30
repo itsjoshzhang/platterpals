@@ -11,11 +11,10 @@ struct BigButton: View {
             show = true
         } label: {
             Text("\(Image(systemName: "sparkles")) \(text) \(Image(systemName: "sparkles"))")
-            
                 .font(.headline)
                 .foregroundColor(.pink)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 16.0)
+                .padding(.vertical, 20.0)
         }
         .overlay(Capsule(style: .continuous)
             .stroke(.pink, lineWidth: 3))
@@ -35,6 +34,7 @@ struct BigButton: View {
 }
 struct CircleButton: View {
     
+    var image: String
     var route: String
     @State private var show = false
     
@@ -42,7 +42,7 @@ struct CircleButton: View {
         Button {
             show = true
         } label: {
-            Text("\(Image(systemName: "wand.and.stars"))")
+            Text("\(Image(systemName: image))")
                 .font(.largeTitle)
                 .foregroundColor(.white)
                 .frame(width: 80, height: 80)
@@ -56,7 +56,7 @@ struct CircleButton: View {
             if route == "suggests" {
                 Suggests()
             } else if route == "location" {
-                Location()
+                Maps()
             }
         }
     }
@@ -65,7 +65,7 @@ struct Buttons_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             BigButton(text: "Hello, world!", route: "suggests")
-            CircleButton(route: "suggests")
+            CircleButton(image: "wand.and.stars", route: "suggests")
         }
     }
 }

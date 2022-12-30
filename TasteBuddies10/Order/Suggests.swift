@@ -2,16 +2,12 @@ import SwiftUI
 
 struct Suggests: View {
     
-    var cuisines = ["Any", "American", "Brazilian", "Caribbean", "Chinese", "Ethiopian", "French", "German", "Indian", "Italian", "Japanese", "Korean", "Mexican", "Middle Eastern", "Russian", "South American", "Thai", "Vietnamese"]
-    
-    var friends = ["Everyone", "Saira", "Josh", "Albert", "Saathvik"]
-    
     @State private var restaurant = ""
     @State private var cuisine = "Any"
     @State private var friend = "Everyone"
     
-    @FocusState private var focus: Bool
     @State private var showLoading = false
+    @FocusState private var focus: Bool
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -36,7 +32,7 @@ struct Suggests: View {
                             .focused($focus)
                     }
                     Section(header:
-                                Text("Wanna refer to a friend?").font(.headline)){
+                        Text("Wanna refer to a friend?").font(.headline)){
                         
                         Picker("Friend's name", selection: $friend) {
                             ForEach(friends, id: \.self) {

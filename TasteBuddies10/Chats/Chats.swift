@@ -8,25 +8,33 @@ struct Chats: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(items) { item in
-                    NavigationLink(value: item) {
-                        Row(user: item.user,
-                            caption: item.caption,
-                            image: Image(item.user))
+            ZStack {
+                List {
+                    ForEach(items) { item in
+                        NavigationLink(value: item) {
+                            Row(user: item.user,
+                                caption: item.caption,
+                                image: Image(item.user))
+                        }
+                    }
+                    .onDelete(perform: deleteItems(atOffsets:))
+                    .onMove(perform: move(fromOffsets:toOffset:))
+                }
+                .listStyle(.plain)
+                .navigationTitle("Chats")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("New Chat") {
+                            showNewChat = true
+                        }
+                        .buttonStyle(.borderedProminent)
                     }
                 }
-                .onDelete(perform: deleteItems(atOffsets:))
-                .onMove(perform: move(fromOffsets:toOffset:))
-            }
-            .listStyle(.plain)
-            .navigationTitle("Chats")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("New Chat") {
-                        showNewChat = true
+                VStack { Spacer()
+                    HStack { Spacer()
+                        CircleButton(image: "location",
+                            route: "location")
                     }
-                    .buttonStyle(.borderedProminent)
                 }
             }
             .navigationDestination(for: ChatsItem.self) { item in
@@ -66,7 +74,7 @@ extension Chats {
             HStack(spacing: 16.0) {
                 image
                     .resizable()
-                    .frame(width: 56.0, height: 56.0)
+                    .frame(width: 55.0, height: 55.0)
                     .clipShape(Circle())
                 
                 VStack(alignment: .leading, spacing: 4.0) {

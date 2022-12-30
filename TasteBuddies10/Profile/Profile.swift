@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct Profile: View {
+    
     var user = "Josh"
     @State private var showSettings = false
     @State private var showPosts = false
@@ -10,8 +11,8 @@ struct Profile: View {
         NavigationStack {
             ScrollView(.vertical) {
                 LazyVStack(alignment: .leading, spacing: 16.0) {
+                    
                     HStack(spacing: 16.0) {
-                        
                         Image("Josh")
                             .resizable()
                             .scaledToFit()

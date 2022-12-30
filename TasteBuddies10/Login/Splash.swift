@@ -2,43 +2,42 @@ import SwiftUI
 
 struct Splash: View {
     
-    @State private var showOnboard = false
+    @State private var showLogin = false
     @State private var size = 0.9
     @State private var opacity = 0.0
     
     var body: some View {
-        
         VStack {
             VStack {
                 Image("logo")
                 
                 Text("Taste Buddies")
                     .bold()
-                    .font(.custom("pacifico", size: 48))
+                    .font(.custom("pacifico", size: 48.0))
                     .foregroundColor(.pink)
                 
                 ProgressView()
                     .tint(.pink)
-                    .scaleEffect(2)
+                    .scaleEffect(2.0)
             }
             .scaleEffect(size)
             .opacity(opacity)
             .onAppear {
-                withAnimation(.easeIn(duration: 1)) {
+                withAnimation(.easeIn(duration: 1.0)) {
                     size = 1.0
                     opacity = 1.0
                 }
             }
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                 withAnimation {
-                    showOnboard = true
+                    showLogin = true
                 }
             }
         }
-        .fullScreenCover(isPresented: $showOnboard) {
-            Onboard()
+        .fullScreenCover(isPresented: $showLogin) {
+            Login()
         }
     }
 }
@@ -57,22 +56,22 @@ struct SplashOrder: View {
             Image("logo")
             
             Text("Taste Buddies")
-                .font(.custom("pacifico", size: 48))
+                .font(.custom("pacifico", size: 48.0))
                 .foregroundColor(.pink)
             
             Text("Loading the perfect dish...")
                 .font(.headline)
                 .foregroundColor(.pink)
             
-            ProgressView(value: progress, total: 180)
+            ProgressView(value: progress, total: 180.0)
                 .padding()
                 .background(.gray.opacity(0.25))
-                .cornerRadius(8)
+                .cornerRadius(8.0)
                 .tint(.pink)
                 .padding()
             
                 .onReceive(timer) { _ in
-                    if progress < 300 {
+                    if progress < 300.0 {
                         progress += 1
                     } else {
                         showSuggest = true

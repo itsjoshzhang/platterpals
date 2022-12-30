@@ -14,16 +14,15 @@ struct FeedProfile: View {
                 LazyVStack(alignment: .leading, spacing: 16.0) {
                     
                     HStack(spacing: 16.0) {
-                        
                         Image(user)
                             .resizable()
                             .scaledToFit()
                             .clipShape(Circle())
-                            .frame(width: 80)
-                            .padding(.leading, 20.0)
-                        
+                            .frame(width: 80.0)
+
                         Text("I don't like writing bio's")
                     }
+                    .padding(.horizontal, 20.0)
                     
                     HStack(spacing: 16.0) {
                         Button("Follow") {}
@@ -34,7 +33,7 @@ struct FeedProfile: View {
                         }
                         .buttonStyle(.bordered)
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 20.0)
                     
                     Text("Top 3 favorite foods:")
                         .font(.headline)

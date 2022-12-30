@@ -1,5 +1,11 @@
 import SwiftUI
 
+var cuisines = ["Any", "American", "Brazilian", "Caribbean", "Chinese", "Ethiopian", "French", "German", "Indian", "Italian", "Japanese", "Korean", "Mexican", "Middle Eastern", "Russian", "South American", "Thai", "Vietnamese"]
+
+var friends = ["Everyone", "Saira", "Josh", "Albert", "Saathvik"]
+
+
+
 extension ChatsItem {
     
     static let data = [

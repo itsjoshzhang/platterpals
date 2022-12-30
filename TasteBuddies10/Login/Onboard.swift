@@ -33,7 +33,7 @@ struct OnboardView: View {
                 .resizable()
                 .scaledToFit()
                 .foregroundColor(.pink)
-                .frame(height: 350)
+                .frame(height: 350.0)
             
             Text(title)
                 .font(.title).bold()
