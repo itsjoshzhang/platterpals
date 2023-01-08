@@ -1,4 +1,4 @@
-Welcome to Plate Mates!
+Welcome to Plate Pals!
 
 -> Get food suggestions from trained AI software and find friends who have similar taste buds.
 
