@@ -1,0 +1,74 @@
+import SwiftUI
+
+struct Suggests: View {
+    
+    @State private var restaurant = ""
+    @State private var cuisine = "Any"
+    @State private var friends = ["Everyone", "Saira", "Albert", "Saathvik"]
+    @State private var friend = "Everyone"
+    
+    @State private var showLoading = false
+    @FocusState private var focus: Bool
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            VStack(alignment: .center, spacing: 16.0) {
+                
+                BigButton(text: "Let us decide for you!", route: "loading")
+                
+                Text("Adjust settings below")
+                    .font(.headline)
+                    .padding(.horizontal, 20.0)
+                Form {
+                    Section(header:
+                        Text("Got something in mind?")
+                            .font(.subheadline)
+                            .textCase(.none)){
+                        
+                        Picker("Type of cuisine", selection: $cuisine) {
+                            ForEach(cuisines, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                        TextField("Restaurant name", text: $restaurant)
+                            .focused($focus)
+                    }
+                    Section(header:
+                        Text("Wanna refer to a friend?")
+                            .font(.subheadline)
+                            .textCase(.none)){
+                        
+                        Picker("Friend's name", selection: $friend) {
+                            ForEach(friends, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                    }
+                }
+                if friend != "Everyone" {
+                    Text("\(friend)'s top 3 favorite foods:")
+                        .font(.headline)
+                        .padding(.horizontal, 20.0)
+                    Carousel()
+                }
+            }
+            .navigationTitle("Let's Order!")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+            }
+            .fullScreenCover(isPresented: $showLoading) {
+                SplashOrder()
+            }
+        }
+    }
+}
+struct Suggests_Previews: PreviewProvider {
+    static var previews: some View {
+        Suggests()
+    }
+}

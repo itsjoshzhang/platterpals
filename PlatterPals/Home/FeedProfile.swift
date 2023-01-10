@@ -1,0 +1,82 @@
+import SwiftUI
+
+struct FeedProfile: View {
+    
+    @State public var user: String
+    @State private var showAction = false
+    @State private var showNewChat = false
+    @State private var showPosts = false
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            ScrollView(.vertical) {
+                LazyVStack(alignment: .leading, spacing: 16.0) {
+                    
+                    HStack(spacing: 16.0) {
+                        Image(user)
+                            .resizable()
+                            .scaledToFit()
+                            .clipShape(Circle())
+                            .frame(width: 80.0)
+
+                        Text("I don't like writing bio's")
+                    }
+                    .padding(.horizontal, 20.0)
+                    
+                    HStack(spacing: 16.0) {
+                        Button("Follow") {}
+                        .buttonStyle(.borderedProminent)
+                        
+                        Button("Notifications") {
+                            showAction = true
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                    .padding(.horizontal, 20.0)
+                    
+                    Text("Top 3 favorite foods:")
+                        .font(.headline)
+                        .padding(.horizontal, 20.0)
+                    
+                    Carousel()
+                    Grid()
+                        .onTapGesture {
+                            showPosts = true
+                        }
+                }
+            }
+            .navigationTitle(user)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("\(Image(systemName: "chevron.backward")) Back") {
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Send a Chat") {
+                        showNewChat = true
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+            }
+            .fullScreenCover(isPresented: $showNewChat) {
+                ChatDM(user: user)
+            }
+            .fullScreenCover(isPresented: $showPosts) {
+                ProfilePosts(user: user)
+            }
+            .actionSheet(isPresented: $showAction) {
+                ActionSheet(title: Text("Notifications"),
+                    buttons: [
+                    .destructive(Text("Don't show their posts")),
+                    .default(Text("Don't show them my posts")),
+                    .cancel(Text("Cancel"))]
+                )}}}}
+
+
+struct FeedProfile_Previews: PreviewProvider {
+	static var previews: some View {
+        FeedProfile(user: "Albert")
+	}
+}
