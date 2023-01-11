@@ -2,10 +2,13 @@ import SwiftUI
 
 struct Profile: View {
     
-    @State private var user = "Josh"
-    @State private var showSettings = false
-    @State private var showPosts = false
-    @State private var showAction = false
+    @State var editBio = false
+    @State var bioText = "I don't like writing bio's either"
+    @State var showPosts = false
+    @State var showAction = false
+    @State var showSettings = false
+    
+    @State var user = "Josh Z"
     
     var body: some View {
         NavigationStack {
@@ -13,14 +16,20 @@ struct Profile: View {
                 LazyVStack(alignment: .leading, spacing: 16.0) {
                     
                     HStack(spacing: 16.0) {
-                        Image("Josh")
+                        Image(userData[user]!)
                             .resizable()
                             .scaledToFit()
                             .clipShape(Circle())
                             .frame(width: 80)
                             .padding(.leading, 20.0)
                         
-                        Text("I don't like writing bio's either")
+                        VStack(alignment: .leading) {
+                            Text(bioText)
+                            if editBio {
+                                TextField("Write a new bio", text: $bioText)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                            }
+                        }
                     }
                     HStack(spacing: 16.0) {
                         Button("Sync data") {
@@ -28,16 +37,21 @@ struct Profile: View {
                         }
                         .buttonStyle(.borderedProminent)
                         
-                        Button("Edit bio") {}
-                        .buttonStyle(.bordered)
+                        Toggle("Edit bio", isOn: $editBio)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10.0)
+                                    .stroke(lineWidth: 1.0)
+                            )
+                            .toggleStyle(.button)
+                            .foregroundColor(.pink)
                     }
                     .padding(.horizontal, 20)
                     
-                    Text("Top 3 favorite foods:")
+                    Text("Your favorite foods:")
                         .font(.headline)
                         .padding(.horizontal, 20.0)
                     
-                    Carousel()
+                    Carousel(tag: user)
                     Grid()
                         .onTapGesture {
                             showPosts = true

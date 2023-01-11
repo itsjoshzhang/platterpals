@@ -1,45 +1,69 @@
 import SwiftUI
+import Firebase
+import FirebaseStorage
 
 struct ProfilePosts: View {
     
-    @State public var user: String
-    @State private var showNewPost = false
-    @Environment(\.dismiss) private var dismiss
+    @State var user: String
+    @State var paths = [String]()
+    @State var users = [String]()
+    
+    @State var images = [UIImage]()
+    @State var texts = [String]()
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
-            ScrollView(.vertical) {
-                
-                LazyVStack(alignment: .leading, spacing: 10.0) {
-                    Post(user: user, food: "lasagna")
-                    Post(user: user, food: "tacos")
-                    Post(user: user, food: "salmon")
-                    Post(user: user, food: "gnocchi")
+            VStack(spacing: 0.0) {
+                List {
+                    ForEach((0 ..< images.count).reversed(), id: \.self) { i in
+                        Post(user: users[i], image: images[i], text: texts[i])
+                    }
+                    .listRowInsets(.init())
                 }
-                .padding(.horizontal, 20.0)
+                .listStyle(.plain)
+                .refreshable {
+                    retrieveImages()
+                }
             }
-            .navigationTitle("\(user)'s Posts")
+            .navigationTitle("\(user)  -  Posts")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("\(Image(systemName: "chevron.backward")) Back") {
                         dismiss()
                     }
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("New Post") {
-                        showNewPost = true
-                    }
-                    .buttonStyle(.borderedProminent)
-                }
             }
-            .fullScreenCover(isPresented: $showNewPost) {
-                NewPost()
+            .onAppear {
+                retrieveImages()
             }
         }
     }
-}
+    func retrieveImages() {
+        let db = Firestore.firestore()
+        db.collection("images").getDocuments { snapshot, error in
+            for document in snapshot!.documents {
+                
+                let storageRef = Storage.storage().reference()
+                let path = document["url"] as! String
+                let fileRef = storageRef.child(path)
+                let user = document["user"] as! String
+                
+                fileRef.getData(maxSize: 10*1024*1024) { data, error in
+                    if let data = data, let image = UIImage(data: data) {
+                        
+                        DispatchQueue.main.async {
+                            if user == user && !paths.contains(path) {
+                                paths.append(path)
+                                
+                                images.append(image)
+                                users.append(user)
+                                texts.append(document["text"] as! String)
+                            }}}}}}}}
+
+
 struct ProfilePosts_Previews: PreviewProvider {
 	static var previews: some View {
-        ProfilePosts(user: "Josh")
+        ProfilePosts(user: "Josh Z")
 	}
 }

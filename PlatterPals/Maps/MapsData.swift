@@ -14,13 +14,13 @@ extension CLLocationCoordinate2D: Identifiable {
     }
 }
 var markers = [
-    Marker(user: "Saira", image: "pfp1", coordinate: CLLocationCoordinate2D(latitude: 37.699, longitude: -121.844)),
-    Marker(user: "Josh", image: "pfp2", coordinate: CLLocationCoordinate2D(latitude: 37.660, longitude: -121.841)),
-    Marker(user: "Albert", image: "pfp3", coordinate: CLLocationCoordinate2D(latitude: 37.668, longitude: -121.875)),
-    Marker(user: "Saathvik", image: "pfp4", coordinate: CLLocationCoordinate2D(latitude: 37.681, longitude: -121.849)),]
+    Marker(user: "Josh Z", image: "pfp2", coordinate: CLLocationCoordinate2D(latitude: 37.660, longitude: -121.841)),
+    Marker(user: "Saira G", image: "pfp1", coordinate: CLLocationCoordinate2D(latitude: 37.699, longitude: -121.844)),
+    Marker(user: "Albert Y", image: "pfp3", coordinate: CLLocationCoordinate2D(latitude: 37.668, longitude: -121.875)),
+    Marker(user: "Saathvik S", image: "pfp4", coordinate: CLLocationCoordinate2D(latitude: 37.681, longitude: -121.849)),]
 
 
-final class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
+class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     @Published var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 37.660, longitude: -121.876),

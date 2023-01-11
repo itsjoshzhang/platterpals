@@ -2,10 +2,10 @@ import SwiftUI
 
 struct NewChat: View {
     
-    @State private var input: String = ""
-    @State private var input2: String = ""
-    @State private var showAction = false
-    @Environment(\.dismiss) private var dismiss
+    @State var userName: String = ""
+    @State var message: String = ""
+    @State var showAction = false
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
@@ -18,31 +18,35 @@ struct NewChat: View {
                             .foregroundColor(.pink)
                             .frame(width: 80)
                         
-                        Image(input)
+                        Image(userData[userName] ?? "")
                             .resizable()
                             .scaledToFit()
                             .clipShape(Circle())
                             .frame(width: 80)
                     }
-                    Text(input)
+                    Text(userName)
                         .font(.largeTitle)
                     
-                    TextField("Username", text: $input)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    TextField("Username", text: $userName)
+                        .autocorrectionDisabled(true)
+                    Divider()
+                        .frame(minHeight: 3)
+                        .overlay(.pink)
                     
-                    TextField("Send a chat", text: $input2)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    TextField("Write a message", text: $message)
+                    Divider()
+                        .frame(minHeight: 3)
+                        .overlay(.pink)
                     
                     Button("Send chat") {
                         dismiss()
                     }
                     .buttonStyle(.borderedProminent)
+                    .padding(.vertical, 20.0)
                     
                     Text("Know someone who's not on the app yet?")
-                        .font(.headline)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
-                        .padding(.vertical, 20.0)
                     
                     Button("Send invite link") {
                         showAction = true
@@ -60,7 +64,7 @@ struct NewChat: View {
                 }
             }
             .actionSheet(isPresented: $showAction) {
-                ActionSheet(title: Text("Invite people"),
+                ActionSheet(title: Text("Send invite link"),
                     buttons: [
                     .destructive(Text("Copy link to clipboard")),
                     .default(Text("Send as text message")),

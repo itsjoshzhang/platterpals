@@ -2,36 +2,45 @@ import SwiftUI
 
 struct ChatDM: View {
     
-    @State public var user: String
-	@State private var input: String = ""
-	@State private var showAction = false
-    @State private var showProfile = false
+    @State var user: String
+	@State var message: String = ""
+	@State var showAction = false
+    @State var showProfile = false
 	
 	var body: some View {
         ScrollView(.vertical) {
             LazyVStack(alignment: .leading, spacing: 16.0) {
                 HStack(spacing: 16.0) {
                     
-                    Image(user)
+                    Image(userData[user]!)
                         .resizable()
                         .scaledToFit()
                         .clipShape(Circle())
                         .frame(width: 80)
                         .padding(.leading, 20.0)
                     
-                    Text("Top 3 favorite foods:")
+                    Text("\(user)'s favorite foods:")
                         .font(.headline)
                 }
-                Carousel()
-                TextField("Send a chat", text: $input)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.horizontal, 20.0)
-
                 Button("Notifications") {
                     showAction = true
                 }
                 .buttonStyle(.bordered)
-                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.horizontal, 20.0)
+                
+                Carousel(tag: user)
+                Section {
+                    TextField("Write a message", text: $message)
+                    Divider()
+                        .frame(minHeight: 3)
+                        .overlay(.pink)
+                    
+                    Button("Send chat") {
+                        // ??
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+                .padding(.horizontal, 20.0)
             }
         }
         .navigationTitle(user)
@@ -58,6 +67,6 @@ struct ChatDM: View {
 }
 struct ChatDM_Previews: PreviewProvider {
 	static var previews: some View {
-        ChatDM(user: "Saathvik")
+        ChatDM(user: "Saira G")
 	}
 }

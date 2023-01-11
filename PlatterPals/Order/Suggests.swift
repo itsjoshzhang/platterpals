@@ -2,20 +2,28 @@ import SwiftUI
 
 struct Suggests: View {
     
-    @State private var restaurant = ""
-    @State private var cuisine = "Any"
-    @State private var friends = ["Everyone", "Saira", "Albert", "Saathvik"]
-    @State private var friend = "Everyone"
+    @State var restaurant = ""
+    @State var cuisine = "Any"
+    @State var friend = "Everyone"
     
-    @State private var showLoading = false
-    @FocusState private var focus: Bool
-    @Environment(\.dismiss) private var dismiss
+    @State var friends = ["Everyone"] + userNames
+    @Environment(\.dismiss) var dismiss
+    @State var showLoading = false
     
     var body: some View {
+        if showLoading {
+            withAnimation {
+                SplashOrder()
+            }
+        } else {
+            content
+        }
+    }
+    var content: some View {
         NavigationStack {
             VStack(alignment: .center, spacing: 16.0) {
                 
-                BigButton(text: "Let us decide for you!", route: "loading")
+                BigButton(text: "Let us decide for you!", route: "splash")
                 
                 Text("Adjust settings below")
                     .font(.headline)
@@ -23,34 +31,32 @@ struct Suggests: View {
                 Form {
                     Section(header:
                         Text("Got something in mind?")
-                            .font(.subheadline)
-                            .textCase(.none)){
-                        
-                        Picker("Type of cuisine", selection: $cuisine) {
-                            ForEach(cuisines, id: \.self) {
-                                Text($0)
+                        .font(.subheadline)
+                        .textCase(.none)){
+                            
+                            Picker("Type of cuisine", selection: $cuisine) {
+                                ForEach(cuisines, id: \.self) {
+                                    Text($0)
+                                }
                             }
+                            TextField("Restaurant name", text: $restaurant)
                         }
-                        TextField("Restaurant name", text: $restaurant)
-                            .focused($focus)
-                    }
                     Section(header:
                         Text("Wanna refer to a friend?")
-                            .font(.subheadline)
-                            .textCase(.none)){
-                        
-                        Picker("Friend's name", selection: $friend) {
-                            ForEach(friends, id: \.self) {
-                                Text($0)
+                        .font(.subheadline)
+                        .textCase(.none)){
+                            
+                            Picker("Friend's name", selection: $friend) {
+                                ForEach(friends, id: \.self) {
+                                    Text($0)
+                                }
                             }
                         }
-                    }
                 }
                 if friend != "Everyone" {
-                    Text("\(friend)'s top 3 favorite foods:")
+                    Text("\(friend)'s favorite foods:")
                         .font(.headline)
-                        .padding(.horizontal, 20.0)
-                    Carousel()
+                    Carousel(tag: friend)
                 }
             }
             .navigationTitle("Let's Order!")
@@ -58,15 +64,8 @@ struct Suggests: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         dismiss()
-                    }
-                }
-            }
-            .fullScreenCover(isPresented: $showLoading) {
-                SplashOrder()
-            }
-        }
-    }
-}
+                    }}}}}}
+
 struct Suggests_Previews: PreviewProvider {
     static var previews: some View {
         Suggests()

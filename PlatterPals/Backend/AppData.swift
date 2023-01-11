@@ -2,7 +2,14 @@ import SwiftUI
 
 var cuisines = ["Any", "American", "Brazilian", "Caribbean", "Chinese", "Ethiopian", "French", "German", "Indian", "Italian", "Japanese", "Korean", "Mexican", "Middle Eastern", "Russian", "South American", "Thai", "Vietnamese"]
 
-var images = ["pfp1", "pfp2", "pfp3", "pfp4"]
+
+var userData = ["Josh Z": "pfp1",
+                "Saira G": "pfp2",
+                "Albert Y": "pfp3",
+                "Saathvik S": "pfp4"]
+var userNames = Array(userData.keys)
+var userImages = Array(userData.values)
+
 
 struct MyTabView: View {
     @State var tag = 2
@@ -30,27 +37,40 @@ struct MyTabView: View {
         }
     }
 }
+struct Carousel: View {
+    @State var tag: String
+    
+    var body: some View {
+        TabView(selection: $tag) {
+            Card(headline: "Carnitas Tacos - Tacos Sinaloa",
+                 caption: "My pregnant wife thought the limes were fantastic.",
+                 image: "tacos")
+            .tag("Josh Z")
+            Card(headline: "Beef Lasagna - Pasta Bene",
+                 caption: "I make my boyfriend get me this stuff all the time.",
+                 image: "lasagna")
+            .tag("Saira G")
+            Card(headline: "Salmon Carpaccio - Gypsy's Trattoria",
+                 caption: "Tasted just like how I imagined a blahaj would taste.",
+                 image: "salmon")
+            .tag("Albert Y")
+            Card(headline: "Polish Gnocchi - Little Italy SF",
+                 caption: "Learned it's not pronounced ganochee. Thanks Saira.",
+                 image: "gnocchi")
+            .tag("Saathvik S")
+        }
+        .padding(.horizontal, 20.0)
+        .tabViewStyle(PageTabViewStyle())
+        .frame(height: 160.0)
+    }
+}
 extension ChatsItem {
     
     static let data = [
-        ChatsItem(caption: "Active now", user: "Josh"),
-        ChatsItem(caption: "Active 1 min ago", user: "Saira"),
-        ChatsItem(caption: "Active 3 min ago", user: "Albert"),
-        ChatsItem(caption: "Active 13 min ago", user: "Saathvik"),
-    ]
-}
-extension CarouselItem {
-    
-    static let data = [
-        CarouselItem(headline: "Carnitas Tacos - Tacos Sinaloa",
-                     caption: "My pregnant wife thought the limes were fantastic.",
-                     imageName: "tacos"),
-        CarouselItem(headline: "Salmon Carpaccio - Gypsy's Trattoria",
-                     caption: "Tasted just like how I imagined a blahaj would taste.",
-                     imageName: "salmon"),
-        CarouselItem(headline: "Polish Gnocchi - Little Italy SF",
-                     caption: "Learned it's not pronounced ganochee. Thanks Saira.",
-                     imageName: "gnocchi"),
+        ChatsItem(caption: "Active now", user: "Josh Z"),
+        ChatsItem(caption: "Active 1 min ago", user: "Saira G"),
+        ChatsItem(caption: "Active 3 min ago", user: "Albert Y"),
+        ChatsItem(caption: "Active 13 min ago", user: "Saathvik S"),
     ]
 }
 extension MyGridItem {
@@ -78,20 +98,12 @@ extension SettingsItem {
         SettingsItem(headline: "Account", caption: "Link to DoorDash, deletion", imageName: "moon"),
     ]
 }
-
-
-struct Carousel: View {
-    @State var items = CarouselItem.data
-    
-    var body: some View {
-        TabView {
-            ForEach(items) { item in
-                Card(headline: item.headline, caption: item.caption, image: Image(item.imageName))
-                    .padding(.horizontal, 20.0)
-            }
-        }
-        .tabViewStyle(PageTabViewStyle())
-        .frame(height: 160.0)
+extension Chats {
+    func deleteItems(atOffsets offsets: IndexSet) {
+        items.remove(atOffsets: offsets)
+    }
+    func move(fromOffsets source: IndexSet, toOffset destination: Int) {
+        items.move(fromOffsets: source, toOffset: destination)
     }
 }
 extension Carousel {
@@ -99,18 +111,20 @@ extension Carousel {
         
         let headline: String
         let caption: String
-        let image: Image
+        let image: String
         
         var body: some View {
             ZStack(alignment: Alignment(horizontal: .leading, vertical: .top)) {
                 VStack(alignment: .leading, spacing: 8.0) {
                     HStack(spacing: 16.0) {
-                        image
+                        
+                        Image(image)
                             .resizable()
                             .scaledToFit()
                             .background(Color.accentColor)
                             .foregroundColor(.white)
                             .clipShape(Circle())
+                        
                         Text(headline)
                             .font(.headline)
                     }
@@ -138,7 +152,7 @@ struct Grid: View {
         }
     }
 }
-private extension Grid {
+extension Grid {
     
     static let hSpacing: CGFloat = 1.0
     static let vSpacing: CGFloat = 1.0

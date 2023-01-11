@@ -16,36 +16,25 @@ class DataManager: ObservableObject {
     func fetchUsers() {
         users.removeAll()
         let db = Firestore.firestore()
-        let ref = db.collection("Users")
-        
-        ref.getDocuments { snapshot, error in
-            guard error == nil else {
-                print(error!.localizedDescription)
-                return
-            }
-            if let snapshot = snapshot {
-                for document in snapshot.documents {
-                    let data = document.data()
-                    
-                    let id = data["id"] as? String ?? ""
-                    let name = data["name"] as? String ?? ""
-                    let image = data["image"] as? String ?? ""
-                    
-                    let user = User(id: id, name: name, image: image)
-                    self.users.append(user)
-                }
+        db.collection("users").getDocuments { snapshot, error in
+
+            for document in snapshot!.documents {
+                let data = document.data()
+                
+                let id = data["id"] as? String ?? ""
+                let name = data["name"] as? String ?? ""
+                let image = data["image"] as? String ?? ""
+                
+                let user = User(id: id, name: name, image: image)
+                self.users.append(user)
             }
         }
     }
+        
     func addUser(id: String, name: String, image: String) {
         let db = Firestore.firestore()
-        let ref = db.collection("Users").document(id)
-        
-        ref.setData(["id": id, "name": name, "image": image]) { error in
-            if let error = error {
-                print(error.localizedDescription)
-            }
-        }
+        let ref = db.collection("users").document(id)
+        ref.setData(["id": id, "name": name, "image": image])
     }
 }
 struct Users: View {
@@ -68,6 +57,7 @@ struct Users: View {
                     Text(user.name)
                     Spacer()
                     Text(user.id)
+                        .font(.caption2)
                 }
             }
             Form {
@@ -75,7 +65,7 @@ struct Users: View {
                 TextField("Name", text: $name)
                 
                 Picker("Image", selection: $image) {
-                    ForEach(images, id: \.self) {
+                    ForEach(userImages, id: \.self) {
                         Text($0)
                     }
                 }

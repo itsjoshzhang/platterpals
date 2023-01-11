@@ -22,7 +22,7 @@ struct Settings: View {
                 NavigationLink(value: item) {
                     Row(headline: item.headline,
                         caption: item.caption,
-                        image: Image(systemName: item.imageName))
+                        image: item.imageName)
                 }
             }
             .listStyle(.plain)
@@ -47,11 +47,12 @@ extension Settings {
         
         let headline: String
         let caption: String
-        let image: Image
+        let image: String
         
         var body: some View {
             HStack(spacing: 16.0) {
-                image
+                
+                Image(systemName: image)
                     .resizable()
                     .frame(width: 24.0, height: 24.0)
                     .padding(16.0)

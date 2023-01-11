@@ -1,14 +1,16 @@
 import SwiftUI
 import PhotosUI
+import Firebase
+import FirebaseStorage
 
 struct NewPost: View {
     
-    @State var data: Data?
-    @State var input: String = ""
+    @State var imageData: Data?
+    @State var caption: String = ""
     @State var images: [PhotosPickerItem] = []
     
-    @State var ratio = false
-    @State var visible = false
+    @State var showRatio = false
+    @State var invisible = false
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -16,8 +18,8 @@ struct NewPost: View {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 16.0) {
                     
-                    if let data = data, let uiimage = UIImage(data: data) {
-                        if ratio {
+                    if let data = imageData, let uiimage = UIImage(data: data) {
+                        if showRatio {
                             Image(uiImage: uiimage)
                                 .resizable()
                                 .scaledToFit()
@@ -34,38 +36,30 @@ struct NewPost: View {
                             .border(.pink, width: 4.0)
                     }
                     
-                    //*// Divider //*//
                     
                     PhotosPicker(selection: $images,
                                  maxSelectionCount: 1, matching: .images) {
                         Label("Choose Image", systemImage: "photo")
                     }
                     .buttonStyle(.bordered)
-                    .onChange(of: images) { newValue in
-                        guard let item = images.first else {
-                            return
-                        }
-                        item.loadTransferable(type: Data.self) { result in
+                    .onChange(of: images) { _ in
+                        images.first!.loadTransferable(type: Data.self) { result in
+                            
                             switch result {
                             case .success(let data):
-                                if let data = data {
-                                    self.data = data
-                                }
+                                self.imageData = data
                             case .failure(_):
                                 return
                             }
                         }
                     }
-                    
-                    //*// Divider //*//
-                    
                     HStack(spacing: 16.0) {
-                        Toggle("Original aspect ratio", isOn: $ratio)
+                        Toggle("Original aspect ratio", isOn: $showRatio)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10.0)
                                     .stroke(lineWidth: 1.0)
                             )
-                        Toggle("My followers only", isOn: $visible)
+                        Toggle("My followers only", isOn: $invisible)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10.0)
                                     .stroke(lineWidth: 1.0)
@@ -74,14 +68,16 @@ struct NewPost: View {
                     .toggleStyle(.button)
                     .foregroundColor(.pink)
                 }
-                TextField("Write a caption", text: $input)
+                TextField("Write a caption", text: $caption)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.vertical, 20.0)
+                    .padding(.vertical, 26.0)
                 
                 Button("Send post") {
+                    uploadImage()
                     dismiss()
                 }
                 .buttonStyle(.borderedProminent)
+                .disabled(imageData == nil)
             }
             .padding(.horizontal, 20.0)
             .navigationTitle("New Post")
@@ -89,7 +85,19 @@ struct NewPost: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         dismiss()
-                    }}}}}}
+                    }}}}}
+    
+    
+    func uploadImage() {
+        let id = UUID().uuidString
+        let fileRef = Storage.storage().reference().child("images/\(id)")
+        fileRef.putData(imageData!, metadata: nil)
+        
+        let db = Firestore.firestore()
+        let ref = db.collection("images").document("\(images.count)" + " " + id)
+        ref.setData(["user": "userName", "url": "images/\(id)", "text": caption])
+    }
+}
 
 
 struct NewPost_Previews: PreviewProvider {

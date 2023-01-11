@@ -2,39 +2,45 @@ import SwiftUI
 
 struct Chats: View {
     
-    @State private var items = ChatsItem.data
-    @State private var showNewChat = false
-    @State private var showAction = false
+    @State var items = ChatsItem.data
+    @State var showNewChat = false
+    @State var showAction = false
     
     var body: some View {
         NavigationStack {
             ZStack {
-                List {
-                    ForEach(items) { item in
-                        NavigationLink(value: item) {
-                            Row(user: item.user,
-                                caption: item.caption,
-                                image: Image(item.user))
+                VStack(spacing: 16.0){
+                    List {
+                        ForEach(items) { item in
+                            NavigationLink(value: item) {
+                                Row(user: item.user,
+                                    caption: item.caption,
+                                    image: userData[item.user]!)
+                            }
+                        }
+                        .onDelete(perform: deleteItems(atOffsets:))
+                        .onMove(perform: move(fromOffsets:toOffset:))
+                    }
+                    .listStyle(.plain)
+                    .navigationTitle("Chats")
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button("New Chat") {
+                                showNewChat = true
+                            }
+                            .buttonStyle(.borderedProminent)
                         }
                     }
-                    .onDelete(perform: deleteItems(atOffsets:))
-                    .onMove(perform: move(fromOffsets:toOffset:))
-                }
-                .listStyle(.plain)
-                .navigationTitle("Chats")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("New Chat") {
-                            showNewChat = true
+                    VStack { Spacer()
+                        HStack { Spacer()
+                            CircleButton(image: "location",
+                                route: "maps")
                         }
-                        .buttonStyle(.borderedProminent)
                     }
-                }
-                VStack { Spacer()
-                    HStack { Spacer()
-                        CircleButton(image: "location",
-                            route: "location")
+                    Button("Edit chats") {
+                        showAction = true
                     }
+                    .buttonStyle(.bordered)
                 }
             }
             .navigationDestination(for: ChatsItem.self) { item in
@@ -44,7 +50,7 @@ struct Chats: View {
                 NewChat()
             }
             .actionSheet(isPresented: $showAction) {
-                ActionSheet(title: Text("Modify all chats"),
+                ActionSheet(title: Text("Edit chats"),
                     buttons: [
                     .destructive(Text("Delete all chats")),
                     .default(Text("Mark all as read")),
@@ -52,27 +58,17 @@ struct Chats: View {
             )}}}}
 
 
-private extension Chats {
-    
-	func deleteItems(atOffsets offsets: IndexSet) {
-		items.remove(atOffsets: offsets)
-	}
-	func move(fromOffsets source: IndexSet, toOffset destination: Int) {
-		items.move(fromOffsets: source, toOffset: destination)
-	}
-}
-
-
 extension Chats {
     struct Row: View {
         
         let user: String
         let caption: String
-        let image: Image
+        let image: String
         
         var body: some View {
             HStack(spacing: 16.0) {
-                image
+                
+                Image(image)
                     .resizable()
                     .frame(width: 55.0, height: 55.0)
                     .clipShape(Circle())

@@ -4,11 +4,11 @@ struct BigButton: View {
     
     var text: String
     var route: String
-    @State private var show = false
+    @State var showView = false
     
     var body: some View {
         Button {
-            show = true
+            showView = true
         } label: {
             Text("\(Image(systemName: "sparkles")) \(text) \(Image(systemName: "sparkles"))")
                 .font(.headline)
@@ -21,10 +21,10 @@ struct BigButton: View {
         .shadow(color: .pink, radius: 8, x: 0, y: 8)
         .padding(20.0)
         
-        .fullScreenCover(isPresented: $show) {
+        .fullScreenCover(isPresented: $showView) {
             if route == "suggests" {
                 Suggests()
-            } else if route == "loading" {
+            } else if route == "splash" {
                 SplashOrder()
             } else if route == "feed" {
                 Feed()
@@ -36,11 +36,11 @@ struct CircleButton: View {
     
     var image: String
     var route: String
-    @State private var show = false
+    @State var showView = false
     
     var body: some View {
         Button {
-            show = true
+            showView = true
         } label: {
             Text("\(Image(systemName: image))")
                 .font(.largeTitle)
@@ -52,10 +52,10 @@ struct CircleButton: View {
         .shadow(color: .pink, radius: 8, x: 0, y: 8)
         .padding(20.0)
         
-        .fullScreenCover(isPresented: $show) {
+        .fullScreenCover(isPresented: $showView) {
             if route == "suggests" {
                 Suggests()
-            } else if route == "location" {
+            } else if route == "maps" {
                 Maps()
             }
         }

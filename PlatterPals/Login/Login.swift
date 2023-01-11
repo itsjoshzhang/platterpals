@@ -31,14 +31,12 @@ struct Login: View {
                     .foregroundColor(.pink)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled(true)
-                
                 Divider()
                     .frame(minHeight: 3)
                     .overlay(.pink)
                 
                 SecureField("Password", text: $password)
                     .foregroundColor(.pink)
-                
                 Divider()
                     .frame(minHeight: 3)
                     .overlay(.pink)
@@ -47,7 +45,7 @@ struct Login: View {
                     showReset = true
                 }
                 Button("Log in") {
-                    login()
+                    loginAuthentication()
                 }
                 .disabled(email == "" || password == "")
                 .buttonStyle(.borderedProminent)
@@ -76,7 +74,7 @@ struct Login: View {
             }
         }
     }
-    func login() {
+    func loginAuthentication() {
         Auth.auth().signIn(withEmail: email,
                            password: password) { result, error in
             if error != nil {
@@ -110,7 +108,7 @@ struct Forgot: View {
                     .foregroundColor(.secondary)
                 
                 Button("Submit") {
-                    reset()
+                    resetPassword()
                 }
                 .buttonStyle(.borderedProminent)
                 .padding(20.0)
@@ -127,7 +125,7 @@ struct Forgot: View {
                         dismiss()
                     }}}}}
     
-    func reset() {
+    func resetPassword() {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             if error != nil {
                 alertText = error!.localizedDescription

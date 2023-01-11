@@ -2,11 +2,13 @@ import SwiftUI
 
 struct FeedProfile: View {
     
-    @State public var user: String
-    @State private var showAction = false
-    @State private var showNewChat = false
-    @State private var showPosts = false
-    @Environment(\.dismiss) private var dismiss
+    @State var user: String
+    @State var showFollow = false
+    @State var showAction = false
+    
+    @State var showNewChat = false
+    @State var showPosts = false
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
@@ -14,7 +16,7 @@ struct FeedProfile: View {
                 LazyVStack(alignment: .leading, spacing: 16.0) {
                     
                     HStack(spacing: 16.0) {
-                        Image(user)
+                        Image(userData[user]!)
                             .resizable()
                             .scaledToFit()
                             .clipShape(Circle())
@@ -25,8 +27,13 @@ struct FeedProfile: View {
                     .padding(.horizontal, 20.0)
                     
                     HStack(spacing: 16.0) {
-                        Button("Follow") {}
-                        .buttonStyle(.borderedProminent)
+                        Toggle("Follow", isOn: $showFollow)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10.0)
+                                    .stroke(lineWidth: 1.0)
+                            )
+                            .toggleStyle(.button)
+                            .foregroundColor(.pink)
                         
                         Button("Notifications") {
                             showAction = true
@@ -35,11 +42,11 @@ struct FeedProfile: View {
                     }
                     .padding(.horizontal, 20.0)
                     
-                    Text("Top 3 favorite foods:")
+                    Text("\(user)'s favorite foods:")
                         .font(.headline)
                         .padding(.horizontal, 20.0)
                     
-                    Carousel()
+                    Carousel(tag: user)
                     Grid()
                         .onTapGesture {
                             showPosts = true
@@ -77,6 +84,6 @@ struct FeedProfile: View {
 
 struct FeedProfile_Previews: PreviewProvider {
 	static var previews: some View {
-        FeedProfile(user: "Albert")
+        FeedProfile(user: "Albert Y")
 	}
 }

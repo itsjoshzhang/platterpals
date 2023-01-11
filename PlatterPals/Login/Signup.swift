@@ -6,7 +6,7 @@ struct Signup: View {
     @State var email = ""
     @State var password = ""
     @State var name = ""
-    @State var image = 0
+    @State var index = 0
 
     @State var loggedIn = false
     @State var alertText = ""
@@ -28,17 +28,17 @@ struct Signup: View {
         NavigationStack {
             VStack(spacing: 16.0) {
                 
-                Image(images[image])
+                Image(userImages[index])
                     .resizable()
                     .scaledToFit()
                     .clipShape(Circle())
                     .frame(width: 200)
                 
                 Button("Next avatar") {
-                    if image == images.count - 1{
-                        image = 0
+                    if index == userImages.count - 1{
+                        index = 0
                     } else {
-                        image += 1
+                        index += 1
                     }
                 }
                 .buttonStyle(.bordered)
@@ -47,14 +47,12 @@ struct Signup: View {
                     .foregroundColor(.pink)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled(true)
-                
                 Divider()
                     .frame(minHeight: 3)
                     .overlay(.pink)
                 
                 SecureField("Password", text: $password)
                     .foregroundColor(.pink)
-                
                 Divider()
                     .frame(minHeight: 3)
                     .overlay(.pink)
@@ -62,13 +60,12 @@ struct Signup: View {
                 TextField("Name", text: $name)
                     .foregroundColor(.pink)
                     .autocorrectionDisabled(true)
-                
                 Divider()
                     .frame(minHeight: 3)
                     .overlay(.pink)
                 
                 Button("Sign up") {
-                    signup()
+                    signupAuthentication()
                 }
                 .disabled(email == "" || password == "" || name == "")
                 .buttonStyle(.borderedProminent)
@@ -95,14 +92,14 @@ struct Signup: View {
             }
         }
     }
-    func signup() {
+    func signupAuthentication() {
         Auth.auth().createUser(withEmail: email,
                                password: password) { result, error in
             if error != nil {
                 alertText = error!.localizedDescription
                 showAlert = true
             } else {
-                dm.addUser(id: email, name: name, image: images[image])
+                dm.addUser(id: email, name: name, image: userImages[index])
             }
         }
     }
