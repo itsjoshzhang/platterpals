@@ -1,72 +1,97 @@
 import SwiftUI
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 struct ChatDM: View {
     
-    @State var user: String
-	@State var message: String = ""
-	@State var showAction = false
-    @State var showProfile = false
-	
-	var body: some View {
-        ScrollView(.vertical) {
-            LazyVStack(alignment: .leading, spacing: 16.0) {
+    var user: String
+    @State var message = ""
+    @StateObject var messageData = MessageData()
+    
+    var blank = Text("Write a message")
+    var editing: (Bool) -> () = {_ in}
+    var commit: () -> () = {}
+    
+    var body: some View {
+        VStack(spacing: 16.0) {
+            TitleBar(user: user)
+            
+            ScrollView {
+                ForEach(messageData.messages, id: \.id) { message in
+                    Bubble(message: message)
+                }
+            }
+            ZStack(alignment: .leading) {
+                if message.isEmpty {
+                    blank.opacity(0.25)
+                        .padding(.horizontal, 30.0)
+                }
                 HStack(spacing: 16.0) {
-                    
-                    Image(userData[user]!)
-                        .resizable()
-                        .scaledToFit()
-                        .clipShape(Circle())
-                        .frame(width: 80)
-                        .padding(.leading, 20.0)
-                    
-                    Text("\(user)'s favorite foods:")
-                        .font(.headline)
-                }
-                Button("Notifications") {
-                    showAction = true
-                }
-                .buttonStyle(.bordered)
-                .padding(.horizontal, 20.0)
-                
-                Carousel(tag: user)
-                Section {
-                    TextField("Write a message", text: $message)
-                    Divider()
-                        .frame(minHeight: 3)
-                        .overlay(.pink)
-                    
-                    Button("Send chat") {
-                        // ??
+                    TextField("", text: $message,
+                              onEditingChanged: editing, onCommit: commit)
+                    Button {
+                        messageData.sendMessage(text: message)
+                        message = ""
+                    } label: {
+                        Image(systemName: "paperplane.fill")
+                            .foregroundColor(.white)
+                            .padding(10.0)
+                            .background(.pink)
+                            .cornerRadius(60.0)
                     }
-                    .buttonStyle(.borderedProminent)
                 }
+                .padding(.vertical, 10.0)
                 .padding(.horizontal, 20.0)
+                .background(Color.gray.opacity(0.25))
+                .cornerRadius(60.0)
+                .padding(10.0)
             }
         }
-        .navigationTitle(user)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Profile") {
-                    showProfile = true
+    }
+}
+struct Message: Identifiable, Codable {
+    var id: String
+    var text: String
+    var sender: Bool
+    var time: Date
+}
+
+
+class MessageData: ObservableObject {
+    
+    @Published var messages: [Message] = []
+    var db = Firestore.firestore()
+    
+    init() {
+        getMessages()
+    }
+    func getMessages() {
+        db.collection("messages").addSnapshotListener { s, error in
+            self.messages = s!.documents.compactMap { document -> Message? in
+                do {
+                    return try document.data(as: Message.self)
+                } catch {
+                    print(error)
+                    return nil
                 }
-                .buttonStyle(.borderedProminent)
+            }
+            self.messages.sort {
+                $0.time < $1.time
             }
         }
-        .fullScreenCover(isPresented: $showProfile) {
-            FeedProfile(user: user)
-        }
-        .actionSheet(isPresented: $showAction) {
-            ActionSheet(title: Text("Notifications"),
-                buttons: [
-                .destructive(Text("Block this user")),
-                .default(Text("Mute notifications")),
-                .cancel(Text("Cancel"))]
-            )
+    }
+    func sendMessage(text: String) {
+        do {
+            let message = Message(id: "\(UUID())",
+                text: text, sender: true, time: Date())
+            try db.collection("messages").document().setData(from: message)
+        } catch {
+            print(error)
         }
     }
 }
 struct ChatDM_Previews: PreviewProvider {
 	static var previews: some View {
-        ChatDM(user: "Saira G")
+        ChatDM(user: "Josh Z")
 	}
 }

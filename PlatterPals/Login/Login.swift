@@ -10,7 +10,6 @@ struct Login: View {
     @State var showReset = false
     @State var alertText = ""
     @State var showAlert = false
-    
     @Environment(\.dismiss) var dismiss
     
     var body: some View {

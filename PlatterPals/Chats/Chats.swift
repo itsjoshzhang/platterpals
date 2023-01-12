@@ -9,7 +9,10 @@ struct Chats: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                VStack(spacing: 16.0){
+                VStack(alignment: .leading, spacing: 16.0) {
+                    Text("Chats")
+                        .font(.largeTitle).bold()
+                        .padding(.horizontal, 20.0)
                     List {
                         ForEach(items) { item in
                             NavigationLink(value: item) {
@@ -22,8 +25,14 @@ struct Chats: View {
                         .onMove(perform: move(fromOffsets:toOffset:))
                     }
                     .listStyle(.plain)
-                    .navigationTitle("Chats")
                     .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button {
+                                showAction = true
+                            } label: {
+                                Image(systemName: "gearshape")
+                            }
+                        }
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button("New Chat") {
                                 showNewChat = true
@@ -31,16 +40,12 @@ struct Chats: View {
                             .buttonStyle(.borderedProminent)
                         }
                     }
-                    VStack { Spacer()
-                        HStack { Spacer()
-                            CircleButton(image: "location",
-                                route: "maps")
-                        }
+                }
+                VStack { Spacer()
+                    HStack { Spacer()
+                        CircleButton(image: "location",
+                            route: "maps")
                     }
-                    Button("Edit chats") {
-                        showAction = true
-                    }
-                    .buttonStyle(.bordered)
                 }
             }
             .navigationDestination(for: ChatsItem.self) { item in

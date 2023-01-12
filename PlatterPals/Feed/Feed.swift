@@ -2,33 +2,56 @@ import SwiftUI
 import Firebase
 import FirebaseStorage
 
-struct ProfilePosts: View {
+struct Feed: View {
     
-    @State var name: String
+    @State var showNewPost = false
     @State var paths = [String]()
     @State var users = [String]()
-    
     @State var images = [UIImage]()
     @State var texts = [String]()
-    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
-            ScrollView(.vertical) {
+            ZStack {
+                ScrollView(.vertical) {
                 LazyVStack(spacing: 16.0) {
-                    Spacer()
-                    ForEach(0 ..< images.count, id: \.self) { i in
-                        Post(user: users[i], image: images[i], text: texts[i])
+                BigButton(text: "Let's order something!", route: "suggests")
+
+                ForEach(0 ..< images.count, id: \.self) { i in
+                    Post(user: users[i], image: images[i], text: texts[i])
+                }
+                }
+                }
+                VStack { Spacer()
+                    HStack { Spacer()
+                        CircleButton(image: "wand.and.stars", route: "suggests")
                     }
                 }
             }
-            .navigationTitle("\(name)  -  Posts")
+            .navigationTitle("Platter Pals")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("New post") {
+                        showNewPost = true
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("\(Image(systemName: "chevron.backward")) Back") {
-                        dismiss()
+                    Button {
+                        paths = []
+                        users = []
+                        images = []
+                        texts = []
+                        retrieveImages()
+                    } label: {
+                        Image(systemName: "clock.arrow.2.circlepath")
                     }
                 }
+            }
+            .fullScreenCover(isPresented: $showNewPost) {
+                NewPost()
             }
             .onAppear {
                 retrieveImages()
@@ -43,23 +66,22 @@ struct ProfilePosts: View {
                 let storageRef = Storage.storage().reference()
                 let path = document["url"] as! String
                 let fileRef = storageRef.child(path)
-                let user = document["user"] as! String
                 
                 fileRef.getData(maxSize: 10*1024*1024) { data, error in
                     if let data = data, let image = UIImage(data: data) {
                         
                         DispatchQueue.main.async {
-                            if name == user && !paths.contains(path) {
+                            if !paths.contains(path) {
                                 paths.append(path)
                                 
                                 images.append(image)
-                                users.append(name)
+                                users.append(document["user"] as! String)
                                 texts.append(document["text"] as! String)
                             }}}}}}}}
 
 
-struct ProfilePosts_Previews: PreviewProvider {
+struct Feed_Previews: PreviewProvider {
 	static var previews: some View {
-        ProfilePosts(name: "Josh Z")
+        MyTabView()
 	}
 }

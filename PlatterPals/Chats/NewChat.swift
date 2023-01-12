@@ -2,12 +2,22 @@ import SwiftUI
 
 struct NewChat: View {
     
-    @State var userName: String = ""
+    @State var user: String = ""
     @State var message: String = ""
+    @State var showChat = false
     @State var showAction = false
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
+        if showChat {
+            withAnimation {
+                ChatDM(user: user, message: message)
+            }
+        } else {
+            content
+        }
+    }
+    var content: some View {
         NavigationStack {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 16.0) {
@@ -18,16 +28,16 @@ struct NewChat: View {
                             .foregroundColor(.pink)
                             .frame(width: 80)
                         
-                        Image(userData[userName] ?? "")
+                        Image(userData[user] ?? "")
                             .resizable()
                             .scaledToFit()
                             .clipShape(Circle())
                             .frame(width: 80)
                     }
-                    Text(userName)
+                    Text("\(user) ")
                         .font(.largeTitle)
                     
-                    TextField("Username", text: $userName)
+                    TextField("Username", text: $user)
                         .autocorrectionDisabled(true)
                     Divider()
                         .frame(minHeight: 3)
@@ -39,8 +49,9 @@ struct NewChat: View {
                         .overlay(.pink)
                     
                     Button("Send chat") {
-                        dismiss()
+                        showChat = true
                     }
+                    .disabled((userData[user] ?? "") == "")
                     .buttonStyle(.borderedProminent)
                     .padding(.vertical, 20.0)
                     

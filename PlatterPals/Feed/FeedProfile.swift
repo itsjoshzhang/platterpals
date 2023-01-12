@@ -1,14 +1,14 @@
 import SwiftUI
 
-struct Profile: View {
+struct FeedProfile: View {
     
-    @State var editBio = false
-    @State var bioText = "I don't like writing bio's either"
-    @State var showPosts = false
+    @State var user: String
+    @State var showFollow = false
     @State var showAction = false
-    @State var showSettings = false
     
-    @State var user = "Josh Z"
+    @State var showNewChat = false
+    @State var showPosts = false
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
@@ -20,34 +20,29 @@ struct Profile: View {
                             .resizable()
                             .scaledToFit()
                             .clipShape(Circle())
-                            .frame(width: 80)
-                            .padding(.leading, 20.0)
-                        
-                        VStack(alignment: .leading) {
-                            Text(bioText)
-                            if editBio {
-                                TextField("Write a new bio", text: $bioText)
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                            }
-                        }
+                            .frame(width: 80.0)
+
+                        Text("I don't like writing bio's")
                     }
+                    .padding(.horizontal, 20.0)
+                    
                     HStack(spacing: 16.0) {
-                        Button("Sync data") {
-                            showAction = true
-                        }
-                        .buttonStyle(.borderedProminent)
-                        
-                        Toggle("Edit bio", isOn: $editBio)
+                        Toggle("Follow", isOn: $showFollow)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10.0)
                                     .stroke(lineWidth: 1.0)
                             )
                             .toggleStyle(.button)
                             .foregroundColor(.pink)
+                        
+                        Button("Notifications") {
+                            showAction = true
+                        }
+                        .buttonStyle(.bordered)
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 20.0)
                     
-                    Text("Your favorite foods:")
+                    Text("\(user)'s favorite foods:")
                         .font(.headline)
                         .padding(.horizontal, 20.0)
                     
@@ -58,32 +53,37 @@ struct Profile: View {
                         }
                 }
             }
-            .navigationTitle("Your Profile")
+            .navigationTitle(user)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("\(Image(systemName: "chevron.backward")) Back") {
+                        dismiss()
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Settings") {
-                        showSettings = true
+                    Button("Send a Chat") {
+                        showNewChat = true
                     }
                     .buttonStyle(.borderedProminent)
                 }
             }
-            .fullScreenCover(isPresented: $showSettings) {
-                Settings()
+            .fullScreenCover(isPresented: $showNewChat) {
+                ChatDM(user: user)
             }
             .fullScreenCover(isPresented: $showPosts) {
                 ProfilePosts(name: user)
             }
             .actionSheet(isPresented: $showAction) {
-                ActionSheet(title: Text("Sync Data"),
+                ActionSheet(title: Text("Notifications"),
                     buttons: [
-                    .destructive(Text("Log in to DoorDash")),
-                    .default(Text("Upload DoorDash data")),
+                    .destructive(Text("Don't show their posts")),
+                    .default(Text("Don't show them my posts")),
                     .cancel(Text("Cancel"))]
                 )}}}}
 
 
-struct Profile_Previews: PreviewProvider {
+struct FeedProfile_Previews: PreviewProvider {
 	static var previews: some View {
-        Profile()
+        FeedProfile(user: "Albert Y")
 	}
 }

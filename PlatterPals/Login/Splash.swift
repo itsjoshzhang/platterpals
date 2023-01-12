@@ -39,11 +39,9 @@ struct Splash: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                 withAnimation {
                     showLogin = true
-                }
-            }
-        }
-    }
-}
+                }}}}}
+
+
 struct SplashOrder: View {
     
     @State var size = 0.9
