@@ -2,11 +2,13 @@ import SwiftUI
 
 struct NewChat: View {
     
-    @State var user: String = ""
-    @State var message: String = ""
+    @State var user = ""
+    @State var message = ""
     @State var showChat = false
+    
     @State var showAction = false
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
         if showChat {
@@ -21,19 +23,13 @@ struct NewChat: View {
         NavigationStack {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 16.0) {
-                    ZStack {
-                        Image(systemName: "person.crop.circle")
-                            .resizable()
-                            .scaledToFit()
-                            .foregroundColor(.pink)
-                            .frame(width: 80)
-                        
-                        Image(userData[user] ?? "")
-                            .resizable()
-                            .scaledToFit()
-                            .clipShape(Circle())
-                            .frame(width: 80)
-                    }
+                    
+                    Image(dm.fetchData(name: user, route: true))
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(Circle())
+                        .frame(width: 80)
+                    
                     Text("\(user) ")
                         .font(.largeTitle)
                     
@@ -51,7 +47,7 @@ struct NewChat: View {
                     Button("Send chat") {
                         showChat = true
                     }
-                    .disabled((userData[user] ?? "") == "")
+                    .disabled(user == "")
                     .buttonStyle(.borderedProminent)
                     .padding(.vertical, 20.0)
                     
@@ -86,5 +82,6 @@ struct NewChat: View {
 struct NewChat_Previews: PreviewProvider {
 	static var previews: some View {
         NewChat()
+            .environmentObject(DataManager())
 	}
 }

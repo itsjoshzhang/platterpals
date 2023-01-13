@@ -2,9 +2,10 @@ import SwiftUI
 
 struct Chats: View {
     
-    @State var items = ChatsItem.data
     @State var showNewChat = false
     @State var showAction = false
+    @State var items = ChatsItem.data
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
         NavigationStack {
@@ -18,7 +19,7 @@ struct Chats: View {
                             NavigationLink(value: item) {
                                 Row(user: item.user,
                                     caption: item.caption,
-                                    image: userData[item.user]!)
+                                    image: dm.fetchData(name: item.user, route: true))
                             }
                         }
                         .onDelete(perform: deleteItems(atOffsets:))
@@ -50,9 +51,11 @@ struct Chats: View {
             }
             .navigationDestination(for: ChatsItem.self) { item in
                 ChatDM(user: item.user)
+                    .environmentObject(dm)
             }
             .fullScreenCover(isPresented: $showNewChat) {
                 NewChat()
+                    .environmentObject(dm)
             }
             .actionSheet(isPresented: $showAction) {
                 ActionSheet(title: Text("Edit chats"),
@@ -90,5 +93,6 @@ extension Chats {
 struct Chats_Previews: PreviewProvider {
 	static var previews: some View {
         Chats()
+            .environmentObject(DataManager())
 	}
 }

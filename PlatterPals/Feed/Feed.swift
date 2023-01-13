@@ -4,11 +4,13 @@ import FirebaseStorage
 
 struct Feed: View {
     
-    @State var showNewPost = false
     @State var paths = [String]()
     @State var users = [String]()
     @State var images = [UIImage]()
     @State var texts = [String]()
+    
+    @State var showNewPost = false
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
         NavigationStack {
@@ -19,7 +21,10 @@ struct Feed: View {
 
                 ForEach(0 ..< images.count, id: \.self) { i in
                     Post(user: users[i], image: images[i], text: texts[i])
+                        .environmentObject(dm)
                 }
+                Divider()
+                    .padding(40.0)
                 }
                 }
                 VStack { Spacer()
@@ -52,6 +57,7 @@ struct Feed: View {
             }
             .fullScreenCover(isPresented: $showNewPost) {
                 NewPost()
+                    .environmentObject(dm)
             }
             .onAppear {
                 retrieveImages()
@@ -60,7 +66,7 @@ struct Feed: View {
     }
     func retrieveImages() {
         let db = Firestore.firestore()
-        db.collection("images").getDocuments { snapshot, error in
+        db.collection("profiles").getDocuments { snapshot, error in
             for document in snapshot!.documents {
                 
                 let storageRef = Storage.storage().reference()
@@ -83,5 +89,6 @@ struct Feed: View {
 struct Feed_Previews: PreviewProvider {
 	static var previews: some View {
         MyTabView()
+            .environmentObject(DataManager())
 	}
 }

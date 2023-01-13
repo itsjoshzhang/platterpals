@@ -6,6 +6,7 @@ struct TitleBar: View {
     @State var showProfile = false
     @State var showAction = false
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
         VStack {
@@ -14,7 +15,7 @@ struct TitleBar: View {
                     showProfile = true
                 } label: {
                     HStack(spacing: 20.0) {
-                        Image(userData[user] ?? "logo")
+                        Image(dm.fetchData(name: user, route: true))
                             .resizable()
                             .scaledToFit()
                             .clipShape(Circle())
@@ -98,9 +99,9 @@ struct Bubble: View {
 
 struct Assets_Previews: PreviewProvider {
     static var previews: some View {
-        VStack(spacing: 16.0) {
-            
+        VStack {
             TitleBar(user: "Josh Z")
+                .environmentObject(DataManager())
             Bubble(message: Message(id: "id",
                 text: "Hello, world!", sender: true, time: Date()))
         }

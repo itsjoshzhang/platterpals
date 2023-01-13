@@ -10,12 +10,15 @@ struct Login: View {
     @State var showReset = false
     @State var alertText = ""
     @State var showAlert = false
+    
+    @EnvironmentObject var dm: DataManager
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
         if loggedIn {
             withAnimation {
                 MyTabView()
+                    .environmentObject(dm)
             }
         } else {
             content
@@ -79,6 +82,8 @@ struct Login: View {
             if error != nil {
                 alertText = error!.localizedDescription
                 showAlert = true
+            } else {
+                dm.fetchUsers(paramID: email)
             }
         }
     }
@@ -138,5 +143,6 @@ struct Forgot: View {
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
         Login()
+            .environmentObject(DataManager())
     }
 }

@@ -4,11 +4,11 @@ struct Suggests: View {
     
     @State var restaurant = ""
     @State var cuisine = "Any"
-    @State var friend = "Everyone"
+    @State var friend = "All"
     
-    @State var friends = ["Everyone"] + userNames
-    @Environment(\.dismiss) var dismiss
     @State var showLoading = false
+    @Environment(\.dismiss) var dismiss
+    @State var friends = ["All"] + userNames
     
     var body: some View {
         if showLoading {
@@ -53,8 +53,8 @@ struct Suggests: View {
                             }
                         }
                 }
-                if friend != "Everyone" {
-                    Text("\(friend)'s favorite foods:")
+                if friend != "All" {
+                    Text("\(friend)'s favourite foods:")
                         .font(.headline)
                     Carousel(tag: friend)
                 }

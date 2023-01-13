@@ -2,13 +2,11 @@ import SwiftUI
 
 struct Profile: View {
     
+    @State var bioText = ""
     @State var editBio = false
-    @State var bioText = "I don't like writing bio's either"
-    @State var showPosts = false
     @State var showAction = false
     @State var showSettings = false
-    
-    @State var user = "Josh Z"
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
         NavigationStack {
@@ -16,7 +14,7 @@ struct Profile: View {
                 LazyVStack(alignment: .leading, spacing: 16.0) {
                     
                     HStack(spacing: 16.0) {
-                        Image(userData[user] ?? "logo")
+                        Image(dm.user.image)
                             .resizable()
                             .scaledToFit()
                             .clipShape(Circle())
@@ -24,10 +22,16 @@ struct Profile: View {
                             .padding(.leading, 20.0)
                         
                         VStack(alignment: .leading) {
-                            Text(bioText)
+                            Text(dm.user.bio)
                             if editBio {
-                                TextField("Write a new bio", text: $bioText)
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                HStack(spacing: 0.0) {
+                                    TextField("Write a new bio", text: $bioText)
+                                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    
+                                    Button("\(Image(systemName: "checkmark.circle"))") {
+                                        dm.user.bio = bioText
+                                    }
+                                }
                             }
                         }
                     }
@@ -47,15 +51,13 @@ struct Profile: View {
                     }
                     .padding(.horizontal, 20)
                     
-                    Text("Your favorite foods:")
+                    Text("\(dm.user.name)'s favourite foods:")
                         .font(.headline)
                         .padding(.horizontal, 20.0)
                     
-                    Carousel(tag: user)
-                    Grid()
-                        .onTapGesture {
-                            showPosts = true
-                        }
+                    Carousel(tag: "")
+                    BigButton(text: "View recent posts",
+                              route: "posts", user: dm.user.name)
                 }
             }
             .navigationTitle("Your Profile")
@@ -69,9 +71,7 @@ struct Profile: View {
             }
             .fullScreenCover(isPresented: $showSettings) {
                 Settings()
-            }
-            .fullScreenCover(isPresented: $showPosts) {
-                ProfilePosts(name: user)
+                    .environmentObject(dm)
             }
             .actionSheet(isPresented: $showAction) {
                 ActionSheet(title: Text("Sync Data"),
@@ -85,5 +85,6 @@ struct Profile: View {
 struct Profile_Previews: PreviewProvider {
 	static var previews: some View {
         Profile()
+            .environmentObject(DataManager())
 	}
 }

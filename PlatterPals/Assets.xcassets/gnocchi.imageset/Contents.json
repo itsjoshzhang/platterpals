@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "food4.jpeg",
+      "filename" : "gnocchi.jpeg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "food4 1.jpeg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "food4 2.jpeg",
       "idiom" : "universal",
       "scale" : "3x"
     }

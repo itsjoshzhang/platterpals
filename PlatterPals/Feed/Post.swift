@@ -2,9 +2,9 @@ import SwiftUI
 
 struct Post: View {
     
-    @State var user: String
-    @State var image: UIImage
-    @State var text: String
+    var user: String
+    var image: UIImage
+    var text: String
     @State var comment: String = ""
     @State var showProfile = false
     
@@ -12,6 +12,7 @@ struct Post: View {
     @State var offset = 0.0
     @State var size = 1.0
     
+    @EnvironmentObject var dm: DataManager
     var like = Image(systemName: "heart.fill")
     var dislike = Image(systemName: "heart.slash.fill")
     
@@ -21,7 +22,7 @@ struct Post: View {
                 showProfile = true
             } label: {
                 HStack {
-                    Image(userData[user] ?? "logo")
+                    Image(dm.fetchData(name: user, route: true))
                         .resizable()
                         .scaledToFit()
                         .clipShape(Circle())
@@ -88,11 +89,13 @@ struct Post: View {
         }
         .fullScreenCover(isPresented: $showProfile) {
             FeedProfile(user: user)
+                .environmentObject(dm)
         }
     }
 }
 struct Post_Previews: PreviewProvider {
     static var previews: some View {
         Feed()
+            .environmentObject(DataManager())
     }
 }

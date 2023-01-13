@@ -6,19 +6,20 @@ struct Signup: View {
     @State var email = ""
     @State var password = ""
     @State var name = ""
-    @State var index = 0
+    @State var image = 0
 
     @State var loggedIn = false
     @State var alertText = ""
     @State var showAlert = false
     @State var hasAccount = false
     
-    @StateObject var dm = DataManager()
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
         if loggedIn {
             withAnimation {
                 MyTabView()
+                    .environmentObject(dm)
             }
         } else {
             content
@@ -28,17 +29,17 @@ struct Signup: View {
         NavigationStack {
             VStack(spacing: 16.0) {
                 
-                Image(userImages[index])
+                Image(userImages[image])
                     .resizable()
                     .scaledToFit()
                     .clipShape(Circle())
                     .frame(width: 200)
                 
                 Button("Next avatar") {
-                    if index == userImages.count - 1{
-                        index = 0
+                    if image == userImages.count - 1 {
+                        image = 0
                     } else {
-                        index += 1
+                        image += 1
                     }
                 }
                 .buttonStyle(.bordered)
@@ -84,6 +85,7 @@ struct Signup: View {
             
             .fullScreenCover(isPresented: $hasAccount) {
                 Login()
+                    .environmentObject(dm)
             }
             .onAppear {
                 Auth.auth().addStateDidChangeListener { auth, user in
@@ -99,7 +101,7 @@ struct Signup: View {
                 alertText = error!.localizedDescription
                 showAlert = true
             } else {
-                dm.addUser(id: email, name: name, image: userImages[index])
+                dm.addUser(email, name, "About me:", "pfp\(image + 1)")
             }
         }
     }

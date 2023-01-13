@@ -4,6 +4,7 @@ struct BigButton: View {
     
     var text: String
     var route: String
+    var user = ""
     @State var showView = false
     
     var body: some View {
@@ -24,10 +25,10 @@ struct BigButton: View {
         .fullScreenCover(isPresented: $showView) {
             if route == "suggests" {
                 Suggests()
-            } else if route == "splash" {
+            } else if route == "posts" {
+                ProfilePosts(name: user)
+            } else {
                 SplashOrder()
-            } else if route == "feed" {
-                Feed()
             }
         }
     }
@@ -37,6 +38,7 @@ struct CircleButton: View {
     var image: String
     var route: String
     @State var showView = false
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
         Button {

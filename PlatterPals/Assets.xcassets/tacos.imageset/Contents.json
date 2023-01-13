@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "food2.jpeg",
+      "filename" : "tacos.jpeg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "food2 1.jpeg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "food2 2.jpeg",
       "idiom" : "universal",
       "scale" : "3x"
     }

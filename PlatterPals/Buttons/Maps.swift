@@ -15,7 +15,6 @@ struct Maps: View {
                 Text("Tap on someone's pin to view their profile!")
                     .font(.headline)
                     .foregroundColor(.pink)
-                    //.padding(10.0)
                 
                 ZStack(alignment: .bottom) {
                     Map(coordinateRegion: $viewModel.region, showsUserLocation: true, annotationItems: markers) { marker in

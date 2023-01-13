@@ -4,8 +4,10 @@ import Firebase
 struct Settings: View {
     
     @State var loggedOut = false
+    @State var showAdmin = false
 	@State var items = SettingsItem.data
-    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var dm: DataManager
+    @Environment(\.dismiss) var dismiss
 	
     var body: some View {
         if loggedOut {
@@ -33,6 +35,17 @@ struct Settings: View {
                         dismiss()
                     }
                 }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showAdmin = true
+                    } label: {
+                        Image(systemName: "lock")
+                    }
+                }
+            }
+            .fullScreenCover(isPresented: $showAdmin) {
+                Admin()
+                    .environmentObject(dm)
             }
             Button("Log out") {
                 try? Auth.auth().signOut()
@@ -72,5 +85,6 @@ extension Settings {
 struct Settings_Previews: PreviewProvider {
 	static var previews: some View {
         Settings()
+            .environmentObject(DataManager())
 	}
 }

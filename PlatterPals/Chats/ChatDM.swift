@@ -6,6 +6,7 @@ struct ChatDM: View {
     
     var user: String
     @State var message = ""
+    @EnvironmentObject var dm: DataManager
     @StateObject var messageData = MessageData()
     
     var blank = Text("Write a message")
@@ -15,6 +16,7 @@ struct ChatDM: View {
     var body: some View {
         VStack(spacing: 16.0) {
             TitleBar(user: user)
+                .environmentObject(dm)
             
             ScrollView {
                 ForEach(messageData.messages, id: \.id) { message in
@@ -61,7 +63,6 @@ class MessageData: ObservableObject {
     
     @Published var messages: [Message] = []
     var db = Firestore.firestore()
-    
     init() {
         getMessages()
     }
@@ -93,5 +94,6 @@ class MessageData: ObservableObject {
 struct ChatDM_Previews: PreviewProvider {
 	static var previews: some View {
         ChatDM(user: "Josh Z")
+            .environmentObject(DataManager())
 	}
 }

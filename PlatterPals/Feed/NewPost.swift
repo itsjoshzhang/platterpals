@@ -5,13 +5,14 @@ import FirebaseStorage
 
 struct NewPost: View {
     
+    @State var showRatio = false
+    @State var invisible = false
     @State var imageData: Data?
     @State var caption: String = ""
     @State var images: [PhotosPickerItem] = []
     
-    @State var showRatio = false
-    @State var invisible = false
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
         NavigationStack {
@@ -89,13 +90,13 @@ struct NewPost: View {
     
     
     func uploadImage() {
-        let id = UUID().uuidString
+        let id = dm.user.name
         let fileRef = Storage.storage().reference().child("images/\(id)")
         fileRef.putData(imageData!, metadata: nil)
         
         let db = Firestore.firestore()
-        let ref = db.collection("images").document(id)
-        ref.setData(["user": "Josh Z", "url": "images/\(id)", "text": caption])
+        let ref = db.collection("profiles").document(id)
+        ref.setData(["user": id, "url": "profiles/\(id)", "text": caption])
     }
 }
 
@@ -103,5 +104,6 @@ struct NewPost: View {
 struct NewPost_Previews: PreviewProvider {
 	static var previews: some View {
         NewPost()
+            .environmentObject(DataManager())
 	}
 }

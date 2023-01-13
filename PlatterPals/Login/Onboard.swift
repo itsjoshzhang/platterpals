@@ -2,12 +2,15 @@ import SwiftUI
 import Firebase
 
 struct Onboard: View {
+    
     @State var loggedIn = false
+    @StateObject var dm = DataManager()
     
     var body: some View {
         if loggedIn {
             withAnimation {
                 MyTabView()
+                    .environmentObject(dm)
             }
         } else {
             content
@@ -25,6 +28,7 @@ struct Onboard: View {
                         title: "Go find your Platter Pal!",
                         caption: "We've made it easy to filter the foods you like. Just swipe left to remove and right to approve!",
                         showButton: true)
+            .environmentObject(dm)
         }
         .tabViewStyle(.page(indexDisplayMode: .always))
         .indexViewStyle(.page(backgroundDisplayMode: .always))
@@ -40,8 +44,10 @@ struct OnboardView: View {
     var image: String
     var title: String
     var caption: String
+    
     @State var showButton = false
     @State var showLogin = false
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
         VStack(spacing: 20.0) {
@@ -69,6 +75,7 @@ struct OnboardView: View {
         .padding(.horizontal, 16.0)
         .fullScreenCover(isPresented: $showLogin) {
             Signup()
+                .environmentObject(dm)
         }
     }
 }

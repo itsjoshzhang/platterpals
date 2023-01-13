@@ -10,8 +10,12 @@ struct AppInit: App {
     }
     var body: some Scene {
         WindowGroup {
-            //Users()
             Splash()
         }
+    }
+}
+struct AppInit_Previews: PreviewProvider {
+    static var previews: some View {
+        Splash()
     }
 }

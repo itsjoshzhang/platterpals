@@ -28,6 +28,7 @@ struct Order: View {
                     
                     if images.count == 1 {
                         Post(user: "PlatterPals", image: images[0], text: "Send us feedback below:")
+                            .environmentObject(DataManager())
                         
                         BigButton(text: texts[0], route: "suggests")
                     }

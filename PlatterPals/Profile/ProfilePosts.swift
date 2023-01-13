@@ -7,10 +7,11 @@ struct ProfilePosts: View {
     @State var name: String
     @State var paths = [String]()
     @State var users = [String]()
-    
     @State var images = [UIImage]()
     @State var texts = [String]()
+    
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
         NavigationStack {
@@ -19,7 +20,11 @@ struct ProfilePosts: View {
                     Spacer()
                     ForEach(0 ..< images.count, id: \.self) { i in
                         Post(user: users[i], image: images[i], text: texts[i])
+                            .environmentObject(dm)
                     }
+                    Spacer()
+                    Text("No more posts")
+                        .foregroundColor(.secondary)
                 }
             }
             .navigationTitle("\(name)  -  Posts")
@@ -37,7 +42,7 @@ struct ProfilePosts: View {
     }
     func retrieveImages() {
         let db = Firestore.firestore()
-        db.collection("images").getDocuments { snapshot, error in
+        db.collection("profiles").getDocuments { snapshot, error in
             for document in snapshot!.documents {
                 
                 let storageRef = Storage.storage().reference()
@@ -61,5 +66,6 @@ struct ProfilePosts: View {
 struct ProfilePosts_Previews: PreviewProvider {
 	static var previews: some View {
         ProfilePosts(name: "Josh Z")
+            .environmentObject(DataManager())
 	}
 }
