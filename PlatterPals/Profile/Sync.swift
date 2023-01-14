@@ -28,15 +28,15 @@ struct Sync: View {
                 Divider()
                     .frame(minHeight: 3.0)
                     .overlay(.pink)
-                Button("Log in") {
-                    //loginAuthentication()
-                }
-                .disabled(true)
-                .buttonStyle(.borderedProminent)
-                .padding(20.0)
                 
                 Text("App in beta: DoorDash API coming soon")
                     .foregroundColor(.secondary)
+                Button("Log in") {
+                    //loginAuthentication()
+                }
+                .buttonStyle(.borderedProminent)
+                .padding(20.0)
+                .disabled(true)
             }
             .padding(20.0)
             .navigationTitle("Log in to DoorDash")

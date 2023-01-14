@@ -27,13 +27,14 @@ struct Profile: View {
                             if editInfo {
                             VStack {
                             HStack(spacing: 16.0) {
-                            TextField("Change your name", text: $nameText)
+                            TextField("New display name", text: $nameText)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
 
-                            Button("\(Image(systemName: "checkmark.circle"))") {
+                            Button("\(Image(systemName: "paperplane"))") {
                             dm.user.name = nameText
                             dm.user.bio = bioText
                             }
+                            .disabled(nameText == "")
                             }
                             TextField("Write a new bio", text: $bioText)
                             .textFieldStyle(RoundedBorderTextFieldStyle())

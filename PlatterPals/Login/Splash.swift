@@ -8,6 +8,14 @@ struct Splash: View {
     @StateObject var dm = DataManager()
     
     var body: some View {
+        if showLogin {
+            Onboard()
+                .environmentObject(dm)
+        } else {
+            content
+        }
+    }
+    var content: some View {
         VStack(spacing: 16.0) {
             Image("logo")
             
@@ -21,10 +29,6 @@ struct Splash: View {
         }
         .scaleEffect(size)
         .opacity(opacity)
-        .fullScreenCover(isPresented: $showLogin) {
-            Onboard()
-                .environmentObject(dm)
-        }
         .onAppear {
             withAnimation(.easeIn(duration: 1.0)) {
                 size = 1.0
@@ -87,9 +91,8 @@ struct Splash2: View {
             }
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                    withAnimation {
-                        showOrder = true
-                    }}}}}}
+                    showOrder = true
+                }}}}}
 
 
 struct Splash_Previews: PreviewProvider {

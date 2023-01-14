@@ -27,11 +27,11 @@ struct BigButton: View {
             if route == "suggests" {
                 Suggests()
                     .environmentObject(dm)
-            } else if route == "posts" {
-                Updates(name: user)
+            } else if route == "splash" {
+                Splash2()
                     .environmentObject(dm)
             } else {
-                Splash2()
+                Sync()
                     .environmentObject(dm)
             }
         }
@@ -62,7 +62,7 @@ struct CircleButton: View {
             if route == "suggests" {
                 Suggests()
                     .environmentObject(dm)
-            } else if route == "maps" {
+            } else {
                 Maps()
                     .environmentObject(dm)
             }

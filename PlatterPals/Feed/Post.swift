@@ -6,7 +6,7 @@ struct Post: View {
     var image: UIImage
     var text: String
     @State var comment: String = ""
-    @State var showComment = false
+    @State var showComment = true
     
     @State var result = 0
     @State var offset = 0.0
@@ -48,6 +48,9 @@ struct Post: View {
                             .onEnded { swipe in
                                 withAnimation(.easeIn(duration: 0.25)) {
                                     result = Int(swipe.translation.width)
+                                    if user != "PlatterPals" {
+                                        showProfile = (result > 0)
+                                    }
                                     size = 0.0
                                 }
                             }
@@ -69,15 +72,14 @@ struct Post: View {
             }
             Text(text)
                 .padding(.horizontal, 16.0)
-            if showComment {
+            if !showComment {
                 Text("\(dm.user.name): \(comment)")
                     .foregroundColor(.secondary)
                     .padding(.horizontal, 16.0)
             }
             HStack {
                 Button {
-                    if result > 0 { result = 0
-                    } else { result = 1; showProfile = true }
+                    if result > 0 { result = 0 } else { result = 1 }
                 } label: {
                     if result > 0 { like.foregroundColor(.pink) } else {
                         Image(systemName: "heart")
@@ -90,12 +92,15 @@ struct Post: View {
                         Image(systemName: "heart.slash")
                     }
                 }
-                TextField("Write a comment", text: $comment)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                Button("\(Image(systemName: "checkmark.circle"))") {
-                    showComment = true
+                if showComment {
+                    TextField("Write a comment", text: $comment)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
                 }
+                Spacer()
+                Button("\(Image(systemName: "paperplane"))") {
+                    showComment.toggle()
+                }
+                .disabled(comment == "")
             }
             .padding(.horizontal, 16.0)
         }

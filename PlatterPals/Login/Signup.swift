@@ -26,11 +26,7 @@ struct Signup: View {
                     .clipShape(Circle())
                 
                 Button("Next avatar") {
-                    if image == 5 {
-                        image = 1
-                    } else {
-                        image += 1
-                    }
+                    if image == 5 { image = 1 } else { image += 1 }
                 }
                 .buttonStyle(.bordered)
                 

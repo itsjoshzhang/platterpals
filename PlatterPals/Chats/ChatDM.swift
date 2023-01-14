@@ -10,9 +10,9 @@ struct ChatDM: View {
     @EnvironmentObject var dm: DataManager
     @StateObject var messageData = MessageData()
     
+    var commit: () -> () = {}
     var blank = Text("Write a message")
     var editing: (Bool) -> () = {_ in}
-    var commit: () -> () = {}
     
     var body: some View {
         VStack(spacing: 16.0) {
@@ -23,37 +23,31 @@ struct ChatDM: View {
                 ForEach(messageData.messages, id: \.id) { m in
                     if ((m.sender == user && m.getter == dm.user.name) ||
                         (m.sender == dm.user.name && m.getter == user)) {
-                            Bubble(message: m)
-                                .environmentObject(dm)
+                        Bubble(message: m)
+                            .environmentObject(dm)
                     }
                 }
             }
-            ZStack(alignment: .leading) {
-                if message.isEmpty {
-                    blank.opacity(0.25)
-                        .padding(.horizontal, 30.0)
+            HStack(spacing: 16.0) {
+                TextField("Write a message", text: $message,
+                          onEditingChanged: editing, onCommit: commit)
+                Button {
+                    sendMessage(text: message)
+                    message = ""
+                } label: {
+                    Image(systemName: "paperplane.fill")
+                        .foregroundColor(.white)
+                        .padding(10.0)
+                        .background((message == "") ? .gray: .pink)
+                        .cornerRadius(60.0)
                 }
-                HStack(spacing: 16.0) {
-                    TextField("", text: $message,
-                              onEditingChanged: editing, onCommit: commit)
-                    Button {
-                        sendMessage(text: message)
-                        message = ""
-                    } label: {
-                        Image(systemName: "paperplane.fill")
-                            .foregroundColor(.white)
-                            .padding(10.0)
-                            .background((message == "") ? .gray: .pink)
-                            .cornerRadius(60.0)
-                    }
-                    .disabled(message == "")
-                }
-                .padding(.vertical, 10.0)
-                .padding(.horizontal, 20.0)
-                .background(Color(.secondarySystemFill))
-                .cornerRadius(60.0)
-                .padding(10.0)
+                .disabled(message == "")
             }
+            .padding(.vertical, 10.0)
+            .padding(.horizontal, 20.0)
+            .background(Color(.secondarySystemFill))
+            .cornerRadius(60.0)
+            .padding(10.0)
         }
     }
     func sendMessage(text: String) {

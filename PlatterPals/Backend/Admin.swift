@@ -50,11 +50,7 @@ class DataManager: ObservableObject {
     func fetchData(name: String, route: Bool) -> String {
         for user in userArray {
             if name == user.name {
-                if route {
-                    return user.image
-                } else {
-                    return user.bio
-                }
+                if route { return user.image } else { return user.bio }
             }
         }
         return "logo"

@@ -78,7 +78,7 @@ struct Bubble: View {
         VStack(alignment: sender ? .trailing: .leading) {
             Section {
                 Text(message.text)
-                    .padding(20.0)
+                    .padding(16.0)
                     .background(sender ? Color.pink.opacity(0.25):
                                 Color(.secondarySystemFill))
                     .cornerRadius(30.0)
@@ -92,11 +92,11 @@ struct Bubble: View {
                 Text("\(message.time.formatted(.dateTime.hour().minute()))")
                     .font(.caption)
                     .foregroundColor(.secondary)
-                    .padding(.horizontal, 20.0)
+                    .padding(.horizontal, 16.0)
             }
         }
         .frame(maxWidth: .infinity, alignment: sender ? .trailing: .leading)
-        .padding(.horizontal, 20.0)
+        .padding(.horizontal, 16.0)
     }
 }
 

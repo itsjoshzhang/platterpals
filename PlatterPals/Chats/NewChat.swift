@@ -38,7 +38,7 @@ struct NewChat: View {
                     Button("Send chat") {
                         showChat = true
                     }
-                    .disabled(user == "")
+                    .disabled(user == "" || message == "")
                     .buttonStyle(.borderedProminent)
                     .padding(.vertical, 20.0)
                     

@@ -97,19 +97,18 @@ struct Forgot: View {
                     .foregroundColor(.pink)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled(true)
-                
                 Divider()
                     .frame(minHeight: 3.0)
                     .overlay(.pink)
                 
                 Text("We'll email you a reset link right away!")
                     .foregroundColor(.secondary)
-                
                 Button("Submit") {
                     resetPassword()
                 }
                 .buttonStyle(.borderedProminent)
                 .padding(20.0)
+                .disabled(email == "")
                 
                 .alert(alertText, isPresented: $showAlert) {
                     Button("OK", role: .cancel) {}

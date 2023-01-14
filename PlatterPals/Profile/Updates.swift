@@ -54,7 +54,7 @@ struct Updates: View {
                     if let data = data, let image = UIImage(data: data) {
                         
                         DispatchQueue.main.async {
-                            if name == user && !paths.contains(path) {
+                            if (name == user && !paths.contains(path)) {
                                 paths.append(path)
                                 users.append(user)
                                 images.append(image)

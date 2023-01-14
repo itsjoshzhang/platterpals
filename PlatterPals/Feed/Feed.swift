@@ -57,7 +57,7 @@ struct Feed: View {
                         texts = []
                         retrieveImages()
                     } label: {
-                        Image(systemName: "clock.arrow.2.circlepath")
+                        Image(systemName: "clock.arrow.circlepath")
                     }
                 }
             }
