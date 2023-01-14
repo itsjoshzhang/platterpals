@@ -16,27 +16,33 @@ struct Feed: View {
         NavigationStack {
             ZStack {
                 ScrollView(.vertical) {
-                LazyVStack(spacing: 16.0) {
-                BigButton(text: "Let's order something!", route: "suggests")
-
-                ForEach(0 ..< images.count, id: \.self) { i in
-                    Post(user: users[i], image: images[i], text: texts[i])
-                        .environmentObject(dm)
-                }
-                Divider()
-                    .padding(40.0)
-                }
+                    LazyVStack(spacing: 16.0) {
+                        BigButton(text: "Let's order something!", route: "suggests")
+                            .environmentObject(dm)
+                        
+                        ForEach(0 ..< images.count, id: \.self) { i in
+                            Post(user: users[i], image: images[i], text: texts[i])
+                                .environmentObject(dm)
+                        }
+                        Spacer()
+                        Text("No more updates")
+                            .foregroundColor(.secondary)
+                        Spacer()
+                        Spacer()
+                    }
                 }
                 VStack { Spacer()
                     HStack { Spacer()
                         CircleButton(image: "wand.and.stars", route: "suggests")
+                            .environmentObject(dm)
+                        
                     }
                 }
             }
             .navigationTitle("Platter Pals")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("New post") {
+                    Button("\(Image(systemName: "square.and.arrow.up")) Profile") {
                         showNewPost = true
                     }
                     .buttonStyle(.borderedProminent)
@@ -69,8 +75,8 @@ struct Feed: View {
         db.collection("profiles").getDocuments { snapshot, error in
             for document in snapshot!.documents {
                 
-                let storageRef = Storage.storage().reference()
                 let path = document["url"] as! String
+                let storageRef = Storage.storage().reference()
                 let fileRef = storageRef.child(path)
                 
                 fileRef.getData(maxSize: 10*1024*1024) { data, error in
@@ -78,8 +84,8 @@ struct Feed: View {
                         
                         DispatchQueue.main.async {
                             if !paths.contains(path) {
-                                paths.append(path)
                                 
+                                paths.append(path)
                                 images.append(image)
                                 users.append(document["user"] as! String)
                                 texts.append(document["text"] as! String)

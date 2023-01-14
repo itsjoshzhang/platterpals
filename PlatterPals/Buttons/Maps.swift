@@ -4,9 +4,11 @@ import CoreLocationUI
 
 struct Maps: View {
     
+    @State var profile = "Josh Z"
     @State var showProfile = false
     @StateObject var viewModel = MapsData()
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
         NavigationStack {
@@ -34,10 +36,12 @@ struct Maps: View {
                             }
                             .foregroundColor(.pink)
                             .onTapGesture {
+                                profile = marker.user
                                 showProfile = true
                             }
                             .fullScreenCover(isPresented: $showProfile) {
-                                FeedProfile(user: marker.user)
+                                FeedProfile(user: profile)
+                                    .environmentObject(dm)
                             }
                         }
                     }
@@ -73,8 +77,8 @@ extension CLLocationCoordinate2D: Identifiable {
 var markers = [
     Marker(user: "Josh Z", image: "pfp1", coordinate: CLLocationCoordinate2D(latitude: 37.867, longitude: -122.260)),
     Marker(user: "Saira G", image: "pfp2", coordinate: CLLocationCoordinate2D(latitude: 37.868, longitude: -122.255)),
-    Marker(user: "Albert Y", image: "pfp3", coordinate: CLLocationCoordinate2D(latitude: 37.869, longitude: -122.265)),
-    Marker(user: "Saathvik S", image: "pfp4", coordinate: CLLocationCoordinate2D(latitude: 37.874, longitude: -122.257))]
+    Marker(user: "Albert Y", image: "pfp3", coordinate: CLLocationCoordinate2D(latitude: 37.874, longitude: -122.257)),
+    Marker(user: "Roma N", image: "pfp4", coordinate: CLLocationCoordinate2D(latitude: 37.869, longitude: -122.265))]
 
 
 class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
@@ -106,5 +110,6 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
 struct Location_Previews: PreviewProvider {
     static var previews: some View {
         Maps()
+            .environmentObject(DataManager())
     }
 }

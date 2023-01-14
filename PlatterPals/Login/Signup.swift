@@ -6,7 +6,7 @@ struct Signup: View {
     @State var email = ""
     @State var password = ""
     @State var name = ""
-    @State var image = 0
+    @State var image = 1
 
     @State var loggedIn = false
     @State var alertText = ""
@@ -16,28 +16,18 @@ struct Signup: View {
     @EnvironmentObject var dm: DataManager
     
     var body: some View {
-        if loggedIn {
-            withAnimation {
-                MyTabView()
-                    .environmentObject(dm)
-            }
-        } else {
-            content
-        }
-    }
-    var content: some View {
         NavigationStack {
             VStack(spacing: 16.0) {
                 
-                Image(userImages[image])
+                Image("pfp\(image)")
                     .resizable()
                     .scaledToFit()
-                    .clipShape(Circle())
                     .frame(width: 200)
+                    .clipShape(Circle())
                 
                 Button("Next avatar") {
-                    if image == userImages.count - 1 {
-                        image = 0
+                    if image == 5 {
+                        image = 1
                     } else {
                         image += 1
                     }
@@ -49,20 +39,20 @@ struct Signup: View {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled(true)
                 Divider()
-                    .frame(minHeight: 3)
+                    .frame(minHeight: 3.0)
                     .overlay(.pink)
                 
                 SecureField("Password", text: $password)
                     .foregroundColor(.pink)
                 Divider()
-                    .frame(minHeight: 3)
+                    .frame(minHeight: 3.0)
                     .overlay(.pink)
                 
-                TextField("Name", text: $name)
+                TextField("Username", text: $name)
                     .foregroundColor(.pink)
                     .autocorrectionDisabled(true)
                 Divider()
-                    .frame(minHeight: 3)
+                    .frame(minHeight: 3.0)
                     .overlay(.pink)
                 
                 Button("Sign up") {
@@ -87,6 +77,10 @@ struct Signup: View {
                 Login()
                     .environmentObject(dm)
             }
+            .fullScreenCover(isPresented: $loggedIn) {
+                MyTabView()
+                    .environmentObject(dm)
+            }
             .onAppear {
                 Auth.auth().addStateDidChangeListener { auth, user in
                     loggedIn = user != nil
@@ -101,7 +95,7 @@ struct Signup: View {
                 alertText = error!.localizedDescription
                 showAlert = true
             } else {
-                dm.addUser(email, name, "About me:", "pfp\(image + 1)")
+                dm.addUser(email, name, "About me:", "pfp\(image)")
             }
         }
     }

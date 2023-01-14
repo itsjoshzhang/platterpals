@@ -1,10 +1,5 @@
 import SwiftUI
 
-var cuisines = ["Any", "American", "Brazilian", "Caribbean", "Chinese", "Ethiopian", "French", "German", "Indian", "Italian", "Japanese", "Korean", "Mexican", "Middle Eastern", "Russian", "South American", "Thai", "Vietnamese"]
-
-var userNames = ["Josh Z", "Saira G", "Albert Y", "Saathvik S"]
-var userImages = ["pfp1", "pfp2", "pfp3", "pfp4", "logo"]
-
 struct MyTabView: View {
     
     @State var tag = 2
@@ -24,7 +19,7 @@ struct MyTabView: View {
                 }.tag(2)
             Profile()
                 .tabItem {
-                    Image(systemName: "person.crop.circle")
+                    Image(systemName: "person")
                     Text("Profile")
                 }.tag(3)
         }
@@ -36,7 +31,7 @@ extension ChatsItem {
         ChatsItem(caption: "Active now", user: "Josh Z"),
         ChatsItem(caption: "Active 1 min ago", user: "Saira G"),
         ChatsItem(caption: "Active 3 min ago", user: "Albert Y"),
-        ChatsItem(caption: "Active 13 min ago", user: "Saathvik S"),
+        ChatsItem(caption: "Active 13 min ago", user: "Roma N"),
     ]
 }
 struct ChatsItem: Identifiable, Hashable {
@@ -72,7 +67,7 @@ struct Carousel: View {
             Card(headline: "Polish Gnocchi - Little Italy SF",
                  caption: "Learned it's not pronounced ganochee. Thanks Saira.",
                  image: "gnocchi")
-            .tag("Saathvik S")
+            .tag("Roma N")
         }
         .padding(.horizontal, 20.0)
         .tabViewStyle(PageTabViewStyle())
@@ -83,40 +78,38 @@ extension SettingsItem {
     static let data = [
         SettingsItem(headline: "Chat", caption: "Blocked users, notifications", imageName: "message"),
         SettingsItem(headline: "Feed", caption: "Suggested posts, swipe history", imageName: "house"),
-        SettingsItem(headline: "Profile", caption: "Profile publicity, picture, bio", imageName: "person.crop.circle"),
+        SettingsItem(headline: "Profile", caption: "Profile publicity, picture, bio", imageName: "person"),
         SettingsItem(headline: "Privacy", caption: "Post visibility, chat requests", imageName: "lock"),
         SettingsItem(headline: "Security", caption: "Login info, payment methods", imageName: "shield"),
-        SettingsItem(headline: "Account", caption: "Link to DoorDash, deletion", imageName: "moon"),
+        SettingsItem(headline: "Account", caption: "Link to DoorDash, deletion", imageName: "key"),
     ]
 }
-extension Carousel {
-    struct Card: View {
-        
-        let headline: String
-        let caption: String
-        let image: String
-        
-        var body: some View {
-            ZStack(alignment: Alignment(horizontal: .leading, vertical: .top)) {
-                VStack(alignment: .leading, spacing: 8.0) {
-                    HStack(spacing: 16.0) {
-                        
-                        Image(image)
-                            .resizable()
-                            .scaledToFit()
-                            .background(Color.accentColor)
-                            .foregroundColor(.white)
-                            .clipShape(Circle())
-                        
-                        Text(headline)
-                            .font(.headline)
-                    }
-                    Text(caption)
+struct Card: View {
+    
+    let headline: String
+    let caption: String
+    let image: String
+    
+    var body: some View {
+        ZStack(alignment: Alignment(horizontal: .leading, vertical: .top)) {
+            VStack(alignment: .leading, spacing: 8.0) {
+                HStack(spacing: 16.0) {
+                    
+                    Image(image)
+                        .resizable()
+                        .scaledToFit()
+                        .background(Color.accentColor)
+                        .foregroundColor(.white)
+                        .clipShape(Circle())
+                    
+                    Text(headline)
+                        .font(.headline)
                 }
-                .padding(16.0)
-                Color(.secondarySystemFill)
-                    .cornerRadius(10.0)
+                Text(caption)
             }
+            .padding(16.0)
+            Color(.secondarySystemFill)
+                .cornerRadius(10.0)
         }
     }
 }

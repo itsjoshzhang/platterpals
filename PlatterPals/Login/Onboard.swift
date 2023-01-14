@@ -4,14 +4,12 @@ import Firebase
 struct Onboard: View {
     
     @State var loggedIn = false
-    @StateObject var dm = DataManager()
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
         if loggedIn {
-            withAnimation {
-                MyTabView()
-                    .environmentObject(dm)
-            }
+            MyTabView()
+                .environmentObject(dm)
         } else {
             content
         }
@@ -26,7 +24,7 @@ struct Onboard: View {
                         caption: "Let our algorithm choose for you. Just upload your DoorDash info and follow some friends!")
             OnboardView(image: "screen3",
                         title: "Go find your Platter Pal!",
-                        caption: "We've made it easy to filter the foods you like. Just swipe left to remove and right to approve!",
+                        caption: "We've made it easy to find the people you like. Just swipe left to remove and right to approve!",
                         showButton: true)
             .environmentObject(dm)
         }
@@ -50,7 +48,7 @@ struct OnboardView: View {
     @EnvironmentObject var dm: DataManager
     
     var body: some View {
-        VStack(spacing: 20.0) {
+        VStack(spacing: 16.0) {
             
             Image(image)
                 .resizable()
@@ -82,5 +80,6 @@ struct OnboardView: View {
 struct Onboard_Previews: PreviewProvider {
     static var previews: some View {
         Onboard()
+            .environmentObject(DataManager())
     }
 }

@@ -45,7 +45,8 @@ struct Chats: View {
                 VStack { Spacer()
                     HStack { Spacer()
                         CircleButton(image: "location",
-                            route: "maps")
+                                     route: "maps")
+                        .environmentObject(dm)
                     }
                 }
             }
@@ -60,12 +61,13 @@ struct Chats: View {
             .actionSheet(isPresented: $showAction) {
                 ActionSheet(title: Text("Edit chats"),
                     buttons: [
-                    .destructive(Text("Delete all chats")),
-                    .default(Text("Mark all as read")),
-                    .cancel(Text("Cancel"))]
-            )}}}}
-
-
+                        .destructive(Text("Delete all chats")),
+                        .default(Text("Mark all as read")),
+                        .cancel(Text("Cancel"))])
+            }
+        }
+    }
+}
 extension Chats {
     struct Row: View {
         
@@ -81,7 +83,7 @@ extension Chats {
                     .frame(width: 55.0, height: 55.0)
                     .clipShape(Circle())
                 
-                VStack(alignment: .leading, spacing: 4.0) {
+                VStack(alignment: .leading, spacing: 5.0) {
                     Text(user)
                         .font(.headline)
                     Text(caption)

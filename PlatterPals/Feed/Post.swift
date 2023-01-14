@@ -6,11 +6,12 @@ struct Post: View {
     var image: UIImage
     var text: String
     @State var comment: String = ""
-    @State var showProfile = false
+    @State var showComment = false
     
     @State var result = 0
     @State var offset = 0.0
     @State var size = 1.0
+    @State var showProfile = false
     
     @EnvironmentObject var dm: DataManager
     var like = Image(systemName: "heart.fill")
@@ -19,7 +20,9 @@ struct Post: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16.0) {
             Button {
-                showProfile = true
+                if user != "PlatterPals" {
+                    showProfile = true
+                }
             } label: {
                 HStack {
                     Image(dm.fetchData(name: user, route: true))
@@ -66,9 +69,12 @@ struct Post: View {
             }
             Text(text)
                 .padding(.horizontal, 16.0)
+            if showComment {
+                Text("\(dm.user.name): \(comment)")
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal, 16.0)
+            }
             HStack {
-                TextField("Write a comment", text: $comment)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
                 Button {
                     if result > 0 { result = 0
                     } else { result = 1; showProfile = true }
@@ -83,6 +89,12 @@ struct Post: View {
                     if result < 0 { dislike.foregroundColor(.black) } else {
                         Image(systemName: "heart.slash")
                     }
+                }
+                TextField("Write a comment", text: $comment)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                Button("\(Image(systemName: "checkmark.circle"))") {
+                    showComment = true
                 }
             }
             .padding(.horizontal, 16.0)

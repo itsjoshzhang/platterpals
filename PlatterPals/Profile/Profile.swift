@@ -2,10 +2,13 @@ import SwiftUI
 
 struct Profile: View {
     
+    @State var nameText = ""
     @State var bioText = ""
-    @State var editBio = false
-    @State var showAction = false
+    @State var editInfo = false
+    
+    @State var showSync = false
     @State var showSettings = false
+    @State var showUpdates = false
     @EnvironmentObject var dm: DataManager
     
     var body: some View {
@@ -19,29 +22,35 @@ struct Profile: View {
                             .scaledToFit()
                             .clipShape(Circle())
                             .frame(width: 80)
-                            .padding(.leading, 20.0)
                         
                         VStack(alignment: .leading) {
-                            Text(dm.user.bio)
-                            if editBio {
-                                HStack(spacing: 0.0) {
-                                    TextField("Write a new bio", text: $bioText)
-                                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                                    
-                                    Button("\(Image(systemName: "checkmark.circle"))") {
-                                        dm.user.bio = bioText
-                                    }
-                                }
+                            if editInfo {
+                            VStack {
+                            HStack(spacing: 16.0) {
+                            TextField("Change your name", text: $nameText)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+
+                            Button("\(Image(systemName: "checkmark.circle"))") {
+                            dm.user.name = nameText
+                            dm.user.bio = bioText
+                            }
+                            }
+                            TextField("Write a new bio", text: $bioText)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            }
+                            } else {
+                                Text(dm.user.bio)
                             }
                         }
                     }
+                    .padding(.horizontal, 20.0)
                     HStack(spacing: 16.0) {
                         Button("Sync data") {
-                            showAction = true
+                            showSync = true
                         }
                         .buttonStyle(.borderedProminent)
                         
-                        Toggle("Edit bio", isOn: $editBio)
+                        Toggle("Edit info", isOn: $editInfo)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10.0)
                                     .stroke(lineWidth: 1.0)
@@ -55,9 +64,20 @@ struct Profile: View {
                         .font(.headline)
                         .padding(.horizontal, 20.0)
                     
-                    Carousel(tag: "")
-                    BigButton(text: "View recent posts",
-                              route: "posts", user: dm.user.name)
+                    Card(headline: "No favourite foods yet",
+                         caption: "Add some by syncing DoorDash data!",
+                         image: "logo")
+                    .padding(.horizontal, 20.0)
+                    .tabViewStyle(PageTabViewStyle())
+                    .frame(height: 160.0)
+                    
+                    Image("cards")
+                        .resizable()
+                        .scaledToFit()
+                        .opacity(0.5)
+                        .onTapGesture {
+                            showUpdates = true
+                        }
                 }
             }
             .navigationTitle("Your Profile")
@@ -69,19 +89,21 @@ struct Profile: View {
                     .buttonStyle(.borderedProminent)
                 }
             }
+            .fullScreenCover(isPresented: $showSync) {
+                Sync()
+                    .environmentObject(dm)
+            }
             .fullScreenCover(isPresented: $showSettings) {
                 Settings()
                     .environmentObject(dm)
             }
-            .actionSheet(isPresented: $showAction) {
-                ActionSheet(title: Text("Sync Data"),
-                    buttons: [
-                    .destructive(Text("Log in to DoorDash")),
-                    .default(Text("Upload DoorDash data")),
-                    .cancel(Text("Cancel"))]
-                )}}}}
-
-
+            .fullScreenCover(isPresented: $showUpdates) {
+                Updates(name: dm.user.name)
+                    .environmentObject(dm)
+            }
+        }
+    }
+}
 struct Profile_Previews: PreviewProvider {
 	static var previews: some View {
         Profile()

@@ -6,6 +6,7 @@ struct BigButton: View {
     var route: String
     var user = ""
     @State var showView = false
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
         Button {
@@ -25,10 +26,13 @@ struct BigButton: View {
         .fullScreenCover(isPresented: $showView) {
             if route == "suggests" {
                 Suggests()
+                    .environmentObject(dm)
             } else if route == "posts" {
-                ProfilePosts(name: user)
+                Updates(name: user)
+                    .environmentObject(dm)
             } else {
-                SplashOrder()
+                Splash2()
+                    .environmentObject(dm)
             }
         }
     }
@@ -57,8 +61,10 @@ struct CircleButton: View {
         .fullScreenCover(isPresented: $showView) {
             if route == "suggests" {
                 Suggests()
+                    .environmentObject(dm)
             } else if route == "maps" {
                 Maps()
+                    .environmentObject(dm)
             }
         }
     }
@@ -67,7 +73,9 @@ struct Buttons_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             BigButton(text: "Hello, world!", route: "suggests")
+                .environmentObject(DataManager())
             CircleButton(image: "wand.and.stars", route: "suggests")
+                .environmentObject(DataManager())
         }
     }
 }

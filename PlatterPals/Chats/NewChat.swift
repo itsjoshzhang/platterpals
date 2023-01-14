@@ -11,15 +11,6 @@ struct NewChat: View {
     @EnvironmentObject var dm: DataManager
     
     var body: some View {
-        if showChat {
-            withAnimation {
-                ChatDM(user: user, message: message)
-            }
-        } else {
-            content
-        }
-    }
-    var content: some View {
         NavigationStack {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 16.0) {
@@ -36,12 +27,12 @@ struct NewChat: View {
                     TextField("Username", text: $user)
                         .autocorrectionDisabled(true)
                     Divider()
-                        .frame(minHeight: 3)
+                        .frame(minHeight: 3.0)
                         .overlay(.pink)
                     
                     TextField("Write a message", text: $message)
                     Divider()
-                        .frame(minHeight: 3)
+                        .frame(minHeight: 3.0)
                         .overlay(.pink)
                     
                     Button("Send chat") {
@@ -69,6 +60,10 @@ struct NewChat: View {
                         dismiss()
                     }
                 }
+            }
+            .fullScreenCover(isPresented: $showChat) {
+                ChatDM(user: user, message: message)
+                    .environmentObject(dm)
             }
             .actionSheet(isPresented: $showAction) {
                 ActionSheet(title: Text("Send invite link"),

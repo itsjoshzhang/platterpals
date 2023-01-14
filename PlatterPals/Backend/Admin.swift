@@ -5,17 +5,17 @@ struct User: Identifiable {
     var id = "email@gmail.com"
     var name = "PlatterPals"
     var bio = "About me:"
-    var image = "logo"
+    var image = "pfp5"
 }
 class DataManager: ObservableObject {
     
     @Published var userArray: [User] = []
     @Published var user = User()
+    
     init() {
         fetchUsers()
     }
     func fetchUsers(paramID: String = "") {
-        
         userArray.removeAll()
         let db = Firestore.firestore()
         db.collection("users").getDocuments { snapshot, error in
@@ -48,8 +48,7 @@ class DataManager: ObservableObject {
         self.user = User(id: id, name: name, bio: bio, image: image)
     }
     func fetchData(name: String, route: Bool) -> String {
-        for i in 0..<userArray.count {
-            let user = userArray[i]
+        for user in userArray {
             if name == user.name {
                 if route {
                     return user.image
@@ -65,7 +64,7 @@ struct Admin: View {
     
     @State var id = ""
     @State var name = ""
-    @State var image = "logo"
+    @State var image = "pfp1"
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var dm: DataManager
     
@@ -110,7 +109,7 @@ struct Admin: View {
                 TextField("Name", text: $name)
                 
                 Picker("Image", selection: $image) {
-                    ForEach(userImages, id: \.self) {
+                    ForEach(["pfp1", "pfp2", "pfp3", "pfp4", "pfp5"], id: \.self) {
                         Text($0)
                     }
                 }

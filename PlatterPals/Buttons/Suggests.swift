@@ -5,32 +5,27 @@ struct Suggests: View {
     @State var restaurant = ""
     @State var cuisine = "Any"
     @State var friend = "All"
-    
     @State var showLoading = false
+    
+    var friends = ["Josh Z", "Saira G", "Albert Y", "Roma N"]
+    var cuisines = ["Any", "American", "Brazilian", "Caribbean", "Chinese", "Ethiopian", "French", "German", "Indian", "Italian", "Japanese", "Korean", "Mexican", "Middle Eastern", "Russian", "South American", "Thai", "Vietnamese"]
+    
     @Environment(\.dismiss) var dismiss
-    @State var friends = ["All"] + userNames
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
-        if showLoading {
-            withAnimation {
-                SplashOrder()
-            }
-        } else {
-            content
-        }
-    }
-    var content: some View {
         NavigationStack {
             VStack(alignment: .center, spacing: 16.0) {
                 
                 BigButton(text: "Let us decide for you!", route: "splash")
+                    .environmentObject(dm)
                 
                 Text("Adjust settings below")
                     .font(.headline)
                     .padding(.horizontal, 20.0)
                 Form {
                     Section(header:
-                        Text("Got something in mind?")
+                                Text("Got something in mind?")
                         .font(.subheadline)
                         .textCase(.none)){
                             
@@ -42,7 +37,7 @@ struct Suggests: View {
                             TextField("Restaurant name", text: $restaurant)
                         }
                     Section(header:
-                        Text("Wanna refer to a friend?")
+                                Text("Wanna refer to a friend?")
                         .font(.subheadline)
                         .textCase(.none)){
                             
@@ -64,10 +59,19 @@ struct Suggests: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         dismiss()
-                    }}}}}}
-
+                    }
+                }
+            }
+            .fullScreenCover(isPresented: $showLoading) {
+                Splash2()
+                    .environmentObject(dm)
+            }
+        }
+    }
+}
 struct Suggests_Previews: PreviewProvider {
     static var previews: some View {
         Suggests()
+            .environmentObject(DataManager())
     }
 }

@@ -15,16 +15,6 @@ struct Login: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        if loggedIn {
-            withAnimation {
-                MyTabView()
-                    .environmentObject(dm)
-            }
-        } else {
-            content
-        }
-    }
-    var content: some View {
         NavigationStack {
             VStack(spacing: 16.0) {
                 Image("logo")
@@ -34,13 +24,13 @@ struct Login: View {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled(true)
                 Divider()
-                    .frame(minHeight: 3)
+                    .frame(minHeight: 3.0)
                     .overlay(.pink)
                 
                 SecureField("Password", text: $password)
                     .foregroundColor(.pink)
                 Divider()
-                    .frame(minHeight: 3)
+                    .frame(minHeight: 3.0)
                     .overlay(.pink)
                 
                 Button("Reset password") {
@@ -68,6 +58,10 @@ struct Login: View {
             }
             .fullScreenCover(isPresented: $showReset) {
                 Forgot()
+            }
+            .fullScreenCover(isPresented: $loggedIn) {
+                MyTabView()
+                    .environmentObject(dm)
             }
             .onAppear {
                 Auth.auth().addStateDidChangeListener { auth, user in
@@ -105,7 +99,7 @@ struct Forgot: View {
                     .autocorrectionDisabled(true)
                 
                 Divider()
-                    .frame(minHeight: 3)
+                    .frame(minHeight: 3.0)
                     .overlay(.pink)
                 
                 Text("We'll email you a reset link right away!")
@@ -128,6 +122,7 @@ struct Forgot: View {
                     Button("Cancel") {
                         dismiss()
                     }}}}}
+    
     
     func resetPassword() {
         Auth.auth().sendPasswordReset(withEmail: email) { error in

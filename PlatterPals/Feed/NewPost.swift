@@ -33,11 +33,12 @@ struct NewPost: View {
                                 .clipped()
                         }
                     } else {
-                        Image("logo")
-                            .border(.pink, width: 4.0)
+                        Image("cards")
+                            .resizable()
+                            .scaledToFit()
+                            .opacity(0.25)
+                            .border(.pink, width: 3.0)
                     }
-                    
-                    
                     PhotosPicker(selection: $images,
                                  maxSelectionCount: 1, matching: .images) {
                         Label("Choose Image", systemImage: "photo")
@@ -70,15 +71,18 @@ struct NewPost: View {
                     .foregroundColor(.pink)
                 }
                 TextField("Write a caption", text: $caption)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.vertical, 26.0)
+                    .padding(.top, 20.0)
+                Divider()
+                    .frame(minHeight: 3.0)
+                    .overlay(.pink)
                 
                 Button("Send post") {
                     uploadImage()
                     dismiss()
                 }
+                .padding(.top, 20.0)
                 .buttonStyle(.borderedProminent)
-                .disabled(imageData == nil)
+                .disabled(imageData == nil || caption == "")
             }
             .padding(.horizontal, 20.0)
             .navigationTitle("New Post")

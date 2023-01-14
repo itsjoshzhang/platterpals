@@ -5,6 +5,7 @@ struct FeedProfile: View {
     @State var showAction = false
     @State var showNewChat = false
     @State var showFollow = false
+    @State var showUpdates = false
     
     var user: String
     @Environment(\.dismiss) var dismiss
@@ -21,20 +22,23 @@ struct FeedProfile: View {
                             .scaledToFit()
                             .clipShape(Circle())
                             .frame(width: 80.0)
-
+                        
                         Text(dm.fetchData(name: user, route: false))
                     }
                     .padding(.horizontal, 20.0)
                     
                     HStack(spacing: 16.0) {
-                        Toggle("Follow", isOn: $showFollow)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10.0)
-                                    .stroke(lineWidth: 1.0)
-                            )
-                            .toggleStyle(.button)
-                            .foregroundColor(.pink)
-                        
+                        if showFollow {
+                            Button("Following") {
+                                showFollow = false
+                            }
+                            .buttonStyle(.bordered)
+                        } else {
+                            Button("Follow \(Image(systemName: "heart"))") {
+                                showFollow = true
+                            }
+                            .buttonStyle(.borderedProminent)
+                        }
                         Button("Notifications") {
                             showAction = true
                         }
@@ -47,8 +51,14 @@ struct FeedProfile: View {
                         .padding(.horizontal, 20.0)
                     
                     Carousel(tag: user)
-                    BigButton(text: "View recent posts",
-                              route: "posts", user: user)
+                    
+                    Image("cards")
+                        .resizable()
+                        .scaledToFit()
+                        .opacity(0.5)
+                        .onTapGesture {
+                            showUpdates = true
+                        }
                 }
             }
             .navigationTitle(user)
@@ -59,7 +69,7 @@ struct FeedProfile: View {
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Send a Chat") {
+                    Button("Send chat") {
                         showNewChat = true
                     }
                     .buttonStyle(.borderedProminent)
@@ -67,6 +77,11 @@ struct FeedProfile: View {
             }
             .fullScreenCover(isPresented: $showNewChat) {
                 ChatDM(user: user)
+                    .environmentObject(dm)
+            }
+            .fullScreenCover(isPresented: $showUpdates) {
+                Updates(name: user)
+                    .environmentObject(dm)
             }
             .actionSheet(isPresented: $showAction) {
                 ActionSheet(title: Text("Notifications"),
@@ -79,7 +94,7 @@ struct FeedProfile: View {
 
 struct FeedProfile_Previews: PreviewProvider {
 	static var previews: some View {
-        FeedProfile(user: "Albert Y")
+        FeedProfile(user: "Josh Z")
             .environmentObject(DataManager())
 	}
 }

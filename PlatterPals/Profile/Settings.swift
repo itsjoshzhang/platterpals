@@ -9,16 +9,7 @@ struct Settings: View {
     @EnvironmentObject var dm: DataManager
     @Environment(\.dismiss) var dismiss
 	
-    var body: some View {
-        if loggedOut {
-            withAnimation {
-                Signup()
-            }
-        } else {
-            content
-        }
-    }
-	var content: some View {
+	var body: some View {
         NavigationStack {
             List(items) { item in
                 NavigationLink(value: item) {
@@ -39,13 +30,16 @@ struct Settings: View {
                     Button {
                         showAdmin = true
                     } label: {
-                        Image(systemName: "lock")
+                        Image(systemName: "lock.shield")
                     }
                 }
             }
             .fullScreenCover(isPresented: $showAdmin) {
                 Admin()
                     .environmentObject(dm)
+            }
+            .fullScreenCover(isPresented: $loggedOut) {
+                Splash()
             }
             Button("Log out") {
                 try? Auth.auth().signOut()
@@ -67,13 +61,14 @@ extension Settings {
                 
                 Image(systemName: image)
                     .resizable()
+                    .scaledToFit()
                     .frame(width: 24.0, height: 24.0)
                     .padding(16.0)
                     .background(Color.accentColor)
                     .foregroundColor(.white)
                     .clipShape(Circle())
                 
-                VStack(alignment: .leading, spacing: 4.0) {
+                VStack(alignment: .leading, spacing: 5.0) {
                     Text(headline)
                         .font(.headline)
                     Text(caption)
