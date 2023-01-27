@@ -2,6 +2,7 @@ import SwiftUI
 
 struct Post: View {
     
+    var id: String
     var user: String
     var image: UIImage
     var text: String
@@ -14,6 +15,7 @@ struct Post: View {
     @State var showProfile = false
     @State var hidePost = false
     
+    @State var showAlert = false
     @EnvironmentObject var dm: DataManager
     var like = Image(systemName: "heart.fill")
     var dislike = Image(systemName: "heart.slash.fill")
@@ -23,12 +25,14 @@ struct Post: View {
             Button("Unhide profile") {
                 withAnimation {
                     hidePost = false }}
-        } else { content }
+        } else {
+            content
+        }
     }
     var content: some View {
         VStack(alignment: .leading, spacing: 16.0) {
             Button {
-                if (user != "PlatterPals") {
+                if user != "PlatterPals" {
                     showProfile = true
                 }
             } label: {
@@ -40,15 +44,28 @@ struct Post: View {
                         .frame(width: 40.0)
                     Text(user)
                         .font(.headline)
+                    Spacer()
+                    
+                    if user == dm.user.name {
+                        Button("...") {
+                            showAlert = true
+                        }
+                        .alert("Delete update?", isPresented: $showAlert) {
+                            Button("Delete", role: .destructive) {
+                                dm.deleteData(id: id)
+                            }
+                            Button("Cancel", role: .cancel) {}
+                        }
+                    }
                 }
                 .padding(.horizontal, 16.0)
             }
             ZStack {
                 Image(uiImage: image)
                     .resizable()
-                    .scaledToFill()
-                    
-                    .frame(height: UIScreen.main.bounds.width)
+                    .scaledToFit()
+                    .frame(width: UIScreen.main.bounds.width,
+                           height: UIScreen.main.bounds.width)
                     .clipped()
                     .gesture(
                         DragGesture(minimumDistance: 50.0)

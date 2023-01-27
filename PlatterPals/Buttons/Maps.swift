@@ -78,7 +78,7 @@ var markers = [
     Marker(user: "Josh Z", image: "pfp1", coordinate: CLLocationCoordinate2D(latitude: 37.867, longitude: -122.260)),
     Marker(user: "Saira G", image: "pfp2", coordinate: CLLocationCoordinate2D(latitude: 37.868, longitude: -122.255)),
     Marker(user: "Albert Y", image: "pfp3", coordinate: CLLocationCoordinate2D(latitude: 37.874, longitude: -122.257)),
-    Marker(user: "Roma N", image: "pfp4", coordinate: CLLocationCoordinate2D(latitude: 37.869, longitude: -122.265))]
+    Marker(user: "Anka X", image: "pfp4", coordinate: CLLocationCoordinate2D(latitude: 37.869, longitude: -122.265))]
 
 
 class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {

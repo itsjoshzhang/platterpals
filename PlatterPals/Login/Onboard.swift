@@ -22,22 +22,17 @@ struct Onboard: View {
         }
         .tabViewStyle(.page(indexDisplayMode: .always))
         .indexViewStyle(.page(backgroundDisplayMode: .always))
-        .onAppear {
-            Auth.auth().addStateDidChangeListener { auth, user in
-                withAnimation {
-                    if (dm.user.name != "Log Out") {
-                        dismiss()
-                    }}}}}}
-
-
+    }
+}
 struct OnboardView: View {
     
     var image: String
     var title: String
     var caption: String
-    
     @State var showButton = false
     @State var showFeed = false
+    
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var dm: DataManager
     
     var body: some View {
@@ -58,16 +53,12 @@ struct OnboardView: View {
             
             if showButton {
                 Button("Get started") {
-                    showFeed = true
+                    dismiss()
                 }
                 .buttonStyle(.borderedProminent)
             }
         }
         .padding(.horizontal, 16.0)
-        .fullScreenCover(isPresented: $showFeed) {
-            Signup()
-                .environmentObject(dm)
-        }
     }
 }
 struct Onboard_Previews: PreviewProvider {

@@ -14,7 +14,7 @@ struct Login: View {
     @EnvironmentObject var dm: DataManager
     
     var body: some View {
-        if (dm.user.name != "Log Out") {
+        if dm.user.name != "Log Out" {
             MyTabView()
                 .environmentObject(dm)
         } else {
@@ -59,19 +59,12 @@ struct Login: View {
             }
             .padding(20.0)
             .navigationTitle("Welcome Back!")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-            }
             .fullScreenCover(isPresented: $showReset) {
                 Forgot()
                     .environmentObject(dm)
             }
             .fullScreenCover(isPresented: $showSignup) {
-                Onboard()
+                Signup()
                     .environmentObject(dm)
             }
         }

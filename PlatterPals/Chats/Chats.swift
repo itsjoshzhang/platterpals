@@ -4,7 +4,8 @@ struct Chats: View {
     
     @State var showNewChat = false
     @State var showAction = false
-    @State var items = ChatsItem.data
+    @State var items = [ChatsItem]()
+    @State var names = [String]()
     @EnvironmentObject var dm: DataManager
     
     var body: some View {
@@ -17,7 +18,7 @@ struct Chats: View {
                         .padding(.horizontal, 20.0)
                     List {
                         ForEach(items) { item in
-                            if (item.user != dm.user.name) {
+                            if item.user != dm.user.name {
                                 NavigationLink(value: item) {
                                     
                                     Row(user: item.user, caption: item.caption,
@@ -63,14 +64,22 @@ struct Chats: View {
             }
             .actionSheet(isPresented: $showAction) {
                 ActionSheet(title: Text("Edit chats"),
-                    buttons: [
-                        .destructive(Text("Delete all chats")),
-                        .default(Text("Mark all as read")),
-                        .cancel(Text("Cancel"))])
+                            buttons: [
+                                .destructive(Text("Delete all chats")),
+                                .default(Text("Mark all as read")),
+                                .cancel(Text("Cancel"))])
             }
-        }
-    }
-}
+            .onAppear {
+                for user in dm.userArray {
+                    let time = Int.random(in: 1 ..< 59)
+                    let user = ChatsItem(caption: "Active \(time) min ago", user: user.name)
+                    
+                    if !names.contains(user.user) {
+                        items.append(user)
+                        names.append(user.user)
+                    }}}}}}
+
+
 extension Chats {
     struct Row: View {
         

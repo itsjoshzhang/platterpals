@@ -5,6 +5,7 @@ import FirebaseStorage
 struct Updates: View {
     
     @State var name: String
+    @State var ids = [String]()
     @State var paths = [String]()
     @State var users = [String]()
     @State var images = [UIImage]()
@@ -19,7 +20,7 @@ struct Updates: View {
                 LazyVStack(spacing: 16.0) {
                     Spacer()
                     ForEach(0 ..< images.count, id: \.self) { i in
-                        Post(user: users[i], image: images[i], text: texts[i])
+                        Post(id: ids[i], user: users[i], image: images[i], text: texts[i])
                             .environmentObject(dm)
                     }
                     Text("No more updates")
@@ -59,6 +60,7 @@ struct Updates: View {
                                 users.append(user)
                                 images.append(image)
                                 texts.append(text)
+                                ids.append(document.documentID)
                             }}}}}}}}
 
 

@@ -36,7 +36,7 @@ struct Settings: View {
             .onAppear {
                 Auth.auth().addStateDidChangeListener { auth, user in
                     withAnimation {
-                        loggedOut = (user == nil)
+                        loggedOut = user == nil
                     }
                 }
             }

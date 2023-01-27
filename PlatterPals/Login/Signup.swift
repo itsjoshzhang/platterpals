@@ -10,7 +10,9 @@ struct Signup: View {
     
     @State var alertText = ""
     @State var showAlert = false
+    @State var showOnboard = false
     @Environment(\.dismiss) var dismiss
+    
     @EnvironmentObject var dm: DataManager
     
     var body: some View {
@@ -49,9 +51,12 @@ struct Signup: View {
                     .frame(minHeight: 3.0)
                     .overlay(.pink)
                 
+                Button("How do I use PlatterPals?") {
+                    showOnboard = true
+                }
+                .buttonStyle(.borderedProminent)
                 Button("Sign up") {
                     signupAuthentication()
-                    dismiss()
                 }
                 .disabled(email == "" || password == "" || name == "")
                 .buttonStyle(.borderedProminent)
@@ -67,9 +72,15 @@ struct Signup: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         dismiss()
-                    }}}}}
-    
-    
+                    }
+                }
+            }
+            .fullScreenCover(isPresented: $showOnboard) {
+                Onboard()
+                    .environmentObject(dm)
+            }
+        }
+    }
     func signupAuthentication() {
         Auth.auth().createUser(withEmail: email,
                                password: password) { result, error in

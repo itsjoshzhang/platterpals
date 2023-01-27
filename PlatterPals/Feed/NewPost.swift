@@ -70,13 +70,14 @@ struct NewPost: View {
     
     
     func uploadImage() {
-        let id = dm.user.name
-        let fileRef = Storage.storage().reference().child("profiles/\(id)")
+        let id = UUID()
+        let user = dm.user.name
+        let fileRef = Storage.storage().reference().child("profiles/\(user) \(id)")
         fileRef.putData(imageData!, metadata: nil)
         
         let db = Firestore.firestore()
-        let ref = db.collection("profiles").document(id)
-        ref.setData(["user": id, "url": "profiles/\(id)", "text": caption])
+        let ref = db.collection("profiles").document("\(user) \(id)")
+        ref.setData(["user": user, "url": "profiles/\(user) \(id)", "text": caption])
     }
 }
 

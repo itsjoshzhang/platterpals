@@ -7,7 +7,7 @@ struct Suggests: View {
     @State var friend = "All"
     @State var showLoading = false
     
-    var friends = ["All", "Josh Z", "Saira G", "Albert Y", "Roma N"]
+    var friends = ["All"]
     var cuisines = ["Any", "American", "Brazilian", "Caribbean", "Chinese", "Ethiopian", "French", "German", "Indian", "Italian", "Japanese", "Korean", "Mexican", "Middle Eastern", "Russian", "South American", "Thai", "Vietnamese"]
     
     @Environment(\.dismiss) var dismiss
@@ -42,8 +42,8 @@ struct Suggests: View {
                         .textCase(.none)){
                             
                             Picker("Friend's name", selection: $friend) {
-                                ForEach(friends, id: \.self) {
-                                    Text($0)
+                                ForEach(dm.userArray, id: \.name) { user in
+                                    Text(user.name)
                                 }
                             }
                         }

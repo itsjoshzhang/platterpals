@@ -2,8 +2,9 @@ import SwiftUI
 import Firebase
 
 struct User: Identifiable {
-    var id = "email"
+    
     var name = "Log Out"
+    var id = "email"
     var bio = "Log out and try again."
     var image = "logo"
 }
@@ -28,7 +29,7 @@ class DataManager: ObservableObject {
                 let bio = data["bio"] as? String ?? ""
                 let image = data["image"] as? String ?? ""
                 
-                let user = User(id: id, name: name, bio: bio, image: image)
+                let user = User(name: name, id: id, bio: bio, image: image)
                 self.userArray.append(user)
                 if paramID == id {
                     let fetch = self.fetchData(name: name, route: true)
@@ -44,9 +45,11 @@ class DataManager: ObservableObject {
         ref.setData(["id": id, "name": name, "bio": bio, "image": image])
         setUser(id, name, bio, image)
     }
+    
     func setUser(_ id: String, _ name: String, _ bio: String, _ image: String) {
-        self.user = User(id: id, name: name, bio: bio, image: image)
+        self.user = User(name: name, id: id, bio: bio, image: image)
     }
+    
     func fetchData(name: String, route: Bool) -> String {
         for user in userArray {
             if name == user.name {
@@ -54,6 +57,12 @@ class DataManager: ObservableObject {
             }
         }
         return "logo"
+    }
+    
+    func deleteData(id: String) {
+        let db = Firestore.firestore()
+        let ref = db.collection("profiles").document(id)
+        ref.delete()
     }
 }
 struct Admin: View {

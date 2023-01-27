@@ -41,7 +41,7 @@ struct Profile: View {
         Text(dm.user.bio)
         if editInfo {
             VStack {
-                TextField("Reset your bio", text: $bioText)
+                TextField("Write a new bio", text: $bioText)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
             }}}}
     .padding(.horizontal, 20.0)

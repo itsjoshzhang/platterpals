@@ -27,12 +27,8 @@ struct MyTabView: View {
     }
 }
 extension ChatsItem {
-    static let data = [
-        ChatsItem(caption: "Active now", user: "Josh Z"),
-        ChatsItem(caption: "Active 1 min ago", user: "Saira G"),
-        ChatsItem(caption: "Active 3 min ago", user: "Albert Y"),
-        ChatsItem(caption: "Active 13 min ago", user: "Roma N"),
-    ]
+    static var data = [ChatsItem]()
+
 }
 struct ChatsItem: Identifiable, Hashable {
     let id = UUID()
@@ -71,7 +67,7 @@ struct Carousel: View {
             Card(headline: "Polish Gnocchi - Little Italy SF",
                  caption: "Learned it's not pronounced ganochee. Thanks Saira.",
                  image: "gnocchi")
-            .tag("Roma N")
+            .tag("Anka X")
         }
         .padding(.horizontal, 20.0)
         .tabViewStyle(.page(indexDisplayMode: .never))

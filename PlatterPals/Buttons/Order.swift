@@ -4,6 +4,7 @@ import FirebaseStorage
 
 struct Order: View {
     
+    @State var ids = [String]()
     @State var images = [UIImage]()
     @State var texts = [String]()
     @State var comment = ""
@@ -22,7 +23,7 @@ struct Order: View {
                         BigButton(text: texts[0], route: "sync")
                             .environmentObject(dm)
                         
-                        Post(user: "PlatterPals", image: images[0], text: "Send us feedback below:")
+                        Post(id: ids[0], user: "PlatterPals", image: images[0], text: "Send us feedback below:")
                             .environmentObject(dm)
                     }
                     Spacer()
@@ -66,6 +67,7 @@ struct Order: View {
                             if images.count == 0 {
                                 images.append(image)
                                 texts.append(text)
+                                ids.append(document.documentID)
                             }}}}}}}}
 
 

@@ -4,6 +4,7 @@ import FirebaseStorage
 
 struct Feed: View {
     
+    @State var ids = [String]()
     @State var paths = [String]()
     @State var users = [String]()
     @State var images = [UIImage]()
@@ -21,7 +22,7 @@ struct Feed: View {
                             .environmentObject(dm)
                         
                         ForEach(0 ..< images.count, id: \.self) { i in
-                            Post(user: users[i], image: images[i], text: texts[i])
+                            Post(id: ids[i], user: users[i], image: images[i], text: texts[i])
                                 .environmentObject(dm)
                         }
                         Spacer()
@@ -88,6 +89,7 @@ struct Feed: View {
                                 images.append(image)
                                 users.append(document["user"] as! String)
                                 texts.append(document["text"] as! String)
+                                ids.append(document.documentID)
                             }}}}}}}}
 
 
