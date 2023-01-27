@@ -16,6 +16,7 @@
 		F25ED26E296FBBA900A6C8F0 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25ED26D296FBBA900A6C8F0 /* Assets.swift */; };
 		F25ED271296FCB2900A6C8F0 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F25ED270296FCB2900A6C8F0 /* FirebaseFirestoreSwift */; };
 		F26B3F0A296F8DF600E28DBD /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26B3F09296F8DF600E28DBD /* Post.swift */; };
+		F2F494B9298313E3000E35BB /* Settings2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F494B8298313E3000E35BB /* Settings2.swift */; };
 		F2F6D8662961730000B8F4D7 /* Maps.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D8472961730000B8F4D7 /* Maps.swift */; };
 		F2F6D8682961730000B8F4D7 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84A2961730000B8F4D7 /* Buttons.swift */; };
 		F2F6D8692961730000B8F4D7 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84B2961730000B8F4D7 /* Order.swift */; };
@@ -46,6 +47,7 @@
 		F254352A2972301300E0F0E9 /* Sync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sync.swift; sourceTree = "<group>"; };
 		F25ED26D296FBBA900A6C8F0 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		F26B3F09296F8DF600E28DBD /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		F2F494B8298313E3000E35BB /* Settings2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings2.swift; sourceTree = "<group>"; };
 		F2F6D834296172B100B8F4D7 /* PlatterPals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlatterPals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2F6D8472961730000B8F4D7 /* Maps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Maps.swift; sourceTree = "<group>"; };
 		F2F6D84A2961730000B8F4D7 /* Buttons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				F2F6D8562961730000B8F4D7 /* AppInit.swift */,
 				F2F6D8542961730000B8F4D7 /* AppData.swift */,
 				F2F6D8532961730000B8F4D7 /* Admin.swift */,
+				F254352A2972301300E0F0E9 /* Sync.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -174,8 +177,8 @@
 			children = (
 				F2F6D85A2961730000B8F4D7 /* Profile.swift */,
 				F2F6D85B2961730000B8F4D7 /* Settings.swift */,
+				F2F494B8298313E3000E35BB /* Settings2.swift */,
 				F2F6D85C2961730000B8F4D7 /* Updates.swift */,
-				F254352A2972301300E0F0E9 /* Sync.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 				F2F6D8682961730000B8F4D7 /* Buttons.swift in Sources */,
 				F2F6D87C2961730000B8F4D7 /* Signup.swift in Sources */,
 				F2F6D8742961730000B8F4D7 /* Profile.swift in Sources */,
+				F2F494B9298313E3000E35BB /* Settings2.swift in Sources */,
 				F2F6D8752961730000B8F4D7 /* Settings.swift in Sources */,
 				F26B3F0A296F8DF600E28DBD /* Post.swift in Sources */,
 				F2F6D86F2961730000B8F4D7 /* Admin.swift in Sources */,
@@ -433,7 +437,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"PlatterPals/Preview Content\"";
 				DEVELOPMENT_TEAM = 4J2HAY73X5;
 				ENABLE_PREVIEWS = YES;
@@ -445,13 +449,13 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.PlatterPals.PlatterPals;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -471,7 +475,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"PlatterPals/Preview Content\"";
 				DEVELOPMENT_TEAM = 4J2HAY73X5;
 				ENABLE_PREVIEWS = YES;
@@ -483,13 +487,13 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.PlatterPals.PlatterPals;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

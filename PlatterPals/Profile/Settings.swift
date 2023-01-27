@@ -2,12 +2,11 @@ import SwiftUI
 import Firebase
 
 struct Settings: View {
-    
+
     @State var loggedOut = false
-    @State var showAdmin = false
 	@State var items = SettingsItem.data
-    @EnvironmentObject var dm: DataManager
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var dm: DataManager
 	
 	var body: some View {
         NavigationStack {
@@ -26,22 +25,23 @@ struct Settings: View {
                         dismiss()
                     }
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("/") {
-                        showAdmin = true
-                    }
-                }
             }
-            .fullScreenCover(isPresented: $showAdmin) {
-                Admin()
+            .navigationDestination(for: SettingsItem.self) { item in
+                Settings2(anchor: item.headline)
                     .environmentObject(dm)
             }
             .fullScreenCover(isPresented: $loggedOut) {
                 Splash()
             }
+            .onAppear {
+                Auth.auth().addStateDidChangeListener { auth, user in
+                    withAnimation {
+                        loggedOut = (user == nil)
+                    }
+                }
+            }
             Button("Log out") {
                 try? Auth.auth().signOut()
-                loggedOut = true
             }
             .buttonStyle(.borderedProminent)
         }

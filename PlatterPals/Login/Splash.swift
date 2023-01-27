@@ -9,9 +9,11 @@ struct Splash: View {
     
     var body: some View {
         if showLogin {
-            Onboard()
+            Login()
                 .environmentObject(dm)
-        } else { content }
+        } else {
+            content
+        }
     }
     var content: some View {
         VStack(spacing: 16.0) {

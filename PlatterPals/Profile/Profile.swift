@@ -41,7 +41,7 @@ struct Profile: View {
         Text(dm.user.bio)
         if editInfo {
             VStack {
-                TextField("Write a new bio", text: $bioText)
+                TextField("Reset your bio", text: $bioText)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
             }}}}
     .padding(.horizontal, 20.0)
@@ -54,13 +54,13 @@ struct Profile: View {
         
         if editInfo {
             Button("Save") {
-                if (bioText != "") {
-                    dm.addUser(dm.user.id, dm.user.name, bioText, "pfp\(image)")
-                }
+                dm.addUser(dm.user.id, dm.user.name, bioText, "pfp\(image)")
                 editInfo = false;
             }
             .buttonStyle(.bordered)
-            .disabled(bioText == "")
+            Button("\(Image(systemName: "xmark.circle"))") {
+                editInfo = false;
+            }
                             } else {
                                 Button("Edit info") {
                                     editInfo = true;

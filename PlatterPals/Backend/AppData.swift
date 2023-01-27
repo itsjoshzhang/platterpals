@@ -81,11 +81,10 @@ struct Carousel: View {
 }
 extension SettingsItem {
     static let data = [
-        SettingsItem(headline: "Chat", caption: "Blocked users, notifications", imageName: "message"),
-        SettingsItem(headline: "Feed", caption: "Suggested posts, swipe history", imageName: "house"),
-        SettingsItem(headline: "Profile", caption: "Profile publicity, picture, bio", imageName: "person"),
-        SettingsItem(headline: "Privacy", caption: "Post visibility, chat requests", imageName: "lock"),
-        SettingsItem(headline: "Security", caption: "Login info, payment methods", imageName: "shield"),
+        SettingsItem(headline: "Chats", caption: "Blocked users, notifications", imageName: "message"),
+        SettingsItem(headline: "Feed", caption: "Swipe history, profile suggests", imageName: "house"),
+        SettingsItem(headline: "Profile", caption: "Profile picture, bio, publicity", imageName: "person"),
+        SettingsItem(headline: "Security", caption: "Payment methods, login info", imageName: "lock"),
         SettingsItem(headline: "Account", caption: "Link to DoorDash, deletion", imageName: "key"),
     ]
 }

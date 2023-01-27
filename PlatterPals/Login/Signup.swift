@@ -7,12 +7,10 @@ struct Signup: View {
     @State var password = ""
     @State var name = ""
     @State var image = 5
-
-    @State var loggedIn = false
+    
     @State var alertText = ""
     @State var showAlert = false
-    @State var hasAccount = false
-    
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var dm: DataManager
     
     var body: some View {
@@ -51,11 +49,9 @@ struct Signup: View {
                     .frame(minHeight: 3.0)
                     .overlay(.pink)
                 
-                Button("Have an account? Log in") {
-                    hasAccount = true
-                }
                 Button("Sign up") {
                     signupAuthentication()
+                    dismiss()
                 }
                 .disabled(email == "" || password == "" || name == "")
                 .buttonStyle(.borderedProminent)
@@ -67,22 +63,13 @@ struct Signup: View {
             }
             .padding(20.0)
             .navigationTitle("Let's Get Started!")
-            
-            .fullScreenCover(isPresented: $hasAccount) {
-                Login()
-                    .environmentObject(dm)
-            }
-            .fullScreenCover(isPresented: $loggedIn) {
-                MyTabView()
-                    .environmentObject(dm)
-            }
-            .onAppear {
-                Auth.auth().addStateDidChangeListener { auth, user in
-                    loggedIn = user != nil
-                }
-            }
-        }
-    }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }}}}}
+    
+    
     func signupAuthentication() {
         Auth.auth().createUser(withEmail: email,
                                password: password) { result, error in

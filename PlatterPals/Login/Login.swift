@@ -5,16 +5,23 @@ struct Login: View {
     
     @State var email = ""
     @State var password = ""
-    @State var loggedIn = false
-    
     @State var showReset = false
+    @State var showSignup = false
+    
     @State var alertText = ""
     @State var showAlert = false
-    
-    @EnvironmentObject var dm: DataManager
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
+        if (dm.user.name != "Log Out") {
+            MyTabView()
+                .environmentObject(dm)
+        } else {
+            content
+        }
+    }
+    var content: some View {
         NavigationStack {
             VStack(spacing: 16.0) {
                 Image("logo")
@@ -33,8 +40,11 @@ struct Login: View {
                     .frame(minHeight: 3.0)
                     .overlay(.pink)
                 
-                Button("Forgot your password?") {
+                Button("Forgot password?") {
                     showReset = true
+                }
+                Button("New to PlatterPals?") {
+                    showSignup = true
                 }
                 Button("Log in") {
                     loginAuthentication()
@@ -58,15 +68,11 @@ struct Login: View {
             }
             .fullScreenCover(isPresented: $showReset) {
                 Forgot()
-            }
-            .fullScreenCover(isPresented: $loggedIn) {
-                MyTabView()
                     .environmentObject(dm)
             }
-            .onAppear {
-                Auth.auth().addStateDidChangeListener { auth, user in
-                    loggedIn = user != nil
-                }
+            .fullScreenCover(isPresented: $showSignup) {
+                Onboard()
+                    .environmentObject(dm)
             }
         }
     }
@@ -88,6 +94,7 @@ struct Forgot: View {
     @State var alertText = ""
     @State var showAlert = false
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var dm: DataManager
     
     var body: some View {
         NavigationStack {

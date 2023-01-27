@@ -3,16 +3,10 @@ import Firebase
 
 struct Onboard: View {
     
-    @State var loggedIn = false
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var dm: DataManager
     
     var body: some View {
-        if loggedIn {
-            MyTabView()
-                .environmentObject(dm)
-        } else { content }
-    }
-    var content: some View {
         TabView {
             OnboardView(image: "screen1",
                         title: "Welcome to PlatterPals!",
@@ -30,11 +24,12 @@ struct Onboard: View {
         .indexViewStyle(.page(backgroundDisplayMode: .always))
         .onAppear {
             Auth.auth().addStateDidChangeListener { auth, user in
-                loggedIn = user != nil
-            }
-        }
-    }
-}
+                withAnimation {
+                    if (dm.user.name != "Log Out") {
+                        dismiss()
+                    }}}}}}
+
+
 struct OnboardView: View {
     
     var image: String
@@ -42,7 +37,7 @@ struct OnboardView: View {
     var caption: String
     
     @State var showButton = false
-    @State var showLogin = false
+    @State var showFeed = false
     @EnvironmentObject var dm: DataManager
     
     var body: some View {
@@ -63,13 +58,13 @@ struct OnboardView: View {
             
             if showButton {
                 Button("Get started") {
-                    showLogin = true
+                    showFeed = true
                 }
                 .buttonStyle(.borderedProminent)
             }
         }
         .padding(.horizontal, 16.0)
-        .fullScreenCover(isPresented: $showLogin) {
+        .fullScreenCover(isPresented: $showFeed) {
             Signup()
                 .environmentObject(dm)
         }

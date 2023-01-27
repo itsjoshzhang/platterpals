@@ -2,10 +2,10 @@ import SwiftUI
 import Firebase
 
 struct User: Identifiable {
-    var id = "zhangjoshua360@gmail.com"
-    var name = "Josh Z"
-    var bio = "Log out."
-    var image = "pfp1"
+    var id = "email"
+    var name = "Log Out"
+    var bio = "Log out and try again."
+    var image = "logo"
 }
 class DataManager: ObservableObject {
     
@@ -97,10 +97,6 @@ struct Admin: View {
                 }
             }
             Form {
-                Button("Add user") {
-                    dm.addUser(id, name, "", image)
-                }
-                .buttonStyle(.bordered)
                 TextField("Email", text: $id)
                 TextField("Name", text: $name)
                 
@@ -108,6 +104,9 @@ struct Admin: View {
                     ForEach(["pfp1", "pfp2", "pfp3", "pfp4", "pfp5"], id: \.self) {
                         Text($0)
                     }
+                }
+                Button("Add user") {
+                    dm.addUser(id, name, "", image)
                 }
             }
             .navigationTitle("Admin")
