@@ -121,7 +121,7 @@ struct Admin: View {
             .navigationTitle("Admin")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("\(Image(systemName: "chevron.backward")) Back") {
+                    Button("Back") {
                         dismiss()
                     }}}}}}
 

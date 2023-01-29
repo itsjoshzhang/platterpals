@@ -64,10 +64,10 @@ struct Chats: View {
             }
             .actionSheet(isPresented: $showAction) {
                 ActionSheet(title: Text("Edit chats"),
-                            buttons: [
-                                .destructive(Text("Delete all chats")),
-                                .default(Text("Mark all as read")),
-                                .cancel(Text("Cancel"))])
+                    buttons: [
+                        .destructive(Text("Delete all chats")),
+                        .default(Text("Mark all as read")),
+                        .cancel(Text("Cancel"))])
             }
             .onAppear {
                 for user in dm.userArray {

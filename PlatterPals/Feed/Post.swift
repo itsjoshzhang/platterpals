@@ -15,7 +15,7 @@ struct Post: View {
     @State var showProfile = false
     @State var hidePost = false
     
-    @State var showAlert = false
+    @State var showAction = false
     @EnvironmentObject var dm: DataManager
     var like = Image(systemName: "heart.fill")
     var dislike = Image(systemName: "heart.slash.fill")
@@ -45,17 +45,22 @@ struct Post: View {
                     Text(user)
                         .font(.headline)
                     Spacer()
-                    
-                    if user == dm.user.name {
-                        Button("...") {
-                            showAlert = true
-                        }
-                        .alert("Delete update?", isPresented: $showAlert) {
-                            Button("Delete", role: .destructive) {
+                    Button("...") {
+                        showAction = true
+                    }
+                    .alert("Report / Delete content", isPresented: $showAction) {
+                        if user == dm.user.name {
+                            Button(" Delete update ", role: .destructive) {
                                 dm.deleteData(id: id)
                             }
-                            Button("Cancel", role: .cancel) {}
+                        } else {
+                            Button(" Report profile ", role: .destructive) {
+                                withAnimation {
+                                    hidePost = true
+                                }
+                            }
                         }
+                        Button("Cancel", role: .cancel) {}
                     }
                 }
                 .padding(.horizontal, 16.0)

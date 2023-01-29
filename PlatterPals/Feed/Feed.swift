@@ -26,7 +26,7 @@ struct Feed: View {
                                 .environmentObject(dm)
                         }
                         Spacer()
-                        Text("No more updates")
+                        Text("No more profiles")
                             .foregroundColor(.secondary)
                         Spacer()
                         Spacer()

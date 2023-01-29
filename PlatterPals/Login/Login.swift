@@ -61,7 +61,6 @@ struct Login: View {
             .navigationTitle("Welcome Back!")
             .fullScreenCover(isPresented: $showReset) {
                 Forgot()
-                    .environmentObject(dm)
             }
             .fullScreenCover(isPresented: $showSignup) {
                 Signup()
@@ -87,7 +86,6 @@ struct Forgot: View {
     @State var alertText = ""
     @State var showAlert = false
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var dm: DataManager
     
     var body: some View {
         NavigationStack {

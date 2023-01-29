@@ -58,7 +58,7 @@ struct Maps: View {
             .navigationTitle("People Near Me")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("\(Image(systemName: "chevron.backward")) Back") {
+                    Button("Back") {
                         dismiss()
                     }}}}}}
 

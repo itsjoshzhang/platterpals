@@ -95,7 +95,6 @@ struct Profile: View {
                 }
                 .fullScreenCover(isPresented: $showSync) {
                     Sync()
-                        .environmentObject(dm)
                 }
                 .fullScreenCover(isPresented: $showSettings) {
                     Settings()

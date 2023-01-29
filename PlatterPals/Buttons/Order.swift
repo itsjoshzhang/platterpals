@@ -36,7 +36,7 @@ struct Order: View {
             .navigationTitle("Your Order:")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("\(Image(systemName: "chevron.backward")) Back") {
+                    Button("Back") {
                         dismiss()
                     }
                 }
@@ -46,7 +46,6 @@ struct Order: View {
             }
             .fullScreenCover(isPresented: $showSync) {
                 Sync()
-                    .environmentObject(dm)
             }
         }
     }

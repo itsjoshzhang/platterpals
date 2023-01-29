@@ -32,7 +32,6 @@ struct BigButton: View {
                     .environmentObject(dm)
             } else {
                 Sync()
-                    .environmentObject(dm)
             }
         }
     }

@@ -4,7 +4,6 @@ struct Sync: View {
     
     @State var email = ""
     @State var password = ""
-    @EnvironmentObject var dm: DataManager
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -49,6 +48,5 @@ struct Sync: View {
 struct Sync_Previews: PreviewProvider {
     static var previews: some View {
         Sync()
-            .environmentObject(DataManager())
     }
 }

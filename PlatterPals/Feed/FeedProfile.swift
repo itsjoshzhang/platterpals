@@ -63,7 +63,7 @@ struct FeedProfile: View {
             .navigationTitle(user)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("\(Image(systemName: "chevron.backward")) Back") {
+                    Button("Back") {
                         dismiss()
                     }
                 }
@@ -85,8 +85,8 @@ struct FeedProfile: View {
             .actionSheet(isPresented: $showAction) {
                 ActionSheet(title: Text("Notifications"),
                     buttons: [
-                    .destructive(Text("Don't show their posts")),
-                    .default(Text("Don't show them my posts")),
+                    .destructive(Text("Block this user")),
+                    .default(Text("Hide my profile")),
                     .cancel(Text("Cancel"))]
                 )}}}}
 

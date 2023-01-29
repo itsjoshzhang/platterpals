@@ -24,7 +24,7 @@ struct TitleBar: View {
                         VStack(alignment: .leading) {
                             Text(user)
                                 .font(.title).bold()
-                            Text("Active now")
+                            Text("Active today")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }

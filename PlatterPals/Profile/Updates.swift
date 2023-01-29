@@ -30,7 +30,7 @@ struct Updates: View {
             .navigationTitle("\(name)  -  Profile")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("\(Image(systemName: "chevron.backward")) Back") {
+                    Button("Back") {
                         dismiss()
                     }
                 }

@@ -11,6 +11,8 @@ struct Settings2: View {
     @State var showSync = false
     @State var showDelete = false
     @State var showAdmin = false
+    @State var showTerms = false
+    
     @EnvironmentObject var dm: DataManager
     
     var body: some View {
@@ -116,6 +118,18 @@ struct Settings2: View {
                             .buttonStyle(.bordered)
                         }
                     }
+                    Group {
+                        Text("Terms")
+                            .font(.headline)
+                            .padding(.top, 20.0)
+                            .id("Terms")
+                        Divider()
+                            .frame(minHeight: 3.0)
+                            .overlay(.pink)
+                        Button("Terms and EULA") {
+                            showTerms = true
+                        }
+                    }
                     Rectangle()
                         .fill(.white)
                         .frame(height: UIScreen.main.bounds.height)
@@ -127,15 +141,16 @@ struct Settings2: View {
             .padding(.horizontal, 20.0)
             .fullScreenCover(isPresented: $showReset) {
                 Forgot()
-                    .environmentObject(dm)
             }
             .fullScreenCover(isPresented: $showSync) {
                 Sync()
-                    .environmentObject(dm)
             }
             .fullScreenCover(isPresented: $showAdmin) {
                 Admin()
                     .environmentObject(dm)
+            }
+            .fullScreenCover(isPresented: $showTerms) {
+                Terms()
             }
             .alert(isPresented: $showDelete) {
                 Alert(title: Text("Delete account"),
