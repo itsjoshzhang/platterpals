@@ -1,4 +1,4 @@
-// TODO: refactor lines 50 -> end
+// file checked
 
 import SwiftUI
 
@@ -25,14 +25,6 @@ struct Profile: Identifiable {
     var likes: Int
 }
 
-struct Setting: Identifiable {
-    var id: String
-    var notifs: Bool
-    var emails: Bool
-    var privacy: Bool
-    var location: Bool
-}
-
 struct Message: Identifiable {
     var id: String
     var text: String
@@ -41,12 +33,20 @@ struct Message: Identifiable {
     var time: Date
 }
 
-struct OrderItem: Identifiable {
+struct AIOrder: Identifiable {
     var id: String
-    var food: String
+    var order: String
     var location: String
     var rating: Int
     var time: Date
+}
+
+struct Setting: Identifiable {
+    var id: String = ""
+    var notifs = true
+    var emails = true
+    var privacy = true
+    var location = true
 }
 
 extension ChatsItem {
@@ -78,7 +78,7 @@ extension SettingsItem {
     ]
 }
 
-struct SettingsItem: Identifiable, Hashable {
+struct SettingsItem: Identifiable {
     let id = UUID()
     let headline: String
     let caption: String

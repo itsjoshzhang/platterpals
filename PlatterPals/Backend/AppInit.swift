@@ -31,13 +31,13 @@ struct MyTabView: View {
                     Text("Chats")
                 }
                 .tag(1)
-            Feed()
+            Home()
                 .tabItem {
                     Image(systemName: "house")
                     Text("Home")
                 }
                 .tag(2)
-            SelfPage()
+            SelfProf()
                 .tabItem {
                     Image(systemName: "person")
                     Text("Profile")
@@ -47,7 +47,6 @@ struct MyTabView: View {
         .environmentObject(DM)
     }
 }
-
 
 struct AppInit_Previews: PreviewProvider {
     static var previews: some View {

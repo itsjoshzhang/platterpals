@@ -1,16 +1,16 @@
-/* TODO: fix TODOs
-
+/* file checked
+ 
 initUser(id: String) -> changes {DM}
     -* thisUser
  
-user() || data() || prof() -> nil
+user() || data() || prof() ->
     -> User || UserData || Profile
 
 initVars() -> changes {DM}
     -* userList && userData && profiles
 
 makeUser() -> changes {FS}
-    -* userList && userData && profiles && settings
+    -> call to edit....()
 
 edit....() -> changes {FS}
     -* whatever {....} is
@@ -22,12 +22,19 @@ getOrder(id: String) -> [AIOrder]
 
 getSetts() -> changes {DM}
     -* settings
+ 
+putImage(id, path, image) -> changes {FS}
+    -* profiles/ || avatars/
+ 
+getImage(id, path) -> UIImage
+ 
 */
 
 import SwiftUI
 import Firebase
+import FirebaseStorage
 
-// DataManager stores all firestore info
+// DataManager stores all Firestore info
 class DataManager: ObservableObject {
     
     // instance vars (storage & tracker)
@@ -41,18 +48,22 @@ class DataManager: ObservableObject {
     @Published var settings = Setting()
     
     // list of cities in menu @ {Signup}
-    var location = ["Berkeley", "Fremont", "Irvine", "Los Angeles", "Oakland",
+    var cityList = ["Berkeley", "Fremont", "Irvine", "Los Angeles", "Oakland",
         "Palo Alto", "Pleasanton", "Riverside", "San Francisco", "San Jose"]
     
-    // initUser is called ONCE @ {Login}
+    // func called ONCE @ {Login/Signup}
     func initUser(id: String) {
         
         // loop through list to check id
         for index in 0...userList.count {
             if userList[index].id == id {
+                
+        // reassign thisUser if ID match
                 thisUser = index
+                break
             }
-        }
+        }// initialize settings variable
+        getSetts()
     }
     
     // help is called by all views/files
@@ -74,9 +85,10 @@ class DataManager: ObservableObject {
         
         // 1. access firebase collection
         // 2. loop through all documents
-        // 3. access values in map {data}
+        // 3. access values = map {data}
         // 4. create object using values
         // 5. append object to each list
+        
         FS.collection("userList").getDocuments { collection, error in
             
             for document in collection!.documents {
@@ -125,6 +137,7 @@ class DataManager: ObservableObject {
                 self.profiles.append(profile)
             }
         }
+        
         // sort all, index with thisUser
         userList.sort { $0.id < $1.id }
         userData.sort { $0.id < $1.id }
@@ -134,66 +147,104 @@ class DataManager: ObservableObject {
     // makeUser is called ONCE @{Signup}
     func makeUser(id: String, name: String, image: String, city: String) {
         
-        // 1. access firebase collection
-        // 2. make new document with {id}
-        // 3. setData to document values
-        // 4. set instance var = new obj
         editUser(id: id, name: name, image: image, city: city)
-        editData(id: id, fa: [String](), fo: [String](), ch: [String](), bl: [String]())
-        editProf(id: id, name: name, image: "", text: "", likes: 0)
+        editData(id: id, fa: [String](), fo: [String](), ch: [String](),
+                 bl: [String]())
+        
+        editProf(id: id, name: name, image: "", text: "Add a bio", likes: 0)
         editSets(id: id, no: true, em: true, pr: true, lo: true)
     }
     
+    // 1. use makeUser to route edit
+    // 2. access firebase collection
+    // 3. create document using {id}
+    // 4. setData to document values
+    // 5. set instance var = new obj
+    
     // editUser is called by @{SelfProf}
     func editUser(id: String, name: String, image: String, city: String) {
-        let user = FS.collection("userList").document(id)
         
+        let user = FS.collection("userList").document(id)
         user.setData(["id": id, "name": name, "image": image, "city": city])
-        userList[thisUser] = User(id: id, name: name, image: image, city: city)
+        
+        userList.append(User(id: id, name: name, image: image, city: city))
     }
     
     // editData is called by @{SelfProf}
     func editData(id: String, fa: [String], fo: [String], ch: [String], bl: [String]) {
         let data = FS.collection("userData").document(id)
         
-        data.setData(["id": id, "favorites": fa, "following": fo, "chatting": ch, "blocked": bl])
-        userData[thisUser] = UserData(id: id, favorites: fa, following: fo, chatting: ch, blocked: bl)
+        data.setData(["id": id, "favorites": fa, "following": fo, "chatting": ch,
+                      "blocked": bl])
+        userData.append(UserData(id: id, favorites: fa, following: fo, chatting:
+                                 ch, blocked: bl))
     }
     
     // editProf is called by @{SelfProf}
     func editProf(id: String, name: String, image: String, text: String, likes: Int) {
         let profile = FS.collection("profiles").document(id)
         
-        profile.setData(["id": id, "name": name, "image": image, "text": text, "likes": likes])
-        profiles[thisUser] = Profile(id: id, name: name, image: image, text: text, likes: likes)
+        profile.setData(["id": id, "name": name, "image": image, "text": text,
+                         "likes": likes])
+        profiles.append(Profile(id: id, name: name, image: image, text: text,
+                                likes: likes))
     }
     
     // editSets is called by @{Settings}
     func editSets(id: String, no: Bool, em: Bool, pr: Bool, lo: Bool) {
         let setting = FS.collection("settings").document(id)
         
-        setting.setData(["id": id, "notifs": no, "emails": em, "privacy": pr, "location": lo])
-        settings = Setting(id: id, notifs: no, emails: em, privacy: pr, location: lo)
+        setting.setData(["id": id, "notifs": no, "emails": em, "privacy": pr,
+                         "location": lo])
+        settings = Setting(id: id, notifs: no, emails: em, privacy: pr,
+                           location: lo)
     }
     
-    // getChats is called by {Chats} page
-    func getChats(id: String) -> [Message] {
-        var messages = [Message]()
+    // sendChat is called by {ChatDM} dm
+    func sendChat(text: String, sender: String, getter: String, time: Date) {
         
-        FS.collection("settings").getDocuments { collection, error in
+        let id = UUID().uuidString
+        let message = FS.collection("messages").document(id)
+        
+        message.setData(["id": id, "text": text, "sender": sender, "getter":
+                         getter, "time": time])
+    }
+    
+    // sendOrder is called by @ {Order}
+    func sendOrder(order: String, location: String, rating: Int, time: Date) {
+        
+        let id = UUID().uuidString
+        let AIOrder = FS.collection("aiOrders").document(id)
+        
+        AIOrder.setData(["id": id, "order": order, "location": location,
+                         "rating": rating, "time": time])
+    }
+    
+    // 1. create object return array
+    // 2. access firebase collection
+    // 3. loop through all documents
+    // 4. access values = map {data}
+    // 5. if condition, add to array
+    
+    // getChats is called by {Chats} page
+    func getChats(senderID: String, getterID: String) -> [Message] {
+        
+        var messages = [Message]()
+        FS.collection("messages").getDocuments { collection, error in
             
             for document in collection!.documents {
                 let data = document.data()
-                let docID = data["id"] as! String
                 
-                if docID == id {
-                    let text   = data["text"]   as! String
-                    let sender = data["sender"] as! String
-                    let getter = data["getter"] as! String
-                    let time   = data["time"]   as! Date
+                let id     = data["id"]     as! String
+                let text   = data["text"]   as! String
+                let sender = data["sender"] as! String
+                let getter = data["getter"] as! String
+                let time   = data["time"]   as! Date
+                    
+                if (sender == senderID) && (getter == getterID) {
                     
                     messages.append(Message(id: id, text: text, sender: sender,
-                                            getter: getter, time: time))
+                                    getter: getter, time: time))
                 }
             }
         }
@@ -202,11 +253,11 @@ class DataManager: ObservableObject {
     
     // getOrder is called by Order pages
     func getOrder(id: String) -> [AIOrder] {
-        var orderLst = [AIOrder]()
+        var aiOrders = [AIOrder]()
         
-        FS.collection("settings").getDocuments { collection, error in
-            
+        FS.collection("aiOrders").getDocuments { collection, error in
             for document in collection!.documents {
+                
                 let data = document.data()
                 let docID = data["id"] as! String
                 
@@ -216,30 +267,57 @@ class DataManager: ObservableObject {
                     let rating   = data["rating"]   as! Int
                     let time     = data["time"]     as! Date
                     
-                    orderLst.append(AIOrder(id: id, order: order, location:
+                    aiOrders.append(AIOrder(id: id, order: order, location:
                                     location, rating: rating, time: time))
                 }
             }
         }
-        return orderLst
+        return aiOrders
     }
     
-    // getSetts is called by @{Settings}
+    // getSetts is called ONCE at {init}
     func getSetts() {
+        
         FS.collection("settings").getDocuments { collection, error in
-            
             for document in collection!.documents {
-                let data = document.data()
-                let docID = data["id"] as! String
                 
-                if self.user().id == docID {
+                let data = document.data()
+                let id = data["id"] as! String
+                
+                if self.user().id == id {
                     
                     let notifs   = data["notifs"]   as! Bool
                     let emails   = data["emails"]   as! Bool
                     let privacy  = data["privacy"]  as! Bool
                     let location = data["location"] as! Bool
                     
-                    self.settings = Setting(id: docID, notifs: notifs, emails:
+                    self.settings = Setting(id: id, notifs: notifs, emails:
                                     emails, privacy: privacy, location: location)
                     return
-    }}}}}
+                }
+            }
+        }
+    }
+    
+    // putImage is called by Upload page
+    func putImage(id: String, path: String, image: Data?) {
+        
+        // access FS storage at path->id
+        let SR = Storage.storage().reference().child("\(path)/\(id)")
+        SR.putData(image!, metadata: nil)
+    }
+    
+    // getImage is called by Home / Prof
+    func getImage(id: String, path: String) -> UIImage {
+        
+        // access FS storage at path->id
+        var image = UIImage()
+        let SR = Storage.storage().reference().child("\(path)/\(id)")
+        
+        // get data and make new UIImage
+        SR.getData(maxSize: 16 * 1024 * 1024) { data, error in
+            image = UIImage(data: data!)!
+        }
+        return image
+    }
+}

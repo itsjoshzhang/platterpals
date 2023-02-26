@@ -1,3 +1,5 @@
+// file checked
+
 import SwiftUI
 
 struct Admin: View {
@@ -15,26 +17,28 @@ struct Admin: View {
                 Text("This user")
                 HStack(spacing: 16) {
                     
-                    Image(DM.thisUser.image)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 40)
+                    Image(uiImage: DM.getImage(
+                        id: DM.user().id, path: "avatars"))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 40)
                     
-                    Text(DM.thisUser.name)
+                    Text(DM.user().name)
                     Spacer()
                     
-                    Text(DM.thisUser.id)
+                    Text(DM.user().id)
                         .font(.caption2)
                 }
                 Text("All users")
                 
-                ForEach(DM.userArray) { user in
+                ForEach(DM.userList) { user in
                     HStack(spacing: 16) {
                         
-                        Image(user.image)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 40)
+                        Image(uiImage: DM.getImage(
+                            id: user.id, path: "avatars"))
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40)
                         
                         Text(user.name)
                         Spacer()
@@ -49,12 +53,12 @@ struct Admin: View {
                 TextField("Name", text: $name)
                 
                 Picker("City", selection: $city) {
-                    ForEach(DM.cities, id: \.self) { city in
+                    ForEach(DM.cityList, id: \.self) { city in
                         Text(city)
                     }
                 }
                 Button("Add user") {
-                    DM.addUser(id: email, name: name, image: "logo", city: city)
+                    DM.makeUser(id: email, name: name, image: "logo", city: city)
                 }
             }
             .navigationTitle("Admin")
@@ -123,6 +127,5 @@ struct Admin_Previews: PreviewProvider {
         Admin()
             .environmentObject(DataManager())
         Sync()
-            .environmentObject(DataManager())
     }
 }
