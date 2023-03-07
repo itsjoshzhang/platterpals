@@ -40,7 +40,7 @@ class DataManager: ObservableObject {
     let FS = Firestore.firestore()
     @Published var thisUser = 0
     
-    // instance vars (trackin user info)
+    // instance vars (keeping user info)
     @Published var userList = [User]()
     @Published var userData = [UserData]()
     @Published var profiles = [Profile]()
@@ -55,16 +55,16 @@ class DataManager: ObservableObject {
     func initUser(id: String) {
         
         // loop through list to check id
-        for index in 0...userList.count {
+        for index in 0 ..< userList.count {
             if userList[index].id == id {
                 
         // reassign thisUser if ID match
                 thisUser = index
+                loggedIn = true
+                getSetts()
                 break
             }
         }
-        loggedIn = true
-        getSetts()
     }
     
     // help is called by all views/files

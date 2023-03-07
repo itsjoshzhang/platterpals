@@ -17,7 +17,7 @@ struct Login: View {
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
-        if !DM.loggedIn {
+        if DM.loggedIn {
             MyTabView()
                 .environmentObject(DM)
         } else {

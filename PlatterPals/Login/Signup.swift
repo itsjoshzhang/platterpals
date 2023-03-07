@@ -14,7 +14,7 @@ struct Signup: View {
     
     @State var showAlert = false
     @State var showTerms = false
-    @State var showOnboard = false
+    @State var showGuide = false
     @State var imageData: Data?
     @State var images = [PhotosPickerItem]()
     
@@ -22,7 +22,7 @@ struct Signup: View {
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
-        if !DM.loggedIn {
+        if DM.loggedIn {
             MyTabView()
                 .environmentObject(DM)
         } else {
@@ -36,7 +36,7 @@ struct Signup: View {
                     
                     if let data = imageData, let uiimage =
                         UIImage(data: data) {
-                    
+                        
                         Image(uiImage: uiimage)
                             .resizable()
                             .scaledToFit()
@@ -55,11 +55,11 @@ struct Signup: View {
                         Label("Select Image", systemImage: "photo")
                     }
                     .buttonStyle(.bordered)
-                    
+
                     .onChange(of: images) { _ in
                         images.first!.loadTransferable(type: Data.self) {
                             result in
-                            
+                         
                             switch result {
                             case .success(let data):
                                 imageData = data
@@ -111,10 +111,10 @@ struct Signup: View {
                         }
                     }
                     Button("How do I use PlatterPals?") {
-                        showOnboard = true
+                        showGuide = true
                     }
                     .buttonStyle(.bordered)
-                
+                    
                     Button("Sign up") {
                         signupAuth()
                     }
@@ -135,7 +135,7 @@ struct Signup: View {
                         }
                     }
                 }
-                .fullScreenCover(isPresented: $showOnboard) {
+                .fullScreenCover(isPresented: $showGuide) {
                     Guide()
                         .environmentObject(DM)
                 }
@@ -147,24 +147,18 @@ struct Signup: View {
         }
     }
     func signupAuth() {
-        for user in DM.userList {
-            
-            if user.name == name {
-                alertText = "Username is taken."
+        Auth.auth().createUser(withEmail: email,
+                               password: password) { result, error in
+            if error == nil {
+                DM.putImage(id: email, path: "avatars", image: imageData)
+                DM.makeUser(id: email, name: name, city: city)
+            } else {
+                alertText = error!.localizedDescription
                 showAlert = true
             }
         }
-        if !showAlert {
-            Auth.auth().createUser(withEmail: email,
-                                   password: password) { result, error in
-                if error == nil {
-                    DM.putImage(id: email, path: "avatars", image: imageData)
-                    DM.makeUser(id: email, name: name, city: city)
-                } else {
-                    alertText = error!.localizedDescription
-                    showAlert = true
-                }}}}}
-
+    }
+}
 
 struct Signup_Previews: PreviewProvider {
     static var previews: some View {
