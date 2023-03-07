@@ -49,6 +49,14 @@ struct Setting: Identifiable {
     var location = true
 }
 
+struct Div: View {
+    var body: some View {
+        Divider()
+            .frame(minHeight: 3)
+            .overlay(.pink)
+    }
+}
+
 extension ChatsItem {
     static var data = [ChatsItem]()
 }

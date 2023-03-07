@@ -73,41 +73,29 @@ struct Signup: View {
                             .foregroundColor(.pink)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled(true)
-                        
-                        Divider()
-                            .frame(minHeight: 3)
-                            .overlay(.pink)
+                        Div()
                         
                         SecureField("Password", text: $password)
                             .foregroundColor(.pink)
-                        
-                        Divider()
-                            .frame(minHeight: 3)
-                            .overlay(.pink)
+                        Div()
                         
                         TextField("Username", text: $name)
                             .foregroundColor(.pink)
                             .autocorrectionDisabled(true)
-                        
-                        Divider()
-                            .frame(minHeight: 3)
-                            .overlay(.pink)
+                        Div()
                         
                         Picker("Location", selection: $city) {
                             ForEach(DM.cityList) {
                                 Text($0)
                             }
                         }
-                        Divider()
-                            .frame(minHeight: 3)
-                            .overlay(.pink)
-                    }
-                    HStack {
-                        Text("I agree to the ")
-                            .foregroundColor(.secondary)
-                        
-                        Button("terms and EULA") {
-                            showTerms = true
+                        HStack {
+                            Text("I agree to the ")
+                                .foregroundColor(.secondary)
+                            
+                            Button("terms and EULA") {
+                                showTerms = true
+                            }
                         }
                     }
                     Button("How do I use PlatterPals?") {

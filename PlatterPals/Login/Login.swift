@@ -33,17 +33,11 @@ struct Login: View {
                     .foregroundColor(.pink)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled(true)
-                
-                Divider()
-                    .frame(minHeight: 3)
-                    .overlay(.pink)
+                Div()
                 
                 SecureField("Password", text: $password)
                     .foregroundColor(.pink)
-                
-                Divider()
-                    .frame(minHeight: 3)
-                    .overlay(.pink)
+                Div()
                 
                 Button("Reset password") {
                     showReset = true
@@ -107,11 +101,8 @@ struct Reset: View {
                     .foregroundColor(.pink)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled(true)
+                Div()
                 
-                Divider()
-                    .frame(minHeight: 3)
-                    .overlay(.pink)
-
                 Button("Send reset link") {
                     resetPass()
                 }

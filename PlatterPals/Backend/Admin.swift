@@ -25,7 +25,6 @@ struct Admin: View {
                     
                     Text(DM.user().name)
                     Spacer()
-                    
                     Text(DM.user().id)
                         .font(.caption2)
                 }
@@ -42,7 +41,6 @@ struct Admin: View {
                         
                         Text(user.name)
                         Spacer()
-
                         Text(user.id)
                             .font(.caption2)
                     }
@@ -68,6 +66,7 @@ struct Admin: View {
                         dismiss()
                     }}}}}}
 
+
 struct Sync: View {
     
     @State var email = ""
@@ -89,17 +88,11 @@ struct Sync: View {
                     .foregroundColor(.pink)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled(true)
-                
-                Divider()
-                    .frame(height: 3)
-                    .overlay(.pink)
+                Div()
                 
                 SecureField("Password", text: $password)
                     .foregroundColor(.pink)
-                
-                Divider()
-                    .frame(height: 3)
-                    .overlay(.pink)
+                Div()
                 
                 Button("Open in browser") {
                     openURL(URL(string: "https://www.doordash.com")!)
