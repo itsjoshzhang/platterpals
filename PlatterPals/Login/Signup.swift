@@ -1,4 +1,6 @@
 // File: checked
+// TODO: keep user logged in after exiting
+// TODO: test signup without image upload
 
 import SwiftUI
 import PhotosUI
@@ -6,11 +8,11 @@ import Firebase
 
 struct Signup: View {
     
-    @State var email = ""
     @State var name = ""
-    @State var city = "Berkeley"
+    @State var email = ""
     @State var password = ""
     @State var alertText = ""
+    @State var city = "Berkeley"
     
     @State var showAlert = false
     @State var showTerms = false
@@ -85,7 +87,7 @@ struct Signup: View {
                         Div()
                         
                         Picker("Location", selection: $city) {
-                            ForEach(DM.cityList) {
+                            ForEach(DM.cityList, id: \.self) {
                                 Text($0)
                             }
                         }
@@ -134,6 +136,7 @@ struct Signup: View {
             }
         }
     }
+    
     func signupAuth() {
         Auth.auth().createUser(withEmail: email,
                                password: password) { result, error in

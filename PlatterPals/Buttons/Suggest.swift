@@ -1,58 +1,58 @@
+// File: checked
+// TODO: everything about food suggesting
+
 import SwiftUI
 
 struct Suggest: View {
     
-    @State var restaurant = ""
-    @State var cuisine = "Any"
-    @State var friend = "All"
-    @State var showLoading = false
-    
-    var friends = ["All"]
-    var cuisines = ["Any", "American", "Brazilian", "Caribbean", "Chinese", "Ethiopian", "French", "German", "Indian", "Italian", "Japanese", "Korean", "Mexican", "Middle Eastern", "Russian", "South American", "Thai", "Vietnamese"]
-    
+    @State var location = ""
+    @State var cuisine = "All"
+    @State var showSplash = false
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var dm: DataManager
+    
+    @State var friend = User(id: "", name:
+               "All", image: "", city: "")
+    
+    @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
-            VStack(alignment: .center, spacing: 16.0) {
+            VStack(spacing: 16) {
                 
-                BigButton(text: "Let us decide for you!", route: "splash")
-                    .environmentObject(dm)
+                BigButton(path: 1, text: "Let us decide for you!")
+                    .environmentObject(DM)
                 
-                Text("Adjust settings below")
-                    .font(.headline)
                 Form {
-                    Section(header:
-                                Text("Have something in mind?")
+                    Section(header: Text("Got something in mind?")
                         .font(.subheadline)
-                        .textCase(.none)){
-                            
-                            Picker("Type of cuisine", selection: $cuisine) {
-                                ForEach(cuisines, id: \.self) {
-                                    Text($0)
-                                }
-                            }
-                            TextField("Restaurant name", text: $restaurant)
-                        }
-                    Section(header:
-                        Text("Want to refer to a friend?")
-                        .font(.subheadline)
-                        .textCase(.none)){
-                            
-                            Picker("Friend's name", selection: $friend) {
-                                ForEach(dm.userArray, id: \.name) { user in
-                                    Text(user.name)
-                                }
+                        .textCase(.none))
+                    {
+                        Picker("Type of cuisine", selection: $cuisine) {
+                            ForEach(DM.foodList, id: \.self) {
+                                Text($0)
                             }
                         }
+                        TextField("Restaurant name", text: $location)
+                    }
+                    
+                    Section(header: Text("Refer from a friend?")
+                        .font(.subheadline)
+                        .textCase(.none))
+                    {
+                        Picker("Friend's name", selection: $friend) {
+                            ForEach(DM.userList) { user in
+                                Text(user.name)
+                            }
+                        }
+                    }
                 }
-                if friend != "All" {
-                    Text("\(friend)'s favorite foods:")
+                if friend.name != "All" {
+                    Text("\(friend.name)'s favorite foods:")
                         .font(.headline)
                 }
             }
             .navigationTitle("Let's Order!")
+            
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
@@ -60,9 +60,9 @@ struct Suggest: View {
                     }
                 }
             }
-            .fullScreenCover(isPresented: $showLoading) {
+            .fullScreenCover(isPresented: $showSplash) {
                 Splash2()
-                    .environmentObject(dm)
+                    .environmentObject(DM)
             }
         }
     }

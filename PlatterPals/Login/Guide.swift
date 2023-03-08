@@ -23,6 +23,7 @@ struct Guide: View {
         .indexViewStyle(.page(backgroundDisplayMode: .always))
     }
 }
+
 struct GuideView: View {
     
     var image: Int

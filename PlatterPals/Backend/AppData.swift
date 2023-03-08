@@ -2,7 +2,7 @@
 
 import SwiftUI
 
-struct User: Identifiable {
+struct User: Identifiable, Hashable {
     var id: String
     var name: String
     var image: String

@@ -51,6 +51,11 @@ class DataManager: ObservableObject {
     var cityList = ["Berkeley", "Fremont", "Irvine", "Los Angeles", "Oakland",
         "Palo Alto", "Pleasanton", "Riverside", "San Francisco", "San Jose"]
     
+    // list of foods in menu @ {Suggest}
+    var foodList = ["All", "American", "Brazilian", "Caribbean", "Chinese",
+                    "Ethiopian", "French", "Indian", "Italian", "Japanese",
+                    "Korean", "Mexican", "Middle Eastern", "Thai", "Vietnamese"]
+    
     // func called ONCE @ {Login/Signup}
     func initUser(id: String) {
         
@@ -160,7 +165,7 @@ class DataManager: ObservableObject {
         initUser(id: id)
     }
     
-    // 1. use makeUser to route edit
+    // 1. makeUser chooses edit func
     // 2. access firebase collection
     // 3. create document using {id}
     // 4. setData to document values

@@ -70,6 +70,7 @@ struct Login: View {
             }
         }
     }
+    
     func loginAuth() {
         Auth.auth().signIn(withEmail: email,
                            password: password) { result, error in
@@ -122,6 +123,7 @@ struct Reset: View {
                         dismiss()
                     }}}}}
     
+    
     func resetPass() {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             
@@ -134,6 +136,7 @@ struct Reset: View {
         }
     }
 }
+
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
         Login()

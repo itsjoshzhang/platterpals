@@ -1,64 +1,65 @@
+// File: checked
+// TODO: updating location & user markers
+
 import SwiftUI
 import MapKit
 import CoreLocationUI
 
 struct Maps: View {
     
-    @State var profile = "Josh Z"
-    @State var showProfile = false
-    @StateObject var viewModel = MapsData()
+    @State var showUser = false
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var dm: DataManager
+    @StateObject var mapsData = MapsData()
+    
+    @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 16.0) {
+            VStack(spacing: 16) {
                 
-                Text("Tap on someone's pin to view their profile!")
+                Text("Tap a pin to view a profile")
                     .font(.headline)
                     .foregroundColor(.pink)
                 
                 ZStack(alignment: .bottom) {
-                    Map(coordinateRegion: $viewModel.region, showsUserLocation: true, annotationItems: markers) { marker in
+                    Map(coordinateRegion: $mapsData.region, showsUserLocation: true, annotationItems: markers) { marker in
                         
-                        MapAnnotation(coordinate: marker.coordinate) {
+                        MapAnnotation(coordinate: marker.coord) {
                             VStack {
                                 Image(marker.image)
                                     .resizable()
-                                    .foregroundColor(.red)
                                     .frame(width: 40, height: 40)
-                                    .background(.white)
                                     .clipShape(Circle())
                                 
                                 Image(systemName: "mappin")
                                 Text(marker.user)
                                     .font(.headline)
+                                    .foregroundColor(.pink)
                             }
-                            .foregroundColor(.pink)
                             .onTapGesture {
-                                profile = marker.user
-                                showProfile = true
+                                showUser = true
                             }
-                            .fullScreenCover(isPresented: $showProfile) {
-                                UserProf(user: profile)
-                                    .environmentObject(dm)
+                            .fullScreenCover(isPresented: $showUser) {
+                                UserProf(user: marker.user)
+                                    .environmentObject(DM)
                             }
                         }
                     }
                     LocationButton(.currentLocation) {
-                        viewModel.requestAllowOnceLocationPermission()
+                        mapsData.requestLocation()
                     }
                     .tint(.pink)
                     .foregroundColor(.white)
-                    .cornerRadius(8.0)
-                    .padding(20.0)
+                    .cornerRadius(8)
+                    .padding(20)
                 }
                 .ignoresSafeArea()
             }
             .navigationTitle("People Near Me")
+            
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Back") {
+                    Button("Cancel") {
                         dismiss()
                     }}}}}}
 
@@ -67,18 +68,21 @@ struct Marker: Identifiable {
     var id = UUID()
     var user: String
     var image: String
-    var coordinate: CLLocationCoordinate2D
+    var coord: CLLocationCoordinate2D
 }
-extension CLLocationCoordinate2D: Identifiable {
-    public var id: String {
-        "\(latitude)-\(longitude)"
-    }
-}
+
 var markers = [
-    Marker(user: "Josh Z", image: "pfp1", coordinate: CLLocationCoordinate2D(latitude: 37.867, longitude: -122.260)),
-    Marker(user: "Saira G", image: "pfp2", coordinate: CLLocationCoordinate2D(latitude: 37.868, longitude: -122.255)),
-    Marker(user: "Albert Y", image: "pfp3", coordinate: CLLocationCoordinate2D(latitude: 37.874, longitude: -122.257)),
-    Marker(user: "Anka X", image: "pfp4", coordinate: CLLocationCoordinate2D(latitude: 37.869, longitude: -122.265))]
+    Marker(user: "Josh Z", image: "pfp1", coord: CLLocationCoordinate2D(
+        latitude: 37.867, longitude: -122.260)),
+    
+    Marker(user: "Saira G", image: "pfp2", coord: CLLocationCoordinate2D(
+        latitude: 37.868, longitude: -122.255)),
+    
+    Marker(user: "Albert Y", image: "pfp3", coord: CLLocationCoordinate2D(
+        latitude: 37.874, longitude: -122.257)),
+    
+    Marker(user: "Anka X", image: "pfp4", coord: CLLocationCoordinate2D(
+        latitude: 37.869, longitude: -122.265))]
 
 
 class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
@@ -93,11 +97,12 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
         super.init()
         locationManager.delegate = self
     }
-    func requestAllowOnceLocationPermission() {
-        locationManager.requestLocation()
+    func requestLocation() {
+        locationManager.requestWhenInUseAuthorization()
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.first
+        
         DispatchQueue.main.async {
             self.region = MKCoordinateRegion(center: location!.coordinate,
                 span: MKCoordinateSpan(latitudeDelta: 0.016, longitudeDelta: 0.016))
@@ -107,6 +112,7 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
         print(error.localizedDescription)
     }
 }
+
 struct Location_Previews: PreviewProvider {
     static var previews: some View {
         Maps()

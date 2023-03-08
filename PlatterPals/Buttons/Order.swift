@@ -1,74 +1,38 @@
+// File: checked
+// TODO: everything about food generating
+
 import SwiftUI
-import Firebase
-import FirebaseStorage
 
 struct Order: View {
-    
-    @State var ids = [String]()
-    @State var images = [UIImage]()
-    @State var texts = [String]()
-    @State var comment = ""
-    @State var showFeed = false
-    @State var showSync = false
-    
+
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var dm: DataManager
+    @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 16.0) {
-                    
-                    if images.count == 1 {
-                        BigButton(text: texts[0], route: "sync")
-                            .environmentObject(dm)
-                        
-                        Update(id: ids[0], user: "PlatterPals", image: images[0], text: "Send us feedback below:")
-                            .environmentObject(dm)
-                    }
-                    Spacer()
-                }
-                Button("Order food") {
-                    showSync = true
-                }
-                .buttonStyle(.borderedProminent)
-            }
-            .navigationTitle("Found Your Food!")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Back") {
-                        dismiss()
-                    }
-                }
-            }
-            .onAppear {
-                retrieveImages()
-            }
-            .fullScreenCover(isPresented: $showSync) {
-                Sync()
+            VStack(spacing: 16) {
+                
+                BigButton(path: 3, text: "Order with DoorDash")
+                    .environmentObject(DM)
+                
+//      Update(id: <#T##String#>, user: <#T##String#>, image: <#T##UIImage#>, text: <#T##String#>)
+//                    .environmentObject(dm)
             }
         }
+        .navigationTitle("Found Your Food!")
+        
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Cancel") {
+                    dismiss()
+                }
+            }
+        }
+        .onAppear {
+            //DM.getImage(id: <#T##String#>, path: <#T##String#>)
+        }
     }
-    func retrieveImages() {
-        let db = Firestore.firestore()
-        db.collection("images").getDocuments { snapshot, error in
-            for document in snapshot!.documents {
-                
-                let path = document["url"] as! String
-                let text = document["text"] as! String
-                let storageRef = Storage.storage().reference()
-                let fileRef = storageRef.child(path)
-                
-                fileRef.getData(maxSize: 10*1024*1024) { data, error in
-                    if let data = data, let image = UIImage(data: data) {
-                        
-                        DispatchQueue.main.async {
-                            if images.count == 0 {
-                                images.append(image)
-                                texts.append(text)
-                                ids.append(document.documentID)
-                            }}}}}}}}
-
+}
 
 struct Order_Previews: PreviewProvider {
     static var previews: some View {
