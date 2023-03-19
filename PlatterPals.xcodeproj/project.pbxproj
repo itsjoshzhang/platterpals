@@ -34,7 +34,7 @@
 		F2F6D8762961730000B8F4D7 /* Selfie.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D85C2961730000B8F4D7 /* Selfie.swift */; };
 		F2F6D8772961730000B8F4D7 /* Convo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D85E2961730000B8F4D7 /* Convo.swift */; };
 		F2F6D8782961730000B8F4D7 /* Chats.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D85F2961730000B8F4D7 /* Chats.swift */; };
-		F2F6D8792961730000B8F4D7 /* NewDM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D8602961730000B8F4D7 /* NewDM.swift */; };
+		F2F6D8792961730000B8F4D7 /* ChatDM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D8602961730000B8F4D7 /* ChatDM.swift */; };
 		F2F6D87A2961730000B8F4D7 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D8622961730000B8F4D7 /* Login.swift */; };
 		F2F6D87B2961730000B8F4D7 /* Splash.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D8632961730000B8F4D7 /* Splash.swift */; };
 		F2F6D87C2961730000B8F4D7 /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D8642961730000B8F4D7 /* Signup.swift */; };
@@ -66,7 +66,7 @@
 		F2F6D85C2961730000B8F4D7 /* Selfie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Selfie.swift; sourceTree = "<group>"; };
 		F2F6D85E2961730000B8F4D7 /* Convo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Convo.swift; sourceTree = "<group>"; };
 		F2F6D85F2961730000B8F4D7 /* Chats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chats.swift; sourceTree = "<group>"; };
-		F2F6D8602961730000B8F4D7 /* NewDM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewDM.swift; sourceTree = "<group>"; };
+		F2F6D8602961730000B8F4D7 /* ChatDM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDM.swift; sourceTree = "<group>"; };
 		F2F6D8622961730000B8F4D7 /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		F2F6D8632961730000B8F4D7 /* Splash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Splash.swift; sourceTree = "<group>"; };
 		F2F6D8642961730000B8F4D7 /* Signup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
@@ -187,7 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				F2F6D85F2961730000B8F4D7 /* Chats.swift */,
-				F2F6D8602961730000B8F4D7 /* NewDM.swift */,
+				F2F6D8602961730000B8F4D7 /* ChatDM.swift */,
 				F2F6D85E2961730000B8F4D7 /* Convo.swift */,
 				F25ED26D296FBBA900A6C8F0 /* Assets.swift */,
 			);
@@ -303,7 +303,7 @@
 				F2F6D8782961730000B8F4D7 /* Chats.swift in Sources */,
 				F254352B2972301300E0F0E9 /* Admin.swift in Sources */,
 				F2F6D8762961730000B8F4D7 /* Selfie.swift in Sources */,
-				F2F6D8792961730000B8F4D7 /* NewDM.swift in Sources */,
+				F2F6D8792961730000B8F4D7 /* ChatDM.swift in Sources */,
 				F2F6D8662961730000B8F4D7 /* Maps.swift in Sources */,
 				F2F6D86B2961730000B8F4D7 /* UserProf.swift in Sources */,
 				F2F6D8722961730000B8F4D7 /* AppInit.swift in Sources */,

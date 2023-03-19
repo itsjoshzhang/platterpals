@@ -57,23 +57,10 @@ struct Div: View {
     }
 }
 
-extension ChatsItem {
-    static var data = [ChatsItem]()
-}
-
 struct ChatsItem: Identifiable, Hashable {
     let id = UUID()
     let caption: String
     let user: String
-}
-
-extension Chats {
-    func deleteItems(atOffsets offsets: IndexSet) {
-        items.remove(atOffsets: offsets)
-    }
-    func move(fromOffsets source: IndexSet, toOffset destination: Int) {
-        items.move(fromOffsets: source, toOffset: destination)
-    }
 }
 
 extension SettingsItem {

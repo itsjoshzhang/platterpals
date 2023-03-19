@@ -87,8 +87,8 @@ struct Signup: View {
                         Div()
                         
                         Picker("Location", selection: $city) {
-                            ForEach(DM.cityList, id: \.self) {
-                                Text($0)
+                            ForEach(DM.cityList, id: \.self) { city in
+                                Text(city)
                             }
                         }
                         HStack {

@@ -1,46 +1,33 @@
+// File: checked
+
 import SwiftUI
 
 struct Chats: View {
-    
-    @State var showNewDM = false
-    @State var showAction = false
-    @State var items = [ChatsItem]()
-    @State var names = [String]()
-    @EnvironmentObject var dm: DataManager
+
+    @State var convos = [User]()
+    @State var showChatDM = false
+    @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
             ZStack {
-                VStack(alignment: .leading, spacing: 16.0) {
-                    
-                    Text("Chats")
-                        .font(.largeTitle).bold()
-                        .padding(.horizontal, 20.0)
+                VStack(spacing: 16) {
                     List {
-                        ForEach(items) { item in
-                            if item.user != dm.user.name {
-                                NavigationLink(value: item) {
-                                    
-                                    Row(user: item.user, caption: item.caption,
-                                        image: dm.fetchData(name: item.user, route: true))
-                                }
-                            }
+                        ForEach(convos) { user in
+                        NavigationLink(value: user) {
+
+                        Row(name: user.name, image: user.image, text:
+                            "Active \(Int.random(in: 1...9)) hr ago")
+                        }
                         }
                         .onDelete(perform: deleteItems(atOffsets:))
                         .onMove(perform: move(fromOffsets:toOffset:))
                     }
                     .listStyle(.plain)
                     .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button {
-                                showAction = true
-                            } label: {
-                                Image(systemName: "gearshape")
-                            }
-                        }
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button("New chat") {
-                                showNewDM = true
+                                showChatDM = true
                             }
                             .buttonStyle(.borderedProminent)
                         }
@@ -48,62 +35,60 @@ struct Chats: View {
                 }
                 VStack { Spacer()
                     HStack { Spacer()
-                        CircleButton(image: "location",
-                                     route: "maps")
-                        .environmentObject(dm)
+                        CircleButton(path: 1, image: "location")
+                        .environmentObject(DM)
                     }
                 }
             }
-            .navigationDestination(for: ChatsItem.self) { item in
-                Convo(user: item.user)
-                    .environmentObject(dm)
-            }
-            .fullScreenCover(isPresented: $showNewDM) {
-                NewDM()
-                    .environmentObject(dm)
-            }
-            .actionSheet(isPresented: $showAction) {
-                ActionSheet(title: Text("Edit chats"),
-                    buttons: [
-                        .destructive(Text("Delete all chats")),
-                        .default(Text("Mark all as read")),
-                        .cancel(Text("Cancel"))])
-            }
+            .navigationTitle("Chats")
+
             .onAppear {
-                for user in dm.userArray {
-                    let time = Int.random(in: 1 ..< 59)
-                    let user = ChatsItem(caption: "Active \(time) min ago", user: user.name)
-                    
-                    if !names.contains(user.user) {
-                        items.append(user)
-                        names.append(user.user)
-                    }}}}}}
+                for id in DM.data().chatting {
+                    convos.append(DM.find(id: id))
+                }
+            }
+            .navigationDestination(for: User.self) { user in
+                Convo(id: user.id)
+                    .environmentObject(DM)
+            }
+            .fullScreenCover(isPresented: $showChatDM) {
+                ChatDM()
+                    .environmentObject(DM)
+            }
+        }
+    }
+    func deleteItems(atOffsets offsets: IndexSet) {
+        convos.remove(atOffsets: offsets)
+    }
+    func move(fromOffsets source: IndexSet, toOffset destination: Int) {
+        convos.move(fromOffsets: source, toOffset: destination)
+    }
+}
 
+struct Row: View {
 
-extension Chats {
-    struct Row: View {
-        
-        let user: String
-        let caption: String
-        let image: String
-        
-        var body: some View {
-            HStack(spacing: 16.0) {
-                
-                Image(image)
-                    .resizable()
-                    .frame(width: 55.0, height: 55.0)
-                    .clipShape(Circle())
-                
-                VStack(alignment: .leading, spacing: 5.0) {
-                    Text(user)
-                        .font(.headline)
-                    Text(caption)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }}}}}
+    let name: String
+    let image: String
+    let text: String
 
+    var body: some View {
+        HStack(spacing: 16) {
 
+            Image(image)
+                .resizable()
+                .frame(width: 55, height: 55)
+                .clipShape(Circle())
+
+            VStack(alignment: .leading, spacing: 5) {
+                Text(name)
+                    .font(.headline)
+                Text(text)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+}
 struct Chats_Previews: PreviewProvider {
 	static var previews: some View {
         Chats()

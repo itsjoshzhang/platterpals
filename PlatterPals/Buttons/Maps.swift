@@ -108,9 +108,6 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
                 span: MKCoordinateSpan(latitudeDelta: 0.016, longitudeDelta: 0.016))
         }
     }
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error.localizedDescription)
-    }
 }
 
 struct Location_Previews: PreviewProvider {

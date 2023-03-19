@@ -28,8 +28,8 @@ struct Suggest: View {
                         .textCase(.none))
                     {
                         Picker("Type of cuisine", selection: $cuisine) {
-                            ForEach(DM.foodList, id: \.self) {
-                                Text($0)
+                            ForEach(DM.foodList, id: \.self) { food in
+                                Text(food)
                             }
                         }
                         TextField("Restaurant name", text: $location)
@@ -40,8 +40,8 @@ struct Suggest: View {
                         .textCase(.none))
                     {
                         Picker("Friend's name", selection: $friend) {
-                            ForEach(DM.userList) { user in
-                                Text(user.name)
+                            ForEach(DM.data().following, id: \.self) { id in
+                                Text(DM.find(id: id).name)
                             }
                         }
                     }

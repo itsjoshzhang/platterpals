@@ -1,12 +1,15 @@
+// File: checked
+
 import SwiftUI
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 struct Convo: View {
     
-    var user: String
-    @State var message = ""
+    var id: String
+    @State var text = ""
     var db = Firestore.firestore()
+
     @EnvironmentObject var dm: DataManager
     @StateObject var messageData = MessageData()
     
@@ -88,7 +91,7 @@ class MessageData: ObservableObject {
 }
 struct Convo_Previews: PreviewProvider {
 	static var previews: some View {
-        Convo(user: "Josh Z")
+        Convo(id: "Test User")
             .environmentObject(DataManager())
 	}
 }

@@ -82,6 +82,14 @@ class DataManager: ObservableObject {
     func prof() -> Profile {
         return profiles[thisUser]
     }
+    func find(id: String) -> User {
+        for user in userList {
+            if (user.id == id || user.name == id) {
+                return user
+            }
+        }
+        return User(id: "", name: "", image: "logo", city: "")
+    }
     
     init() {
         // clear all lists no duplicates
