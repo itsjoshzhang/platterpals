@@ -48,7 +48,7 @@ struct Chats: View {
                 }
             }
             .navigationDestination(for: User.self) { user in
-                Convo(id: user.id)
+                Convo(chatter: user.id)
                     .environmentObject(DM)
             }
             .fullScreenCover(isPresented: $showChatDM) {

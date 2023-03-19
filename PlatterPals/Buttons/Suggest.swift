@@ -11,7 +11,7 @@ struct Suggest: View {
     @Environment(\.dismiss) var dismiss
     
     @State var friend = User(id: "", name:
-               "All", image: "", city: "")
+               "All", image: "logo", city: "")
     
     @EnvironmentObject var DM: DataManager
     

@@ -57,12 +57,6 @@ struct Div: View {
     }
 }
 
-struct ChatsItem: Identifiable, Hashable {
-    let id = UUID()
-    let caption: String
-    let user: String
-}
-
 extension SettingsItem {
     static let data = [
         SettingsItem(headline: "Chats", caption: "Blocked users, notifications", imageName: "message"),

@@ -27,10 +27,10 @@ struct ChatDM: View {
                     .autocorrectionDisabled(true)
                 Div()
 
-                TextField("Write a chat", text: $text)
+                TextField("Write a message", text: $text)
                 Div()
 
-                Button("Send chat") {
+                Button("Start chat") {
                     showChat = true
                 }
                 .disabled(DM.find(id: name).id == "")
@@ -62,7 +62,7 @@ struct ChatDM: View {
             }
         }
         .fullScreenCover(isPresented: $showChat) {
-            Convo(id: name, text: text)
+            Convo(chatter: DM.find(id: name).id, text: text)
                 .environmentObject(DM)
         }
     }

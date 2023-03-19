@@ -88,7 +88,7 @@ class DataManager: ObservableObject {
                 return user
             }
         }
-        return User(id: "", name: "", image: "logo", city: "")
+        return User(id: "", name: "All", image: "logo", city: "")
     }
     
     init() {
@@ -243,11 +243,12 @@ class DataManager: ObservableObject {
     // 3. loop through all documents
     // 4. access values = map {data}
     // 5. if condition, add to array
-    
+
+    @Published var messages = [Message]()
+
     // getChats is called by {Chats} page
-    func getChats(senderID: String, getterID: String) -> [Message] {
-        
-        var messages = [Message]()
+    func getChats(senderID: String, getterID: String) {
+
         FS.collection("messages").getDocuments { collection, error in
             
             for document in collection!.documents {
@@ -261,12 +262,11 @@ class DataManager: ObservableObject {
                     
                 if (sender == senderID) && (getter == getterID) {
                     
-                    messages.append(Message(id: id, text: text, sender: sender,
+                    self.messages.append(Message(id: id, text: text, sender: sender,
                                     getter: getter, time: time))
                 }
             }
         }
-        return messages
     }
     
     // getOrder is called by Order pages

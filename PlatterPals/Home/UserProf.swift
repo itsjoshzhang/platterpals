@@ -7,7 +7,7 @@ struct UserProf: View {
     @State var showFollow = false
     @State var showUpdates = false
     
-    var user: String
+    var id: String
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var dm: DataManager
     
