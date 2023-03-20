@@ -14,6 +14,7 @@ struct Convo: View {
     
     var body: some View {
         VStack(spacing: 16) {
+
             TitleBar(id: chatter)
                 .environmentObject(DM)
             
@@ -26,10 +27,12 @@ struct Convo: View {
             HStack(spacing: 16) {
                 TextField("Write a message", text: $text,
                           onEditingChanged: editing, onCommit: commit)
+
                 Button {
                     DM.sendChat(text: text, sender: DM.user().id,
                                 getter: chatter, time: Date())
                     text = ""
+
                 } label: {
                     Image(systemName: "paperplane.fill")
                         .foregroundColor(.white)

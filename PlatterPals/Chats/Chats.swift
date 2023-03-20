@@ -24,14 +24,6 @@ struct Chats: View {
                         .onMove(perform: move(fromOffsets:toOffset:))
                     }
                     .listStyle(.plain)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("New chat") {
-                                showChatDM = true
-                            }
-                            .buttonStyle(.borderedProminent)
-                        }
-                    }
                 }
                 VStack { Spacer()
                     HStack { Spacer()
@@ -50,6 +42,21 @@ struct Chats: View {
             .navigationDestination(for: User.self) { user in
                 Convo(chatter: user.id)
                     .environmentObject(DM)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        DM.initLoad()
+                    } label: {
+                        Image(systemName: "clock.arrow.circlepath")
+                    }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("New chat") {
+                        showChatDM = true
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
             }
             .fullScreenCover(isPresented: $showChatDM) {
                 ChatDM()
@@ -82,6 +89,7 @@ struct Row: View {
             VStack(alignment: .leading, spacing: 5) {
                 Text(name)
                     .font(.headline)
+
                 Text(text)
                     .font(.subheadline)
                     .foregroundColor(.secondary)

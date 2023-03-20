@@ -1,148 +1,120 @@
+// TODO: Use the actual Profile struct (line 111)
+
 import SwiftUI
 
 struct Update: View {
     
     var id: String
-    var user: String
-    var image: UIImage
-    var text: String
-    @State var comment: String = ""
-    @State var showComment = true
-    
-    @State var result = 0
-    @State var offset = 0.0
     @State var size = 1.0
-    @State var showProfile = false
-    @State var hideProfile = false
-    
-    @State var showAction = false
-    @EnvironmentObject var dm: DataManager
-    var like = Image(systemName: "heart.fill")
-    var dislike = Image(systemName: "heart.slash.fill")
+    @State var offset = 0.0
+
+    @State var showProf = false
+    @State var hideProf = false
+    @State var showAlert = false
+
+    @EnvironmentObject var DM: DataManager
     
     var body: some View {
-        if hideProfile {
+        if hideProf {
             Button("Unhide profile") {
                 withAnimation {
-                    hideProfile = false }}
+                    hideProf = false }}
         } else {
             content
         }
     }
     var content: some View {
-        VStack(alignment: .leading, spacing: 16.0) {
+        VStack(alignment: .leading, spacing: 16) {
+
+            let profile = DM.prof(id: id)
+
             Button {
-                if user != "PlatterPals" {
-                    showProfile = true
-                }
+                showProf = true
             } label: {
                 HStack {
-                    Image(dm.fetchData(name: user, route: true))
+                    Image(uiImage: DM.getImage(id: id, path: "avatars"))
                         .resizable()
                         .scaledToFit()
                         .clipShape(Circle())
-                        .frame(width: 40.0)
-                    Text(user)
+                        .frame(width: 40)
+
+                    Text(profile.name)
                         .font(.headline)
                     Spacer()
+
                     Button("...") {
-                        if user != "PlatterPals" {
-                            showAction = true
-                        }
+                        showAlert = true
                     }
-                    .alert("Report / Delete content", isPresented: $showAction) {
-                        if user == dm.user.name {
-                            Button(" Delete update ", role: .destructive) {
-                                dm.deleteData(id: id)
+                    .alert("Profile settings", isPresented: $showAlert) {
+
+                        if id == DM.user().id {
+                            Button("Delete profile", role: .destructive) {
+
+                                DM.editProf(id: id, name: "",
+                                    image: "", text: "", likes: 0)
                             }
                         } else {
-                            Button(" Report profile ", role: .destructive) {
+                            Button("Report profile", role: .destructive) {
                                 withAnimation {
-                                    hideProfile = true
+                                    hideProf = true
                                 }
                             }
                         }
                         Button("Cancel", role: .cancel) {}
                     }
                 }
-                .padding(.horizontal, 16.0)
+                .padding(.horizontal, 16)
             }
             ZStack {
-                Image(uiImage: image)
+                let width = UIScreen.main.bounds.width
+
+                Image(uiImage: DM.getImage(id: id, path: "profiles"))
                     .resizable()
                     .scaledToFit()
-                    .frame(width: UIScreen.main.bounds.width,
-                           height: UIScreen.main.bounds.width)
+                    .frame(width: width)
                     .clipped()
-                    .gesture(
-                        DragGesture(minimumDistance: 50.0)
-                            .onChanged { swipe in
-                                offset = swipe.translation.width
-                                size = 1.0
-                            }
-                            .onEnded { swipe in
-                                withAnimation(.easeIn(duration: 0.25)) {
-                                    result = Int(swipe.translation.width)
-                                    if user != "PlatterPals" {
-                                        showProfile = (result > 0)
-                                        hideProfile = (result < 0)
-                                    }
-                                    size = 0.0
+
+                    .gesture(DragGesture(minimumDistance: width / 4)
+                        .onChanged { swipe in
+                            offset = swipe.translation.width
+                            size = 1.0
+                        }
+                        .onEnded { swipe in
+                            withAnimation(.easeIn(duration: 0.25)) {
+
+                                if (swipe.translation.width > 0) {
+                                    showProf = true
+                                } else {
+                                    hideProf = true
                                 }
+                                size = 0.0
                             }
+                        }
                     )
-                like
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200)
-                    .foregroundColor(.pink)
-                    .opacity(offset / 200.0)
-                    .scaleEffect(size)
-                dislike
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200)
-                    .foregroundColor(.white)
-                    .opacity(offset / -200.0)
-                    .scaleEffect(size)
+                Group {
+                    Image(systemName: "heart.fill")
+                        .resizable()
+                        .foregroundColor(.pink)
+                        .opacity(offset / 200.0)
+
+
+                    Image(systemName: "heart.slash.fill")
+                        .resizable()
+                        .foregroundColor(.white)
+                        .opacity(offset / -200.0)
+                }
+                .scaledToFit()
+                .frame(width: 200)
+                .scaleEffect(size)
             }
-            Text(text)
-                .padding(.horizontal, 16.0)
-            if !showComment {
-                Text("\(dm.user.name): \(comment)")
-                    .foregroundColor(.secondary)
-                    .padding(.horizontal, 16.0)
-            }
-            HStack {
-                Button {
-                    if result > 0 { result = 0 } else { result = 1 }
-                } label: {
-                    if result > 0 { like.foregroundColor(.pink) } else {
-                        Image(systemName: "heart")
-                    }
-                }
-                Button {
-                    if result < 0 { result = 0 } else { result = -1 }
-                } label: {
-                    if result < 0 { dislike.foregroundColor(.black) } else {
-                        Image(systemName: "heart.slash")
-                    }
-                }
-                if showComment {
-                    TextField("Write a comment", text: $comment)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                }
-                Spacer()
-                Button("\(Image(systemName: "paperplane"))") {
-                    showComment.toggle()
-                }
-                .disabled(comment == "")
-            }
-            .padding(.horizontal, 16.0)
+            Text(profile.text)
+                .padding(.horizontal, 16)
+
+            Text("\(Image(systemName: "heart.fill")) \(profile.likes)")
         }
-        .fullScreenCover(isPresented: $showProfile) {
-            UserProf(user: user)
-                .environmentObject(dm)
+        .fullScreenCover(isPresented: $showProf) {
+            UserProf(id: id)
+                .environmentObject(DM)
         }
     }
 }

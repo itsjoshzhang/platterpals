@@ -11,7 +11,7 @@ struct Suggest: View {
     @Environment(\.dismiss) var dismiss
     
     @State var friend = User(id: "", name:
-               "All", image: "logo", city: "")
+               "All", image: "", city: "")
     
     @EnvironmentObject var DM: DataManager
     
@@ -19,7 +19,7 @@ struct Suggest: View {
         NavigationStack {
             VStack(spacing: 16) {
                 
-                BigButton(path: 1, text: "Let us decide for you!")
+                BigButton(path: 2, text: "Let us decide for you!")
                     .environmentObject(DM)
                 
                 Form {

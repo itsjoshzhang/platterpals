@@ -55,7 +55,11 @@ class DataManager: ObservableObject {
     var foodList = ["All", "American", "Brazilian", "Caribbean", "Chinese",
                     "Ethiopian", "French", "Indian", "Italian", "Japanese",
                     "Korean", "Mexican", "Middle Eastern", "Thai", "Vietnamese"]
-    
+
+    init() {
+        initLoad()
+    }
+
     // func called ONCE @ {Login/Signup}
     func initUser(id: String) {
         
@@ -76,12 +80,20 @@ class DataManager: ObservableObject {
     func user() -> User {
         return userList[thisUser]
     }
+
     func data() -> UserData {
         return userData[thisUser]
     }
-    func prof() -> Profile {
-        return profiles[thisUser]
+
+    func prof(id: String) -> Profile {
+        for prof in profiles {
+            if (prof.id == id) {
+                return prof
+            }
+        }
+        return Profile(id: "", name: "", image: "", text: "", likes: 0)
     }
+
     func find(id: String) -> User {
         for user in userList {
             if (user.id == id || user.name == id) {
@@ -90,8 +102,8 @@ class DataManager: ObservableObject {
         }
         return User(id: "", name: "All", image: "logo", city: "")
     }
-    
-    init() {
+
+    func initLoad() {
         // clear all lists no duplicates
         userList.removeAll()
         userData.removeAll()
@@ -163,12 +175,13 @@ class DataManager: ObservableObject {
         
         let user = "avatars/\(id)"
         let prof = "profiles/\(id)"
+        let text = "Add a bio"
         
         editUser(id: id, name: name, image: user, city: city)
         editData(id: id, fa: [String](), fo: [String](), ch: [String](),
                  bl: [String]())
-        
-        editProf(id: id, name: name, image: prof, text: "Add a bio", likes: 0)
+
+        editProf(id: id, name: name, image: prof, text: text, likes: 0)
         editSets(id: id, no: true, em: true, pr: true, lo: true)
         initUser(id: id)
     }

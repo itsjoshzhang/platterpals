@@ -5,7 +5,7 @@ import SwiftUI
 struct TitleBar: View {
     
     var id: String
-    @State var showProfile = false
+    @State var showProf = false
     @State var showAction = false
     @Environment(\.dismiss) var dismiss
 
@@ -15,11 +15,12 @@ struct TitleBar: View {
         VStack {
             HStack(spacing: 16) {
                 Button {
-                    showProfile = true
+                    showProf = true
                 } label: {
                     HStack(spacing: 16) {
+
                         Image(uiImage: DM.getImage(id: id,
-                                       path: "avatars"))
+                            path: "avatars"))
                             .resizable()
                             .scaledToFit()
                             .clipShape(Circle())
@@ -28,6 +29,7 @@ struct TitleBar: View {
                         VStack(alignment: .leading) {
                             Text(DM.find(id: id).name)
                                 .font(.title).bold()
+
                             Text("\(DM.find(id: id).city), CA")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
@@ -54,7 +56,7 @@ struct TitleBar: View {
             .padding(.horizontal, 20)
             Div()
         }
-        .fullScreenCover(isPresented: $showProfile) {
+        .fullScreenCover(isPresented: $showProf) {
             UserProf(id: id)
                 .environmentObject(DM)
         }
