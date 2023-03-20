@@ -1,4 +1,3 @@
-// File: checked
 // TODO: updating location & user markers
 
 import SwiftUI
@@ -7,7 +6,7 @@ import CoreLocationUI
 
 struct Maps: View {
     
-    @State var showUser = false
+    @State var showProf = false
     @Environment(\.dismiss) var dismiss
     @StateObject var mapsData = MapsData()
     
@@ -38,9 +37,9 @@ struct Maps: View {
                                     .foregroundColor(.pink)
                             }
                             .onTapGesture {
-                                showUser = true
+                                showProf = true
                             }
-                            .fullScreenCover(isPresented: $showUser) {
+                            .sheet(isPresented: $showProf) {
                                 UserProf(id: marker.user)
                                     .environmentObject(DM)
                             }

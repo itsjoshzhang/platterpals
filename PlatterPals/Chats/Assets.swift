@@ -49,7 +49,7 @@ struct TitleBar: View {
             .padding(.horizontal, 20)
             Div()
         }
-        .fullScreenCover(isPresented: $showProf) {
+        .sheet(isPresented: $showProf) {
             UserProf(id: id)
                 .environmentObject(DM)
         }
@@ -70,21 +70,19 @@ struct Bubble: View {
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
-        var sender = (message.sender == DM.user().name)
+        let sender = (message.sender == DM.user().name)
         
         VStack(alignment: sender ? .trailing: .leading) {
-            Section {
-                Text(message.text)
-                    .padding(16)
-                    .background(sender ? Color.pink.opacity(0.25):
-                        .secondary)
-                    .cornerRadius(30)
-                    .frame(maxWidth: 300, alignment: sender ?
-                        .trailing: .leading)
-            }
-            .onTapGesture {
-                showTime.toggle()
-            }
+
+            Text(message.text)
+                .padding(16)
+                .background(sender ? Color.pink.opacity(0.25): .secondary)
+                .cornerRadius(30)
+
+                .frame(maxWidth: 300, alignment: sender ? .trailing: .leading)
+                .onTapGesture {
+                    showTime.toggle()
+                }
             if showTime {
                 Text("\(message.time.formatted(.dateTime.hour().minute()))")
                     .font(.caption)

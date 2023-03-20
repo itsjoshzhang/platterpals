@@ -96,7 +96,6 @@ struct Update: View {
                         .foregroundColor(.pink)
                         .opacity(offset / 200.0)
 
-
                     Image(systemName: "heart.slash.fill")
                         .resizable()
                         .foregroundColor(.white)
@@ -114,7 +113,7 @@ struct Update: View {
             }
             .padding(.horizontal, 16)
         }
-        .fullScreenCover(isPresented: $showProf) {
+        .sheet(isPresented: $showProf) {
             UserProf(id: id)
                 .environmentObject(DM)
         }

@@ -1,4 +1,3 @@
-// File: checked
 // TODO: everything about food suggesting
 
 import SwiftUI

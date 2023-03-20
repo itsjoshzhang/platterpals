@@ -1,4 +1,3 @@
-// File: checked
 // TODO: everything about food generating
 
 import SwiftUI

@@ -16,7 +16,6 @@
 		F25ED26E296FBBA900A6C8F0 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25ED26D296FBBA900A6C8F0 /* Assets.swift */; };
 		F25ED271296FCB2900A6C8F0 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F25ED270296FCB2900A6C8F0 /* FirebaseFirestoreSwift */; };
 		F26B3F0A296F8DF600E28DBD /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26B3F09296F8DF600E28DBD /* Update.swift */; };
-		F26EF67F29C80BB500F856E2 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26EF67E29C80BB500F856E2 /* Search.swift */; };
 		F2F494B9298313E3000E35BB /* Settings2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F494B8298313E3000E35BB /* Settings2.swift */; };
 		F2F6D8662961730000B8F4D7 /* Maps.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D8472961730000B8F4D7 /* Maps.swift */; };
 		F2F6D8682961730000B8F4D7 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84A2961730000B8F4D7 /* Buttons.swift */; };
@@ -48,7 +47,6 @@
 		F254352A2972301300E0F0E9 /* Admin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Admin.swift; sourceTree = "<group>"; };
 		F25ED26D296FBBA900A6C8F0 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		F26B3F09296F8DF600E28DBD /* Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Update.swift; sourceTree = "<group>"; };
-		F26EF67E29C80BB500F856E2 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		F2F494B8298313E3000E35BB /* Settings2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings2.swift; sourceTree = "<group>"; };
 		F2F6D834296172B100B8F4D7 /* PlatterPals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlatterPals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2F6D8472961730000B8F4D7 /* Maps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Maps.swift; sourceTree = "<group>"; };
@@ -151,7 +149,6 @@
 				F26B3F09296F8DF600E28DBD /* Update.swift */,
 				F2F6D84F2961730000B8F4D7 /* Upload.swift */,
 				F2F6D84E2961730000B8F4D7 /* UserProf.swift */,
-				F26EF67E29C80BB500F856E2 /* Search.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -311,7 +308,6 @@
 				F2F6D86B2961730000B8F4D7 /* UserProf.swift in Sources */,
 				F2F6D8722961730000B8F4D7 /* AppInit.swift in Sources */,
 				F2F6D87A2961730000B8F4D7 /* Login.swift in Sources */,
-				F26EF67F29C80BB500F856E2 /* Search.swift in Sources */,
 				F2F6D8702961730000B8F4D7 /* AppData.swift in Sources */,
 				F2F6D8772961730000B8F4D7 /* Convo.swift in Sources */,
 			);
