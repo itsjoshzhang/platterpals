@@ -1,46 +1,46 @@
+// File: checked
+
 import SwiftUI
 import PhotosUI
-import Firebase
-import FirebaseStorage
 
 struct Upload: View {
-    
+
     @State var imageData: Data?
-    @State var caption: String = ""
-    @State var images: [PhotosPickerItem] = []
+    @State var text: String = ""
+    @State var images = [PhotosPickerItem]()
     @Environment(\.dismiss) var dismiss
     
-    @EnvironmentObject var dm: DataManager
+    @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
             ScrollView {
-                LazyVStack(spacing: 16.0) {
-                    
-                    if let data = imageData, let uiimage =
+                VStack(spacing: 16) {
+
+                    if let data = imageData, let image =
                         UIImage(data: data) {
-                        
-                        Image(uiImage: uiimage)
+
+                        Image(uiImage: image)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 350, height: 350)
+                            .frame(height: UIScreen.main.bounds.height)
                     } else {
                         Image("cards")
                             .resizable()
                             .scaledToFit()
                             .opacity(0.25)
-                            .border(.pink, width: 3.0)
+                            .border(.pink, width: 3)
                     }
                     PhotosPicker(selection: $images, maxSelectionCount: 1,
                                  matching: .images) {
-                        Label("Choose Image", systemImage: "photo")
+                        Label("Select Image", systemImage: "photo")
                     }
                      .buttonStyle(.bordered)
-                    
+
                      .onChange(of: images) { _ in
                          images.first!.loadTransferable(type: Data.self) {
                              result in
-                             
+
                              switch result {
                              case .success(let data):
                                  self.imageData = data
@@ -49,23 +49,24 @@ struct Upload: View {
                              }
                          }
                      }
-                    TextField("Write a caption", text: $caption)
-                    Divider()
-                        .frame(minHeight: 3.0)
-                        .overlay(.pink)
-                    
-                    Text("Make sure to crop your image properly!")
+                    TextField("Write a bio", text: $text)
+                    Div()
+
+                    Text("Crop image to portrait for best results")
                         .foregroundColor(.pink)
-                    Button("Send update") {
-                        uploadImage()
+
+                    Button("Update Profile") {
+                        DM.putImage(id: DM.user().id, path: "profiles",
+                            image: imageData)
                         dismiss()
                     }
                     .buttonStyle(.borderedProminent)
-                    .disabled(imageData == nil || caption == "")
+                    .disabled(imageData == nil || text == "")
                 }
             }
-            .padding(20.0)
+            .padding(20)
             .navigationTitle("Update Profile")
+
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {

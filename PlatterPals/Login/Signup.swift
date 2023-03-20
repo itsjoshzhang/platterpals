@@ -1,4 +1,3 @@
-// File: checked
 // TODO: keep user logged in after exiting
 // TODO: test signup without image upload
 
@@ -36,10 +35,10 @@ struct Signup: View {
             ScrollView {
                 VStack(spacing: 16) {
                     
-                    if let data = imageData, let uiimage =
+                    if let data = imageData, let image =
                         UIImage(data: data) {
                         
-                        Image(uiImage: uiimage)
+                        Image(uiImage: image)
                             .resizable()
                             .scaledToFit()
                             .frame(width: 160)

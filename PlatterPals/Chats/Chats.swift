@@ -40,7 +40,7 @@ struct Chats: View {
                 }
             }
             .navigationDestination(for: User.self) { user in
-                Convo(chatter: user.id)
+                Convo(id: user.id)
                     .environmentObject(DM)
             }
             .toolbar {
@@ -74,9 +74,9 @@ struct Chats: View {
 
 struct Row: View {
 
-    let name: String
-    let image: String
-    let text: String
+    var name: String
+    var image: String
+    var text: String
 
     var body: some View {
         HStack(spacing: 16) {

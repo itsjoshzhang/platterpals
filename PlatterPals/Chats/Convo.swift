@@ -4,7 +4,7 @@ import SwiftUI
 
 struct Convo: View {
     
-    var chatter: String
+    var id: String
     @State var text = ""
     @EnvironmentObject var DM: DataManager
     
@@ -15,7 +15,7 @@ struct Convo: View {
     var body: some View {
         VStack(spacing: 16) {
 
-            TitleBar(id: chatter)
+            TitleBar(id: id)
                 .environmentObject(DM)
             
             ScrollView {
@@ -30,7 +30,7 @@ struct Convo: View {
 
                 Button {
                     DM.sendChat(text: text, sender: DM.user().id,
-                                getter: chatter, time: Date())
+                                getter: id, time: Date())
                     text = ""
 
                 } label: {
@@ -49,14 +49,14 @@ struct Convo: View {
             .padding(10)
         }
         .onAppear {
-            DM.getChats(senderID: DM.user().id, getterID: chatter)
+            DM.getChats(senderID: DM.user().id, getterID: id)
         }
     }
 }
 
 struct Convo_Previews: PreviewProvider {
 	static var previews: some View {
-        Convo(chatter: "email@gmail.com")
+        Convo(id: "email@gmail.com")
             .environmentObject(DataManager())
 	}
 }

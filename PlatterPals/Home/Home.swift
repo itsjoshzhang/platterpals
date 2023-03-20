@@ -16,8 +16,14 @@ struct Home: View {
                             .environmentObject(DM)
                         
                         ForEach(DM.profiles) { profile in
-                            Update(id: profile.id)
-                                .environmentObject(DM)
+                            if (DM.user().id != profile.id &&
+
+                                DM.user().city == profile.city &&
+                                DM.data().following.contains(profile.id)) {
+
+                                Update(id: profile.id)
+                                    .environmentObject(DM)
+                            }
                         }
                     }
                 }

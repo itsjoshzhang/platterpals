@@ -37,21 +37,14 @@ struct TitleBar: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                Button {
-                    showAction = true
-                } label: {
-                    Image(systemName: "bell")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                }
-                Button {
+
+                Button("\(Image(systemName: "arrow.uturn.backward"))") {
                     dismiss()
-                } label: {
-                    Image(systemName: "chevron.down")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20)
                 }
+                Button("\(Image(systemName: "bell"))") {
+                    showAction = true
+                }
+
             }
             .padding(.horizontal, 20)
             Div()
@@ -77,7 +70,7 @@ struct Bubble: View {
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
-        let sender = (message.sender == DM.user().name)
+        var sender = (message.sender == DM.user().name)
         
         VStack(alignment: sender ? .trailing: .leading) {
             Section {

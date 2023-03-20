@@ -1,4 +1,4 @@
-// TODO: Use the actual Profile struct (line 111)
+// File: checked
 
 import SwiftUI
 
@@ -26,7 +26,7 @@ struct Update: View {
     var content: some View {
         VStack(alignment: .leading, spacing: 16) {
 
-            let profile = DM.prof(id: id)
+            var profile = DM.prof(id: id)
 
             Button {
                 showProf = true
@@ -38,7 +38,7 @@ struct Update: View {
                         .clipShape(Circle())
                         .frame(width: 40)
 
-                    Text(profile.name)
+                    Text(DM.user().name)
                         .font(.headline)
                     Spacer()
 
@@ -50,8 +50,7 @@ struct Update: View {
                         if id == DM.user().id {
                             Button("Delete profile", role: .destructive) {
 
-                                DM.editProf(id: id, name: "",
-                                    image: "", text: "", likes: 0)
+                                DM.editProf(id: id, image: "", city: "", text: "", likes: 0)
                             }
                         } else {
                             Button("Report profile", role: .destructive) {
@@ -66,15 +65,15 @@ struct Update: View {
                 .padding(.horizontal, 16)
             }
             ZStack {
-                let width = UIScreen.main.bounds.width
+                var ui = UIScreen.main.bounds
 
                 Image(uiImage: DM.getImage(id: id, path: "profiles"))
                     .resizable()
                     .scaledToFit()
-                    .frame(width: width)
+                    .frame(height: ui.height)
                     .clipped()
 
-                    .gesture(DragGesture(minimumDistance: width / 4)
+                    .gesture(DragGesture(minimumDistance: ui.width / 4)
                         .onChanged { swipe in
                             offset = swipe.translation.width
                             size = 1.0
@@ -82,7 +81,7 @@ struct Update: View {
                         .onEnded { swipe in
                             withAnimation(.easeIn(duration: 0.25)) {
 
-                                if (swipe.translation.width > 0) {
+                                if swipe.translation.width > 0 {
                                     showProf = true
                                 } else {
                                     hideProf = true
@@ -107,10 +106,13 @@ struct Update: View {
                 .frame(width: 200)
                 .scaleEffect(size)
             }
-            Text(profile.text)
-                .padding(.horizontal, 16)
+            Group {
+                Text(profile.city)
+                Text(profile.text)
 
-            Text("\(Image(systemName: "heart.fill")) \(profile.likes)")
+                Text("\(Image(systemName: "heart.fill")) \(profile.likes)")
+            }
+            .padding(.horizontal, 16)
         }
         .fullScreenCover(isPresented: $showProf) {
             UserProf(id: id)

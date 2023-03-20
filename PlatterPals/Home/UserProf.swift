@@ -1,65 +1,65 @@
+// File: checked
+
 import SwiftUI
 
 struct UserProf: View {
-    
-    @State var showAction = false
-    @State var showNewDM = false
-    @State var showFollow = false
-    @State var showUpdates = false
-    
+
     var id: String
+    @State var showAction = false
+    @State var showChatDM = false
+    @State var showFollow = false
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var dm: DataManager
+
+    @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
+            var name = DM.find(id: id).name
+
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: 16.0) {
-                    
-                    HStack(spacing: 16.0) {
-                        Image(dm.fetchData(name: user, route: true))
+                VStack(alignment: .leading, spacing: 16) {
+                    HStack(spacing: 16) {
+
+                        Image(uiImage: DM.getImage(id: id, path: "avatars"))
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 80.0)
+                            .frame(width: 80)
                             .clipShape(Circle())
                         
-                        Text(dm.fetchData(name: user, route: false))
+                        Text(name)
                     }
-                    .padding(.horizontal, 20.0)
+                    .padding(.horizontal, 20)
                     
-                    HStack(spacing: 16.0) {
-                        if showFollow {
+                    HStack(spacing: 16) {
+                        var list = DM.data().following
+
+                        if list.contains(id) {
                             Button("Following") {
-                                showFollow = false
+
+                                if let index = list.firstIndex(of: id) {
+                                    list.remove(at: index)
+                                }
                             }
                             .buttonStyle(.bordered)
+
                         } else {
                             Button("Follow \(Image(systemName: "heart"))") {
-                                showFollow = true
+                                list.append(id)
                             }
                             .buttonStyle(.borderedProminent)
                         }
-                        Button("Notifications") {
+                        Button("\(Image(systemName: "bell"))") {
                             showAction = true
                         }
-                        .buttonStyle(.bordered)
                     }
-                    .padding(.horizontal, 20.0)
+                    .padding(.horizontal, 20)
                     
-                    Text("\(user)'s favorite foods:")
+                    Text("\(name)'s favorite foods:")
                         .font(.headline)
-                        .padding(.horizontal, 20.0)
-                    
-                    Image("cards")
-                        .resizable()
-                        .scaledToFit()
-                        .opacity(0.5)
-                        .onTapGesture {
-                            showUpdates = true
-                        }
+                        .padding(.horizontal, 20)
                 }
             }
-            .navigationTitle(user)
+            .navigationTitle(name)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Back") {
@@ -68,31 +68,29 @@ struct UserProf: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Send chat") {
-                        showNewDM = true
+                        showChatDM = true
                     }
                     .buttonStyle(.borderedProminent)
                 }
             }
-            .fullScreenCover(isPresented: $showNewDM) {
-                Convo(user: user)
-                    .environmentObject(dm)
-            }
-            .fullScreenCover(isPresented: $showUpdates) {
-                Selfie(name: user)
-                    .environmentObject(dm)
+            .fullScreenCover(isPresented: $showChatDM) {
+                Convo(id: id)
+                    .environmentObject(DM)
             }
             .actionSheet(isPresented: $showAction) {
                 ActionSheet(title: Text("Notifications"),
                     buttons: [
                     .destructive(Text("Block this user")),
-                    .default(Text("Hide my profile")),
+                    .default(Text("Mute notifications")),
                     .cancel(Text("Cancel"))]
-                )}}}}
-
-
+                )
+            }
+        }
+    }
+}
 struct UserProf_Previews: PreviewProvider {
 	static var previews: some View {
-        UserProf(user: "Josh Z")
+        UserProf(id: "email@gmail.com")
             .environmentObject(DataManager())
 	}
 }

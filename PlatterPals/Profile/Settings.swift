@@ -47,34 +47,37 @@ struct Settings: View {
         }
 	}
 }
-extension Settings {
-    struct Row: View {
-        
-        let headline: String
-        let caption: String
-        let image: String
-        
-        var body: some View {
-            HStack(spacing: 16.0) {
-                
-                Image(systemName: image)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 24.0, height: 24.0)
-                    .padding(16.0)
-                    .background(Color.accentColor)
-                    .foregroundColor(.white)
-                    .clipShape(Circle())
-                
-                VStack(alignment: .leading, spacing: 5.0) {
-                    Text(headline)
-                        .font(.headline)
-                    Text(caption)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }}}}}
 
+struct Row2: View {
+    
+    var title: String
+    var text: String
+    var image: String
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            
+            Image(systemName: image)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 24, height: 24)
+                .padding(16)
 
+                .background(Color.accentColor)
+                .foregroundColor(.white)
+                .clipShape(Circle())
+            
+            VStack(alignment: .leading, spacing: 5) {
+                Text(title)
+                    .font(.headline)
+
+                Text(text)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+}
 struct Settings_Previews: PreviewProvider {
 	static var previews: some View {
         Settings()

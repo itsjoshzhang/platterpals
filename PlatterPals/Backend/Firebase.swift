@@ -48,11 +48,11 @@ class DataManager: ObservableObject {
     @Published var loggedIn = false;
     
     // list of cities in menu @ {Signup}
-    var cityList = ["Berkeley", "Fremont", "Irvine", "Los Angeles", "Oakland",
+    let cityList = ["Berkeley", "Fremont", "Irvine", "Los Angeles", "Oakland",
         "Palo Alto", "Pleasanton", "Riverside", "San Francisco", "San Jose"]
     
     // list of foods in menu @ {Suggest}
-    var foodList = ["All", "American", "Brazilian", "Caribbean", "Chinese",
+    let foodList = ["All", "American", "Brazilian", "Caribbean", "Chinese",
                     "Ethiopian", "French", "Indian", "Italian", "Japanese",
                     "Korean", "Mexican", "Middle Eastern", "Thai", "Vietnamese"]
 
@@ -87,11 +87,11 @@ class DataManager: ObservableObject {
 
     func prof(id: String) -> Profile {
         for prof in profiles {
-            if (prof.id == id) {
+            if prof.id == id {
                 return prof
             }
         }
-        return Profile(id: "", name: "", image: "", text: "", likes: 0)
+        return Profile(id: "", image: "", city: "", text: "", likes: 0)
     }
 
     func find(id: String) -> User {
@@ -153,12 +153,12 @@ class DataManager: ObservableObject {
                 let data = document.data()
                 
                 let id    = data["id"]    as! String
-                let name  = data["name"]  as! String
                 let image = data["image"] as! String
+                let city = data["city"]   as! String
                 let text  = data["text"]  as! String
                 let likes = data["likes"] as! Int
                 
-                let profile = Profile(id: id, name: name, image: image,
+                let profile = Profile(id: id, image: image, city: city,
                                       text: text, likes: likes)
                 self.profiles.append(profile)
             }
@@ -181,7 +181,7 @@ class DataManager: ObservableObject {
         editData(id: id, fa: [String](), fo: [String](), ch: [String](),
                  bl: [String]())
 
-        editProf(id: id, name: name, image: prof, text: text, likes: 0)
+        editProf(id: id, image: prof, city: city, text: text, likes: 0)
         editSets(id: id, no: true, em: true, pr: true, lo: true)
         initUser(id: id)
     }
@@ -212,12 +212,12 @@ class DataManager: ObservableObject {
     }
     
     // editProf is called @{Myself} page
-    func editProf(id: String, name: String, image: String, text: String, likes: Int) {
+    func editProf(id: String, image: String, city: String, text: String, likes: Int) {
         let profile = FS.collection("profiles").document(id)
         
-        profile.setData(["id": id, "name": name, "image": image, "text": text,
+        profile.setData(["id": id, "image": image, "city": city, "text": text,
                          "likes": likes])
-        profiles.append(Profile(id: id, name: name, image: image, text: text,
+        profiles.append(Profile(id: id, image: image, city: city, text: text,
                                 likes: likes))
     }
     
@@ -273,7 +273,7 @@ class DataManager: ObservableObject {
                 let getter = data["getter"] as! String
                 let time   = data["time"]   as! Date
                     
-                if (sender == senderID) && (getter == getterID) {
+                if (sender == senderID && getter == getterID) {
                     
                     self.messages.append(Message(id: id, text: text, sender: sender,
                                     getter: getter, time: time))

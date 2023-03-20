@@ -3,42 +3,42 @@
 import SwiftUI
 
 struct User: Identifiable, Hashable {
-    var id: String
-    var name: String
-    var image: String
-    var city: String
+    let id: String
+    let name: String
+    let image: String
+    let city: String
 }
 
 struct UserData: Identifiable {
-    var id: String
+    let id: String
     var favorites: [String]
-    var following: [String]
-    var chatting: [String]
-    var blocked: [String]
+    let following: [String]
+    let chatting: [String]
+    let blocked: [String]
 }
 
 struct Profile: Identifiable {
-    var id: String
-    var name: String
-    var image: String
-    var text: String
-    var likes: Int
+    let id: String
+    let image: String
+    let city: String
+    let text: String
+    let likes: Int
 }
 
 struct Message: Identifiable {
-    var id: String
-    var text: String
-    var sender: String
-    var getter: String
-    var time: Date
+    let id: String
+    let text: String
+    let sender: String
+    let getter: String
+    let time: Date
 }
 
 struct AIOrder: Identifiable {
-    var id: String
-    var order: String
-    var location: String
-    var rating: Int
-    var time: Date
+    let id: String
+    let order: String
+    let location: String
+    let rating: Int
+    let time: Date
 }
 
 struct Setting: Identifiable {

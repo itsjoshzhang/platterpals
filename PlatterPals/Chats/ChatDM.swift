@@ -62,7 +62,7 @@ struct ChatDM: View {
             }
         }
         .fullScreenCover(isPresented: $showChat) {
-            Convo(chatter: DM.find(id: name).id, text: text)
+            Convo(id: DM.find(id: name).id, text: text)
                 .environmentObject(DM)
         }
     }

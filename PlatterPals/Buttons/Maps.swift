@@ -22,7 +22,8 @@ struct Maps: View {
                     .foregroundColor(.pink)
                 
                 ZStack(alignment: .bottom) {
-                    Map(coordinateRegion: $mapsData.region, showsUserLocation: true, annotationItems: markers) { marker in
+                    Map(coordinateRegion: $mapsData.region, showsUserLocation:
+                            true, annotationItems: markers) { marker in
                         
                         MapAnnotation(coordinate: marker.coord) {
                             VStack {
@@ -40,7 +41,7 @@ struct Maps: View {
                                 showUser = true
                             }
                             .fullScreenCover(isPresented: $showUser) {
-                                UserProf(user: marker.user)
+                                UserProf(id: marker.user)
                                     .environmentObject(DM)
                             }
                         }
@@ -101,7 +102,7 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let location = locations.first
+        var location = locations.first
         
         DispatchQueue.main.async {
             self.region = MKCoordinateRegion(center: location!.coordinate,
