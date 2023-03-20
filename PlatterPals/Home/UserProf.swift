@@ -14,7 +14,7 @@ struct UserProf: View {
     
     var body: some View {
         NavigationStack {
-            var name = DM.find(id: id).name
+            let name = DM.find(id: id).name
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {

@@ -37,7 +37,6 @@ struct Home: View {
                 }
             }
             .navigationTitle("PlatterPals")
-
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {

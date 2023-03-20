@@ -56,7 +56,6 @@ struct Maps: View {
                 .ignoresSafeArea()
             }
             .navigationTitle("People Near Me")
-            
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {

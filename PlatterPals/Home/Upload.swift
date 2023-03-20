@@ -33,7 +33,7 @@ struct Upload: View {
                     }
                     PhotosPicker(selection: $images, maxSelectionCount: 1,
                                  matching: .images) {
-                        Label("Select Image", systemImage: "photo")
+                        Label("Select image", systemImage: "photo")
                     }
                      .buttonStyle(.bordered)
 
@@ -66,7 +66,6 @@ struct Upload: View {
             }
             .padding(20)
             .navigationTitle("Update Profile")
-
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {

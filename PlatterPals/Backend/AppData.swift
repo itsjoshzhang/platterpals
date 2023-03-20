@@ -2,6 +2,27 @@
 
 import SwiftUI
 
+let cityList = ["Berkeley", "Fremont", "Irvine", "Los Angeles", "Oakland",
+    "Palo Alto", "Pleasanton", "Riverside", "San Francisco", "San Jose"]
+
+let foodList = ["All", "American", "Brazilian", "Caribbean", "Chinese",
+                "Ethiopian", "French", "Indian", "Italian", "Japanese",
+                "Korean", "Mexican", "Middle Eastern", "Thai", "Vietnamese"]
+
+extension SetItem {
+    static let data = [
+        SetItem(title: "Chats", text: "Blocked users, notifications", image: "message"),
+
+        SetItem(title: "Feed", text: "Swipe history, profile suggests", image: "house"),
+
+        SetItem(title: "Profile", text: "Profile picture, bio, publicity", image: "person"),
+
+        SetItem(title: "Security", text: "Payment methods, login info", image: "lock"),
+
+        SetItem(title: "Account", text: "Link to DoorDash, deletion", image: "key"),
+    ]
+}
+
 struct User: Identifiable, Hashable {
     let id: String
     let name: String
@@ -49,27 +70,17 @@ struct Setting: Identifiable {
     var location = true
 }
 
+struct SetItem: Identifiable, Hashable {
+    let id = UUID()
+    let title: String
+    let text: String
+    let image: String
+}
+
 struct Div: View {
     var body: some View {
         Divider()
             .frame(minHeight: 3)
             .overlay(.pink)
     }
-}
-
-extension SettingsItem {
-    static let data = [
-        SettingsItem(headline: "Chats", caption: "Blocked users, notifications", imageName: "message"),
-        SettingsItem(headline: "Feed", caption: "Swipe history, profile suggests", imageName: "house"),
-        SettingsItem(headline: "Profile", caption: "Profile picture, bio, publicity", imageName: "person"),
-        SettingsItem(headline: "Security", caption: "Payment methods, login info", imageName: "lock"),
-        SettingsItem(headline: "Account", caption: "Link to DoorDash, deletion", imageName: "key"),
-    ]
-}
-
-struct SettingsItem: Identifiable {
-    let id = UUID()
-    let headline: String
-    let caption: String
-    let imageName: String
 }

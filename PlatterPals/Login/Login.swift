@@ -116,7 +116,6 @@ struct Reset: View {
             }
             .padding(20)
             .navigationTitle("Reset Password")
-            
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {

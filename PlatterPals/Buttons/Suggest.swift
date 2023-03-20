@@ -27,7 +27,7 @@ struct Suggest: View {
                         .textCase(.none))
                     {
                         Picker("Type of cuisine", selection: $cuisine) {
-                            ForEach(DM.foodList, id: \.self) { food in
+                            ForEach(foodList, id: \.self) { food in
                                 Text(food)
                             }
                         }
@@ -51,7 +51,6 @@ struct Suggest: View {
                 }
             }
             .navigationTitle("Let's Order!")
-            
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {

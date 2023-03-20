@@ -51,7 +51,7 @@ struct Admin: View {
                 TextField("Name", text: $name)
                 
                 Picker("City", selection: $city) {
-                    ForEach(DM.cityList, id: \.self) { city in
+                    ForEach(cityList, id: \.self) { city in
                         Text(city)
                     }
                 }
@@ -108,7 +108,6 @@ struct Sync: View {
             }
             .padding(20)
             .navigationTitle("Log in to DoorDash")
-            
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {

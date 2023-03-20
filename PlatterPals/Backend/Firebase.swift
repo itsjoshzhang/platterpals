@@ -46,19 +46,8 @@ class DataManager: ObservableObject {
     @Published var profiles = [Profile]()
     @Published var settings = Setting()
     @Published var loggedIn = false;
-    
-    // list of cities in menu @ {Signup}
-    let cityList = ["Berkeley", "Fremont", "Irvine", "Los Angeles", "Oakland",
-        "Palo Alto", "Pleasanton", "Riverside", "San Francisco", "San Jose"]
-    
-    // list of foods in menu @ {Suggest}
-    let foodList = ["All", "American", "Brazilian", "Caribbean", "Chinese",
-                    "Ethiopian", "French", "Indian", "Italian", "Japanese",
-                    "Korean", "Mexican", "Middle Eastern", "Thai", "Vietnamese"]
 
-    init() {
-        initLoad()
-    }
+    init() { initLoad() }
 
     // func called ONCE @ {Login/Signup}
     func initUser(id: String) {
@@ -173,15 +162,11 @@ class DataManager: ObservableObject {
     // makeUser is called ONCE @{Signup}
     func makeUser(id: String, name: String, city: String) {
         
-        let user = "avatars/\(id)"
-        let prof = "profiles/\(id)"
-        let text = "Add a bio"
-        
-        editUser(id: id, name: name, image: user, city: city)
+        editUser(id: id, name: name, city: city)
         editData(id: id, fa: [String](), fo: [String](), ch: [String](),
                  bl: [String]())
 
-        editProf(id: id, image: prof, city: city, text: text, likes: 0)
+        editProf(id: id, city: city, text: "Add a bio", likes: 0)
         editSets(id: id, no: true, em: true, pr: true, lo: true)
         initUser(id: id)
     }
@@ -193,7 +178,8 @@ class DataManager: ObservableObject {
     // 5. set instance var = new obj
     
     // editUser is called @{Myself} page
-    func editUser(id: String, name: String, image: String, city: String) {
+    func editUser(id: String, name: String, city: String) {
+        let image = "avatars/\(id)"
         
         let user = FS.collection("userList").document(id)
         user.setData(["id": id, "name": name, "image": image, "city": city])
@@ -212,7 +198,9 @@ class DataManager: ObservableObject {
     }
     
     // editProf is called @{Myself} page
-    func editProf(id: String, image: String, city: String, text: String, likes: Int) {
+    func editProf(id: String, city: String, text: String, likes: Int) {
+        let image = "profiles/\(id)"
+
         let profile = FS.collection("profiles").document(id)
         
         profile.setData(["id": id, "image": image, "city": city, "text": text,

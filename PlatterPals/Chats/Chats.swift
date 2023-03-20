@@ -33,7 +33,6 @@ struct Chats: View {
                 }
             }
             .navigationTitle("Chats")
-
             .onAppear {
                 for id in DM.data().chatting {
                     convos.append(DM.find(id: id))
@@ -83,7 +82,7 @@ struct Row: View {
 
             Image(image)
                 .resizable()
-                .frame(width: 55, height: 55)
+                .frame(width: 60, height: 60)
                 .clipShape(Circle())
 
             VStack(alignment: .leading, spacing: 5) {

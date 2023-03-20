@@ -19,7 +19,6 @@ struct Order: View {
             }
         }
         .navigationTitle("Found Your Food!")
-        
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button("Cancel") {

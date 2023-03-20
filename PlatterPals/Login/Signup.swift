@@ -53,7 +53,7 @@ struct Signup: View {
                     }
                     PhotosPicker(selection: $images, maxSelectionCount: 1,
                                  matching: .images) {
-                        Label("Select Image", systemImage: "photo")
+                        Label("Select image", systemImage: "photo")
                     }
                     .buttonStyle(.bordered)
 
@@ -86,7 +86,7 @@ struct Signup: View {
                         Div()
                         
                         Picker("Location", selection: $city) {
-                            ForEach(DM.cityList, id: \.self) { city in
+                            ForEach(cityList, id: \.self) { city in
                                 Text(city)
                             }
                         }
@@ -116,7 +116,6 @@ struct Signup: View {
                 }
                 .padding(20)
                 .navigationTitle("Create Account")
-                
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button("Cancel") {

@@ -1,54 +1,50 @@
+// File: checked
+
 import SwiftUI
 import Firebase
 
 struct Settings: View {
 
     @State var loggedOut = false
-	@State var items = SettingsItem.data
+	@State var items = SetItem.data
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var dm: DataManager
+
+    @EnvironmentObject var DM: DataManager
 	
 	var body: some View {
         NavigationStack {
             List(items) { item in
                 NavigationLink(value: item) {
-                    Row(headline: item.headline,
-                        caption: item.caption,
-                        image: item.imageName)
+                    SetRow(title: item.title, text: item.text, image: item.image)
                 }
             }
             .listStyle(.plain)
             .navigationTitle("Settings")
+
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Back") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
             }
-            .navigationDestination(for: SettingsItem.self) { item in
-                Settings2(anchor: item.headline)
-                    .environmentObject(dm)
+            .navigationDestination(for: SetItem.self) { item in
+                Settings2(anchor: item.title)
+                    .environmentObject(DM)
             }
             .fullScreenCover(isPresented: $loggedOut) {
                 Splash()
             }
-            .onAppear {
-                Auth.auth().addStateDidChangeListener { auth, user in
-                    withAnimation {
-                        loggedOut = user == nil
-                    }
-                }
-            }
             Button("Log out") {
                 try? Auth.auth().signOut()
+                loggedOut = !DM.loggedIn
             }
             .buttonStyle(.borderedProminent)
         }
 	}
 }
 
-struct Row2: View {
+struct SetRow: View {
     
     var title: String
     var text: String

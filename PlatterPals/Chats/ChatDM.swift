@@ -53,7 +53,6 @@ struct ChatDM: View {
             .padding(.horizontal, 20)
         }
         .navigationTitle("New Chat")
-
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button("Cancel") {

@@ -1,3 +1,5 @@
+// File: checked
+
 import SwiftUI
 
 struct Settings2: View {
@@ -6,28 +8,29 @@ struct Settings2: View {
     @State var toggle1 = true
     @State var toggle2 = true
     @State var toggle3 = false
-    
-    @State var showReset = false
+
     @State var showSync = false
+    @State var showReset = false
     @State var showDelete = false
     @State var showAdmin = false
     @State var showTerms = false
     
-    @EnvironmentObject var dm: DataManager
+    @EnvironmentObject var DM: DataManager
     
     var body: some View {
         ScrollViewReader { value in
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: 10.0) {
+                VStack(alignment: .leading, spacing: 16) {
+
+                    let id = DM.user().id
                     Group {
                         Text("Chats")
                             .font(.headline)
-                            .padding(.top, 20.0)
+                            .padding(.top, 20)
                             .id("Chats")
-                        Divider()
-                            .frame(minHeight: 3.0)
-                            .overlay(.pink)
+                        Div()
                         Text("Blocked users: None")
+
                         HStack {
                             Text("Allow chat notifications")
                             Spacer()
@@ -38,12 +41,11 @@ struct Settings2: View {
                     Group {
                         Text("Feed")
                             .font(.headline)
-                            .padding(.top, 20.0)
+                            .padding(.top, 20)
                             .id("Feed")
-                        Divider()
-                            .frame(minHeight: 3.0)
-                            .overlay(.pink)
+                        Div()
                         Text("Profile swipe history: None")
+
                         HStack {
                             Text("Allow profile suggestions")
                             Spacer()
@@ -54,36 +56,35 @@ struct Settings2: View {
                     Group {
                         Text("Profile")
                             .font(.headline)
-                            .padding(.top, 20.0)
+                            .padding(.top, 20)
                             .id("Profile")
-                        Divider()
-                            .frame(minHeight: 3.0)
-                            .overlay(.pink)
+                        Div()
+
                         HStack {
-                            Image(dm.user.image)
+                            Image(uiImage: DM.getImage(id: id,
+                                           path: "avatars"))
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 80.0)
+                                .frame(width: 80)
                                 .clipShape(Circle())
+
                             VStack(alignment: .leading) {
-                                Text(dm.user.name)
+                                Text(DM.user().name)
                                     .font(.headline)
-                                Text(dm.user.bio)
+                                Text(DM.prof(id: id).text)
                             }
                         }
                     }
                     Group {
                         Text("Security")
                             .font(.headline)
-                            .padding(.top, 20.0)
+                            .padding(.top, 20)
                             .id("Security")
-                        Divider()
-                            .frame(minHeight: 3.0)
-                            .overlay(.pink)
+                        Div()
                         Text("Payment methods: None")
+
                         HStack {
-                            Text(dm.user.id)
-                            Spacer()
+                            Text(id)
                             Button("Reset") {
                                 showReset = true
                             }
@@ -93,23 +94,25 @@ struct Settings2: View {
                     Group {
                         Text("Account")
                             .font(.headline)
-                            .padding(.top, 20.0)
+                            .padding(.top, 20)
                             .id("Account")
-                        Divider()
-                            .frame(minHeight: 3.0)
-                            .overlay(.pink)
+                        Div()
+
                         Button("Sync DoorDash") {
                             showSync = true
                         }
                         .buttonStyle(.borderedProminent)
+
                         if toggle3 {
                             Button("Cancel deletion") {
                                 showDelete = false
                                 toggle3 = false
                             }
                             .buttonStyle(.bordered)
+
                             Text("Delete account: processing")
                                 .foregroundColor(.secondary)
+
                         } else {
                             Button("Delete account") {
                                 showDelete = true
@@ -121,11 +124,10 @@ struct Settings2: View {
                     Group {
                         Text("Terms")
                             .font(.headline)
-                            .padding(.top, 20.0)
+                            .padding(.top, 20)
                             .id("Terms")
-                        Divider()
-                            .frame(minHeight: 3.0)
-                            .overlay(.pink)
+                        Div()
+
                         Button("Terms and EULA") {
                             showTerms = true
                         }
@@ -138,24 +140,27 @@ struct Settings2: View {
                     }
                 }
             }
-            .padding(.horizontal, 20.0)
+            .padding(.horizontal, 20)
             .fullScreenCover(isPresented: $showReset) {
-                Forgot()
+                Reset()
+                    .environmentObject(DM)
             }
             .fullScreenCover(isPresented: $showSync) {
                 Sync()
+                    .environmentObject(DM)
             }
             .fullScreenCover(isPresented: $showAdmin) {
                 Admin()
-                    .environmentObject(dm)
+                    .environmentObject(DM)
             }
             .fullScreenCover(isPresented: $showTerms) {
                 Terms()
+                    .environmentObject(DM)
             }
             .alert(isPresented: $showDelete) {
                 Alert(title: Text("Delete account"),
-                      message: Text("This will delete all your account data. Deletion may take up to 24 hours."),
-                      dismissButton: .default(Text("Got it!")))
+                      message: Text("Deletion may take up to 24 hours."),
+                      dismissButton: .default(Text("Continue")))
             }
             .onAppear {
                 value.scrollTo(anchor, anchor: .top)

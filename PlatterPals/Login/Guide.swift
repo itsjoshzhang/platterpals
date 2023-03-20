@@ -82,7 +82,6 @@ struct Terms: View {
             }
             .padding(20)
             .navigationTitle("PlatterPals Terms")
-            
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {

@@ -50,7 +50,7 @@ struct Update: View {
                         if id == DM.user().id {
                             Button("Delete profile", role: .destructive) {
 
-                                DM.editProf(id: id, image: "", city: "", text: "", likes: 0)
+                                DM.editProf(id: id, city: "", text: "", likes: 0)
                             }
                         } else {
                             Button("Report profile", role: .destructive) {
