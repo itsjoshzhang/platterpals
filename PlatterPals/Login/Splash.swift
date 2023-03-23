@@ -50,7 +50,7 @@ struct Splash: View {
                 scale = 1.0
                 opacity = 1.0
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 30.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                 withAnimation {
                     showNext = true
                 }

@@ -11,7 +11,7 @@ struct AppInit: App {
     }
     var body: some Scene {
         WindowGroup {
-            Splash(first: false)
+            Splash(first: true)
         }
     }
 }
