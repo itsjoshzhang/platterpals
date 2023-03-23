@@ -33,7 +33,7 @@ struct Settings: View {
                     .environmentObject(DM)
             }
             .fullScreenCover(isPresented: $loggedOut) {
-                Splash()
+                Splash(first: true)
             }
             Button("Log out") {
                 try? Auth.auth().signOut()

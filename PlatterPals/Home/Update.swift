@@ -26,7 +26,7 @@ struct Update: View {
     var content: some View {
         VStack(alignment: .leading, spacing: 16) {
 
-            var profile = DM.prof(id: id)
+            let profile = DM.prof(id: id)
 
             Button {
                 showProf = true
@@ -65,7 +65,7 @@ struct Update: View {
                 .padding(.horizontal, 16)
             }
             ZStack {
-                var ui = UIScreen.main.bounds
+                let ui = UIScreen.main.bounds
 
                 Image(uiImage: DM.getImage(id: id, path: "profiles"))
                     .resizable()

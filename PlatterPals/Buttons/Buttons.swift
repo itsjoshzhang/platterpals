@@ -31,7 +31,7 @@ struct BigButton: View {
                 Suggest()
                     .environmentObject(DM)
             } else if path == 2 {
-                Splash2()
+                Splash(first: false)
                     .environmentObject(DM)
             } else {
                 Sync()

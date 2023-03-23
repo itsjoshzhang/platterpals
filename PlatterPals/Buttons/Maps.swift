@@ -100,7 +100,7 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        var location = locations.first
+        let location = locations.first
         
         DispatchQueue.main.async {
             self.region = MKCoordinateRegion(center: location!.coordinate,

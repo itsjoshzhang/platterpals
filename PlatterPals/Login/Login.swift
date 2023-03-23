@@ -26,51 +26,58 @@ struct Login: View {
     }
     var content: some View {
         NavigationStack {
-            VStack(spacing: 16) {
-                Image("logo")
-                
-                TextField("Email", text: $email)
-                    .foregroundColor(.pink)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled(true)
-                Div()
-                
-                SecureField("Password", text: $password)
-                    .foregroundColor(.pink)
-                Div()
-                
-                Button("Reset password") {
-                    showReset = true
+            ZStack {
+                Image("back")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                    .opacity(0.05)
+
+                VStack(spacing: 16) {
+                    Image("logo")
+
+                    TextField("Email", text: $email)
+                        .foregroundColor(.pink)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled(true)
+                    Div()
+
+                    SecureField("Password", text: $password)
+                        .foregroundColor(.pink)
+                    Div()
+
+                    Button("Reset password") {
+                        showReset = true
+                    }
+                    Button("Create account") {
+                        showSignup = true
+                    }
+                    .buttonStyle(.bordered)
+
+                    Button("Log in") {
+                        loginAuth()
+                    }
+                    .disabled(email == "" || password == "")
+                    .buttonStyle(.borderedProminent)
+
+                    .alert(alertText, isPresented: $showAlert) {
+                        Button("OK", role: .cancel) {}
+                    }
                 }
-                Button("Create account") {
-                    showSignup = true
+                .frame(width: width - 32)
+                .navigationTitle("Welcome Back!")
+
+                .fullScreenCover(isPresented: $showReset) {
+                    Reset()
+                        .environmentObject(DM)
                 }
-                .buttonStyle(.bordered)
-                
-                Button("Log in") {
-                    loginAuth()
+                .fullScreenCover(isPresented: $showSignup) {
+                    Signup()
+                        .environmentObject(DM)
                 }
-                .disabled(email == "" || password == "")
-                .buttonStyle(.borderedProminent)
-                
-                .alert(alertText, isPresented: $showAlert) {
-                    Button("OK", role: .cancel) {}
-                }
-            }
-            .padding(20)
-            .navigationTitle("Welcome Back!")
-            
-            .fullScreenCover(isPresented: $showReset) {
-                Reset()
-                    .environmentObject(DM)
-            }
-            .fullScreenCover(isPresented: $showSignup) {
-                Signup()
-                    .environmentObject(DM)
             }
         }
     }
-    
     func loginAuth() {
         Auth.auth().signIn(withEmail: email,
                            password: password) { result, error in

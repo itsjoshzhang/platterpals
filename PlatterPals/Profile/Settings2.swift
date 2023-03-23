@@ -134,7 +134,7 @@ struct Settings2: View {
                     }
                     Rectangle()
                         .fill(.white)
-                        .frame(height: UIScreen.main.bounds.height)
+                        .frame(height: height)
                     Button("/") {
                         showAdmin = true
                     }

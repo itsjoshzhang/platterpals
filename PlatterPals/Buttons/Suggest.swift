@@ -59,7 +59,7 @@ struct Suggest: View {
                 }
             }
             .fullScreenCover(isPresented: $showSplash) {
-                Splash2()
+                Splash(first: false)
                     .environmentObject(DM)
             }
         }

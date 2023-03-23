@@ -2,6 +2,9 @@
 
 import SwiftUI
 
+let width = UIScreen.main.bounds.size.width
+let height = UIScreen.main.bounds.size.height
+
 let cityList = ["Berkeley", "Fremont", "Irvine", "Los Angeles", "Oakland",
     "Palo Alto", "Pleasanton", "Riverside", "San Francisco", "San Jose"]
 
@@ -80,7 +83,17 @@ struct SetItem: Identifiable, Hashable {
 struct Div: View {
     var body: some View {
         Divider()
-            .frame(minHeight: 3)
+            .frame(height: 3)
             .overlay(.pink)
+    }
+}
+
+struct Back: View {
+    var body: some View {
+        Image("back")
+            .resizable()
+            .scaledToFill()
+            .ignoresSafeArea()
+            .opacity(0.05)
     }
 }
