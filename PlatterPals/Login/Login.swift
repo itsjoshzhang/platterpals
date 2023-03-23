@@ -12,6 +12,7 @@ struct Login: View {
     
     @State var showReset = false
     @State var showSignup = false
+    @FocusState var focus: Bool
     @Environment(\.dismiss) var dismiss
     
     @EnvironmentObject var DM: DataManager
@@ -25,56 +26,59 @@ struct Login: View {
         }
     }
     var content: some View {
-        NavigationStack {
-            ZStack {
-                Image("back")
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
-                    .opacity(0.05)
+        ZStack {
+            Back()
+            VStack(spacing: 16) {
 
-                VStack(spacing: 16) {
-                    Image("logo")
+                Text("PlatterPals")
+                    .font(.custom("Lobster", size: 50))
+                    .padding(.bottom, 24)
 
-                    TextField("Email", text: $email)
-                        .foregroundColor(.pink)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled(true)
-                    Div()
-
-                    SecureField("Password", text: $password)
-                        .foregroundColor(.pink)
-                    Div()
-
-                    Button("Reset password") {
-                        showReset = true
+                Image("logo")
+                    .onTapGesture {
+                        focus = false
                     }
-                    Button("Create account") {
-                        showSignup = true
-                    }
-                    .buttonStyle(.bordered)
+                TextField("Email", text: $email)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled(true)
+                    .focused($focus)
+                Div()
 
-                    Button("Log in") {
-                        loginAuth()
-                    }
-                    .disabled(email == "" || password == "")
-                    .buttonStyle(.borderedProminent)
+                SecureField("Password", text: $password)
+                    .focused($focus)
+                Div()
 
-                    .alert(alertText, isPresented: $showAlert) {
-                        Button("OK", role: .cancel) {}
-                    }
+                Button("Reset password") {
+                    showReset = true
                 }
-                .frame(width: width - 32)
-                .navigationTitle("Welcome Back!")
+                Button("Create account") {
+                    showSignup = true
+                }
+                .buttonStyle(.bordered)
 
-                .fullScreenCover(isPresented: $showReset) {
-                    Reset()
-                        .environmentObject(DM)
+                Button("Log in") {
+                    loginAuth()
                 }
-                .fullScreenCover(isPresented: $showSignup) {
-                    Signup()
-                        .environmentObject(DM)
+                .disabled(email == "" || password == "")
+                .buttonStyle(.borderedProminent)
+                .foregroundColor(.white)
+
+                .alert(alertText, isPresented: $showAlert) {
+                    Button("OK", role: .cancel) {}
                 }
+
+            }
+            .foregroundColor(.pink)
+            .frame(width: width - 32)
+
+            .sheet(isPresented: $showReset) {
+                Reset()
+                    .environmentObject(DM)
+                    .presentationDetents([.medium])
+            }
+            .fullScreenCover(isPresented: $showSignup) {
+                Signup()
+                    .environmentObject(DM)
             }
         }
     }
@@ -91,58 +95,53 @@ struct Login: View {
         }
     }
 }
-
 struct Reset: View {
     
     @State var email = ""
     @State var alertText = ""
     @State var showAlert = false
-    @Environment(\.dismiss) var dismiss
     
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 16) {
-                
-                TextField("Email", text: $email)
-                    .foregroundColor(.pink)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled(true)
-                Div()
-                
-                Button("Send reset link") {
-                    resetPass()
+            ZStack {
+                Back()
+                VStack(spacing: 16) {
+
+                    TextField("Email", text: $email)
+                        .foregroundColor(.pink)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled(true)
+                    Div()
+
+                    Text("We'll send a reset link right away!")
+                        .foregroundColor(.secondary)
+
+                    Button("Send link") {
+                        resetPass()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(email == "")
+
+                    .alert(alertText, isPresented: $showAlert) {
+                        Button("OK", role: .cancel) {}
+                    }
                 }
-                .buttonStyle(.borderedProminent)
-                .disabled(email == "")
-                
-                .alert(alertText, isPresented: $showAlert) {
-                    Button("OK", role: .cancel) {}
-                }
+                .navigationTitle("Reset Password")
+                .padding(16)
             }
-            .padding(20)
-            .navigationTitle("Reset Password")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }}}}}
-    
-    
+        }
+            }
     func resetPass() {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
-            
-            if error == nil {
-                alertText = "Reset link sent!"
-            } else {
+            if error != nil {
                 alertText = error!.localizedDescription
             }
             showAlert = true
         }
     }
 }
-
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
         Login()

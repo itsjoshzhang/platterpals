@@ -32,19 +32,17 @@ struct Signup: View {
     }
     var content: some View {
         NavigationStack {
-            ScrollView {
+            ZStack {
+                Back()
                 VStack(spacing: 16) {
-                    
-                    if let data = imageData, let image =
-                        UIImage(data: data) {
-                        
-                        Image(uiImage: image)
+
+                    if imageData != nil {
+                        let image = UIImage(data: imageData)
+                        Image(uiImage: imageData)
                             .resizable()
                             .scaledToFit()
                             .frame(width: 160)
                             .clipShape(Circle())
-                        
-                    } else {
                         Image("logo")
                             .resizable()
                             .scaledToFit()
@@ -55,36 +53,36 @@ struct Signup: View {
                                  matching: .images) {
                         Label("Select image", systemImage: "photo")
                     }
-                    .buttonStyle(.bordered)
+                                 .buttonStyle(.bordered)
 
-                    .onChange(of: images) { _ in
-                        images.first!.loadTransferable(type: Data.self) {
-                            result in
-                         
-                            switch result {
-                            case .success(let data):
-                                imageData = data
-                            case .failure(_):
-                                return
-                            }
-                        }
-                    }
+                                 .onChange(of: images) { _ in
+                                     images.first!.loadTransferable(type: Data.self) {
+                                         result in
+
+                                         switch result {
+                                         case .success(let data):
+                                             imageData = data
+                                         case .failure(_):
+                                             return
+                                         }
+                                     }
+                                 }
                     Group {
                         TextField("Email", text: $email)
                             .foregroundColor(.pink)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled(true)
                         Div()
-                        
+
                         SecureField("Password", text: $password)
                             .foregroundColor(.pink)
                         Div()
-                        
+
                         TextField("Username", text: $name)
                             .foregroundColor(.pink)
                             .autocorrectionDisabled(true)
                         Div()
-                        
+
                         Picker("Location", selection: $city) {
                             ForEach(cityList, id: \.self) { city in
                                 Text(city)
@@ -93,7 +91,7 @@ struct Signup: View {
                         HStack {
                             Text("I agree to the ")
                                 .foregroundColor(.secondary)
-                            
+
                             Button("terms and EULA") {
                                 showTerms = true
                             }
@@ -103,13 +101,13 @@ struct Signup: View {
                         showGuide = true
                     }
                     .buttonStyle(.bordered)
-                    
+
                     Button("Sign up") {
                         signupAuth()
                     }
                     .disabled(name == "")
                     .buttonStyle(.borderedProminent)
-                    
+
                     .alert(alertText, isPresented: $showAlert) {
                         Button("OK", role: .cancel) {}
                     }

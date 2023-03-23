@@ -15,7 +15,6 @@ struct AppInit: App {
         }
     }
 }
-
 struct MyTabView: View {
     
     @State var tag = 2
@@ -45,7 +44,6 @@ struct MyTabView: View {
         .environmentObject(DM)
     }
 }
-
 struct AppInit_Previews: PreviewProvider {
     static var previews: some View {
         MyTabView()

@@ -34,8 +34,8 @@ struct Splash: View {
                 
                 if !first {
                     Text("Finding the perfect dish...")
-                        .font(.headline)
                         .foregroundColor(.pink)
+                        .font(.headline)
                 }
                 ProgressView()
                     .scaleEffect(2)
@@ -45,6 +45,7 @@ struct Splash: View {
         }
         .scaleEffect(scale)
         .opacity(opacity)
+
         .onAppear {
             withAnimation(.easeIn(duration: 1.0)) {
                 scale = 1.0

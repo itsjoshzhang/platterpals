@@ -92,8 +92,8 @@ struct Back: View {
     var body: some View {
         Image("back")
             .resizable()
+            .opacity(0.05)
             .scaledToFill()
             .ignoresSafeArea()
-            .opacity(0.05)
     }
 }
