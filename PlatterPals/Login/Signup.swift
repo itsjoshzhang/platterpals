@@ -35,38 +35,26 @@ struct Signup: View {
             ZStack {
                 Back()
                 VStack(spacing: 16) {
+                    RoundPic(image: imageData, width: 160)
 
-                    if imageData != nil {
-                        let image = UIImage(data: imageData)
-                        Image(uiImage: imageData)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 160)
-                            .clipShape(Circle())
-                        Image("logo")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 160)
-                            .clipShape(Circle())
-                    }
                     PhotosPicker(selection: $images, maxSelectionCount: 1,
                                  matching: .images) {
                         Label("Select image", systemImage: "photo")
                     }
-                                 .buttonStyle(.bordered)
+                     .buttonStyle(.bordered)
 
-                                 .onChange(of: images) { _ in
-                                     images.first!.loadTransferable(type: Data.self) {
-                                         result in
+                     .onChange(of: images) { _ in
+                         images.first!.loadTransferable(
+                            type: Data.self) { result in
 
-                                         switch result {
-                                         case .success(let data):
-                                             imageData = data
-                                         case .failure(_):
-                                             return
-                                         }
-                                     }
-                                 }
+                             switch result {
+                             case .success(let data):
+                                 imageData = data
+                             case .failure(_):
+                                 return
+                             }
+                         }
+                     }
                     Group {
                         TextField("Email", text: $email)
                             .foregroundColor(.pink)
@@ -121,18 +109,17 @@ struct Signup: View {
                         }
                     }
                 }
-                .fullScreenCover(isPresented: $showGuide) {
+                .sheet(isPresented: $showGuide) {
                     Guide()
                         .environmentObject(DM)
                 }
-                .fullScreenCover(isPresented: $showTerms) {
+                .sheet(isPresented: $showTerms) {
                     Terms()
                         .environmentObject(DM)
                 }
             }
         }
     }
-    
     func signupAuth() {
         Auth.auth().createUser(withEmail: email,
                                password: password) { result, error in
@@ -146,7 +133,6 @@ struct Signup: View {
         }
     }
 }
-
 struct Signup_Previews: PreviewProvider {
     static var previews: some View {
         Signup()

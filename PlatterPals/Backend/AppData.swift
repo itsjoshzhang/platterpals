@@ -97,3 +97,26 @@ struct Back: View {
             .ignoresSafeArea()
     }
 }
+
+struct RoundPic: View {
+    var image: Data?
+    var width: Int
+
+    var body: some View {
+        if let data = image,
+           let uiimage = UIImage(data: data) {
+
+            Image(uiImage: uiimage)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 160)
+                .clipShape(Circle())
+        } else {
+            Image("logo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 160)
+                .clipShape(Circle())
+        }
+    }
+}
