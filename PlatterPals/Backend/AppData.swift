@@ -109,13 +109,13 @@ struct RoundPic: View {
             Image(uiImage: uiimage)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 160)
+                .frame(width: CGFloat(width))
                 .clipShape(Circle())
         } else {
             Image("logo")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 160)
+                .frame(width: CGFloat(width))
                 .clipShape(Circle())
         }
     }
