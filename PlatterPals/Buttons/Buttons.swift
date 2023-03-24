@@ -33,9 +33,6 @@ struct BigButton: View {
             } else if path == 2 {
                 Splash(first: false)
                     .environmentObject(DM)
-            } else {
-                Sync()
-                    .environmentObject(DM)
             }
         }
     }

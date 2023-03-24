@@ -1,5 +1,3 @@
-// File: checked
-
 import SwiftUI
 import Firebase
 
@@ -32,60 +30,58 @@ struct Login: View {
 
                 Text("PlatterPals")
                     .font(.custom("Lobster", size: 50))
+                    .foregroundColor(.pink)
                     .padding(.bottom, 24)
 
                 Image("logo")
                     .onTapGesture {
                         focus = false
                     }
-                TextField("Email", text: $email)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled(true)
-                    .focused($focus)
-                Div()
+                Group {
+                    TextField("Email", text: $email)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled(true)
+                    Div()
 
-                SecureField("Password", text: $password)
-                    .focused($focus)
-                Div()
+                    SecureField("Password", text: $password)
+                    Div()
+                }
+                .foregroundColor(.pink)
+                .focused($focus)
 
-                Button("Reset password") {
+                Button("Forgot your login?") {
                     showReset = true
                 }
-                Button("Create account") {
+                Button("New to PlatterPals?") {
                     showSignup = true
                 }
                 .buttonStyle(.bordered)
 
-                Button("Log in") {
+                Button("Sign In") {
                     loginAuth()
                 }
                 .disabled(email == "" || password == "")
                 .buttonStyle(.borderedProminent)
-                .foregroundColor(.white)
 
                 .alert(alertText, isPresented: $showAlert) {
                     Button("OK", role: .cancel) {}
                 }
-
             }
-            .foregroundColor(.pink)
-            .frame(width: width - 32)
-
-            .sheet(isPresented: $showReset) {
-                Reset()
-                    .environmentObject(DM)
-                    .presentationDetents([.medium])
-            }
-            .fullScreenCover(isPresented: $showSignup) {
-                Signup()
-                    .environmentObject(DM)
-            }
+        }
+        .padding(16)
+        .sheet(isPresented: $showReset) {
+            Reset()
+                .presentationDetents([.medium])
+        }
+        .fullScreenCover(isPresented: $showSignup) {
+            Signup()
+                .environmentObject(DM)
         }
     }
     func loginAuth() {
         Auth.auth().signIn(withEmail: email,
                            password: password) { result, error in
-            
+
             if error == nil {
                 DM.initUser(id: email)
             } else {
@@ -101,24 +97,22 @@ struct Reset: View {
     @State var alertText = ""
     @State var showAlert = false
     
-    @EnvironmentObject var DM: DataManager
-    
     var body: some View {
         NavigationStack {
             ZStack {
                 Back()
                 VStack(spacing: 16) {
+                    Group {
+                        TextField("Email", text: $email)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled(true)
+                        Div()
 
-                    TextField("Email", text: $email)
-                        .foregroundColor(.pink)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled(true)
-                    Div()
+                        Text("We'll email you a reset link right away!")
+                    }
+                    .foregroundColor(.pink)
 
-                    Text("We'll send a reset link right away!")
-                        .foregroundColor(.secondary)
-
-                    Button("Send link") {
+                    Button("Reset Password") {
                         resetPass()
                     }
                     .buttonStyle(.borderedProminent)
@@ -132,13 +126,13 @@ struct Reset: View {
                 .padding(16)
             }
         }
-            }
+    }
     func resetPass() {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             if error != nil {
                 alertText = error!.localizedDescription
+                showAlert = true
             }
-            showAlert = true
         }
     }
 }

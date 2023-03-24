@@ -6,7 +6,6 @@ import PhotosUI
 struct Myself: View {
 
     @State var editInfo = false
-    @State var showSync = false
     @State var showSets = false
     @State var imageData: Data?
 
@@ -82,10 +81,6 @@ struct Myself: View {
                             }
                             .buttonStyle(.borderedProminent)
                         }
-                        Button("Sync data") {
-                            showSync = true
-                        }
-                        .buttonStyle(.bordered)
                     }
                     .padding(.horizontal, 20)
 
@@ -110,9 +105,6 @@ struct Myself: View {
                     }
                     .buttonStyle(.borderedProminent)
                 }
-            }
-            .fullScreenCover(isPresented: $showSync) {
-                Sync()
             }
             .fullScreenCover(isPresented: $showSets) {
                 Settings()

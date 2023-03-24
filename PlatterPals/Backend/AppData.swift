@@ -1,12 +1,10 @@
-// File: checked
-
 import SwiftUI
 
-let width = UIScreen.main.bounds.size.width
-let height = UIScreen.main.bounds.size.height
+let UIwidth = UIScreen.main.bounds.size.width
+let UIheight = UIScreen.main.bounds.size.height
 
-let cityList = ["Berkeley", "Fremont", "Irvine", "Los Angeles", "Oakland",
-    "Palo Alto", "Pleasanton", "Riverside", "San Francisco", "San Jose"]
+let cityList = ["Berkeley", "Fremont", "Oakland", "Palo Alto",
+                "Pleasanton", "San Francisco", "San Jose"]
 
 let foodList = ["All", "American", "Brazilian", "Caribbean", "Chinese",
                 "Ethiopian", "French", "Indian", "Italian", "Japanese",
@@ -99,24 +97,22 @@ struct Back: View {
 }
 
 struct RoundPic: View {
-    var image: Data?
+    var image: UIImage?
     var width: Int
 
     var body: some View {
-        if let data = image,
-           let uiimage = UIImage(data: data) {
+        if let image = image {
 
-            Image(uiImage: uiimage)
+            Image(uiImage: image)
                 .resizable()
                 .scaledToFit()
-                .frame(width: CGFloat(width))
                 .clipShape(Circle())
+                .frame(width: CGFloat(width))
         } else {
             Image("logo")
                 .resizable()
                 .scaledToFit()
                 .frame(width: CGFloat(width))
-                .clipShape(Circle())
         }
     }
 }

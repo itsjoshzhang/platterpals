@@ -9,10 +9,8 @@ struct Settings2: View {
     @State var toggle2 = true
     @State var toggle3 = false
 
-    @State var showSync = false
     @State var showReset = false
     @State var showDelete = false
-    @State var showAdmin = false
     @State var showTerms = false
     
     @EnvironmentObject var DM: DataManager
@@ -98,11 +96,6 @@ struct Settings2: View {
                             .id("Account")
                         Div()
 
-                        Button("Sync DoorDash") {
-                            showSync = true
-                        }
-                        .buttonStyle(.borderedProminent)
-
                         if toggle3 {
                             Button("Cancel deletion") {
                                 showDelete = false
@@ -132,25 +125,11 @@ struct Settings2: View {
                             showTerms = true
                         }
                     }
-                    Rectangle()
-                        .fill(.white)
-                        .frame(height: height)
-                    Button("/") {
-                        showAdmin = true
-                    }
                 }
             }
             .padding(.horizontal, 20)
             .fullScreenCover(isPresented: $showReset) {
                 Reset()
-                    .environmentObject(DM)
-            }
-            .fullScreenCover(isPresented: $showSync) {
-                Sync()
-                    .environmentObject(DM)
-            }
-            .fullScreenCover(isPresented: $showAdmin) {
-                Admin()
                     .environmentObject(DM)
             }
             .fullScreenCover(isPresented: $showTerms) {

@@ -1,5 +1,3 @@
-// File: checked
-
 import SwiftUI
 
 struct Splash: View {
@@ -30,11 +28,9 @@ struct Splash: View {
                 
                 Text("PlatterPals")
                     .font(.custom("Lobster", size: 50))
-                    .foregroundColor(.pink)
                 
                 if !first {
                     Text("Finding the perfect dish...")
-                        .foregroundColor(.pink)
                         .font(.headline)
                 }
                 ProgressView()
@@ -42,6 +38,7 @@ struct Splash: View {
                     .tint(.pink)
                     .padding(16)
             }
+            .foregroundColor(.pink)
         }
         .scaleEffect(scale)
         .opacity(opacity)

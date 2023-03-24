@@ -1,5 +1,3 @@
-// File: checked
-
 import SwiftUI
 import Firebase
 
@@ -16,7 +14,7 @@ struct AppInit: App {
     }
 }
 struct MyTabView: View {
-    
+
     @State var tag = 2
     @EnvironmentObject var DM: DataManager
     

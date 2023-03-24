@@ -89,7 +89,7 @@ class DataManager: ObservableObject {
                 return user
             }
         }
-        return User(id: "", name: "All", image: "logo", city: "")
+        return user()
     }
 
     func initLoad() {

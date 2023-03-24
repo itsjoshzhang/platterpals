@@ -65,15 +65,13 @@ struct Update: View {
                 .padding(.horizontal, 16)
             }
             ZStack {
-                let ui = UIScreen.main.bounds
-
                 Image(uiImage: DM.getImage(id: id, path: "profiles"))
                     .resizable()
                     .scaledToFit()
-                    .frame(height: ui.height)
+                    .frame(height: UIheight)
                     .clipped()
 
-                    .gesture(DragGesture(minimumDistance: ui.width / 4)
+                    .gesture(DragGesture(minimumDistance: UIwidth / 4)
                         .onChanged { swipe in
                             offset = swipe.translation.width
                             size = 1.0

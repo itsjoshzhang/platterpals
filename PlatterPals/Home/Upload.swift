@@ -23,7 +23,7 @@ struct Upload: View {
                         Image(uiImage: image)
                             .resizable()
                             .scaledToFit()
-                            .frame(height: height)
+                            .frame(height: UIheight)
                     } else {
                         Image("cards")
                             .resizable()
