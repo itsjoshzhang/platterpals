@@ -45,7 +45,6 @@ class DataManager: ObservableObject {
     @Published var userData = [UserData]()
     @Published var profiles = [Profile]()
     @Published var settings = Setting()
-    @Published var loggedIn = false;
 
     init() { initLoad() }
 
@@ -58,7 +57,6 @@ class DataManager: ObservableObject {
                 
         // reassign thisUser if ID match
                 thisUser = index
-                loggedIn = true
                 getSetts()
                 break
             }

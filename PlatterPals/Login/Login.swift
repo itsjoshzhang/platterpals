@@ -6,17 +6,18 @@ struct Login: View {
     @State var email = ""
     @State var password = ""
     @State var alertText = ""
+    @FocusState var focus: Bool
+
+    @State var loggedIn = false
     @State var showAlert = false
-    
     @State var showReset = false
     @State var showSignup = false
-    @FocusState var focus: Bool
     @Environment(\.dismiss) var dismiss
     
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
-        if DM.loggedIn {
+        if loggedIn {
             MyTabView()
                 .environmentObject(DM)
         } else {
@@ -69,6 +70,13 @@ struct Login: View {
             }
         }
         .padding(16)
+        .onAppear {
+            Auth.auth().addStateDidChangeListener { auth, user in
+                if user != nil {
+                    loggedIn = true
+                }
+            }
+        }
         .sheet(isPresented: $showReset) {
             Reset()
                 .presentationDetents([.medium])

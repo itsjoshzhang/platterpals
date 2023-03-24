@@ -1,5 +1,3 @@
-// TODO: keep user logged in after exiting
-
 import SwiftUI
 import PhotosUI
 import Firebase
@@ -16,20 +14,13 @@ struct Signup: View {
     @State var showTerms = false
     @State var showGuide = false
     @State var imageData: Data?
-    @State var imageItem: PhotosPickerItem?
-    
+    @FocusState var focus: Bool
+
     @Environment(\.dismiss) var dismiss
+    @State var imageItem: PhotosPickerItem?
     @EnvironmentObject var DM: DataManager
-    
+
     var body: some View {
-        if DM.loggedIn {
-            MyTabView()
-                .environmentObject(DM)
-        } else {
-            content
-        }
-    }
-    var content: some View {
         NavigationStack {
         ZStack {
         Back()
@@ -70,7 +61,10 @@ struct Signup: View {
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled(true)
             .foregroundColor(.pink)
-
+            .focused($focus)
+            .onTapGesture {
+                focus = true
+            }
             HStack {
                 Text("Location")
                     .foregroundColor(.pink)
@@ -95,10 +89,11 @@ struct Signup: View {
                 Button("PlatterPals How-To") {
                     showGuide = true
                 }
-                Button("Create Account") {
+                Button("Sign Up") {
                     signupAuth()
                 }
                 .disabled(name == "" || imageData == nil)
+                .padding(.bottom, 24)
 
                 .alert(alertText, isPresented: $showAlert) {
                     Button("OK", role: .cancel) {}
@@ -106,10 +101,13 @@ struct Signup: View {
             }
             .buttonStyle(.borderedProminent)
         }
+        .padding(16)
         }
         }
         .navigationTitle("Create Account")
-        .padding(16)
+        .onTapGesture {
+            focus = false
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button("Cancel") {
@@ -132,6 +130,7 @@ struct Signup: View {
             if error == nil {
                 DM.putImage(id: email, path: "avatars", image: imageData)
                 DM.makeUser(id: email, name: name, city: city)
+                dismiss()
             } else {
                 alertText = error!.localizedDescription
                 showAlert = true

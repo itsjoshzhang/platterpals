@@ -10,8 +10,15 @@ struct Settings: View {
     @Environment(\.dismiss) var dismiss
 
     @EnvironmentObject var DM: DataManager
-	
-	var body: some View {
+
+    var body: some View {
+        if loggedOut {
+            Splash(first: true)
+        } else {
+            content
+        }
+    }
+	var content: some View {
         NavigationStack {
             List(items) { item in
                 NavigationLink(value: item) {
@@ -32,18 +39,14 @@ struct Settings: View {
                 Settings2(anchor: item.title)
                     .environmentObject(DM)
             }
-            .fullScreenCover(isPresented: $loggedOut) {
-                Splash(first: true)
-            }
             Button("Log out") {
                 try? Auth.auth().signOut()
-                loggedOut = !DM.loggedIn
+                loggedOut = true
             }
             .buttonStyle(.borderedProminent)
         }
 	}
 }
-
 struct SetRow: View {
     
     var title: String
