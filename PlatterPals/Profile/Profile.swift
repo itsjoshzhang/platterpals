@@ -3,7 +3,7 @@
 import SwiftUI
 import PhotosUI
 
-struct Myself: View {
+struct MyProfile: View {
 
     @State var editInfo = false
     @State var showSets = false
@@ -12,7 +12,7 @@ struct Myself: View {
     @State var name = ""
     @State var text = ""
     @State var city = "Berkeley"
-    @State var images = [PhotosPickerItem]()
+    @State var imageItem: PhotosPickerItem?
 
     @EnvironmentObject var DM: DataManager
     
@@ -32,12 +32,21 @@ struct Myself: View {
                 .frame(width: 80)
                 .clipShape(Circle())
 
-            PhotosPicker(selection: $images, maxSelectionCount: 1,
-                         matching: .images) {
-                Label("Select image", systemImage: "photo")
-            }
+            PhotosPicker("Upload Picture", selection: $imageItem,
+                         matching: .images)
             .buttonStyle(.bordered)
 
+            .onChange(of: imageItem) { _ in
+                imageItem?.loadTransferable(type: Data.self) { result in
+
+                    switch result {
+                    case .success(let data):
+                        imageData = data
+                    case .failure(_):
+                        return
+                    }
+                }
+            }
             TextField("Change username", text: $name)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
 
@@ -113,9 +122,9 @@ struct Myself: View {
         }
     }
 }
-struct Myself_Previews: PreviewProvider {
+struct Profile_Previews: PreviewProvider {
 	static var previews: some View {
-        Myself()
+        MyProfile()
             .environmentObject(DataManager())
 	}
 }

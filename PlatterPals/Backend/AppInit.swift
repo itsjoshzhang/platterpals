@@ -32,7 +32,7 @@ struct MyTabView: View {
                     Text("Home")
                 }
                 .tag(2)
-            Myself()
+            MyProfile()
                 .tabItem {
                     Image(systemName: "person")
                     Text("Profile")

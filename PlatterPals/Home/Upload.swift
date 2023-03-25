@@ -5,9 +5,9 @@ import PhotosUI
 
 struct Upload: View {
 
-    @State var imageData: Data?
     @State var text: String = ""
-    @State var images = [PhotosPickerItem]()
+    @State var imageData: Data?
+    @State var imageItem: PhotosPickerItem?
     @Environment(\.dismiss) var dismiss
     
     @EnvironmentObject var DM: DataManager
@@ -31,24 +31,21 @@ struct Upload: View {
                             .opacity(0.25)
                             .border(.pink, width: 3)
                     }
-                    PhotosPicker(selection: $images, maxSelectionCount: 1,
-                                 matching: .images) {
-                        Label("Select image", systemImage: "photo")
+                    PhotosPicker("Upload Picture", selection: $imageItem,
+                                 matching: .images)
+                    .buttonStyle(.bordered)
+
+                    .onChange(of: imageItem) { _ in
+                        imageItem?.loadTransferable(type: Data.self) { result in
+
+                            switch result {
+                            case .success(let data):
+                                imageData = data
+                            case .failure(_):
+                                return
+                            }
+                        }
                     }
-                     .buttonStyle(.bordered)
-
-                     .onChange(of: images) { _ in
-                         images.first!.loadTransferable(type: Data.self) {
-                             result in
-
-                             switch result {
-                             case .success(let data):
-                                 self.imageData = data
-                             case .failure(_):
-                                 return
-                             }
-                         }
-                     }
                     TextField("Write a bio", text: $text)
                     Div()
 

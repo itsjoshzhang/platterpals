@@ -1,54 +1,68 @@
-/* File: checked
- 
-initUser(id: String) -> changes {DM}
-    -* thisUser
- 
-user() || data() || prof() ->
-    -> User || UserData || Profile
-
-initVars() -> changes {DM}
-    -* userList && userData && profiles
-
-makeUser() -> changes {FS}
-    -> call to edit....()
-
-edit....() -> changes {FS}
-    -* whatever {....} is
-    -* userList || userData || profiles || settings
-
-getChats(id: String) -> [Message]
-
-getOrder(id: String) -> [AIOrder]
-
-getSetts() -> changes {DM}
-    -* settings
- 
-putImage(id, path, image) -> changes {FS}
-    -* profiles/ || avatars/
- 
-getImage(id, path) -> UIImage
-*/
-
 import SwiftUI
 import Firebase
 import FirebaseStorage
 
-// DataManager stores all Firestore info
 class DataManager: ObservableObject {
-    
-    // instance vars (storage & tracker)
-    let FS = Firestore.firestore()
-    @Published var thisUser = 0
-    
-    // instance vars (keeping user info)
+
+    private let FS = Firestore.firestore()
+    private let SR = Storage.storage().reference()
+
+    private var thisUser = 0
     @Published var userList = [User]()
     @Published var userData = [UserData]()
-    @Published var profiles = [Profile]()
     @Published var settings = Setting()
 
-    init() { initLoad() }
+    func putImage(image: UIImage, path: String) -> Bool {
+        var done = false
 
-    // func called ONCE @ {Login/Signup}
+        var pfp = (path == "avatars")
+        let path = SR.child("\(path)/\(user().id).jpg")
+
+        let image = image.resize(width: 200, pfp: pfp)
+        let jpeg = image.jpegData(compressionQuality: 0.25)
+
+        let meta = StorageMetadata()
+        meta.contentType = "image/jpg"
+
+        if let jpeg = jpeg {
+            path.putData(jpeg, metadata: meta) {_, error in
+                if error == nil {
+                    done = true
+                }}}
+        return done
+    }
+
+    func listAll(path: String) {
+        let path = SR.child(path)
+
+        path.listAll { result, error in
+            if error != nil {
+                for item in result!.items {
+                    print(item)
+    }}}}
+
+    func delImage(item: StorageReference) {
+        item.delete { error in }
+    }
+
+    // getImage is called by Home / Prof
+    func getImage(id: String, path: String, state: UIImage) {
+
+        // access FS storage at path, id
+        var image = UIImage(named: "logo")
+        let SR = Storage.storage().reference().child("\(path)/\(id)")
+
+        // get data and make new UIImage
+        SR.getData(maxSize: 16 * 1024 * 1024) { data, error in
+            if let data = data, let uiImage = UIImage(data: data) {
+
+            }
+        }
+        DispatchQueue.main.async {
+            return image!
+        }
+    }
+
     func initUser(id: String) {
         
         // loop through list to check id
@@ -159,7 +173,8 @@ class DataManager: ObservableObject {
     
     // makeUser is called ONCE @{Signup}
     func makeUser(id: String, name: String, city: String) {
-        
+        let id = id.replacingOccurrences(of: ".", with: "_")
+
         editUser(id: id, name: name, city: city)
         editData(id: id, fa: [String](), fo: [String](), ch: [String](),
                  bl: [String]())
@@ -175,7 +190,7 @@ class DataManager: ObservableObject {
     // 4. setData to document values
     // 5. set instance var = new obj
     
-    // editUser is called @{Myself} page
+    // editUser is called @{Profile} page
     func editUser(id: String, name: String, city: String) {
         let image = "avatars/\(id)"
         
@@ -185,7 +200,7 @@ class DataManager: ObservableObject {
         userList.append(User(id: id, name: name, image: image, city: city))
     }
     
-    // editData is called @{Myself} page
+    // editData is called @{Profile} page
     func editData(id: String, fa: [String], fo: [String], ch: [String], bl: [String]) {
         let data = FS.collection("userData").document(id)
         
@@ -195,7 +210,7 @@ class DataManager: ObservableObject {
                                  ch, blocked: bl))
     }
     
-    // editProf is called @{Myself} page
+    // editProf is called @{Profile} page
     func editProf(id: String, city: String, text: String, likes: Int) {
         let image = "profiles/\(id)"
 
@@ -229,7 +244,6 @@ class DataManager: ObservableObject {
     
     // sendOrder is called by @ {Order}
     func sendOrder(order: String, location: String, rating: Int, time: Date) {
-        
         let id = UUID().uuidString
         let AIOrder = FS.collection("aiOrders").document(id)
         
@@ -247,8 +261,7 @@ class DataManager: ObservableObject {
 
     // getChats is called by {Chats} page
     func getChats(senderID: String, getterID: String) {
-
-        FS.collection("messages").getDocuments { collection, error in
+        FS.collection("messages").addSnapshotListener { collection, error in
             
             for document in collection!.documents {
                 let data = document.data()
@@ -257,17 +270,17 @@ class DataManager: ObservableObject {
                 let text   = data["text"]   as! String
                 let sender = data["sender"] as! String
                 let getter = data["getter"] as! String
-                let time   = data["time"]   as! Date
-                    
+                let time   = data["time"]   as? Date ?? Date()
+
                 if (sender == senderID && getter == getterID) {
                     
                     self.messages.append(Message(id: id, text: text, sender: sender,
-                                    getter: getter, time: time))
-                }
-            }
-        }
-    }
-    
+                                                 getter: getter, time: time))
+                    self.messages.sort {
+                        $0.time < $1.time
+                    }}}}}
+
+
     // getOrder is called by Order pages
     func getOrder(id: String) -> [AIOrder] {
         var aiOrders = [AIOrder]()
@@ -291,7 +304,7 @@ class DataManager: ObservableObject {
         }
         return aiOrders
     }
-    
+
     // getSetts is called ONCE at {init}
     func getSetts() {
         
@@ -314,27 +327,5 @@ class DataManager: ObservableObject {
                 }
             }
         }
-    }
-    
-    // putImage is called by Upload page
-    func putImage(id: String, path: String, image: Data?) {
-        
-        // access FS storage at path, id
-        let SR = Storage.storage().reference().child("\(path)/\(id)")
-        SR.putData(image!, metadata: nil)
-    }
-    
-    // getImage is called by Home / Prof
-    func getImage(id: String, path: String) -> UIImage {
-        
-        // access FS storage at path, id
-        var image = UIImage()
-        let SR = Storage.storage().reference().child("\(path)/\(id)")
-        
-        // get data and make new UIImage
-        SR.getData(maxSize: 16 * 1024 * 1024) { data, error in
-            image = UIImage(data: data!)!
-        }
-        return image
     }
 }

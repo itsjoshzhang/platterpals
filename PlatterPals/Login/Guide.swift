@@ -67,9 +67,9 @@ struct Terms: View {
                     Text("PlatterPals will act on such content within 24 hours by removing it and banning the flagged user. For support or inquiries, please visit www.platterpals.com.")
                 }
                 .foregroundColor(.secondary)
+                .padding(16)
             }
             .navigationTitle("Terms and EULA")
-            .padding(16)
         }
     }
 }

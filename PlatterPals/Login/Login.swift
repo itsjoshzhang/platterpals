@@ -68,8 +68,8 @@ struct Login: View {
                     Button("OK", role: .cancel) {}
                 }
             }
+            .padding(16)
         }
-        .padding(16)
         .onAppear {
             Auth.auth().addStateDidChangeListener { auth, user in
                 if user != nil {

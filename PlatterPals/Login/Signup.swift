@@ -26,7 +26,7 @@ struct Signup: View {
         Back()
         ScrollView {
         VStack(spacing: 16) {
-            Spacer(); Spacer()
+            Spacer(); Spacer(); Spacer()
 
             if let data = imageData {
                 RoundPic(image: UIImage(data: data), width: 160)
@@ -93,7 +93,7 @@ struct Signup: View {
                     signupAuth()
                 }
                 .disabled(name == "" || imageData == nil)
-                .padding(.bottom, 24)
+                .padding(.bottom, 32)
 
                 .alert(alertText, isPresented: $showAlert) {
                     Button("OK", role: .cancel) {}
@@ -128,8 +128,9 @@ struct Signup: View {
             result, error in
 
             if error == nil {
-                DM.putImage(id: email, path: "avatars", image: imageData)
                 DM.makeUser(id: email, name: name, city: city)
+                DM.putImage(id: DM.user().id, path: "avatars",
+                            image: imageData)
                 dismiss()
             } else {
                 alertText = error!.localizedDescription

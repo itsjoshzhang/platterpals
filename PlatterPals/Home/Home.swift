@@ -12,6 +12,9 @@ struct Home: View {
             ZStack {
                 ScrollView {
                     VStack(spacing: 16) {
+
+                        Text(DM.user().id)
+                        Text(DM.user().name)
                         Search()
                         
                         BigButton(path: 1, text: "Let's order something!")
@@ -61,7 +64,7 @@ struct Home: View {
 }
 struct Search: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("Search feature")
     }
 }
 
