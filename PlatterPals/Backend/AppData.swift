@@ -3,21 +3,24 @@ import SwiftUI
 let UIwidth = UIScreen.main.bounds.size.width
 let UIheight = UIScreen.main.bounds.size.height
 
-let image = UIImage()
-
 extension UIImage {
+    // input: new width and pfp(t/f)
     func resize(width: CGFloat, pfp: Bool = false) -> UIImage {
 
+        // compute new scale and height
         let scale = width / self.size.width
         var height = self.size.height * scale
 
+        // user avatars should be square
         if pfp {
             height = width
         }
+        // compute new size and renderer
         let size = CGSize(width: width, height: height)
-        let image = UIGraphicsImageRenderer(size: size)
+        let render = UIGraphicsImageRenderer(size: size)
 
-        return image.image { _ in
+        // return rendered resized image
+        return render.image { _ in
             self.draw(in: CGRect(origin: .zero, size: size))
         }
     }
@@ -82,7 +85,7 @@ struct UserData {
 }
 
 struct Message {
-    let id = UUID().uuidString
+    let id: String
     let text: String
     let sender: String
     let getter: String
@@ -90,7 +93,7 @@ struct Message {
 }
 
 struct AIOrder {
-    let id = UUID().uuidString
+    let id: String
     let order: String
     let place: String
     let rating: Int
@@ -98,7 +101,7 @@ struct AIOrder {
 }
 
 struct Setting {
-    let id = ""
+    var id = ""
     var notifs = true
     var emails = true
     var privacy = true
