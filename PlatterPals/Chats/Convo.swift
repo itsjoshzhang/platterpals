@@ -6,11 +6,13 @@ struct Convo: View {
     
     var id: String
     @State var text = ""
-    @EnvironmentObject var DM: DataManager
+    @State var messages = [Message]()
     
     var commit: () -> () = {}
     var blank = Text("Write a message")
     var editing: (Bool) -> () = {_ in}
+
+    @EnvironmentObject var DM: DataManager
     
     var body: some View {
         VStack(spacing: 16) {
@@ -19,7 +21,7 @@ struct Convo: View {
                 .environmentObject(DM)
             
             ScrollView {
-                ForEach(DM.messages) { message in
+                ForEach(messages, id: \.self) { message in
                     Bubble(message: message)
                         .environmentObject(DM)
                 }
@@ -29,7 +31,7 @@ struct Convo: View {
                           onEditingChanged: editing, onCommit: commit)
 
                 Button {
-                    DM.sendChat(text: text, sender: DM.user().id,
+                    DM.sendChat(text: text, sender: DM.my().id,
                                 getter: id, time: Date())
                     text = ""
 
@@ -49,7 +51,7 @@ struct Convo: View {
             .padding(10)
         }
         .onAppear {
-            DM.getChats(senderID: DM.user().id, getterID: id)
+            messages = DM.getChats(senderID: DM.my().id, getterID: id)
         }
     }
 }

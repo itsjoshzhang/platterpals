@@ -27,10 +27,11 @@ struct TitleBar: View {
                             .frame(width: 80)
                         
                         VStack(alignment: .leading) {
-                            Text(DM.find(id: id).name)
+                            let user = DM.user(id: id)
+                            Text(user.name)
                                 .font(.title).bold()
 
-                            Text("\(DM.find(id: id).city), CA")
+                            Text("\(user.city), CA")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
@@ -70,8 +71,7 @@ struct Bubble: View {
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
-        let sender = (message.sender == DM.user().name)
-        
+        let sender = (message.sender == DM.my().id)
         VStack(alignment: sender ? .trailing: .leading) {
 
             Text(message.text)

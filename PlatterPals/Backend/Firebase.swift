@@ -8,40 +8,35 @@ class DataManager: ObservableObject {
     private let FS = Firestore.firestore()
     private let SR = Storage.storage().reference()
 
-    // track this user and its data
-    private var thisUser: Int
+    // track user id and their data
+    @Published var thisUser = 0
     @Published var userList = [User]()
     @Published var userData = [UserData]()
     @Published var settings = Setting()
 
     init() { initInfo() }
 
-    // returns a User
+    // returns myself
     func my() -> User {
         return userList[thisUser]
     }
 
+    // returns a User
+    func user(id: String) -> User {
+        for user in userList {
+
+            if (user.id == id || user.name == id) {
+                return user }}
+        return User(id: "", name: "", text: "", city: "", views: 0)
+    }
+
     // returns UserData
-    func data(id: String) -> UserData? {
+    func data(id: String) -> UserData {
         for data in userData {
 
             if (data.id == id) {
-                return data
-            }
-        }
-        return nil
-    }
-
-    // returns a User
-    func user(id: String) -> User? {
-        for user in userList {
-
-
-            if (user.id == id || user.name == id) {
-                return user
-            }
-        }
-        return nil
+                return data }}
+        return userData[thisUser]
     }
 
     // called at Upload
@@ -67,8 +62,8 @@ class DataManager: ObservableObject {
             SR.putData(jpeg, metadata: meta) {_, error in
                 if error == nil {
 
-            // track success and return bool
-            done = true }}}
+                    // track success and return bool
+                    done = true }}}
         return done
     }
 
@@ -77,24 +72,21 @@ class DataManager: ObservableObject {
 
         // get storage path with user id
         let SR = SR.child("\(path)/\(id).jpg")
-        var image: UIImage
+        var image = UIImage(named: "logo.png")
 
         // get image data (max size 8MB)
         SR.getData(maxSize: 8 * 1024 * 1024) { data, error in
             if let data = data {
 
-        // ASYNC: return image from data
-        DispatchQueue.main.async {
-            image = UIImage(data: data) ??
-
-            // if nil return logo as default
-            UIImage(named: "logo.png")! }}}
-        return image
+                // ASYNC: return image from data
+                DispatchQueue.main.async {
+                    image = UIImage(data: data)
+                }}}
+        return image!
     }
+    // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
 
-    // TODO: call getImage() inside onAppear() in views and append return value to local @State lists of [UIImage]
-
-    func initInfo() {
+    private func initInfo() {
         // removeAll means no duplicates
         userList.removeAll()
         userData.removeAll()
@@ -125,20 +117,17 @@ class DataManager: ObservableObject {
                 let data = doc.data()
                 let d = [String]()
                 
-                let id       = data["id"]       as? String ?? ""
+                let id       = data["id"]       as? String   ?? ""
                 let favFoods = data["favFoods"] as? [String] ?? d
                 let favUsers = data["favUsers"] as? [String] ?? d
                 let chatting = data["chatting"] as? [String] ?? d
                 let blocked  = data["blocked"]  as? [String] ?? d
                 
                 let userData = UserData(id: id, favFoods: favFoods,
-                    favUsers: favUsers, chatting: chatting, blocked: blocked)
+                                        favUsers: favUsers, chatting: chatting, blocked: blocked)
                 self.userData.append(userData)
             }
         }
-        // sort allows index w/ thisUser
-        userList.sort { $0.id < $1.id }
-        userData.sort { $0.id < $1.id }
     }
 
     // called at Login
@@ -148,16 +137,18 @@ class DataManager: ObservableObject {
         for index in 0 ..< userList.count {
             if userList[index].id == id {
 
-        // if IDs match, assign thisUser
+                // if IDs match, assign thisUser
                 thisUser = index
                 getSetts()
-                return
+                break
             }
         }
     }
     
     // called at Signup
     func makeUser(id: String, name: String, city: String) {
+
+        // replacing avoids image errors
         let id = id.replacingOccurrences(of: ".", with: "_")
 
         editUser(id: id, name: name, text: "", city: city, views: 0)
@@ -174,11 +165,9 @@ class DataManager: ObservableObject {
     
     // called at Profile
     func editUser(id: String, name: String, text: String, city: String, views: Int) {
-        let image = "avatars/\(id)"
-        
         let user = FS.collection("userList").document(id)
+
         user.setData(["id": id, "name": name, "text": text, "city": city, "views": views])
-        
         userList.append(User(id: id, name: name, text: text, city: city, views: views))
     }
     
@@ -206,16 +195,16 @@ class DataManager: ObservableObject {
         let message = FS.collection("messages").document(id)
         
         message.setData(["id": id, "text": text, "sender": sender, "getter":
-                         getter, "time": time])
+                            getter, "time": time])
     }
     
     // called at Order
-    func sendOrder(order: String, location: String, rating: Int, time: Date) {
+    func sendOrder(order: String, place: String, rating: Int, time: Date) {
         let id = UUID().uuidString
         let AIOrder = FS.collection("aiOrders").document(id)
         
-        AIOrder.setData(["id": id, "order": order, "location": location,
-                         "rating": rating, "time": time])
+        AIOrder.setData(["id": id, "order": order, "place": place, "rating":
+                            rating, "time": time])
     }
     
     // 1. create object result array
@@ -224,75 +213,64 @@ class DataManager: ObservableObject {
     // 4. access values = map {data}
     // 5. if condition, add to array
 
-    @Published var messages = [Message]()
-
-    // TODO: fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit fix this shit
     // called at Chats
-    func getChats(senderID: String, getterID: String) {
-        FS.collection("messages").addSnapshotListener { collection, error in
-            
-            for document in collection!.documents {
-                let data = document.data()
+    func getChats(senderID: String, getterID: String) -> [Message] {
+        var messages = [Message]()
+
+        FS.collection("messages").addSnapshotListener { col, error in
+            for doc in col!.documents {
+                let data = doc.data()
                 
-                let id     = data["id"]     as! String
-                let text   = data["text"]   as! String
-                let sender = data["sender"] as! String
-                let getter = data["getter"] as! String
-                let time   = data["time"]   as? Date ?? Date()
+                let id     = data["id"]     as? String ?? ""
+                let text   = data["text"]   as? String ?? ""
+                let sender = data["sender"] as? String ?? ""
+                let getter = data["getter"] as? String ?? ""
+                let time   = data["time"]   as? Date   ?? Date()
 
                 if (sender == senderID && getter == getterID) {
-                    
-                    self.messages.append(Message(id: id, text: text, sender: sender,
-                                                 getter: getter, time: time))
-                    self.messages.sort {
-                        $0.time < $1.time
-                    }}}}}
-
+                    messages.append(Message(id: id, text: text, sender:
+                                    sender, getter: getter, time: time))
+                    messages.sort { $0.time < $1.time }
+                    return }}}
+        return messages
+    }
 
     // called at Order
     func getOrder(id: String) -> [AIOrder] {
         var aiOrders = [AIOrder]()
         
-        FS.collection("aiOrders").getDocuments { collection, error in
-            for document in collection!.documents {
-                
-                let data = document.data()
-                let docID = data["id"] as! String
+        FS.collection("aiOrders").getDocuments { col, error in
+            for doc in col!.documents {
+                let data = doc.data()
+                    let docID  = data["id"]     as? String ?? ""
                 
                 if docID == id {
                     let order  = data["order"]  as? String ?? ""
                     let place  = data["place"]  as? String ?? ""
-                    let rating = data["rating"] as? Int ?? 0
-                    let time   = data["time"]   as? Date ?? Date()
+                    let rating = data["rating"] as? Int    ?? 0
+                    let time   = data["time"]   as? Date   ?? Date()
                     
                     aiOrders.append(AIOrder(id: id, order: order, place:
                                     place, rating: rating, time: time))
-                }
-            }
-        }
+                    return }}}
         return aiOrders
     }
 
     // called at init
     func getSetts() {
-        FS.collection("settings").getDocuments { collection, error in
-            for document in collection!.documents {
+        FS.collection("settings").getDocuments { col, error in
+            for doc in col!.documents {
                 
-                let data = document.data()
-                let id = data["id"] as! String
+                let data = doc.data()
+                    let docID    = data["id"]       as? String ?? ""
                 
-                if self.my().id == id {
+                if docID == self.my().id {
                     
-                    let notifs   = data["notifs"]   as! Bool
-                    let emails   = data["emails"]   as! Bool
-                    let privacy  = data["privacy"]  as! Bool
-                    let location = data["location"] as! Bool
+                    let notifs   = data["notifs"]   as? Bool ?? true
+                    let emails   = data["emails"]   as? Bool ?? true
+                    let privacy  = data["privacy"]  as? Bool ?? true
+                    let location = data["location"] as? Bool ?? true
                     
-                    self.settings = Setting(id: id, notifs: notifs, emails:
+                    self.settings = Setting(id: docID, notifs: notifs, emails:
                                     emails, privacy: privacy, location: location)
-                    return
-                }
-            }
-        }
-    }
-}
+                    return }}}}}

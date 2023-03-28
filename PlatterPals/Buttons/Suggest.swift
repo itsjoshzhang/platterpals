@@ -4,13 +4,13 @@ import SwiftUI
 
 struct Suggest: View {
     
-    @State var location = ""
-    @State var cuisine = "All"
+    @State var place = ""
+    @State var food = "All"
     @State var showSplash = false
     @Environment(\.dismiss) var dismiss
     
-    @State var friend = User(id: "", name:
-               "All", image: "", city: "")
+    @State var friend = User(id: "", name: "",
+                text: "", city: "", views: 0)
     
     @EnvironmentObject var DM: DataManager
     
@@ -26,12 +26,12 @@ struct Suggest: View {
                         .font(.subheadline)
                         .textCase(.none))
                     {
-                        Picker("Type of cuisine", selection: $cuisine) {
+                        Picker("Type of cuisine", selection: $food) {
                             ForEach(foodList, id: \.self) { food in
                                 Text(food)
                             }
                         }
-                        TextField("Restaurant name", text: $location)
+                        TextField("Restaurant name", text: $place)
                     }
                     
                     Section(header: Text("Refer from a friend?")
@@ -39,13 +39,15 @@ struct Suggest: View {
                         .textCase(.none))
                     {
                         Picker("Friend's name", selection: $friend) {
-                            ForEach(DM.data().following, id: \.self) { id in
+                            let data = DM.data(id: DM.my().id)
+
+                            ForEach(data.following, id: \.self) { id in
                                 Text(DM.find(id: id).name)
                             }
                         }
                     }
                 }
-                if friend.name != "All" {
+                if friend.id != "" {
                     Text("\(friend.name)'s favorite foods:")
                         .font(.headline)
                 }

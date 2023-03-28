@@ -13,15 +13,13 @@ struct ChatDM: View {
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
+        let id = DM.user(id: name).id
         NavigationStack {
             VStack(spacing: 16) {
+            // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
 
-                Image(uiImage: DM.getImage(id:
-                    DM.find(id: name).id, path: "avatars"))
-                    .resizable()
-                    .scaledToFit()
-                    .clipShape(Circle())
-                    .frame(width: 160)
+                let image = DM.getImage(id: id, path: "avatars")
+                RoundPic(image: image, width: 160)
 
                 TextField("Username", text: $name)
                     .autocorrectionDisabled(true)
@@ -33,7 +31,7 @@ struct ChatDM: View {
                 Button("Start chat") {
                     showChat = true
                 }
-                .disabled(DM.find(id: name).id == "")
+                .disabled(id == "")
                 .buttonStyle(.borderedProminent)
                 .padding(.top, 20)
 
@@ -61,7 +59,7 @@ struct ChatDM: View {
             }
         }
         .fullScreenCover(isPresented: $showChat) {
-            Convo(id: DM.find(id: name).id, text: text)
+            Convo(id: id, text: text)
                 .environmentObject(DM)
         }
     }

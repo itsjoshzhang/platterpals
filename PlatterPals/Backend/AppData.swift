@@ -3,6 +3,13 @@ import SwiftUI
 let UIwidth = UIScreen.main.bounds.size.width
 let UIheight = UIScreen.main.bounds.size.height
 
+let cityList = ["Berkeley", "Fremont", "Oakland", "Palo Alto",
+                "Pleasanton", "San Francisco", "San Jose"]
+
+let foodList = ["All", "American", "Brazilian", "Caribbean", "Chinese",
+                "Ethiopian", "French", "Indian", "Italian", "Japanese",
+                "Korean", "Mexican", "Middle Eastern", "Thai", "Vietnamese"]
+
 extension UIImage {
     // input: new width and pfp(t/f)
     func resize(width: CGFloat, pfp: Bool = false) -> UIImage {
@@ -25,35 +32,6 @@ extension UIImage {
         }
     }
 }
-
-struct RoundPic: View {
-    var image: UIImage?
-    var width: Int
-
-    var body: some View {
-        if let image = image {
-
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFit()
-                .clipShape(Circle())
-                .frame(width: CGFloat(width))
-        } else {
-            Image("logo")
-                .resizable()
-                .scaledToFit()
-                .frame(width: CGFloat(width))
-        }
-    }
-}
-
-let cityList = ["Berkeley", "Fremont", "Oakland", "Palo Alto",
-                "Pleasanton", "San Francisco", "San Jose"]
-
-let foodList = ["All", "American", "Brazilian", "Caribbean", "Chinese",
-                "Ethiopian", "French", "Indian", "Italian", "Japanese",
-                "Korean", "Mexican", "Middle Eastern", "Thai", "Vietnamese"]
-
 extension SetItem {
     static let items = [
         SetItem(title: "Chats", text: "Blocked users & notifications", image: "message"),
@@ -68,7 +46,7 @@ extension SetItem {
     ]
 }
 
-struct User {
+struct User: Hashable {
     let id: String
     var name: String
     var text: String
@@ -84,7 +62,7 @@ struct UserData {
     var blocked: [String]
 }
 
-struct Message {
+struct Message: Hashable {
     let id: String
     let text: String
     let sender: String
@@ -121,7 +99,6 @@ struct Div: View {
             .overlay(.pink)
     }
 }
-
 struct Back: View {
     var body: some View {
         Image("back")
@@ -129,5 +106,17 @@ struct Back: View {
             .opacity(0.05)
             .scaledToFill()
             .ignoresSafeArea()
+    }
+}
+struct RoundPic: View {
+    var image: UIImage
+    var width: Int
+
+    var body: some View {
+        Image(uiImage: image)
+            .resizable()
+            .scaledToFit()
+            .clipShape(Circle())
+            .frame(width: CGFloat(width))
     }
 }

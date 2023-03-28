@@ -12,13 +12,14 @@ struct Chats: View {
         NavigationStack {
             ZStack {
                 VStack(spacing: 16) {
-                    List {
-                        ForEach(convos) { user in
-                        NavigationLink(value: user) {
 
-                        Row(name: user.name, image: user.image, text:
-                            "Active \(Int.random(in: 1...9)) hr ago")
-                        }
+                    List {
+                        ForEach(convos, id: \.self) { user in
+                            NavigationLink(value: user) {
+
+                                let image = DM.getImage(id: user.id, path: "avatars")
+                                Row(name: user.name, image: image)
+                            }
                         }
                         .onDelete(perform: deleteItems(atOffsets:))
                         .onMove(perform: move(fromOffsets:toOffset:))
@@ -34,8 +35,10 @@ struct Chats: View {
             }
             .navigationTitle("Chats")
             .onAppear {
-                for id in DM.data().chatting {
-                    convos.append(DM.find(id: id))
+                let data = DM.data(id: DM.my().id)
+
+                for id in data.chatting {
+                    convos.append(DM.user(id: id))
                 }
             }
             .navigationDestination(for: User.self) { user in
@@ -43,14 +46,7 @@ struct Chats: View {
                     .environmentObject(DM)
             }
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        DM.initLoad()
-                    } label: {
-                        Image(systemName: "clock.arrow.circlepath")
-                    }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem {
                     Button("New chat") {
                         showChatDM = true
                     }
@@ -74,22 +70,18 @@ struct Chats: View {
 struct Row: View {
 
     var name: String
-    var image: String
-    var text: String
+    var image: UIImage
 
     var body: some View {
         HStack(spacing: 16) {
 
-            Image(image)
-                .resizable()
-                .frame(width: 60, height: 60)
-                .clipShape(Circle())
+            RoundPic(image: image, width: 60)
 
             VStack(alignment: .leading, spacing: 5) {
                 Text(name)
                     .font(.headline)
 
-                Text(text)
+                Text("Active today")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }

@@ -14,7 +14,6 @@ struct BigButton: View {
         Button {
             showView = true
         } label: {
-            
             Text(text)
                 .font(.headline)
                 .foregroundColor(.pink)
@@ -30,14 +29,13 @@ struct BigButton: View {
             if path == 1 {
                 Suggest()
                     .environmentObject(DM)
-            } else if path == 2 {
+            } else {
                 Splash(first: false)
                     .environmentObject(DM)
             }
         }
     }
 }
-
 struct CircleButton: View {
     
     var path: Int
@@ -49,7 +47,6 @@ struct CircleButton: View {
         Button {
             showView = true
         } label: {
-            
             Text("\(Image(systemName: image))")
                 .font(.largeTitle)
                 .foregroundColor(.white)
@@ -74,7 +71,6 @@ struct CircleButton: View {
         }
     }
 }
-
 struct Buttons_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
