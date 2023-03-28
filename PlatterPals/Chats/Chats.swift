@@ -17,6 +17,8 @@ struct Chats: View {
                         ForEach(convos, id: \.self) { user in
                             NavigationLink(value: user) {
 
+            // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
+
                                 let image = DM.getImage(id: user.id, path: "avatars")
                                 Row(name: user.name, image: image)
                             }

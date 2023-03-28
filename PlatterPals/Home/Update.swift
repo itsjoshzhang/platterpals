@@ -26,19 +26,22 @@ struct Update: View {
     var content: some View {
         VStack(alignment: .leading, spacing: 16) {
 
-            let profile = DM.prof(id: id)
+            let user = DM.user(id: id)
 
             Button {
                 showProf = true
             } label: {
                 HStack {
+
+            // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
+
                     Image(uiImage: DM.getImage(id: id, path: "avatars"))
                         .resizable()
                         .scaledToFit()
                         .clipShape(Circle())
                         .frame(width: 40)
 
-                    Text(DM.user().name)
+                    Text(user.name)
                         .font(.headline)
                     Spacer()
 
@@ -47,10 +50,10 @@ struct Update: View {
                     }
                     .alert("Profile settings", isPresented: $showAlert) {
 
-                        if id == DM.user().id {
+                        if user.id == DM.my().id {
                             Button("Delete profile", role: .destructive) {
 
-                                DM.editProf(id: id, city: "", text: "", likes: 0)
+                                DM.delImage(path: "profiles")
                             }
                         } else {
                             Button("Report profile", role: .destructive) {
@@ -65,6 +68,9 @@ struct Update: View {
                 .padding(.horizontal, 16)
             }
             ZStack {
+
+            // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
+
                 Image(uiImage: DM.getImage(id: id, path: "profiles"))
                     .resizable()
                     .scaledToFit()
@@ -104,10 +110,10 @@ struct Update: View {
                 .scaleEffect(size)
             }
             Group {
-                Text(profile.city)
-                Text(profile.text)
+                Text(user.city)
+                Text(user.text)
 
-                Text("\(Image(systemName: "heart.fill")) \(profile.likes)")
+                Text("\(Image(systemName: "heart.fill")) \(user.views)")
             }
             .padding(.horizontal, 16)
         }

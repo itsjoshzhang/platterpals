@@ -1,4 +1,4 @@
-// TODO: implementing profile search
+// TODO: implement profile search
 
 import SwiftUI
 
@@ -12,21 +12,19 @@ struct Home: View {
             ZStack {
                 ScrollView {
                     VStack(spacing: 16) {
-
-                        Text(DM.user().id)
-                        Text(DM.user().name)
                         Search()
+                            .environmentObject(DM)
                         
                         BigButton(path: 1, text: "Let's order something!")
                             .environmentObject(DM)
                         
-                        ForEach(DM.profiles) { profile in
-                            if (DM.user().id != profile.id &&
+                        ForEach(DM.userList, id: \.self) { user in
+                            let id = DM.my().id
+                            let favs = DM.data(id: id).favUsers
 
-                                DM.user().city == profile.city &&
-                                DM.data().following.contains(profile.id)) {
+                            if (id != user.id && favs.contains(user.id)) {
 
-                                Update(id: profile.id)
+                                Update(id: user.id)
                                     .environmentObject(DM)
                             }
                         }
@@ -41,14 +39,7 @@ struct Home: View {
             }
             .navigationTitle("PlatterPals")
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        DM.initLoad()
-                    } label: {
-                        Image(systemName: "clock.arrow.circlepath")
-                    }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem {
                     Button("\(Image(systemName: "square.and.arrow.up")) Profile") {
                         showUpload = true
                     }
@@ -63,11 +54,16 @@ struct Home: View {
     }
 }
 struct Search: View {
+    @EnvironmentObject var DM: DataManager
+
     var body: some View {
-        Text("Search feature")
+        VStack {
+            Text(DM.my().id)
+            Text(DM.my().name)
+            Text("Search feature")
+        }
     }
 }
-
 struct Home_Previews: PreviewProvider {
 	static var previews: some View {
         MyTabView()

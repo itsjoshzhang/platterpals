@@ -19,6 +19,8 @@ struct TitleBar: View {
                 } label: {
                     HStack(spacing: 16) {
 
+            // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
+
                         Image(uiImage: DM.getImage(id: id,
                             path: "avatars"))
                             .resizable()

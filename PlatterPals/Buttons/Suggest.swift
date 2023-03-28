@@ -41,8 +41,8 @@ struct Suggest: View {
                         Picker("Friend's name", selection: $friend) {
                             let data = DM.data(id: DM.my().id)
 
-                            ForEach(data.following, id: \.self) { id in
-                                Text(DM.find(id: id).name)
+                            ForEach(data.favUsers, id: \.self) { id in
+                                Text(DM.user(id: id).name)
                             }
                         }
                     }

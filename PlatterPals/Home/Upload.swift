@@ -53,12 +53,11 @@ struct Upload: View {
                         .foregroundColor(.pink)
 
                     Button("Update Profile") {
-                        DM.putImage(id: DM.user().id, path: "profiles",
-                            image: imageData)
+                        DM.putImage(image: UIImage(data: imageData!)!, path: "profiles")
                         dismiss()
                     }
-                    .buttonStyle(.borderedProminent)
                     .disabled(imageData == nil || text == "")
+                    .buttonStyle(.borderedProminent)
                 }
             }
             .padding(20)

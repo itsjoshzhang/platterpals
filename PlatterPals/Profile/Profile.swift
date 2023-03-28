@@ -20,84 +20,78 @@ struct MyProfile: View {
         NavigationStack {
             ZStack {
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 16) {
+                    VStack(spacing: 16) {
+    let id = DM.my().id
 
     if editInfo {
-        if let data = imageData, let image =
-            UIImage(data: data) {
+        if let data = imageData {
+            RoundPic(image: UIImage(data: data), width: 160)
+        } else {
+            RoundPic(image: nil, width: 160)
+        }
 
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 80)
-                .clipShape(Circle())
+        PhotosPicker("Upload Picture", selection: $imageItem,
+                     matching: .images)
+        .buttonStyle(.bordered)
 
-            PhotosPicker("Upload Picture", selection: $imageItem,
-                         matching: .images)
-            .buttonStyle(.bordered)
+        .onChange(of: imageItem) { _ in
+            imageItem?.loadTransferable(type: Data.self) { result in
 
-            .onChange(of: imageItem) { _ in
-                imageItem?.loadTransferable(type: Data.self) { result in
-
-                    switch result {
-                    case .success(let data):
-                        imageData = data
-                    case .failure(_):
-                        return
-                    }
+                switch result {
+                case .success(let data):
+                    imageData = data
+                case .failure(_):
+                    return
                 }
             }
-            TextField("Change username", text: $name)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+        }
+        TextField("Change username", text: $name)
+            .textFieldStyle(RoundedBorderTextFieldStyle())
 
-            TextField("Write a new bio", text: $text)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+        TextField("Write a new bio", text: $text)
+            .textFieldStyle(RoundedBorderTextFieldStyle())
 
-            Picker("Location", selection: $city) {
-                ForEach(cityList, id: \.self) { city in
-                    Text(city)
-                }
+        Picker("Location", selection: $city) {
+            ForEach(cityList, id: \.self) { city in
+                Text(city)
             }
-            Button("Save edits") {
-                let id = DM.user().id
-                DM.putImage(id: id, path: "avatars", image: imageData)
+        }
 
-                DM.editUser(id: id, name: name, city: city)
-                editInfo = false
+        Button("Save Edits") {
+            if let data = imageData {
+                DM.putImage(image: UIImage(data: data)!, path: "avatars")
             }
-            .buttonStyle(.borderedProminent)
+            DM.editUser(id: id, name: name, text: text, city: city,
+                        views: DM.my().views)
+            editInfo = false
+        }
+        .disabled(name == "" && text == "")
+        .buttonStyle(.borderedProminent)
 
-            Button("Cancel") {
-                editInfo = false
-            }
-            .buttonStyle(.bordered)
+        Button("Cancel") {
+            editInfo = false
+        }
+        .buttonStyle(.bordered)
 
         } else {
-            Image(uiImage: DM.getImage(id: DM.user().id, path: "avatars"))
-            .resizable()
-            .scaledToFit()
-            .frame(width: 80)
-            .clipShape(Circle())
-        }
-    }
-}
-                    .padding(.horizontal, 20.0)
 
-                    HStack(spacing: 16) {
-                        if !editInfo {
-                            Button("Edit info") {
+            // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
+
+                            let image = DM.getImage(id: id, path: "avatars")
+                            RoundPic(image: image, width: 160)
+
+                            Button("Edit Info") {
                                 editInfo = true;
                             }
                             .buttonStyle(.borderedProminent)
                         }
+
+                        Text("\(DM.my().name)'s favorite foods:")
+                            .font(.headline)
+                            .padding(.horizontal, 20)
+
+                        Update(id: id)
                     }
-                    .padding(.horizontal, 20)
-
-                    Text("\(DM.user().name)'s favorite foods:")
-                        .font(.headline)
-                        .padding(.horizontal, 20)
-
-                    Update(id: DM.user().id)
                 }
                 VStack { Spacer()
                     HStack { Spacer()
@@ -106,9 +100,9 @@ struct MyProfile: View {
                     }
                 }
             }
-            .navigationTitle("Your Profile")
+            .navigationTitle("My Profile")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem {
                     Button("Settings") {
                         showSets = true
                     }

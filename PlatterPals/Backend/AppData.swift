@@ -42,7 +42,7 @@ extension SetItem {
 
         SetItem(title: "Security", text: "Login info & payment methods", image: "lock"),
 
-        SetItem(title: "Account", text: "Delete account & upload data", image: "key"),
+        SetItem(title: "Account", text: "Upload data & delete account", image: "key"),
     ]
 }
 
@@ -86,7 +86,7 @@ struct Setting {
     var location = true
 }
 
-struct SetItem {
+struct SetItem: Hashable {
     let title: String
     let text: String
     let image: String
@@ -109,14 +109,23 @@ struct Back: View {
     }
 }
 struct RoundPic: View {
-    var image: UIImage
+    var image: UIImage?
     var width: Int
 
     var body: some View {
-        Image(uiImage: image)
-            .resizable()
-            .scaledToFit()
-            .clipShape(Circle())
-            .frame(width: CGFloat(width))
+        if let image = image {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFit()
+                .clipShape(Circle())
+                .frame(width: CGFloat(width))
+        } else {
+            let image = UIImage(named: "logo.png")!
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFit()
+                .clipShape(Circle())
+                .frame(width: CGFloat(width))
+        }
     }
 }

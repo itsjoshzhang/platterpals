@@ -6,7 +6,7 @@ import Firebase
 struct Settings: View {
 
     @State var loggedOut = false
-	@State var items = SetItem.data
+    @State var items = SetItem.items
     @Environment(\.dismiss) var dismiss
 
     @EnvironmentObject var DM: DataManager
@@ -20,7 +20,7 @@ struct Settings: View {
     }
 	var content: some View {
         NavigationStack {
-            List(items) { item in
+            List(items, id: \.self) { item in
                 NavigationLink(value: item) {
                     SetRow(title: item.title, text: item.text, image: item.image)
                 }

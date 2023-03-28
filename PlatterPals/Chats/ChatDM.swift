@@ -16,6 +16,7 @@ struct ChatDM: View {
         let id = DM.user(id: name).id
         NavigationStack {
             VStack(spacing: 16) {
+                
             // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
 
                 let image = DM.getImage(id: id, path: "avatars")

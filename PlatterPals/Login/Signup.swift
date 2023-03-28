@@ -129,8 +129,7 @@ struct Signup: View {
 
             if error == nil {
                 DM.makeUser(id: email, name: name, city: city)
-                DM.putImage(id: DM.user().id, path: "avatars",
-                            image: imageData)
+                DM.putImage(image: UIImage(data: imageData!)!, path: "avatars")
                 dismiss()
             } else {
                 alertText = error!.localizedDescription

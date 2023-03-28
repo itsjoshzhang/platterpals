@@ -14,11 +14,13 @@ struct UserProf: View {
     
     var body: some View {
         NavigationStack {
-            let name = DM.find(id: id).name
+            let name = DM.user(id: id).name
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     HStack(spacing: 16) {
+
+            // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
 
                         Image(uiImage: DM.getImage(id: id, path: "avatars"))
                             .resizable()
@@ -31,7 +33,7 @@ struct UserProf: View {
                     .padding(.horizontal, 20)
                     
                     HStack(spacing: 16) {
-                        var list = DM.data().following
+                        var list = DM.data(id: DM.my().id).favUsers
 
                         if list.contains(id) {
                             Button("Following") {

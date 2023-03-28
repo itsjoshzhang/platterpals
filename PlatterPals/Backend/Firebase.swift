@@ -26,7 +26,8 @@ class DataManager: ObservableObject {
         for user in userList {
 
             if (user.id == id || user.name == id) {
-                return user }}
+                return user
+            }}
         return User(id: "", name: "", text: "", city: "", views: 0)
     }
 
@@ -35,19 +36,17 @@ class DataManager: ObservableObject {
         for data in userData {
 
             if (data.id == id) {
-                return data }}
+                return data
+            }}
         return userData[thisUser]
     }
 
     // called at Upload
-    func putImage(image: UIImage, path: String) -> Bool {
-
-        // compute if image is an avatar
-        var pfp = (path == "avatars")
-        var done = false
+    func putImage(image: UIImage, path: String){
 
         // get storage path with user id
         let SR = SR.child("\(path)/\(my().id).jpg")
+        let pfp = (path == "avatars")
 
         // resize & convert image to jpg
         let image = image.resize(width: 200, pfp: pfp)
@@ -57,15 +56,13 @@ class DataManager: ObservableObject {
         let meta = StorageMetadata()
         meta.contentType = "image/jpg"
 
+        // put image into storage as jpg
         if let jpeg = jpeg {
-            // put image into storage as jpg
-            SR.putData(jpeg, metadata: meta) {_, error in
-                if error == nil {
-
-                    // track success and return bool
-                    done = true }}}
-        return done
+            SR.putData(jpeg, metadata: meta)
+        }
     }
+
+    // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
 
     // called everywhere
     func getImage(id: String, path: String) -> UIImage {
@@ -80,11 +77,15 @@ class DataManager: ObservableObject {
 
                 // ASYNC: return image from data
                 DispatchQueue.main.async {
-                    image = UIImage(data: data)
-                }}}
+                    image = UIImage(data: data) }}}
         return image!
     }
-    // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
+
+    // called at Update
+    func delImage(path: String) {
+        let SR = SR.child("\(path)/\(my().id).jpg")
+        SR.delete { _ in }
+    }
 
     private func initInfo() {
         // removeAll means no duplicates
