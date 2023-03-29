@@ -1,11 +1,10 @@
-// File: checked
-
 import SwiftUI
 
 struct ChatDM: View {
     
     @State var name = ""
     @State var text = ""
+    @State var image: UIImage?
     @State var showChat = false
     @State var showCopy = false
 
@@ -14,12 +13,10 @@ struct ChatDM: View {
     
     var body: some View {
         let id = DM.user(id: name).id
+
         NavigationStack {
             VStack(spacing: 16) {
-                
-            // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
 
-                let image = DM.getImage(id: id, path: "avatars")
                 RoundPic(image: image, width: 160)
 
                 TextField("Username", text: $name)
@@ -52,6 +49,10 @@ struct ChatDM: View {
             .padding(.horizontal, 20)
         }
         .navigationTitle("New Chat")
+
+        .onChange(of: name) { _ in
+            image = DM.getImage(id: id, path: "avatars")
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button("Cancel") {

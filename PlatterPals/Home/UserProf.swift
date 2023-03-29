@@ -1,15 +1,15 @@
-// File: checked
-
 import SwiftUI
+import FirebaseStorage
 
 struct UserProf: View {
 
     var id: String
+    @State var image = [UIImage]()
     @State var showAction = false
     @State var showChatDM = false
     @State var showFollow = false
-    @Environment(\.dismiss) var dismiss
 
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
@@ -20,33 +20,26 @@ struct UserProf: View {
                 VStack(alignment: .leading, spacing: 16) {
                     HStack(spacing: 16) {
 
-            // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
-
-                        Image(uiImage: DM.getImage(id: id, path: "avatars"))
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 80)
-                            .clipShape(Circle())
-                        
+                        RoundPic(image: image[0], width: 160)
                         Text(name)
                     }
                     .padding(.horizontal, 20)
                     
                     HStack(spacing: 16) {
-                        var list = DM.data(id: DM.my().id).favUsers
+                        var users = DM.data(id: DM.my().id).favUsers
 
-                        if list.contains(id) {
+                        if users.contains(id) {
                             Button("Following") {
 
-                                if let index = list.firstIndex(of: id) {
-                                    list.remove(at: index)
+                                if let index = users.firstIndex(of: id) {
+                                    users.remove(at: index)
                                 }
                             }
                             .buttonStyle(.bordered)
 
                         } else {
                             Button("Follow \(Image(systemName: "heart"))") {
-                                list.append(id)
+                                users.append(id)
                             }
                             .buttonStyle(.borderedProminent)
                         }
@@ -62,13 +55,16 @@ struct UserProf: View {
                 }
             }
             .navigationTitle(name)
+            .onAppear {
+                getImage(id: id, path: "avatars")
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Back") {
                         dismiss()
                     }
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem {
                     Button("Send chat") {
                         showChatDM = true
                     }
@@ -89,10 +85,24 @@ struct UserProf: View {
             }
         }
     }
+    func getImage(id: String, path: String) {
+
+        // get storage path with user id
+        let SR = Storage.storage().reference().child("\(path)/\(id).jpg")
+        // image = UIImage(named: "logo.png")
+
+        // get image data (max size 8MB)
+        SR.getData(maxSize: 8 * 1024 * 1024) { data, error in
+            if let data = data {
+
+                // ASYNC: return image from data
+                DispatchQueue.main.async {
+                    image.append(UIImage(data: data)!) }}}
+    }
 }
 struct UserProf_Previews: PreviewProvider {
 	static var previews: some View {
-        UserProf(id: "email@gmail.com")
+        UserProf(id: "joshzhang@berkeley_edu")
             .environmentObject(DataManager())
 	}
 }

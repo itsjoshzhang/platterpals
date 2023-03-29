@@ -46,7 +46,7 @@ extension SetItem {
     ]
 }
 
-struct User: Hashable {
+struct User: Identifiable, Hashable {
     let id: String
     var name: String
     var text: String
@@ -54,7 +54,7 @@ struct User: Hashable {
     var views: Int
 }
 
-struct UserData {
+struct UserData: Identifiable {
     let id: String
     var favFoods: [String]
     var favUsers: [String]
@@ -62,7 +62,7 @@ struct UserData {
     var blocked: [String]
 }
 
-struct Message: Hashable {
+struct Message: Identifiable, Hashable {
     let id: String
     let text: String
     let sender: String
@@ -70,7 +70,7 @@ struct Message: Hashable {
     let time: Date
 }
 
-struct AIOrder {
+struct AIOrder: Identifiable {
     let id: String
     let order: String
     let place: String
@@ -78,7 +78,7 @@ struct AIOrder {
     let time: Date
 }
 
-struct Setting {
+struct Setting: Identifiable{
     var id = ""
     var notifs = true
     var emails = true
@@ -113,19 +113,10 @@ struct RoundPic: View {
     var width: Int
 
     var body: some View {
-        if let image = image {
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFit()
-                .clipShape(Circle())
-                .frame(width: CGFloat(width))
-        } else {
-            let image = UIImage(named: "logo.png")!
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFit()
-                .clipShape(Circle())
-                .frame(width: CGFloat(width))
-        }
+        Image(uiImage: image!)
+            .resizable()
+            .scaledToFit()
+            .clipShape(Circle())
+            .frame(width: CGFloat(width))
     }
 }

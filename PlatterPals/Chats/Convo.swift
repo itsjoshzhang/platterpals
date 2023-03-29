@@ -58,7 +58,7 @@ struct Convo: View {
 
 struct Convo_Previews: PreviewProvider {
 	static var previews: some View {
-        Convo(id: "email@gmail.com")
+        Convo(id: "joshzhang@berkeley_edu")
             .environmentObject(DataManager())
 	}
 }

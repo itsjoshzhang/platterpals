@@ -1,26 +1,22 @@
-// File: checked
-
 import SwiftUI
 
 struct Chats: View {
 
-    @State var convos = [User]()
+    @State var users = [User]()
+    @State var images = [UIImage]()
     @State var showChatDM = false
+
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
             ZStack {
                 VStack(spacing: 16) {
-
                     List {
-                        ForEach(convos, id: \.self) { user in
+                        ForEach(users) { user in
                             NavigationLink(value: user) {
 
-            // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
-
-                                let image = DM.getImage(id: user.id, path: "avatars")
-                                Row(name: user.name, image: image)
+                                Row(name: user.name, image: images.removeFirst())
                             }
                         }
                         .onDelete(perform: deleteItems(atOffsets:))
@@ -38,9 +34,10 @@ struct Chats: View {
             .navigationTitle("Chats")
             .onAppear {
                 let data = DM.data(id: DM.my().id)
-
                 for id in data.chatting {
-                    convos.append(DM.user(id: id))
+
+                    users.append(DM.user(id: id))
+                    images.append(DM.getImage(id: id, path: "avatars"))
                 }
             }
             .navigationDestination(for: User.self) { user in
@@ -49,7 +46,7 @@ struct Chats: View {
             }
             .toolbar {
                 ToolbarItem {
-                    Button("New chat") {
+                    Button("New Chat") {
                         showChatDM = true
                     }
                     .buttonStyle(.borderedProminent)
@@ -62,10 +59,10 @@ struct Chats: View {
         }
     }
     func deleteItems(atOffsets offsets: IndexSet) {
-        convos.remove(atOffsets: offsets)
+        users.remove(atOffsets: offsets)
     }
     func move(fromOffsets source: IndexSet, toOffset destination: Int) {
-        convos.move(fromOffsets: source, toOffset: destination)
+        users.move(fromOffsets: source, toOffset: destination)
     }
 }
 
@@ -76,10 +73,9 @@ struct Row: View {
 
     var body: some View {
         HStack(spacing: 16) {
+            RoundPic(image: image, width: 80)
 
-            RoundPic(image: image, width: 60)
-
-            VStack(alignment: .leading, spacing: 5) {
+            VStack(alignment: .leading, spacing: 16) {
                 Text(name)
                     .font(.headline)
 

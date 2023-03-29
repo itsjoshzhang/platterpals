@@ -5,23 +5,25 @@ import PhotosUI
 
 struct MyProfile: View {
 
-    @State var editInfo = false
-    @State var showSets = false
-    @State var imageData: Data?
-
     @State var name = ""
     @State var text = ""
     @State var city = "Berkeley"
+    @State var image: UIImage?
+
+    @State var editInfo = false
+    @State var showSets = false
+    @State var imageData: Data?
     @State var imageItem: PhotosPickerItem?
 
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
+            let id = DM.my().id
+
             ZStack {
                 ScrollView {
                     VStack(spacing: 16) {
-    let id = DM.my().id
 
     if editInfo {
         if let data = imageData {
@@ -74,10 +76,6 @@ struct MyProfile: View {
         .buttonStyle(.bordered)
 
         } else {
-
-            // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
-
-                            let image = DM.getImage(id: id, path: "avatars")
                             RoundPic(image: image, width: 160)
 
                             Button("Edit Info") {
@@ -101,6 +99,10 @@ struct MyProfile: View {
                 }
             }
             .navigationTitle("My Profile")
+            .onAppear {
+                image = DM.getImage(id: id, path: "avatars")
+            }
+
             .toolbar {
                 ToolbarItem {
                     Button("Settings") {

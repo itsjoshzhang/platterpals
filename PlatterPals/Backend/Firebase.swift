@@ -42,7 +42,7 @@ class DataManager: ObservableObject {
     }
 
     // called at Upload
-    func putImage(image: UIImage, path: String){
+    func putImage(image: UIImage, path: String) {
 
         // get storage path with user id
         let SR = SR.child("\(path)/\(my().id).jpg")
@@ -61,8 +61,6 @@ class DataManager: ObservableObject {
             SR.putData(jpeg, metadata: meta)
         }
     }
-
-    // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
 
     // called everywhere
     func getImage(id: String, path: String) -> UIImage {

@@ -1,10 +1,9 @@
-// File: checked
-
 import SwiftUI
 
 struct TitleBar: View {
     
     var id: String
+    @State var image: UIImage?
     @State var showProf = false
     @State var showAction = false
     @Environment(\.dismiss) var dismiss
@@ -19,14 +18,7 @@ struct TitleBar: View {
                 } label: {
                     HStack(spacing: 16) {
 
-            // TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
-
-                        Image(uiImage: DM.getImage(id: id,
-                            path: "avatars"))
-                            .resizable()
-                            .scaledToFit()
-                            .clipShape(Circle())
-                            .frame(width: 80)
+                        RoundPic(image: image, width: 160)
                         
                         VStack(alignment: .leading) {
                             let user = DM.user(id: id)
@@ -52,7 +44,10 @@ struct TitleBar: View {
             .padding(.horizontal, 20)
             Div()
         }
-        .sheet(isPresented: $showProf) {
+        .onAppear {
+            image = DM.getImage(id: id, path: "avatars")
+        }
+        .fullScreenCover(isPresented: $showProf) {
             UserProf(id: id)
                 .environmentObject(DM)
         }
@@ -99,7 +94,7 @@ struct Bubble: View {
 struct Assets_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            TitleBar(id: "email@gmail.com")
+            TitleBar(id: "joshzhang@berkeley_edu")
                 .environmentObject(DataManager())
         }
     }

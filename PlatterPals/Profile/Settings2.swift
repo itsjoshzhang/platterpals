@@ -9,17 +9,19 @@ struct Settings2: View {
     @State var toggle2 = true
     @State var toggle3 = false
 
+    @State var image: UIImage?
     @State var showReset = false
-    @State var showDelete = false
     @State var showTerms = false
+    @State var showDelete = false
     
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
         ScrollViewReader { value in
+            let user = DM.my()
+
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-
         Group {
             Text("Chats")
                 .font(.headline)
@@ -58,19 +60,12 @@ struct Settings2: View {
             Div()
 
             HStack {
-// TODO: call getImage() inside onAppear() in views and assign return value to local @State vars of type UIImage
-
-                Image(uiImage: DM.getImage(id:
-                    DM.my().id, path: "avatars"))
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 80)
-                    .clipShape(Circle())
+                RoundPic(image: image, width: 160)
 
                 VStack(alignment: .leading) {
-                    Text(DM.my().name)
+                    Text(user.name)
                         .font(.headline)
-                    Text(DM.my().text)
+                    Text(user.text)
                 }
             }
         }
@@ -83,9 +78,9 @@ struct Settings2: View {
             Text("Payment methods: None")
 
             HStack {
-                Text(DM.my().id)
+                Text(user.id)
 
-                Button("Reset") {
+                Button("Reset Password") {
                     showReset = true
                 }
                 .buttonStyle(.bordered)
@@ -144,6 +139,7 @@ struct Settings2: View {
                       dismissButton: .default(Text("Continue")))
             }
             .onAppear {
+                image = DM.getImage(id: user.id, path: "avatars")
                 value.scrollTo(anchor, anchor: .top)
             }
         }
