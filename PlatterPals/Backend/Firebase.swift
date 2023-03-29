@@ -2,11 +2,11 @@ import SwiftUI
 import Firebase
 import FirebaseStorage
 
-class DataManager: ObservableObject {
+// create FB database & storage
+let FS = Firestore.firestore()
+let SR = Storage.storage().reference()
 
-    // create FB database & storage
-    private let FS = Firestore.firestore()
-    private let SR = Storage.storage().reference()
+class DataManager: ObservableObject {
 
     // track user id and their data
     @Published var thisUser = 0
@@ -50,7 +50,7 @@ class DataManager: ObservableObject {
 
         // resize & convert image to jpg
         let image = image.resize(width: 200, pfp: pfp)
-        let jpeg = image.jpegData(compressionQuality: 0.25)
+        let jpeg = image.jpegData(compressionQuality: 1)
 
         // compute metadata for jpg type
         let meta = StorageMetadata()
@@ -60,23 +60,6 @@ class DataManager: ObservableObject {
         if let jpeg = jpeg {
             SR.putData(jpeg, metadata: meta)
         }
-    }
-
-    // called everywhere
-    func getImage(id: String, path: String) -> UIImage {
-
-        // get storage path with user id
-        let SR = SR.child("\(path)/\(id).jpg")
-        var image = UIImage(named: "logo.png")
-
-        // get image data (max size 8MB)
-        SR.getData(maxSize: 8 * 1024 * 1024) { data, error in
-            if let data = data {
-
-                // ASYNC: return image from data
-                DispatchQueue.main.async {
-                    image = UIImage(data: data) }}}
-        return image!
     }
 
     // called at Update

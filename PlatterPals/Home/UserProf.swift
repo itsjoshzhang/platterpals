@@ -1,10 +1,9 @@
 import SwiftUI
-import FirebaseStorage
 
 struct UserProf: View {
 
     var id: String
-    @State var image = [UIImage]()
+    @State var image: UIImage?
     @State var showAction = false
     @State var showChatDM = false
     @State var showFollow = false
@@ -20,7 +19,8 @@ struct UserProf: View {
                 VStack(alignment: .leading, spacing: 16) {
                     HStack(spacing: 16) {
 
-                        RoundPic(image: image[0], width: 160)
+                        RoundPic(image: image, width: 160)
+                        
                         Text(name)
                     }
                     .padding(.horizontal, 20)
@@ -78,28 +78,22 @@ struct UserProf: View {
             .actionSheet(isPresented: $showAction) {
                 ActionSheet(title: Text("Notifications"),
                     buttons: [
-                    .destructive(Text("Block this user")),
-                    .default(Text("Mute notifications")),
-                    .cancel(Text("Cancel"))]
-                )
-            }
-        }
-    }
+                        .destructive(Text("Block this user")),
+                        .default(Text("Mute notifications")),
+                        .cancel(Text("Cancel"))]
+                )}}}
+
     func getImage(id: String, path: String) {
+        let SR = SR.child("\(path)/\(id).jpg")
 
-        // get storage path with user id
-        let SR = Storage.storage().reference().child("\(path)/\(id).jpg")
-        // image = UIImage(named: "logo.png")
-
-        // get image data (max size 8MB)
         SR.getData(maxSize: 8 * 1024 * 1024) { data, error in
             if let data = data {
 
-                // ASYNC: return image from data
                 DispatchQueue.main.async {
-                    image.append(UIImage(data: data)!) }}}
-    }
+                    image = UIImage(data: data)
+                }}}}
 }
+
 struct UserProf_Previews: PreviewProvider {
 	static var previews: some View {
         UserProf(id: "joshzhang@berkeley_edu")

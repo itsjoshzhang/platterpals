@@ -2,27 +2,25 @@ import SwiftUI
 
 struct Chats: View {
 
-    @State var users = [User]()
-    @State var images = [UIImage]()
+    @State var idList = [String]()
     @State var showChatDM = false
-
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
             ZStack {
                 VStack(spacing: 16) {
-                    List {
-                        ForEach(users) { user in
-                            NavigationLink(value: user) {
+                List {
 
-                                Row(name: user.name, image: images.removeFirst())
-                            }
-                        }
-                        .onDelete(perform: deleteItems(atOffsets:))
-                        .onMove(perform: move(fromOffsets:toOffset:))
+                ForEach(idList, id: \.self) { id in
+                    NavigationLink(value: id) {
+                        Row(id: id).environmentObject(DM)
                     }
-                    .listStyle(.plain)
+                }
+                .onDelete(perform: deleteItems(atOffsets:))
+                .onMove(perform: move(fromOffsets:toOffset:))
+                }
+                .listStyle(.plain)
                 }
                 VStack { Spacer()
                     HStack { Spacer()
@@ -34,10 +32,9 @@ struct Chats: View {
             .navigationTitle("Chats")
             .onAppear {
                 let data = DM.data(id: DM.my().id)
-                for id in data.chatting {
 
-                    users.append(DM.user(id: id))
-                    images.append(DM.getImage(id: id, path: "avatars"))
+                for id in data.chatting {
+                    idList.append(id)
                 }
             }
             .navigationDestination(for: User.self) { user in
@@ -59,24 +56,25 @@ struct Chats: View {
         }
     }
     func deleteItems(atOffsets offsets: IndexSet) {
-        users.remove(atOffsets: offsets)
+        idList.remove(atOffsets: offsets)
     }
     func move(fromOffsets source: IndexSet, toOffset destination: Int) {
-        users.move(fromOffsets: source, toOffset: destination)
+        idList.move(fromOffsets: source, toOffset: destination)
     }
 }
 
 struct Row: View {
 
-    var name: String
-    var image: UIImage
+    var id: String
+    @State var image: UIImage?
+    @EnvironmentObject var DM: DataManager
 
     var body: some View {
         HStack(spacing: 16) {
             RoundPic(image: image, width: 80)
 
             VStack(alignment: .leading, spacing: 16) {
-                Text(name)
+                Text(DM.user(id: id).name)
                     .font(.headline)
 
                 Text("Active today")
@@ -84,7 +82,19 @@ struct Row: View {
                     .foregroundColor(.secondary)
             }
         }
+        .onAppear {
+            getImage(id: id, path: "avatars")
+        }
     }
+    func getImage(id: String, path: String) {
+        let SR = SR.child("\(path)/\(id).jpg")
+
+        SR.getData(maxSize: 8 * 1024 * 1024) { data, error in
+            if let data = data {
+
+                DispatchQueue.main.async {
+                    image = UIImage(data: data)
+                }}}}
 }
 struct Chats_Previews: PreviewProvider {
 	static var previews: some View {

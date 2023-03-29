@@ -45,7 +45,7 @@ struct TitleBar: View {
             Div()
         }
         .onAppear {
-            image = DM.getImage(id: id, path: "avatars")
+            getImage(id: id, path: "avatars")
         }
         .fullScreenCover(isPresented: $showProf) {
             UserProf(id: id)
@@ -60,6 +60,15 @@ struct TitleBar: View {
             )
         }
     }
+    func getImage(id: String, path: String) {
+        let SR = SR.child("\(path)/\(id).jpg")
+
+        SR.getData(maxSize: 8 * 1024 * 1024) { data, error in
+            if let data = data {
+
+                DispatchQueue.main.async {
+                    image = UIImage(data: data)
+                }}}}
 }
 struct Bubble: View {
     

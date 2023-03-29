@@ -113,10 +113,12 @@ struct RoundPic: View {
     var width: Int
 
     var body: some View {
-        Image(uiImage: image!)
-            .resizable()
-            .scaledToFit()
-            .clipShape(Circle())
-            .frame(width: CGFloat(width))
+        if let image = image {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFit()
+                .clipShape(Circle())
+                .frame(width: CGFloat(width))
+        }
     }
 }

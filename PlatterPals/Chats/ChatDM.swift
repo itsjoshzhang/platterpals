@@ -16,7 +16,6 @@ struct ChatDM: View {
 
         NavigationStack {
             VStack(spacing: 16) {
-
                 RoundPic(image: image, width: 160)
 
                 TextField("Username", text: $name)
@@ -51,7 +50,7 @@ struct ChatDM: View {
         .navigationTitle("New Chat")
 
         .onChange(of: name) { _ in
-            image = DM.getImage(id: id, path: "avatars")
+            getImage(id: id, path: "avatars")
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -65,6 +64,15 @@ struct ChatDM: View {
                 .environmentObject(DM)
         }
     }
+    func getImage(id: String, path: String) {
+        let SR = SR.child("\(path)/\(id).jpg")
+
+        SR.getData(maxSize: 8 * 1024 * 1024) { data, error in
+            if let data = data {
+
+                DispatchQueue.main.async {
+                    image = UIImage(data: data)
+                }}}}
 }
 struct ChatDM_Previews: PreviewProvider {
 	static var previews: some View {
