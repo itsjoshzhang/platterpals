@@ -113,7 +113,7 @@ class DataManager: ObservableObject {
         }
     }
 
-    // called at Home
+    // called at Login
     func initUser(id: String) {
 
         // replacing avoids image errors

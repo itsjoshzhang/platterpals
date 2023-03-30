@@ -1,21 +1,22 @@
-// File: checked
-
 import SwiftUI
 
 struct Update: View {
-    
+
+    // ## TRACK INFO ## \\
     var id: String
     @State var size = 1.0
-    @State var offset = 0.0
-    @State var avatar: UIImage?
-    @State var profile: UIImage?
+    @State var swipe = 0.0
+    @State var image: UIImage?
 
+    // ## CONDITIONS ## \\
     @State var showProf = false
     @State var hideProf = false
     @State var showAlert = false
 
     @EnvironmentObject var DM: DataManager
-    
+
+    // ## OTHER VIEWS ## \\
+
     var body: some View {
         if hideProf {
             Button("Unhide profile") {
@@ -25,125 +26,107 @@ struct Update: View {
             content
         }
     }
+    // ## SETUP VIEW ## \\
+
     var content: some View {
         VStack(alignment: .leading, spacing: 16) {
             let user = DM.user(id: id)
+            let min = UIwidth / 4.0
+            ZStack {
 
-            Button {
-                showProf = true
-            } label: {
-        HStack {
-            RoundPic(image: avatar, width: 80)
+                // ## SHOW IMAGE ## \\
 
-            Text(user.name)
-                .font(.headline)
-            Spacer()
+                if let image = image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(maxHeight: UIheight * 0.75)
+                        .clipped()
 
-            Button("...") {
-                showAlert = true
-            }
-            .alert("Profile settings", isPresented: $showAlert) {
+                // ## SWIPE LOGIC ## \\
 
-                if user.id == DM.my().id {
-                    Button("Delete profile", role: .destructive) {
-
-                        DM.delImage(path: "profiles")
-                    }
-                } else {
-                    Button("Report profile", role: .destructive) {
-                        withAnimation {
-                            hideProf = true
-                        }
-                    }
-                }
-                Button("Cancel", role: .cancel) {}
-            }
-        }
-        .padding(.horizontal, 16)
-        }
-        ZStack {
-            if let profile = profile {
-                Image(uiImage: profile)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: UIheight)
-                    .clipped()
-
-            .gesture(DragGesture(minimumDistance: UIwidth / 4)
-                .onChanged { swipe in
-                    offset = swipe.translation.width
+                .gesture(
+                    DragGesture(minimumDistance: min
+                )
+                .onChanged { drag in
+                    swipe = drag.translation.width
                     size = 1.0
                 }
-                .onEnded { swipe in
+                .onEnded { drag in
                     withAnimation(.easeIn(duration: 0.25)) {
+                        let drag = drag.translation.width
 
-                        if swipe.translation.width > 0 {
+                        if (drag > min) {
                             showProf = true
-                        } else {
+                        } else if (drag < -min) {
                             hideProf = true
                         }
                         size = 0.0
-                    }
-                }
-            )
-            }
+                    }})}
+
+                // ## SHOW HEARTS ## \\
+
                 Group {
                     Image(systemName: "heart.fill")
                         .resizable()
                         .foregroundColor(.pink)
-                        .opacity(offset / 200.0)
+                        .opacity(swipe / 200.0)
 
                     Image(systemName: "heart.slash.fill")
                         .resizable()
                         .foregroundColor(.white)
-                        .opacity(offset / -200.0)
+                        .opacity(swipe / -200.0)
                 }
-                .scaledToFit()
                 .frame(width: 200)
                 .scaleEffect(size)
-            }
-            Group {
-                Text(user.city)
-                Text(user.text)
+                .scaledToFit()
 
-                Text("\(Image(systemName: "heart.fill")) \(user.views)")
+                // ## USER INFO ## \\
+
+                Rectangle()
+
+                Group {
+                    Text(user.name)
+                    Text(user.city)
+                    Text(user.text)
+
+                    Text("\(Image(systemName: "heart.fill")) \(user.views)")
+                }
+                .padding(16)
             }
-            .padding(.horizontal, 16)
         }
+        // ## MODIFIERS ## \\
+
         .onAppear {
-            let id = DM.user(id: id).id
-
-            getAvatar(id: id)
-            getProfile(id: id)
+            getImage(id: id)
         }
-        .fullScreenCover(isPresented: $showProf) {
+        .sheet(isPresented: $showProf) {
             UserProf(id: id)
                 .environmentObject(DM)
         }
+        .alert("Profile Details", isPresented: $showAlert) {
+            let id = DM.user(id: id).id
+
+            if id == DM.my().id {
+                Button("Delete Profile", role: .destructive) {
+                    DM.delImage(path: "profiles")
+                }
+            } else {
+                Button("Report Profile", role: .destructive) {
+                    withAnimation {
+                        hideProf = true
+                    }}}
+            Button("Cancel", role: .cancel) {}
+        }
     }
-    func getAvatar(id: String) {
-        let SR = SR.child("avatars/\(id).jpg")
+    // ## FUNCTIONS ## \\
 
-        SR.getData(maxSize: 8 * 1024 * 1024) { data, error in
-            if let data = data {
-
-                DispatchQueue.main.async {
-                    avatar = UIImage(data: data)
-                }}}}
-
-    func getProfile(id: String) {
+    func getImage(id: String) {
         let SR = SR.child("profiles/\(id).jpg")
 
         SR.getData(maxSize: 8 * 1024 * 1024) { data, error in
             if let data = data {
 
                 DispatchQueue.main.async {
-                    profile = UIImage(data: data)
-                }}}}
-}
-struct Update_Previews: PreviewProvider {
-    static var previews: some View {
-        Home()
-            .environmentObject(DataManager())
-    }
-}
+                    image = UIImage(data: data)
+                }}}}}

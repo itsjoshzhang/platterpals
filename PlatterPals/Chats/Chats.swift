@@ -34,7 +34,9 @@ struct Chats: View {
                 let data = DM.data(id: DM.my().id)
 
                 for id in data.chatting {
-                    idList.append(id)
+                    if !idList.contains(id) {
+                        idList.append(id)
+                    }
                 }
             }
             .navigationDestination(for: User.self) { user in

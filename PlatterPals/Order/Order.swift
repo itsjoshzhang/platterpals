@@ -11,8 +11,8 @@ struct Order: View {
         NavigationStack {
             VStack(spacing: 16) {
                 
-                BigButton(path: 3, text: "Order with DoorDash")
-                    .environmentObject(DM)
+//      BigButton(path: 3, text: "Order with DoorDash")
+//                    .environmentObject(DM)
                 
 //      Update(id: <#T##String#>, user: <#T##String#>, image: <#T##UIImage#>, text: <#T##String#>)
 //                    .environmentObject(dm)

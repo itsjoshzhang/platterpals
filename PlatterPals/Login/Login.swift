@@ -88,9 +88,7 @@ struct Login: View {
                 if let user = user {
                     DM.initUser(id: user.email ?? email)
                     loggedIn = true
-                }
-            }
-        }
+                }}}
         .sheet(isPresented: $showReset) {
             Reset()
                 .presentationDetents([.medium])
@@ -152,9 +150,8 @@ struct Reset: View {
                 }
                 .navigationTitle("Reset Password")
                 .padding(16)
-            }
-        }
-    }
+            }}}
+
     // ## FUNCTIONS ## \\
 
     func resetPass() {
@@ -162,13 +159,4 @@ struct Reset: View {
             if let error = error {
                 alertText = error.localizedDescription
                 showAlert = true
-            }
-        }
-    }
-}
-struct Login_Previews: PreviewProvider {
-    static var previews: some View {
-        Login()
-            .environmentObject(DataManager())
-    }
-}
+            }}}}

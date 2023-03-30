@@ -15,36 +15,32 @@ struct AppInit: App {
 }
 struct MyTabView: View {
 
-    @State var tag = 2
+    @State var tag = 3
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
         TabView(selection: $tag) {
+            Maps()
+                .tabItem {
+                    Image(systemName: "map")
+                }.tag(1)
             Chats()
                 .tabItem {
                     Image(systemName: "message")
-                    Text("Chats")
-                }
-                .tag(1)
+                }.tag(2)
             Home()
                 .tabItem {
                     Image(systemName: "house")
-                    Text("Home")
-                }
-                .tag(2)
+                }.tag(3)
+            Suggest()
+                .tabItem {
+                    Image(systemName: "fork.knife")
+                }.tag(4)
             MyProfile()
                 .tabItem {
                     Image(systemName: "person")
-                    Text("Profile")
-                }
-                .tag(3)
+                }.tag(5)
         }
         .environmentObject(DM)
-    }
-}
-struct AppInit_Previews: PreviewProvider {
-    static var previews: some View {
-        MyTabView()
-            .environmentObject(DataManager())
     }
 }

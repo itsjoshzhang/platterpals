@@ -33,6 +33,7 @@ struct RoundPic: View {
                 .resizable()
                 .scaledToFit()
                 .clipShape(Circle())
+                .foregroundColor(.pink)
                 .frame(width: CGFloat(width))
         }
     }

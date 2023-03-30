@@ -18,8 +18,8 @@ struct Suggest: View {
         NavigationStack {
             VStack(spacing: 16) {
                 
-                BigButton(path: 2, text: "Let us decide for you!")
-                    .environmentObject(DM)
+//                BigButton(path: 2, text: "Let us decide for you!")
+//                    .environmentObject(DM)
                 
                 Form {
                     Section(header: Text("Got something in mind?")

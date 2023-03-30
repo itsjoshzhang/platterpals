@@ -15,8 +15,8 @@ struct Home: View {
                         Search()
                             .environmentObject(DM)
                         
-                        BigButton(path: 1, text: "Let's order something!")
-                            .environmentObject(DM)
+//                        BigButton(path: 1, text: "Let's order something!")
+//                            .environmentObject(DM)
                         
                         ForEach(DM.userList, id: \.self) { user in
                             let id = DM.my().id

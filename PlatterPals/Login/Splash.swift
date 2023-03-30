@@ -2,8 +2,7 @@ import SwiftUI
 
 struct Splash: View {
 
-    // ## CONDITIONS ## \\
-    
+    // ## TRACK INFO ## \\
     @State var first: Bool
     @State var scale = 0.9
     @State var opacity = 0.0
@@ -13,6 +12,7 @@ struct Splash: View {
     @StateObject var DM = DataManager()
 
     // ## OTHER VIEWS ## \\
+
     var body: some View {
         if showNext {
             if first {
@@ -59,18 +59,10 @@ struct Splash: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                 withAnimation {
                     showNext = true
-                }
-            }
-        }
+                }}}
         .toolbar {
             if first == false {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         dismiss()
                     }}}}}}
-
-struct Splash_Previews: PreviewProvider {
-    static var previews: some View {
-        Splash(first: true)
-    }
-}

@@ -24,6 +24,7 @@ struct Signup: View {
     @EnvironmentObject var DM: DataManager
 
     // ## SETUP VIEW ## \\
+
     var body: some View {
         NavigationStack {
         ZStack {
@@ -133,17 +134,14 @@ struct Signup: View {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button("Cancel") {
                     dismiss()
-                }
-            }
-        }
+                }}}
         .sheet(isPresented: $showGuide) {
             Guide()
         }
         .sheet(isPresented: $showTerms) {
             Terms()
-        }
-        }
-    }
+        }}}
+
     // ## FUNCTIONS ## \\
 
     func signupAuth() {
@@ -156,19 +154,12 @@ struct Signup: View {
             } else {
 
                 // ## CREATE USER ## \\
+
                 DM.makeUser(id: email, name: name, city: city)
+                DM.initUser(id: email)
 
                 if let d = imageData, let image = UIImage(data: d) {
                     DM.putImage(image: image, path: "avatars")
                 }
                 dismiss()
-            }
-        }
-    }
-}
-struct Signup_Previews: PreviewProvider {
-    static var previews: some View {
-        Signup()
-            .environmentObject(DataManager())
-    }
-}
+            }}}}

@@ -74,9 +74,3 @@ struct Terms: View {
         }
     }
 }
-struct Guide_Previews: PreviewProvider {
-    static var previews: some View {
-        Guide()
-        Terms()
-    }
-}
