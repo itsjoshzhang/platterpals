@@ -1,5 +1,3 @@
-// File: checked
-
 import SwiftUI
 
 struct BigButton: View {

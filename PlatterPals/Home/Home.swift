@@ -3,7 +3,7 @@
 import SwiftUI
 
 struct Home: View {
-    
+
     @State var showUpload = false
     @EnvironmentObject var DM: DataManager
     

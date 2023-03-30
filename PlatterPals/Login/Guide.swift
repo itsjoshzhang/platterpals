@@ -3,24 +3,25 @@ import SwiftUI
 struct Guide: View {
     var body: some View {
         TabView {
-            GuideView(image: 1, title: "Welcome to PlatterPals!",
+            Guide2(image: 1, title: "Welcome to PlatterPals!",
                       text: "Find food and restaurants in your area using an intelligent AI. Make friends with similar palates and meet your culinary soulmate!")
 
-            GuideView(image: 2, title: "Can't decide what to eat?",
+            Guide2(image: 2, title: "Can't decide what to eat?",
                       text: "Let your GPT-powered AI assistant generate the perfect order. Just fill in your favorite cuisines and follow some foodies near you!")
 
-            GuideView(image: 3, title: "Go find your PlatterPal!",
+            Guide2(image: 3, title: "Go find your PlatterPal!",
                       text: "We've made it easy to match with people who meet your tastes. Simply swipe left on a profile to remove and swipe right to approve!")
         }
         .indexViewStyle(.page(backgroundDisplayMode: .always))
         .tabViewStyle(.page(indexDisplayMode: .always))
     }
 }
-struct GuideView: View {
+struct Guide2: View {
     
     var image: Int
     var title: String
     var text: String
+
     @Environment(\.dismiss) var dismiss
     
     var body: some View {

@@ -2,20 +2,23 @@ import SwiftUI
 import Firebase
 
 struct Login: View {
-    
+
+    // ## TEXTFIELDS ## \\
     @State var email = ""
     @State var password = ""
     @State var alertText = ""
     @FocusState var focus: Bool
 
+    // ## CONDITIONS ## \\
     @State var loggedIn = false
     @State var showAlert = false
     @State var showReset = false
     @State var showSignup = false
+
     @Environment(\.dismiss) var dismiss
-    
     @EnvironmentObject var DM: DataManager
-    
+
+    // ## OTHER VIEWS ## \\
     var body: some View {
         if loggedIn {
             MyTabView()
@@ -29,6 +32,8 @@ struct Login: View {
             Back()
             VStack(spacing: 16) {
 
+                // ## NAME & LOGO ## \\
+
                 Text("PlatterPals")
                     .font(.custom("Lobster", size: 50))
                     .foregroundColor(.pink)
@@ -38,6 +43,8 @@ struct Login: View {
                     .onTapGesture {
                         focus = false
                     }
+                // ## TEXTFIELDS ## \\
+
                 Group {
                     TextField("Email", text: $email)
                         .textInputAutocapitalization(.never)
@@ -50,6 +57,8 @@ struct Login: View {
                 .foregroundColor(.pink)
                 .focused($focus)
 
+                // ## CONDITIONS ## \\
+
                 Button("Forgot your login?") {
                     showReset = true
                 }
@@ -57,6 +66,8 @@ struct Login: View {
                     showSignup = true
                 }
                 .buttonStyle(.bordered)
+
+                // ## LOGIN USER ## \\
 
                 Button("Sign In") {
                     loginAuth()
@@ -70,9 +81,12 @@ struct Login: View {
             }
             .padding(16)
         }
+        // ## MODIFIERS ## \\
+
         .onAppear {
             Auth.auth().addStateDidChangeListener { auth, user in
-                if user != nil {
+                if let user = user {
+                    DM.initUser(id: user.email ?? email)
                     loggedIn = true
                 }
             }
@@ -86,21 +100,22 @@ struct Login: View {
                 .environmentObject(DM)
         }
     }
-    func loginAuth() {
-        Auth.auth().signIn(withEmail: email,
-                           password: password) { result, error in
+    // ## FUNCTIONS ## \\
 
-            if error == nil {
-                DM.initUser(id: email)
-            } else {
-                alertText = error!.localizedDescription
+    func loginAuth() {
+        Auth.auth().signIn(withEmail: email, password: password) {
+            _, error in
+
+            if let error = error {
+                alertText = error.localizedDescription
                 showAlert = true
             }
         }
     }
 }
 struct Reset: View {
-    
+
+    // ## TEXTFIELDS ## \\
     @State var email = ""
     @State var alertText = ""
     @State var showAlert = false
@@ -110,6 +125,9 @@ struct Reset: View {
             ZStack {
                 Back()
                 VStack(spacing: 16) {
+
+                    // ## TEXTFIELDS ## \\
+
                     Group {
                         TextField("Email", text: $email)
                             .textInputAutocapitalization(.never)
@@ -119,6 +137,8 @@ struct Reset: View {
                         Text("We'll email you a reset link right away!")
                     }
                     .foregroundColor(.pink)
+
+                    // ## BUTTONS ## \\
 
                     Button("Reset Password") {
                         resetPass()
@@ -135,10 +155,12 @@ struct Reset: View {
             }
         }
     }
+    // ## FUNCTIONS ## \\
+
     func resetPass() {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
-            if error != nil {
-                alertText = error!.localizedDescription
+            if let error = error {
+                alertText = error.localizedDescription
                 showAlert = true
             }
         }

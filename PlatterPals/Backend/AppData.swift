@@ -1,5 +1,7 @@
 import SwiftUI
 
+// ## GLOBAL VARS ## \\
+
 let UIwidth = UIScreen.main.bounds.size.width
 let UIheight = UIScreen.main.bounds.size.height
 
@@ -10,18 +12,43 @@ let foodList = ["All", "American", "Brazilian", "Caribbean", "Chinese",
                 "Ethiopian", "French", "Indian", "Italian", "Japanese",
                 "Korean", "Mexican", "Middle Eastern", "Thai", "Vietnamese"]
 
+struct RoundPic: View {
+    var image: UIImage?
+    var width: Int
+    var body: some View {
+
+        // ## PROFILE PIC ## \\
+
+        if let image = image {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFit()
+                .clipShape(Circle())
+                .frame(width: CGFloat(width))
+
+        // ## PLACEHOLDER ## \\
+
+        } else {
+            Image(systemName: "person.circle")
+                .resizable()
+                .scaledToFit()
+                .clipShape(Circle())
+                .frame(width: CGFloat(width))
+        }
+    }
+}
 extension UIImage {
-    // input: new width and pfp(t/f)
-    func resize(width: CGFloat, pfp: Bool = false) -> UIImage {
+
+    // called at putImage
+    func resize(width: CGFloat, pfp: Bool) -> UIImage {
 
         // compute new scale and height
         let scale = width / self.size.width
         var height = self.size.height * scale
 
         // user avatars should be square
-        if pfp {
-            height = width
-        }
+        if pfp { height = width }
+
         // compute new size and renderer
         let size = CGSize(width: width, height: height)
         let render = UIGraphicsImageRenderer(size: size)
@@ -35,13 +62,9 @@ extension UIImage {
 extension SetItem {
     static let items = [
         SetItem(title: "Chats", text: "Blocked users & notifications", image: "message"),
-
         SetItem(title: "Home", text: "Suggested users & restaurants", image: "house"),
-
         SetItem(title: "Profile", text: "Profile image, bio, publicity", image: "person"),
-
         SetItem(title: "Security", text: "Login info & payment methods", image: "lock"),
-
         SetItem(title: "Account", text: "Upload data & delete account", image: "key"),
     ]
 }
@@ -106,19 +129,5 @@ struct Back: View {
             .opacity(0.05)
             .scaledToFill()
             .ignoresSafeArea()
-    }
-}
-struct RoundPic: View {
-    var image: UIImage?
-    var width: Int
-
-    var body: some View {
-        if let image = image {
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFit()
-                .clipShape(Circle())
-                .frame(width: CGFloat(width))
-        }
     }
 }

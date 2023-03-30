@@ -94,6 +94,7 @@ class DataManager: ObservableObject {
                 self.userList.append(user)
             }
         }
+
         FS.collection("userData").getDocuments { col, error in
             for doc in col!.documents {
                 let data = doc.data()
@@ -106,14 +107,17 @@ class DataManager: ObservableObject {
                 let blocked  = data["blocked"]  as? [String] ?? d
                 
                 let userData = UserData(id: id, favFoods: favFoods,
-                                        favUsers: favUsers, chatting: chatting, blocked: blocked)
+                favUsers: favUsers, chatting: chatting, blocked: blocked)
                 self.userData.append(userData)
             }
         }
     }
 
-    // called at Login
+    // called at Home
     func initUser(id: String) {
+
+        // replacing avoids image errors
+        let id = id.replacingOccurrences(of: ".", with: "_")
 
         // traverse userList to check id
         for index in 0 ..< userList.count {
@@ -133,10 +137,10 @@ class DataManager: ObservableObject {
         // replacing avoids image errors
         let id = id.replacingOccurrences(of: ".", with: "_")
 
+        // call editFuncs to create data
         editUser(id: id, name: name, text: "", city: city, views: 0)
         editData(id: id, fo: [String](), us: [String](), ch: [String](), bl: [String]())
         editSets(id: id, notifs: true, emails: true, privacy: true, location: true)
-        initUser(id: id)
     }
     
     // 1. makeUser chooses edit func
