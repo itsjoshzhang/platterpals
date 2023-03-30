@@ -119,7 +119,7 @@
 				F24BFEAA296CBDF100B2E616 /* GoogleService-Info.plist */,
 				F2F6D8522961730000B8F4D7 /* Backend */,
 				F2F6D8612961730000B8F4D7 /* Login */,
-				F2F6D8492961730000B8F4D7 /* Buttons */,
+				F2F6D8492961730000B8F4D7 /* Assets */,
 				F2F6D85D2961730000B8F4D7 /* Chats */,
 				F2F6D84D2961730000B8F4D7 /* Home */,
 				F2F6D8592961730000B8F4D7 /* Order */,
@@ -129,7 +129,7 @@
 			path = PlatterPals;
 			sourceTree = "<group>";
 		};
-		F2F6D8492961730000B8F4D7 /* Buttons */ = {
+		F2F6D8492961730000B8F4D7 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
 				F2F6D84A2961730000B8F4D7 /* Buttons.swift */,
@@ -137,7 +137,7 @@
 				F2F6D85B2961730000B8F4D7 /* Settings.swift */,
 				F2F494B8298313E3000E35BB /* Settings2.swift */,
 			);
-			path = Buttons;
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		F2F6D84D2961730000B8F4D7 /* Home */ = {
@@ -183,10 +183,10 @@
 		F2F6D85D2961730000B8F4D7 /* Chats */ = {
 			isa = PBXGroup;
 			children = (
+				F25ED26D296FBBA900A6C8F0 /* Assets.swift */,
 				F2F6D85F2961730000B8F4D7 /* Chats.swift */,
 				F2F6D8602961730000B8F4D7 /* ChatDM.swift */,
 				F2F6D85E2961730000B8F4D7 /* Convo.swift */,
-				F25ED26D296FBBA900A6C8F0 /* Assets.swift */,
 			);
 			path = Chats;
 			sourceTree = "<group>";
