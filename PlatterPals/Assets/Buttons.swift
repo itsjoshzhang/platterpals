@@ -72,8 +72,8 @@ struct CircleButton: View {
 struct Buttons_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-//            BigButton(path: 1, text: "Hello, world!")
-//                .environmentObject(DataManager())
+            BigButton(path: 1, text: "Hello, world!")
+                .environmentObject(DataManager())
             
             CircleButton(path: 2, image: "wand.and.stars")
                 .environmentObject(DataManager())

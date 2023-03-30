@@ -4,9 +4,9 @@ struct Update: View {
 
     // ## TRACK INFO ## \\
     var id: String
-    @State var size = 1.0
+    @State var size = 0.0
     @State var swipe = 0.0
-    @State var image: UIImage?
+    let min = UIwidth / 2.0
 
     // ## CONDITIONS ## \\
     @State var showProf = false
@@ -19,7 +19,7 @@ struct Update: View {
 
     var body: some View {
         if hideProf {
-            Button("Unhide profile") {
+            Button("Unhide Profile") {
                 withAnimation {
                     hideProf = false }}
         } else {
@@ -29,85 +29,100 @@ struct Update: View {
     // ## SETUP VIEW ## \\
 
     var content: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            let user = DM.user(id: id)
-            let min = UIwidth / 4.0
-            ZStack {
+        Group {
+        let user = DM.user(id: id)
+        ZStack {
+        let heart = Image(systemName: "heart.fill")
 
-                // ## SHOW IMAGE ## \\
+        // ## SHOW IMAGE ## \\
 
-                if let image = image {
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(maxHeight: UIheight * 0.75)
-                        .clipped()
+        if let image = DM.myProfile {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(maxHeight: UIheight * 0.75)
+                .cornerRadius(16)
+                .clipped()
+        }
+        // ## USER INFO ## \\
 
-                // ## SWIPE LOGIC ## \\
+        VStack(alignment: .leading) {
+            Spacer()
 
-                .gesture(
-                    DragGesture(minimumDistance: min
-                )
-                .onChanged { drag in
-                    swipe = drag.translation.width
-                    size = 1.0
+            Text(user.name)
+                .font(.largeTitle).bold()
+
+            HStack {
+                Text("\(user.city), CA")
+                    .font(.headline)
+                Spacer()
+
+                Text("\(heart) \(user.views)")
+                    .font(.headline)
+
+                Button("\(Image(systemName: "flag"))") {
+                    showAlert = true
                 }
-                .onEnded { drag in
-                    withAnimation(.easeIn(duration: 0.25)) {
-                        let drag = drag.translation.width
+            }
+            Text(user.text)
+                .padding(.top, 3)
+        }
+        .frame(width: UIwidth - 32, alignment: .center)
+        .shadow(color: .black, radius: 3)
+        .foregroundColor(.white)
+        .padding(16)
 
-                        if (drag > min) {
-                            showProf = true
-                        } else if (drag < -min) {
-                            hideProf = true
-                        }
-                        size = 0.0
-                    }})}
+        // ## SHOW HEARTS ## \\
 
-                // ## SHOW HEARTS ## \\
+        Group {
+            heart
+                .resizable()
+                .foregroundColor(.pink)
+                .opacity(swipe / min)
 
-                Group {
-                    Image(systemName: "heart.fill")
-                        .resizable()
-                        .foregroundColor(.pink)
-                        .opacity(swipe / 200.0)
+            Image(systemName: "heart.slash.fill")
+                .resizable()
+                .foregroundColor(.white)
+                .opacity(swipe / -min)
+        }
+        .frame(width: min, height: min, alignment: .center)
+        .scaleEffect(size)
+        .scaledToFit()
+        }
 
-                    Image(systemName: "heart.slash.fill")
-                        .resizable()
-                        .foregroundColor(.white)
-                        .opacity(swipe / -200.0)
-                }
-                .frame(width: 200)
-                .scaleEffect(size)
-                .scaledToFit()
+        // ## SWIPE LOGIC ## \\
 
-                // ## USER INFO ## \\
+        .gesture(DragGesture()
+        .onChanged { drag in
+            withAnimation {
 
-                Rectangle()
-
-                Group {
-                    Text(user.name)
-                    Text(user.city)
-                    Text(user.text)
-
-                    Text("\(Image(systemName: "heart.fill")) \(user.views)")
-                }
-                .padding(16)
+                swipe = -(drag.startLocation.x -
+                          drag.predictedEndLocation.x)
+                size = 1.0
             }
         }
+        .onEnded {_ in
+            withAnimation {
+
+                if (swipe > min) {
+                    showProf = true
+
+                } else if (swipe < -min) {
+                    hideProf = true
+                }
+                size = 0.0
+                }
+            }
+        )
         // ## MODIFIERS ## \\
 
-        .onAppear {
-            getImage(id: id)
-        }
         .sheet(isPresented: $showProf) {
             UserProf(id: id)
                 .environmentObject(DM)
         }
         .alert("Profile Details", isPresented: $showAlert) {
-            let id = DM.user(id: id).id
 
-            if id == DM.my().id {
+            if (DM.my().id == user.id) {
                 Button("Delete Profile", role: .destructive) {
                     DM.delImage(path: "profiles")
                 }
@@ -117,16 +132,4 @@ struct Update: View {
                         hideProf = true
                     }}}
             Button("Cancel", role: .cancel) {}
-        }
-    }
-    // ## FUNCTIONS ## \\
-
-    func getImage(id: String) {
-        let SR = SR.child("profiles/\(id).jpg")
-
-        SR.getData(maxSize: 8 * 1024 * 1024) { data, error in
-            if let data = data {
-
-                DispatchQueue.main.async {
-                    image = UIImage(data: data)
-                }}}}}
+        }}}}

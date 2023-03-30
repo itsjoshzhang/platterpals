@@ -10,6 +10,7 @@ struct Login: View {
     @FocusState var focus: Bool
 
     // ## CONDITIONS ## \\
+    @State var internet = false
     @State var loggedIn = false
     @State var showAlert = false
     @State var showReset = false
@@ -43,41 +44,45 @@ struct Login: View {
                     .onTapGesture {
                         focus = false
                     }
-                // ## TEXTFIELDS ## \\
-
                 Group {
-                    TextField("Email", text: $email)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled(true)
-                    Div()
 
-                    SecureField("Password", text: $password)
-                    Div()
+                    // ## TEXTFIELDS ## \\
+
+                    Group {
+                        TextField("Email", text: $email)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled(true)
+                        Div()
+
+                        SecureField("Password", text: $password)
+                        Div()
+                    }
+                    .foregroundColor(.pink)
+                    .focused($focus)
+
+                    // ## CONDITIONS ## \\
+
+                    Button("Forgot your login?") {
+                        showReset = true
+                    }
+                    Button("New to PlatterPals?") {
+                        showSignup = true
+                    }
+                    .buttonStyle(.bordered)
+
+                    // ## LOGIN USER ## \\
+
+                    Button("Sign In") {
+                        loginAuth()
+                    }
+                    .disabled(email == "" || password == "")
+                    .buttonStyle(.borderedProminent)
+
+                    .alert(alertText, isPresented: $showAlert) {
+                        Button("OK", role: .cancel) {}
+                    }
                 }
-                .foregroundColor(.pink)
-                .focused($focus)
-
-                // ## CONDITIONS ## \\
-
-                Button("Forgot your login?") {
-                    showReset = true
-                }
-                Button("New to PlatterPals?") {
-                    showSignup = true
-                }
-                .buttonStyle(.bordered)
-
-                // ## LOGIN USER ## \\
-
-                Button("Sign In") {
-                    loginAuth()
-                }
-                .disabled(email == "" || password == "")
-                .buttonStyle(.borderedProminent)
-
-                .alert(alertText, isPresented: $showAlert) {
-                    Button("OK", role: .cancel) {}
-                }
+                .opacity(internet ? 1: 0)
             }
             .padding(16)
         }
@@ -86,9 +91,15 @@ struct Login: View {
         .onAppear {
             Auth.auth().addStateDidChangeListener { auth, user in
                 if let user = user {
+
                     DM.initUser(id: user.email ?? email)
-                    loggedIn = true
-                }}}
+                    withAnimation {
+                        loggedIn = true
+                    }}}
+            withAnimation(.easeIn(duration: 1.0)) {
+                internet = true
+            }
+        }
         .sheet(isPresented: $showReset) {
             Reset()
                 .presentationDetents([.medium])

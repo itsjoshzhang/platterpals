@@ -9,10 +9,13 @@ let SR = Storage.storage().reference()
 class DataManager: ObservableObject {
 
     // track user id and their data
-    @Published var thisUser = 0
     @Published var userList = [User]()
     @Published var userData = [UserData]()
     @Published var settings = Setting()
+
+    @Published var thisUser = 0
+    @Published var myAvatar: UIImage?
+    @Published var myProfile: UIImage?
 
     init() { initInfo() }
 
@@ -41,33 +44,6 @@ class DataManager: ObservableObject {
         return userData[thisUser]
     }
 
-    // called at Upload
-    func putImage(image: UIImage, path: String) {
-
-        // get storage path with user id
-        let SR = SR.child("\(path)/\(my().id).jpg")
-        let pfp = (path == "avatars")
-
-        // resize & convert image to jpg
-        let image = image.resize(width: 200, pfp: pfp)
-        let jpeg = image.jpegData(compressionQuality: 1)
-
-        // compute metadata for jpg type
-        let meta = StorageMetadata()
-        meta.contentType = "image/jpg"
-
-        // put image into storage as jpg
-        if let jpeg = jpeg {
-            SR.putData(jpeg, metadata: meta)
-        }
-    }
-
-    // called at Update
-    func delImage(path: String) {
-        let SR = SR.child("\(path)/\(my().id).jpg")
-        SR.delete { _ in }
-    }
-
     private func initInfo() {
         // removeAll means no duplicates
         userList.removeAll()
@@ -79,7 +55,7 @@ class DataManager: ObservableObject {
         // 4. create object using values
         // 5. append object to each list
         
-        FS.collection("userList").getDocuments { col, error in
+        FS.collection("userList").getDocuments { col,_ in
             for doc in col!.documents {
                 let data = doc.data()
                 
@@ -95,7 +71,7 @@ class DataManager: ObservableObject {
             }
         }
 
-        FS.collection("userData").getDocuments { col, error in
+        FS.collection("userData").getDocuments { col,_ in
             for doc in col!.documents {
                 let data = doc.data()
                 let d = [String]()
@@ -115,26 +91,24 @@ class DataManager: ObservableObject {
 
     // called at Login
     func initUser(id: String) {
-
-        // replacing avoids image errors
         let id = id.replacingOccurrences(of: ".", with: "_")
 
         // traverse userList to check id
         for index in 0 ..< userList.count {
-            if userList[index].id == id {
 
-                // if IDs match, assign thisUser
-                thisUser = index
-                getSetts()
-                break
+            // if IDs match, assign thisUser
+            if userList[index].id == id {
+                thisUser = index; break
             }
         }
+        // download images and settings
+        getImage(path: "avatars")
+        getImage(path: "profiles")
+        getSetts()
     }
     
     // called at Signup
     func makeUser(id: String, name: String, city: String) {
-
-        // replacing avoids image errors
         let id = id.replacingOccurrences(of: ".", with: "_")
 
         // call editFuncs to create data
@@ -192,6 +166,33 @@ class DataManager: ObservableObject {
         AIOrder.setData(["id": id, "order": order, "place": place, "rating":
                             rating, "time": time])
     }
+
+    // called at Upload
+    func putImage(image: UIImage, path: String) {
+
+        // get storage path with user id
+        let SR = SR.child("\(path)/\(my().id).jpg")
+        let pfp = (path == "avatars")
+
+        // resize & convert image to jpg
+        let image = image.resize(width: 200, pfp: pfp)
+        let jpeg = image.jpegData(compressionQuality: 1)
+
+        // compute metadata for jpg type
+        let meta = StorageMetadata()
+        meta.contentType = "image/jpg"
+
+        // put image into storage as jpg
+        if let jpeg = jpeg {
+            SR.putData(jpeg, metadata: meta)
+        }
+    }
+
+    // called at Update
+    func delImage(path: String) {
+        let SR = SR.child("\(path)/\(my().id).jpg")
+        SR.delete { _ in }
+    }
     
     // 1. create object result array
     // 2. access firebase collection
@@ -203,7 +204,7 @@ class DataManager: ObservableObject {
     func getChats(senderID: String, getterID: String) -> [Message] {
         var messages = [Message]()
 
-        FS.collection("messages").addSnapshotListener { col, error in
+        FS.collection("messages").addSnapshotListener { col,_ in
             for doc in col!.documents {
                 let data = doc.data()
                 
@@ -225,7 +226,7 @@ class DataManager: ObservableObject {
     func getOrder(id: String) -> [AIOrder] {
         var aiOrders = [AIOrder]()
         
-        FS.collection("aiOrders").getDocuments { col, error in
+        FS.collection("aiOrders").getDocuments { col,_ in
             for doc in col!.documents {
                 let data = doc.data()
                     let docID  = data["id"]     as? String ?? ""
@@ -243,20 +244,33 @@ class DataManager: ObservableObject {
     }
 
     // called at init
+    func getImage(path: String) {
+        let SR = SR.child("\(path)/\(my().id).jpg")
+
+        SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
+            if let data = data {
+
+                DispatchQueue.main.async {
+                    if path == "avatars" {
+                        self.myAvatar = UIImage(data: data)
+                    } else {
+                        self.myProfile = UIImage(data: data)
+                    }}}}}
+
+    // called at init
     func getSetts() {
-        FS.collection("settings").getDocuments { col, error in
+        FS.collection("settings").getDocuments { col,_ in
             for doc in col!.documents {
                 
                 let data = doc.data()
-                    let docID    = data["id"]       as? String ?? ""
-                
+                let docID = data["id"] as? String ?? ""
                 if docID == self.my().id {
-                    
+
                     let notifs   = data["notifs"]   as? Bool ?? true
                     let emails   = data["emails"]   as? Bool ?? true
                     let privacy  = data["privacy"]  as? Bool ?? true
                     let location = data["location"] as? Bool ?? true
                     
-                    self.settings = Setting(id: docID, notifs: notifs, emails:
-                                    emails, privacy: privacy, location: location)
-                    return }}}}}
+            self.settings = Setting(id: docID, notifs: notifs, emails:
+                            emails, privacy: privacy, location: location)
+            return }}}}}

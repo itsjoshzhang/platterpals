@@ -7,6 +7,7 @@ struct Splash: View {
     @State var scale = 0.9
     @State var opacity = 0.0
     @State var showNext = false
+    @State var internet = false
 
     @Environment(\.dismiss) var dismiss
     @StateObject var DM = DataManager()
@@ -39,6 +40,10 @@ struct Splash: View {
                     Text("Finding the perfect dish...")
                         .font(.headline)
                 }
+                if internet {
+                    Text("Poor internet. Refresh App.")
+                        .font(.headline)
+                }
                 ProgressView()
                     .scaleEffect(2)
                     .tint(.pink)
@@ -52,13 +57,17 @@ struct Splash: View {
         // ## MODIFIERS ## \\
 
         .onAppear {
-            withAnimation(.easeIn(duration: 1.0)) {
+            withAnimation {
                 scale = 1.0
                 opacity = 1.0
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                withAnimation {
-                    showNext = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                if DM.userData.count > 0 {
+                    withAnimation {
+                        showNext = true
+                    }
+                } else {
+                    internet = true
                 }}}
         .toolbar {
             if first == false {
