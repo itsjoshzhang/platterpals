@@ -4,11 +4,13 @@ struct Update: View {
 
     // ## TRACK INFO ## \\
     var id: String
-    @State var size = 0.0
-    @State var swipe = 0.0
     let min = UIwidth / 2.0
+    @State var scale = 0.9
+    @State var swipe = 0.0
 
     // ## CONDITIONS ## \\
+    @State var avatar: UIImage?
+    @State var profile: UIImage?
     @State var showProf = false
     @State var hideProf = false
     @State var showAlert = false
@@ -30,20 +32,20 @@ struct Update: View {
 
     var content: some View {
         Group {
-        let user = DM.user(id: id)
+            let myID = DM.my().id
+            let user = DM.user(id: id)
+
         ZStack {
-        let heart = Image(systemName: "heart.fill")
+            let heart = Image(systemName: "heart.fill")
 
-        // ## SHOW IMAGE ## \\
+            if let image = profile {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(maxHeight: UIheight * 0.75)
+                    .cornerRadius(16)
+                    .clipped()
 
-        if let image = DM.myProfile {
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFill()
-                .frame(maxHeight: UIheight * 0.75)
-                .cornerRadius(16)
-                .clipped()
-        }
         // ## USER INFO ## \\
 
         VStack(alignment: .leading) {
@@ -67,11 +69,16 @@ struct Update: View {
             Text(user.text)
                 .padding(.top, 3)
         }
-        .frame(width: UIwidth - 32, alignment: .center)
+        .frame(width: UIwidth - 32)
         .shadow(color: .black, radius: 3)
         .foregroundColor(.white)
         .padding(16)
 
+        } else {
+            ProgressView()
+                .scaleEffect(2)
+                .tint(.pink)
+        }
         // ## SHOW HEARTS ## \\
 
         Group {
@@ -86,10 +93,9 @@ struct Update: View {
                 .opacity(swipe / -min)
         }
         .frame(width: min, height: min, alignment: .center)
-        .scaleEffect(size)
+        .scaleEffect(scale)
         .scaledToFit()
         }
-
         // ## SWIPE LOGIC ## \\
 
         .gesture(DragGesture()
@@ -98,31 +104,42 @@ struct Update: View {
 
                 swipe = -(drag.startLocation.x -
                           drag.predictedEndLocation.x)
-                size = 1.0
+                scale = 1.0
             }
         }
         .onEnded {_ in
             withAnimation {
+                if (myID != id) {
 
-                if (swipe > min) {
-                    showProf = true
+                    if (swipe > min) {
+                        showProf = true
 
-                } else if (swipe < -min) {
-                    hideProf = true
-                }
-                size = 0.0
-                }
+                    } else if (swipe < -min) {
+                        hideProf = true
+                    }}
+                scale = 0.9
+                swipe = 0.0 }})
+
+        // ## GET IMAGES ## \\
+
+        .onAppear {
+            if (myID == id) {
+                avatar = DM.myAvatar
+                profile = DM.myProfile
+            } else {
+                getImage(path: "avatars")
+                getImage(path: "profiles")
             }
-        )
-        // ## MODIFIERS ## \\
-
+        }
         .sheet(isPresented: $showProf) {
-            UserProf(id: id)
+            UserProf(id: id, avatar: avatar, profile: profile)
                 .environmentObject(DM)
         }
+        // ## EDIT PROFILE ## \\
+
         .alert("Profile Details", isPresented: $showAlert) {
 
-            if (DM.my().id == user.id) {
+            if (myID == id) {
                 Button("Delete Profile", role: .destructive) {
                     DM.delImage(path: "profiles")
                 }
@@ -132,4 +149,19 @@ struct Update: View {
                         hideProf = true
                     }}}
             Button("Cancel", role: .cancel) {}
-        }}}}
+        }}}
+
+    // ## FUNCTIONS ## \\
+
+    func getImage(path: String) {
+        let SR = SR.child("\(path)/\(id).jpg")
+
+        SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
+            if let data = data {
+
+                DispatchQueue.main.async {
+                    if path == "avatars" {
+                        avatar = UIImage(data: data)
+                    } else {
+                        profile = UIImage(data: data)
+                    }}}}}}

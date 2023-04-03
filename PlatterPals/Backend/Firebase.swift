@@ -112,7 +112,7 @@ class DataManager: ObservableObject {
         let id = id.replacingOccurrences(of: ".", with: "_")
 
         // call editFuncs to create data
-        editUser(id: id, name: name, text: "", city: city, views: 0)
+        editUser(id: id, name: name, text: "", city: city, views: 1)
         editData(id: id, fo: [String](), us: [String](), ch: [String](), bl: [String]())
         editSets(id: id, notifs: true, emails: true, privacy: true, location: true)
     }

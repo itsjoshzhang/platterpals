@@ -35,48 +35,33 @@ struct BigButton: View {
     }
 }
 struct CircleButton: View {
-    
+
+    var id = ""
     var path: Int
     var image: String
     @State var showView = false
     @EnvironmentObject var DM: DataManager
-    
+
     var body: some View {
+        if showView {
+            Update(id: id)
+                .environmentObject(DM)
+        } else {
+            content
+        }
+    }
+    var content: some View {
         Button {
-            showView = true
+            withAnimation {
+                showView = true
+            }
         } label: {
             Text("\(Image(systemName: image))")
                 .font(.largeTitle)
                 .foregroundColor(.white)
-                .frame(width: 80, height: 80)
+                .frame(width: 40, height: 40)
         }
         .background(.pink)
-        .cornerRadius(80)
-        .shadow(color: .pink, radius: 6, x: 0, y: 6)
-        .padding(20)
-        
-        .fullScreenCover(isPresented: $showView) {
-            if path == 1 {
-                Maps()
-                    .environmentObject(DM)
-            } else if path == 2 {
-                Suggest()
-                    .environmentObject(DM)
-            } else {
-                Upload()
-                    .environmentObject(DM)
-            }
-        }
-    }
-}
-struct Buttons_Previews: PreviewProvider {
-    static var previews: some View {
-        VStack {
-            BigButton(path: 1, text: "Hello, world!")
-                .environmentObject(DataManager())
-            
-            CircleButton(path: 2, image: "wand.and.stars")
-                .environmentObject(DataManager())
-        }
+        .cornerRadius(40)
     }
 }

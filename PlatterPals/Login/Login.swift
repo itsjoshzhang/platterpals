@@ -89,7 +89,7 @@ struct Login: View {
         // ## MODIFIERS ## \\
 
         .onAppear {
-            Auth.auth().addStateDidChangeListener { auth, user in
+            Auth.auth().addStateDidChangeListener {_,user in
                 if let user = user {
 
                     DM.initUser(id: user.email ?? email)
@@ -113,7 +113,7 @@ struct Login: View {
 
     func loginAuth() {
         Auth.auth().signIn(withEmail: email, password: password) {
-            _, error in
+            _,error in
 
             if let error = error {
                 alertText = error.localizedDescription
@@ -143,7 +143,7 @@ struct Reset: View {
                             .autocorrectionDisabled(true)
                         Div()
 
-                        Text("We'll email you a reset link right away!")
+                        Text("We'll email you a reset link right away.")
                     }
                     .foregroundColor(.pink)
 

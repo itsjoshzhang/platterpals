@@ -2,73 +2,88 @@ import SwiftUI
 
 struct UserProf: View {
 
+    // ## TRACK INFO ## \\
     var id: String
-    @State var image: UIImage?
+    @State var avatar: UIImage?
+    @State var profile: UIImage?
+
+    // ## CONDITIONS ## \\
     @State var showAction = false
     @State var showChatDM = false
     @State var showFollow = false
-
     @Environment(\.dismiss) var dismiss
+
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
-            let name = DM.user(id: id).name
+            let myID = DM.my().id
+            let user = DM.user(id: id)
+            let favs = DM.data(id: myID).favUsers
 
+        ZStack {
+            Back()
             ScrollView {
+
                 VStack(alignment: .leading, spacing: 16) {
+                    Spacer()
+                        .padding(48)
                     HStack(spacing: 16) {
-
-                        RoundPic(image: image, width: 160)
-                        
-                        Text(name)
+                        RoundPic(image: avatar, width: 80)
+        VStack {
+            HStack {
+                if favs.contains(id) {
+                    Button("Following") {
                     }
-                    .padding(.horizontal, 20)
-                    
-                    HStack(spacing: 16) {
-                        var users = DM.data(id: DM.my().id).favUsers
-
-                        if users.contains(id) {
-                            Button("Following") {
-
-                                if let index = users.firstIndex(of: id) {
-                                    users.remove(at: index)
-                                }
-                            }
-                            .buttonStyle(.bordered)
-
-                        } else {
-                            Button("Follow \(Image(systemName: "heart"))") {
-                                users.append(id)
-                            }
-                            .buttonStyle(.borderedProminent)
-                        }
-                        Button("\(Image(systemName: "bell"))") {
-                            showAction = true
-                        }
-                    }
-                    .padding(.horizontal, 20)
-                    
-                    Text("\(name)'s favorite foods:")
-                        .font(.headline)
-                        .padding(.horizontal, 20)
-                }
-            }
-            .navigationTitle(name)
-            .onAppear {
-                getImage(id: id, path: "avatars")
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Back") {
-                        dismiss()
-                    }
-                }
-                ToolbarItem {
-                    Button("Send chat") {
-                        showChatDM = true
+                    .buttonStyle(.bordered)
+                } else {
+                    Button("Follow \(Image(systemName: "heart"))") {
                     }
                     .buttonStyle(.borderedProminent)
+                }
+                Spacer()
+
+                Button("\(Image(systemName: "message.fill"))") {
+                    showChatDM = true
+                }
+                Button("\(Image(systemName: "bell"))") {
+                    showAction = true
+                }
+            }
+            HStack {
+                Text("\(user.city), CA")
+                    .font(.headline)
+                Spacer()
+
+                Text("\(Image(systemName: "heart")) \(user.views)")
+            }}}
+            .padding(.horizontal, 16)
+
+            Group {
+                Text(user.text)
+                    .foregroundColor(.secondary)
+
+                Text("\(user.name)'s favorite foods:")
+                    .font(.headline)
+
+                Text("No favorites yet.")
+                    .foregroundColor(.secondary)
+            }
+            .padding(.horizontal, 16)
+
+            Update(id: id, avatar: avatar, profile: profile)
+
+            Spacer().padding(32)
+            }}}
+            .navigationTitle(user.name)
+
+            .onAppear {
+                if (myID == id) {
+                    avatar = DM.myAvatar
+                    profile = DM.myProfile
+                } else {
+                    getImage(path: "avatars")
+                    getImage(path: "profiles")
                 }
             }
             .fullScreenCover(isPresented: $showChatDM) {
@@ -83,20 +98,15 @@ struct UserProf: View {
                         .cancel(Text("Cancel"))]
                 )}}}
 
-    func getImage(id: String, path: String) {
+    func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
 
-        SR.getData(maxSize: 8 * 1024 * 1024) { data, error in
+        SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
             if let data = data {
 
                 DispatchQueue.main.async {
-                    image = UIImage(data: data)
-                }}}}
-}
-
-struct UserProf_Previews: PreviewProvider {
-	static var previews: some View {
-        UserProf(id: "joshzhang@berkeley_edu")
-            .environmentObject(DataManager())
-	}
-}
+                    if path == "avatars" {
+                        avatar = UIImage(data: data)
+                    } else {
+                        profile = UIImage(data: data)
+                    }}}}}}

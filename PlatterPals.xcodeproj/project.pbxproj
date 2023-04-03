@@ -29,7 +29,6 @@
 		F2F6D8702961730000B8F4D7 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D8542961730000B8F4D7 /* AppData.swift */; };
 		F2F6D8722961730000B8F4D7 /* AppInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D8562961730000B8F4D7 /* AppInit.swift */; };
 		F2F6D8732961730000B8F4D7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2F6D8582961730000B8F4D7 /* Preview Assets.xcassets */; };
-		F2F6D8742961730000B8F4D7 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D85A2961730000B8F4D7 /* Profile.swift */; };
 		F2F6D8752961730000B8F4D7 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D85B2961730000B8F4D7 /* Settings.swift */; };
 		F2F6D8772961730000B8F4D7 /* Convo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D85E2961730000B8F4D7 /* Convo.swift */; };
 		F2F6D8782961730000B8F4D7 /* Chats.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D85F2961730000B8F4D7 /* Chats.swift */; };
@@ -60,7 +59,6 @@
 		F2F6D8542961730000B8F4D7 /* AppData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		F2F6D8562961730000B8F4D7 /* AppInit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInit.swift; sourceTree = "<group>"; };
 		F2F6D8582961730000B8F4D7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		F2F6D85A2961730000B8F4D7 /* Profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		F2F6D85B2961730000B8F4D7 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		F2F6D85E2961730000B8F4D7 /* Convo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Convo.swift; sourceTree = "<group>"; };
 		F2F6D85F2961730000B8F4D7 /* Chats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chats.swift; sourceTree = "<group>"; };
@@ -147,7 +145,6 @@
 				F26B3F09296F8DF600E28DBD /* Update.swift */,
 				F2F6D84F2961730000B8F4D7 /* Upload.swift */,
 				F2F6D84E2961730000B8F4D7 /* UserProf.swift */,
-				F2F6D85A2961730000B8F4D7 /* Profile.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -287,7 +284,6 @@
 				F25ED26E296FBBA900A6C8F0 /* Assets.swift in Sources */,
 				F2F6D8682961730000B8F4D7 /* Buttons.swift in Sources */,
 				F2F6D87C2961730000B8F4D7 /* Signup.swift in Sources */,
-				F2F6D8742961730000B8F4D7 /* Profile.swift in Sources */,
 				F2F494B9298313E3000E35BB /* Settings2.swift in Sources */,
 				F2F6D8752961730000B8F4D7 /* Settings.swift in Sources */,
 				F26B3F0A296F8DF600E28DBD /* Update.swift in Sources */,

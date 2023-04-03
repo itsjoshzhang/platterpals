@@ -36,7 +36,7 @@ struct Splash: View {
                 Text("PlatterPals")
                     .font(.custom("Lobster", size: 50))
                 
-                if first == false {
+                if (first == false) {
                     Text("Finding the perfect dish...")
                         .font(.headline)
                 }

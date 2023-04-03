@@ -32,7 +32,7 @@ struct Signup: View {
 
         ScrollView {
             VStack(spacing: 16) {
-                Spacer(); Spacer(); Spacer()
+                Spacer().padding(48)
 
                 // ## SHOW IMAGE ## \\
 
@@ -146,7 +146,7 @@ struct Signup: View {
 
     func signupAuth() {
         Auth.auth().createUser(withEmail: email, password: password) {
-            _, error in
+            _,error in
 
             if let error = error {
                 alertText = error.localizedDescription

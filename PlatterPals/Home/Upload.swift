@@ -1,4 +1,5 @@
-// File: checked
+// TODO: User bios must be less than 200 characters
+// TODO: Set up comments section for restaurant posts
 
 import SwiftUI
 import PhotosUI
