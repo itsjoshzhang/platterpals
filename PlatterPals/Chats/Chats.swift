@@ -9,6 +9,7 @@ struct Chats: View {
     var body: some View {
         NavigationStack {
             ZStack {
+                Back()
                 VStack(spacing: 16) {
                 List {
 
@@ -21,12 +22,6 @@ struct Chats: View {
                 .onMove(perform: move(fromOffsets:toOffset:))
                 }
                 .listStyle(.plain)
-                }
-                VStack { Spacer()
-                    HStack { Spacer()
-                        CircleButton(path: 1, image: "location")
-                        .environmentObject(DM)
-                    }
                 }
             }
             .navigationTitle("Chats")

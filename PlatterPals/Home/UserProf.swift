@@ -6,79 +6,109 @@ struct UserProf: View {
     var id: String
     @State var avatar: UIImage?
     @State var profile: UIImage?
-
-    // ## CONDITIONS ## \\
-    @State var showAction = false
-    @State var showChatDM = false
-    @State var showFollow = false
     @Environment(\.dismiss) var dismiss
 
+    // ## CONDITIONS ## \\
+    @State var showEdit = false
+    @State var showChat = false
+    @State var showSets = false
+    @State var showUpdate = false
+    @State var showAction = false
+
     @EnvironmentObject var DM: DataManager
-    
+
+    // ## SETUP VIEW ## \\
+
     var body: some View {
         NavigationStack {
             let myID = DM.my().id
             let user = DM.user(id: id)
-            let favs = DM.data(id: myID).favUsers
 
-        ZStack {
-            Back()
-            ScrollView {
+            ZStack {
+                Back()
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 16) {
 
-                VStack(alignment: .leading, spacing: 16) {
+        Spacer()
+            .padding(48)
+        HStack(spacing: 16) {
+            RoundPic(image: avatar, width: 80)
+
+        // ## CLICKABLES ## \\
+
+        VStack(alignment: .leading) {
+            if (myID == id) {
+
+                Button("Edit Profile") {
+                    showEdit = true
+                }
+                .buttonStyle(.bordered)
+
+            } else {
+                HStack {
+                    ProfHead(id: id)
+                        .environmentObject(DM)
                     Spacer()
-                        .padding(48)
-                    HStack(spacing: 16) {
-                        RoundPic(image: avatar, width: 80)
-        VStack {
-            HStack {
-                if favs.contains(id) {
-                    Button("Following") {
-                    }
-                    .buttonStyle(.bordered)
-                } else {
-                    Button("Follow \(Image(systemName: "heart"))") {
+
+                    Button("\(Image(systemName: "message.fill"))") {
+                        showChat = true
                     }
                     .buttonStyle(.borderedProminent)
-                }
-                Spacer()
 
-                Button("\(Image(systemName: "message.fill"))") {
-                    showChatDM = true
-                }
-                Button("\(Image(systemName: "bell"))") {
-                    showAction = true
+                    Button("\(Image(systemName: "bell"))") {
+                        showAction = true
+                    }
+                    .buttonStyle(.bordered)
                 }
             }
+            // ## USER INFO ## \\
+
             HStack {
                 Text("\(user.city), CA")
                     .font(.headline)
                 Spacer()
 
                 Text("\(Image(systemName: "heart")) \(user.views)")
-            }}}
-            .padding(.horizontal, 16)
-
-            Group {
+            }
+        }
+    }
+            if (!showUpdate) {
                 Text(user.text)
                     .foregroundColor(.secondary)
+            }
+            Text("\(user.name)'s favorite foods:")
+                .font(.headline)
 
-                Text("\(user.name)'s favorite foods:")
-                    .font(.headline)
-
-                Text("No favorites yet.")
-                    .foregroundColor(.secondary)
+            Text("No favorites yet.")
+                .foregroundColor(.secondary)
             }
             .padding(.horizontal, 16)
 
-            Update(id: id, avatar: avatar, profile: profile)
+            // ## SHOW IMAGE ## \\
 
-            Spacer().padding(32)
-            }}}
+                    Button("\(Image(systemName: "photo"))") {
+                        withAnimation {
+                            showUpdate.toggle()
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .shadow(color: .pink, radius: 3)
+
+                    if (showUpdate) {
+                        Update(id: id, show: false, avatar: avatar,
+                               profile: profile)
+                        .environmentObject(DM)
+                    }
+                    Spacer()
+                        .padding(40)
+                }
+            }
+            // ## MODIFIERS ## \\
+
             .navigationTitle(user.name)
-
             .onAppear {
                 if (myID == id) {
+                    showUpdate = true
                     avatar = DM.myAvatar
                     profile = DM.myProfile
                 } else {
@@ -86,8 +116,26 @@ struct UserProf: View {
                     getImage(path: "profiles")
                 }
             }
-            .fullScreenCover(isPresented: $showChatDM) {
+            .toolbar {
+                if (myID == id) {
+                    ToolbarItem {
+                        Button("\(Image(systemName: "gearshape")) Settings") {
+                            showSets = true
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }}}
+
+            // ## OTHER VIEWS ## \\
+
+            .sheet(isPresented: $showEdit) {
+                Text("Hi")
+            }
+            .fullScreenCover(isPresented: $showChat) {
                 Convo(id: id)
+                    .environmentObject(DM)
+            }
+            .fullScreenCover(isPresented: $showSets) {
+                Settings()
                     .environmentObject(DM)
             }
             .actionSheet(isPresented: $showAction) {
@@ -97,6 +145,8 @@ struct UserProf: View {
                         .default(Text("Mute notifications")),
                         .cancel(Text("Cancel"))]
                 )}}}
+    
+    // ## FUNCTIONS ## \\
 
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")

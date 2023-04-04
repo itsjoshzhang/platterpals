@@ -1,5 +1,3 @@
-// File: checked
-
 import SwiftUI
 import Firebase
 
@@ -76,10 +74,4 @@ struct SetRow: View {
             }
         }
     }
-}
-struct Settings_Previews: PreviewProvider {
-	static var previews: some View {
-        Settings()
-            .environmentObject(DataManager())
-	}
 }

@@ -4,6 +4,7 @@ struct Update: View {
 
     // ## TRACK INFO ## \\
     var id: String
+    var show: Bool
     let min = UIwidth / 2.0
     @State var scale = 0.9
     @State var swipe = 0.0
@@ -23,8 +24,8 @@ struct Update: View {
         if hideProf {
             Button("Unhide Profile") {
                 withAnimation {
-                    hideProf = false }}
-        } else {
+                    hideProf = false
+        }}} else {
             content
         }
     }
@@ -34,10 +35,9 @@ struct Update: View {
         Group {
             let myID = DM.my().id
             let user = DM.user(id: id)
-
-        ZStack {
             let heart = Image(systemName: "heart.fill")
 
+        ZStack {
             if let image = profile {
                 Image(uiImage: image)
                     .resizable()
@@ -50,7 +50,6 @@ struct Update: View {
 
         VStack(alignment: .leading) {
             Spacer()
-
             Text(user.name)
                 .font(.largeTitle).bold()
 
@@ -69,16 +68,15 @@ struct Update: View {
             Text(user.text)
                 .padding(.top, 3)
         }
-        .frame(width: UIwidth - 32)
         .shadow(color: .black, radius: 3)
         .foregroundColor(.white)
         .padding(16)
 
-        } else {
-            ProgressView()
-                .scaleEffect(2)
-                .tint(.pink)
-        }
+            } else {
+                ProgressView()
+                    .scaleEffect(2)
+                    .tint(.pink)
+            }
         // ## SHOW HEARTS ## \\
 
         Group {
@@ -109,17 +107,17 @@ struct Update: View {
         }
         .onEnded {_ in
             withAnimation {
-                if (myID != id) {
+                if (swipe > min && show) {
+                    showProf = true
 
-                    if (swipe > min) {
-                        showProf = true
-
-                    } else if (swipe < -min) {
-                        hideProf = true
-                    }}
+                } else if (swipe < -min) {
+                    hideProf = true
+                }
                 scale = 0.9
-                swipe = 0.0 }})
-
+                swipe = 0.0
+            }
+        }
+        )
         // ## GET IMAGES ## \\
 
         .onAppear {
@@ -138,8 +136,8 @@ struct Update: View {
         // ## EDIT PROFILE ## \\
 
         .alert("Profile Details", isPresented: $showAlert) {
-
             if (myID == id) {
+
                 Button("Delete Profile", role: .destructive) {
                     DM.delImage(path: "profiles")
                 }

@@ -1,67 +1,46 @@
 import SwiftUI
 
-struct BigButton: View {
+struct ProfHead: View {
 
-    var path: Int
-    var text: String
-    @State var showView = false
-
+    var id: String
+    @State var showFollow = false
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
-        Button {
-            showView = true
-        } label: {
-            Text(text)
-                .font(.headline)
-                .foregroundColor(.pink)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 20)
-        }
-        .overlay(Capsule(style: .continuous)
-        .stroke(.pink, lineWidth: 3))
-        .shadow(color: .pink, radius: 6, x: 0, y: 6)
-        .padding(20)
+        HStack {
+            let myID = DM.my().id
+            var data = DM.data(id: myID)
 
-        .fullScreenCover(isPresented: $showView) {
-            if path == 1 {
-                Suggest()
-                    .environmentObject(DM)
-            } else {
-                Splash(first: false)
-                    .environmentObject(DM)
+            HStack {
+                if (showFollow) {
+                    Button("Following") {
+
+                        if let i = data.favUsers.firstIndex(of: id) {
+                            data.favUsers.remove(at: i)
+
+                            editData(myID: myID, data: data)
+                            showFollow = false
+                        }
+                    }
+                    .buttonStyle(.bordered)
+
+                } else {
+                    Button("Follow \(Image(systemName: "heart"))") {
+                        data.favUsers.append(id)
+
+                        editData(myID: myID, data: data)
+                        showFollow = true
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+            }
+            .onAppear {
+                showFollow = data.favUsers.contains(id)
             }
         }
     }
-}
-struct CircleButton: View {
-
-    var id = ""
-    var path: Int
-    var image: String
-    @State var showView = false
-    @EnvironmentObject var DM: DataManager
-
-    var body: some View {
-        if showView {
-            Update(id: id)
-                .environmentObject(DM)
-        } else {
-            content
-        }
-    }
-    var content: some View {
-        Button {
-            withAnimation {
-                showView = true
-            }
-        } label: {
-            Text("\(Image(systemName: image))")
-                .font(.largeTitle)
-                .foregroundColor(.white)
-                .frame(width: 40, height: 40)
-        }
-        .background(.pink)
-        .cornerRadius(40)
+    func editData(myID: String, data: UserData) {
+        DM.editData(id: myID, fo: data.favFoods, us: data.favUsers,
+                    ch: data.chatting, bl: data.blocked)
     }
 }

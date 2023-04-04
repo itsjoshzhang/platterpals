@@ -1,5 +1,3 @@
-// TODO: everything about food suggesting
-
 import SwiftUI
 
 struct Suggest: View {
@@ -10,16 +8,13 @@ struct Suggest: View {
     @Environment(\.dismiss) var dismiss
     
     @State var friend = User(id: "", name: "",
-                text: "", city: "", views: 0)
+                             text: "", city: "", views: 0)
     
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
             VStack(spacing: 16) {
-                
-//                BigButton(path: 2, text: "Let us decide for you!")
-//                    .environmentObject(DM)
                 
                 Form {
                     Section(header: Text("Got something in mind?")
@@ -63,13 +58,12 @@ struct Suggest: View {
             .fullScreenCover(isPresented: $showSplash) {
                 Splash(first: false)
                     .environmentObject(DM)
-            }
-        }
-    }
-}
-struct Suggest_Previews: PreviewProvider {
-    static var previews: some View {
-        Suggest()
-            .environmentObject(DataManager())
+            }}}}
+
+struct Order: View {
+    @EnvironmentObject var DM: DataManager
+
+    var body: some View {
+        Text("")
     }
 }

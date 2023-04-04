@@ -1,5 +1,3 @@
-// File: checked
-
 import SwiftUI
 
 struct Convo: View {
@@ -54,11 +52,4 @@ struct Convo: View {
             messages = DM.getChats(senderID: DM.my().id, getterID: id)
         }
     }
-}
-
-struct Convo_Previews: PreviewProvider {
-	static var previews: some View {
-        Convo(id: "joshzhang@berkeley_edu")
-            .environmentObject(DataManager())
-	}
 }

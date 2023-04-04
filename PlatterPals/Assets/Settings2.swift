@@ -1,5 +1,3 @@
-// File: checked
-
 import SwiftUI
 
 struct Settings2: View {
@@ -153,10 +151,4 @@ struct Settings2: View {
                 DispatchQueue.main.async {
                     image = UIImage(data: data)
                 }}}}
-}
-struct Settings2_Previews: PreviewProvider {
-    static var previews: some View {
-        Settings2(anchor: "")
-            .environmentObject(DataManager())
-    }
 }

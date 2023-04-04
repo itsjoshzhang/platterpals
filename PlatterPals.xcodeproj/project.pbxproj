@@ -19,7 +19,6 @@
 		F2F494B9298313E3000E35BB /* Settings2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F494B8298313E3000E35BB /* Settings2.swift */; };
 		F2F6D8662961730000B8F4D7 /* Maps.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D8472961730000B8F4D7 /* Maps.swift */; };
 		F2F6D8682961730000B8F4D7 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84A2961730000B8F4D7 /* Buttons.swift */; };
-		F2F6D8692961730000B8F4D7 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84B2961730000B8F4D7 /* Order.swift */; };
 		F2F6D86A2961730000B8F4D7 /* Suggest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84C2961730000B8F4D7 /* Suggest.swift */; };
 		F2F6D86B2961730000B8F4D7 /* UserProf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84E2961730000B8F4D7 /* UserProf.swift */; };
 		F2F6D86C2961730000B8F4D7 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84F2961730000B8F4D7 /* Upload.swift */; };
@@ -49,7 +48,6 @@
 		F2F6D834296172B100B8F4D7 /* PlatterPals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlatterPals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2F6D8472961730000B8F4D7 /* Maps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Maps.swift; sourceTree = "<group>"; };
 		F2F6D84A2961730000B8F4D7 /* Buttons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
-		F2F6D84B2961730000B8F4D7 /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		F2F6D84C2961730000B8F4D7 /* Suggest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Suggest.swift; sourceTree = "<group>"; };
 		F2F6D84E2961730000B8F4D7 /* UserProf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProf.swift; sourceTree = "<group>"; };
 		F2F6D84F2961730000B8F4D7 /* Upload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
@@ -172,7 +170,6 @@
 			isa = PBXGroup;
 			children = (
 				F2F6D84C2961730000B8F4D7 /* Suggest.swift */,
-				F2F6D84B2961730000B8F4D7 /* Order.swift */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -290,7 +287,6 @@
 				F2F6D86F2961730000B8F4D7 /* Firebase.swift in Sources */,
 				F2F6D86D2961730000B8F4D7 /* Home.swift in Sources */,
 				F2F6D87B2961730000B8F4D7 /* Splash.swift in Sources */,
-				F2F6D8692961730000B8F4D7 /* Order.swift in Sources */,
 				F2F6D86A2961730000B8F4D7 /* Suggest.swift in Sources */,
 				F2F6D86C2961730000B8F4D7 /* Upload.swift in Sources */,
 				F254380729D554A600E1AADE /* ChatGPT.swift in Sources */,

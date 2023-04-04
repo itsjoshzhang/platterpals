@@ -147,7 +147,7 @@ struct Reset: View {
                     }
                     .foregroundColor(.pink)
 
-                    // ## BUTTONS ## \\
+                    // ## CLICKABLES ## \\
 
                     Button("Reset Password") {
                         resetPass()

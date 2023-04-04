@@ -128,7 +128,7 @@ class DataManager: ObservableObject {
         let user = FS.collection("userList").document(id)
 
         user.setData(["id": id, "name": name, "text": text, "city": city, "views": views])
-        userList.append(User(id: id, name: name, text: text, city: city, views: views))
+        userList[thisUser] = User(id: id, name: name, text: text, city: city, views: views)
     }
     
     // called at Profile
@@ -136,7 +136,7 @@ class DataManager: ObservableObject {
         let data = FS.collection("userData").document(id)
         
         data.setData(["id": id, "favFoods": fo, "favUsers": us, "chatting": ch, "blocked": bl])
-        userData.append(UserData(id: id, favFoods: fo, favUsers: us, chatting: ch, blocked: bl))
+        userData[thisUser] = UserData(id: id, favFoods: fo, favUsers: us, chatting: ch, blocked: bl)
     }
     
     // called at Settings

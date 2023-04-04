@@ -1,5 +1,3 @@
-// TODO: implement profile search
-
 import SwiftUI
 
 struct Home: View {
@@ -9,51 +7,41 @@ struct Home: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
+            ZStack {
+                Back()
+                ScrollView {
                 VStack(spacing: 16) {
-                    Search()
-                        .environmentObject(DM)
+                Search()
+                    .environmentObject(DM)
 
-                    ForEach(DM.userList, id: \.self) { user in
-                        let id = DM.my().id
-                        let favs = DM.data(id: id).favUsers
+                ForEach(DM.userList, id: \.self) { user in
+                    let id = DM.my().id
+                    let city = DM.my().city
 
-                        if (id != user.id && favs.contains(user.id)) {
+                    if (id != user.id && city == user.city) {
+                        Update(id: user.id, show: true)
+                            .environmentObject(DM)
+                }}}}
+                .navigationTitle("PlatterPals")
+                .toolbar {
+                    ToolbarItem {
+                        let up = Image(systemName: "square.and.arrow.up")
 
-                            Update(id: user.id)
-                                .environmentObject(DM)
+                        Button("\(up) Profile") {
+                            showUpload = true
                         }
+                        .buttonStyle(.borderedProminent)
                     }
                 }
-            }
-        }
-        .navigationTitle("PlatterPals")
-        .toolbar {
-            ToolbarItem {
-                Button("\(Image(systemName: "square.and.arrow.up")) Profile") {
-                    showUpload = true
-                }
-                .buttonStyle(.borderedProminent)
-            }
-        }
-        .fullScreenCover(isPresented: $showUpload) {
-            Upload()
-                .environmentObject(DM)
-        }
-    }
-}
+                .fullScreenCover(isPresented: $showUpload) {
+                    Upload()
+                        .environmentObject(DM)
+                }}}}}
+
 struct Search: View {
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
-        VStack {
-
-        }
+        Text("")
     }
-}
-struct Home_Previews: PreviewProvider {
-	static var previews: some View {
-        MyTabView()
-            .environmentObject(DataManager())
-	}
 }
