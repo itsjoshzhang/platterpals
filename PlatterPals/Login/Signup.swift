@@ -31,97 +31,98 @@ struct Signup: View {
         Back()
 
         ScrollView {
-            VStack(spacing: 16) {
-                Spacer().padding(48)
+        VStack(spacing: 16) {
+        Spacer()
+            .padding(48)
 
-                // ## SHOW IMAGE ## \\
+        // ## SHOW IMAGE ## \\
 
-                if let data = imageData {
-                    RoundPic(image: UIImage(data: data), width: 160)
-                } else {
-                    RoundPic(width: 160)
+        if let data = imageData {
+            RoundPic(image: UIImage(data: data), width: 160)
+        } else {
+            RoundPic(width: 160)
+        }
+        PhotosPicker("Upload Picture", selection: $imageItem,
+                     matching: .images)
+        .buttonStyle(.bordered)
+
+        // ## UPLOAD IMAGE ## \\
+
+        .onChange(of: imageItem) { _ in
+            imageItem?.loadTransferable(type: Data.self) {
+                result in
+
+                switch result {
+                case .success(let data):
+                    imageData = data
+                case .failure(_):
+                    return
                 }
-                PhotosPicker("Upload Picture", selection: $imageItem,
-                             matching: .images)
-                .buttonStyle(.bordered)
-
-                // ## UPLOAD IMAGE ## \\
-
-                .onChange(of: imageItem) { _ in
-                    imageItem?.loadTransferable(type: Data.self) {
-                        result in
-
-                        switch result {
-                        case .success(let data):
-                            imageData = data
-                        case .failure(_):
-                            return
-                        }
-                    }
-                }
-                // ## TEXTFIELDS ## \\
-
-                Group {
-                    TextField("Email", text: $email)
-                    Div()
-
-                    SecureField("Password", text: $password)
-                    Div()
-
-                    TextField("Username", text: $name)
-                    Div()
-                }
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled(true)
-                .foregroundColor(.pink)
-
-                .focused($focus)
-                .onTapGesture {
-                    focus = true
-                }
-                // ## LOCATIONS ## \\
-
-                HStack {
-                    Text("Location")
-                        .foregroundColor(.pink)
-                        .font(.headline)
-
-                    Picker("", selection: $city) {
-                        ForEach(cityList, id: \.self) { city in
-                            Text(city)
-                        }
-                    }
-                    .buttonStyle(.bordered)
-                }
-                // ## TERMS GUIDE ## \\
-
-                HStack {
-                    Text("I agree to the")
-                        .foregroundColor(.secondary)
-
-                    Button("terms and EULA") {
-                        showTerms = true
-                    }
-                }
-                Group {
-                    Button("PlatterPals How-To") {
-                        showGuide = true
-                    }
-                // ## CREATE USER ## \\
-
-                    Button("Sign Up") {
-                        signupAuth()
-                    }
-                    .disabled(name == "")
-                    .padding(.bottom, 32)
-
-                    .alert(alertText, isPresented: $showAlert) {
-                        Button("OK", role: .cancel) {}
-                    }
-                }
-                .buttonStyle(.borderedProminent)
             }
-            .padding(16)
+        }
+        // ## TEXTFIELDS ## \\
+
+        Group {
+            TextField("Email", text: $email)
+            Div()
+
+            SecureField("Password", text: $password)
+            Div()
+
+            TextField("Username", text: $name)
+            Div()
+        }
+        .textInputAutocapitalization(.never)
+        .autocorrectionDisabled(true)
+        .foregroundColor(.pink)
+
+        .focused($focus)
+        .onTapGesture {
+            focus = true
+        }
+        // ## LOCATIONS ## \\
+
+        HStack {
+            Text("Location")
+                .foregroundColor(.pink)
+                .font(.headline)
+
+            Picker("", selection: $city) {
+                ForEach(cityList, id: \.self) { city in
+                    Text(city)
+                }
+            }
+            .buttonStyle(.bordered)
+        }
+        // ## TERMS GUIDE ## \\
+
+        HStack {
+            Text("I agree to the")
+                .foregroundColor(.secondary)
+
+            Button("terms and EULA") {
+                showTerms = true
+            }
+        }
+        Group {
+            Button("PlatterPals How-To") {
+                showGuide = true
+            }
+        // ## CREATE USER ## \\
+
+            Button("Sign Up") {
+                signupAuth()
+            }
+            .disabled(name == "")
+            .padding(.bottom, 32)
+
+            .alert(alertText, isPresented: $showAlert) {
+                Button("OK", role: .cancel) {}
+            }
+        }
+        .buttonStyle(.borderedProminent)
+        }
+        .padding(16)
         }
         }
         // ## MODIFIERS ## \\
