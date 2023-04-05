@@ -24,10 +24,10 @@ struct UserProf: View {
             let myID = DM.my().id
             let user = DM.user(id: id)
 
-            ZStack {
-                Back()
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 16) {
+        ZStack {
+        Back()
+        ScrollView {
+        VStack(alignment: .leading, spacing: 16) {
 
         Spacer()
             .padding(48)
@@ -71,80 +71,80 @@ struct UserProf: View {
                 Text("\(Image(systemName: "heart")) \(user.views)")
             }
         }
-    }
-            if !showUpdate {
-                Text(user.text)
-                    .foregroundColor(.secondary)
-            }
-            Text("\(user.name)'s favorite foods:")
-                .font(.headline)
-
-            Text("No favorites yet.")
+        }
+        if !showUpdate {
+            Text(user.text)
                 .foregroundColor(.secondary)
+        }
+        Text("\(user.name)'s favorite foods:")
+            .font(.headline)
+
+        Text("No favorites yet.")
+            .foregroundColor(.secondary)
+        }
+        .padding(.horizontal, 16)
+
+        // ## SHOW IMAGE ## \\
+
+        Button("\(Image(systemName: "photo"))") {
+            withAnimation {
+                showUpdate.toggle()
             }
-            .padding(.horizontal, 16)
+        }
+        .buttonStyle(.borderedProminent)
+        .shadow(color: .pink, radius: 3)
 
-            // ## SHOW IMAGE ## \\
+        if showUpdate {
+            Update(id: id, show: false, avatar: avatar,
+                   profile: profile)
+            .environmentObject(DM)
+        }
+        Spacer()
+            .padding(36)
+        }
+        }
+        // ## MODIFIERS ## \\
 
-                    Button("\(Image(systemName: "photo"))") {
-                        withAnimation {
-                            showUpdate.toggle()
-                        }
+        .navigationTitle(user.name)
+        .onAppear {
+            if myID == id {
+                showUpdate = true
+                avatar = DM.myAvatar
+                profile = DM.myProfile
+            } else {
+                getImage(path: "avatars")
+                getImage(path: "profiles")
+            }
+        }
+        .toolbar {
+            if myID == id {
+                ToolbarItem {
+                    Button("\(Image(systemName: "gearshape"))") {
+                        showSets = true
                     }
                     .buttonStyle(.borderedProminent)
-                    .shadow(color: .pink, radius: 3)
+                }}}
 
-                    if showUpdate {
-                        Update(id: id, show: false, avatar: avatar,
-                               profile: profile)
-                        .environmentObject(DM)
-                    }
-                    Spacer()
-                        .padding(36)
-                }
-            }
-            // ## MODIFIERS ## \\
+        // ## OTHER VIEWS ## \\
 
-            .navigationTitle(user.name)
-            .onAppear {
-                if myID == id {
-                    showUpdate = true
-                    avatar = DM.myAvatar
-                    profile = DM.myProfile
-                } else {
-                    getImage(path: "avatars")
-                    getImage(path: "profiles")
-                }
-            }
-            .toolbar {
-                if myID == id {
-                    ToolbarItem {
-                        Button("\(Image(systemName: "gearshape"))") {
-                            showSets = true
-                        }
-                        .buttonStyle(.borderedProminent)
-                    }}}
-
-            // ## OTHER VIEWS ## \\
-
-            .sheet(isPresented: $showEdit) {
-                Text("Hi")
-            }
-            .fullScreenCover(isPresented: $showChat) {
-                Convo(id: id)
-                    .environmentObject(DM)
-            }
-            .fullScreenCover(isPresented: $showSets) {
-                Settings()
-                    .environmentObject(DM)
-            }
-            .actionSheet(isPresented: $showAction) {
-                ActionSheet(title: Text("Notifications"),
-                    buttons: [
-                        .destructive(Text("Block this user")),
-                        .default(Text("Mute notifications")),
-                        .cancel(Text("Cancel"))]
-                )}}}
+        .sheet(isPresented: $showEdit) {
+            Text("Hi")
+        }
+        .fullScreenCover(isPresented: $showChat) {
+            Convo(id: id)
+                .environmentObject(DM)
+        }
+        .fullScreenCover(isPresented: $showSets) {
+            Settings()
+                .environmentObject(DM)
+        }
+        .actionSheet(isPresented: $showAction) {
+            ActionSheet(title: Text("Notifications"),
+                buttons: [
+                    .destructive(Text("Block this user")),
+                    .default(Text("Mute notifications")),
+                    .cancel(Text("Cancel"))]
+            )}}}
     
     // ## FUNCTIONS ## \\
 

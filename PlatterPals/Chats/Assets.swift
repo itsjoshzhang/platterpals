@@ -68,8 +68,8 @@ struct TitleBar: View {
 
                 DispatchQueue.main.async {
                     image = UIImage(data: data)
-                }}}}
-}
+                }}}}}
+
 struct Bubble: View {
     
     var message: Message
@@ -97,14 +97,5 @@ struct Bubble: View {
             }
         }
         .padding(.horizontal, 16)
-    }
-}
-
-struct Assets_Previews: PreviewProvider {
-    static var previews: some View {
-        VStack {
-            TitleBar(id: "joshzhang@berkeley_edu")
-                .environmentObject(DataManager())
-        }
     }
 }
