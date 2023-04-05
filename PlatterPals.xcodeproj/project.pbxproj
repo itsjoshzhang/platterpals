@@ -20,7 +20,7 @@
 		F2F6D8662961730000B8F4D7 /* Maps.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D8472961730000B8F4D7 /* Maps.swift */; };
 		F2F6D8682961730000B8F4D7 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84A2961730000B8F4D7 /* Buttons.swift */; };
 		F2F6D86A2961730000B8F4D7 /* Suggest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84C2961730000B8F4D7 /* Suggest.swift */; };
-		F2F6D86B2961730000B8F4D7 /* UserProf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84E2961730000B8F4D7 /* UserProf.swift */; };
+		F2F6D86B2961730000B8F4D7 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84E2961730000B8F4D7 /* Profile.swift */; };
 		F2F6D86C2961730000B8F4D7 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84F2961730000B8F4D7 /* Upload.swift */; };
 		F2F6D86D2961730000B8F4D7 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D8502961730000B8F4D7 /* Home.swift */; };
 		F2F6D86E2961730000B8F4D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2F6D8512961730000B8F4D7 /* Assets.xcassets */; };
@@ -49,7 +49,7 @@
 		F2F6D8472961730000B8F4D7 /* Maps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Maps.swift; sourceTree = "<group>"; };
 		F2F6D84A2961730000B8F4D7 /* Buttons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		F2F6D84C2961730000B8F4D7 /* Suggest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Suggest.swift; sourceTree = "<group>"; };
-		F2F6D84E2961730000B8F4D7 /* UserProf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProf.swift; sourceTree = "<group>"; };
+		F2F6D84E2961730000B8F4D7 /* Profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		F2F6D84F2961730000B8F4D7 /* Upload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
 		F2F6D8502961730000B8F4D7 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		F2F6D8512961730000B8F4D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -116,16 +116,16 @@
 				F2F6D8522961730000B8F4D7 /* Backend */,
 				F2F6D8592961730000B8F4D7 /* Order */,
 				F2F6D8612961730000B8F4D7 /* Login */,
-				F2F6D8492961730000B8F4D7 /* Assets */,
 				F2F6D85D2961730000B8F4D7 /* Chats */,
 				F2F6D84D2961730000B8F4D7 /* Home */,
+				F2F6D8492961730000B8F4D7 /* Misc */,
 				F2F6D8512961730000B8F4D7 /* Assets.xcassets */,
 				F2F6D8572961730000B8F4D7 /* Preview Content */,
 			);
 			path = PlatterPals;
 			sourceTree = "<group>";
 		};
-		F2F6D8492961730000B8F4D7 /* Assets */ = {
+		F2F6D8492961730000B8F4D7 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
 				F2F6D84A2961730000B8F4D7 /* Buttons.swift */,
@@ -133,7 +133,7 @@
 				F2F6D85B2961730000B8F4D7 /* Settings.swift */,
 				F2F494B8298313E3000E35BB /* Settings2.swift */,
 			);
-			path = Assets;
+			path = Misc;
 			sourceTree = "<group>";
 		};
 		F2F6D84D2961730000B8F4D7 /* Home */ = {
@@ -142,7 +142,7 @@
 				F2F6D8502961730000B8F4D7 /* Home.swift */,
 				F26B3F09296F8DF600E28DBD /* Update.swift */,
 				F2F6D84F2961730000B8F4D7 /* Upload.swift */,
-				F2F6D84E2961730000B8F4D7 /* UserProf.swift */,
+				F2F6D84E2961730000B8F4D7 /* Profile.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -293,7 +293,7 @@
 				F2F6D8782961730000B8F4D7 /* Chats.swift in Sources */,
 				F2F6D8792961730000B8F4D7 /* ChatDM.swift in Sources */,
 				F2F6D8662961730000B8F4D7 /* Maps.swift in Sources */,
-				F2F6D86B2961730000B8F4D7 /* UserProf.swift in Sources */,
+				F2F6D86B2961730000B8F4D7 /* Profile.swift in Sources */,
 				F2F6D8722961730000B8F4D7 /* AppInit.swift in Sources */,
 				F2F6D87A2961730000B8F4D7 /* Login.swift in Sources */,
 				F2F6D8702961730000B8F4D7 /* AppData.swift in Sources */,

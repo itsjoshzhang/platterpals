@@ -33,7 +33,7 @@ struct Signup: View {
         ScrollView {
         VStack(spacing: 16) {
         Spacer()
-            .padding(48)
+            .padding(32)
 
         // ## SHOW IMAGE ## \\
 
@@ -83,7 +83,7 @@ struct Signup: View {
         // ## LOCATIONS ## \\
 
         HStack {
-            Text("Location")
+            Text("Location:")
                 .foregroundColor(.pink)
                 .font(.headline)
 

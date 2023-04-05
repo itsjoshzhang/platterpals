@@ -2,9 +2,17 @@ import SwiftUI
 
 struct Home: View {
 
+    // ## TRACK INFO ## \\
+    @State var name = ""
+    @State var city = "Berkeley"
+    @FocusState var focus: Bool
+    @State var showSearch = false
     @State var showUpload = false
+
     @EnvironmentObject var DM: DataManager
-    
+
+    // ## SETUP VIEW ## \\
+
     var body: some View {
         NavigationStack {
         ZStack {
@@ -15,40 +23,115 @@ struct Home: View {
         Spacer()
             .padding(48)
 
-        Search()
-            .environmentObject(DM)
+        // ## USER SEARCH ## \\
+
+        TextField("Search...", text: $name)
+            .textFieldStyle(.roundedBorder)
+            .padding(.horizontal, 16)
+            .focused($focus)
+            .onTapGesture {
+                showSearch = true
+            }
+
+        HStack(spacing: 0) {
+            Text("Location:")
+                .foregroundColor(.secondary)
+
+            Picker("", selection: $city) {
+                ForEach(["Berkeley", "All"], id: \.self) {city in
+                    Text(city)
+                }
+            }
+        }
+        // ## PROFILES ## \\
 
         ForEach(DM.userList, id: \.self) { user in
             let id = DM.my().id
             let city = DM.my().city
 
-            if (id != user.id && city == user.city) {
+            if user.id != id {
                 Update(id: user.id, show: true)
                     .environmentObject(DM)
-                Spacer()
-                    .padding(32)
-                }}}}
+                }
+            }
+        }
+        Spacer()
+            .padding(36)
+        }
+        // ## MODIFIERS ## \\
 
         .navigationTitle("PlatterPals")
         .toolbar {
             ToolbarItem {
-                let up = Image(systemName: "square.and.arrow.up")
-
-                Button("\(up) Profile") {
+                Button("\(Image(systemName: "square.and.arrow.up"))") {
                     showUpload = true
                 }
                 .buttonStyle(.borderedProminent)
             }
         }
-        .fullScreenCover(isPresented: $showUpload) {
+        .sheet(isPresented: $showUpload) {
             Upload()
+                .environmentObject(DM)
+        }
+        .sheet(isPresented: $showSearch) {
+            Search()
                 .environmentObject(DM)
         }}}}}
 
 struct Search: View {
+
+    // ## TRACK INFO ## \\
+    @State var name = ""
+    @State var newID = ""
+    @State var showProf = false
+    @State var idList = [String]()
+    @Environment(\.dismiss) var dismiss
+
     @EnvironmentObject var DM: DataManager
 
+    // ## TEXTFIELDS ## \\
+
     var body: some View {
-        Text("")
-    }
-}
+        NavigationStack {
+        VStack(spacing: 16) {
+
+            TextField("Type in a username", text: $name)
+                .shadow(color: .pink, radius: 3)
+                .textFieldStyle(.roundedBorder)
+
+                .autocorrectionDisabled(true)
+                .padding(.horizontal, 16)
+                .foregroundColor(.pink)
+
+        // ## SHOW USERS ## \\
+
+        List {
+            ForEach(idList, id: \.self) { id in
+
+                Row(id: id).environmentObject(DM)
+                    .onTapGesture {
+                        newID = id
+                        showProf = true
+                    }
+            }
+        }
+        .listStyle(.plain)
+        }
+        .navigationTitle("Search 🔍")
+
+        // ## USER LOGIC ## \\
+
+        .onChange(of: name) { _ in
+        idList.removeAll()
+
+        for i in (0 ..< min(DM.userList.count, 4)) {
+            let user = DM.userList[i]
+
+            if user.name.contains(name) {
+                idList.append(user.id)
+            }}}
+
+        .sheet(isPresented: $showProf) {
+        UserProf(id: newID)
+            .environmentObject(DM)
+        }}}}

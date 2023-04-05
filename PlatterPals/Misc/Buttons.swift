@@ -12,7 +12,7 @@ struct ProfHead: View {
             var data = DM.data(id: myID)
 
             HStack {
-                if (showFollow) {
+                if showFollow {
                     Button("Following") {
 
                         if let i = data.favUsers.firstIndex(of: id) {
@@ -44,3 +44,37 @@ struct ProfHead: View {
                     ch: data.chatting, bl: data.blocked)
     }
 }
+
+struct Row: View {
+
+    var id: String
+    @State var image: UIImage?
+    @EnvironmentObject var DM: DataManager
+
+    var body: some View {
+        HStack(spacing: 16) {
+            let user = DM.user(id: id)
+
+            RoundPic(image: image, width: 64)
+
+            VStack(alignment: .leading, spacing: 8) {
+                Text(user.name)
+                    .font(.headline)
+
+                Text("\(user.city), CA")
+                    .foregroundColor(.secondary)
+            }
+        }
+        .onAppear {
+            getImage(id: id, path: "avatars")
+        }
+    }
+    func getImage(id: String, path: String) {
+        let SR = SR.child("\(path)/\(id).jpg")
+
+        SR.getData(maxSize: 8 * 1024 * 1024) { data, error in
+            if let data = data {
+
+                DispatchQueue.main.async {
+                    image = UIImage(data: data)
+                }}}}}

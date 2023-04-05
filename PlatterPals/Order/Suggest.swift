@@ -8,7 +8,7 @@ struct Suggest: View {
     @Environment(\.dismiss) var dismiss
     
     @State var friend = User(id: "", name: "",
-                             text: "", city: "", views: 0)
+                        text: "", city: "", views: 0)
     
     @EnvironmentObject var DM: DataManager
     

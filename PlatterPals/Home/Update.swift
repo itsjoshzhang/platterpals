@@ -39,10 +39,12 @@ struct Update: View {
 
         ZStack {
             if let image = profile {
+                let height = UIwidth * 15.5 / 9.0
+
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()
-                    .frame(maxHeight: UIheight * 0.75)
+                    .frame(maxHeight: height)
                     .cornerRadius(16)
                     .clipped()
 
@@ -110,7 +112,7 @@ struct Update: View {
                 if (swipe > min && show) {
                     showProf = true
 
-                } else if (swipe < -min) {
+                } else if swipe < -min {
                     hideProf = true
                 }
                 scale = 0.9
@@ -121,7 +123,7 @@ struct Update: View {
         // ## GET IMAGES ## \\
 
         .onAppear {
-            if (myID == id) {
+            if myID == id {
                 avatar = DM.myAvatar
                 profile = DM.myProfile
             } else {
@@ -136,7 +138,7 @@ struct Update: View {
         // ## EDIT PROFILE ## \\
 
         .alert("Profile Details", isPresented: $showAlert) {
-            if (myID == id) {
+            if myID == id {
 
                 Button("Delete Profile", role: .destructive) {
                     DM.delImage(path: "profiles")

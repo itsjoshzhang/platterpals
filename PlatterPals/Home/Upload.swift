@@ -1,6 +1,3 @@
-// TODO: User bios must be less than 200 characters
-// TODO: Set up comments section for restaurant posts
-
 import SwiftUI
 import PhotosUI
 
@@ -70,9 +67,74 @@ struct Upload: View {
                     }}}}}}
 
 
-struct Upload_Previews: PreviewProvider {
-	static var previews: some View {
-        Upload()
-            .environmentObject(DataManager())
-	}
+struct EditProf: View {
+
+    @State var name = ""
+    @State var text = ""
+    @State var city = "Berkeley"
+    @State var image: UIImage?
+
+    @State var editInfo = false
+    @State var showSets = false
+    @State var imageData: Data?
+    @State var imageItem: PhotosPickerItem?
+
+    @EnvironmentObject var DM: DataManager
+
+    var body: some View {
+        NavigationStack {
+            let id = DM.my().id
+
+            if editInfo {
+                if let data = imageData {
+                    RoundPic(image: UIImage(data: data), width: 160)
+                } else {
+                    RoundPic(image: nil, width: 160)
+                }
+
+                PhotosPicker("Upload Picture", selection: $imageItem,
+                             matching: .images)
+                .buttonStyle(.bordered)
+
+                .onChange(of: imageItem) { _ in
+                    imageItem?.loadTransferable(type: Data.self) { result in
+
+                        switch result {
+                        case .success(let data):
+                            imageData = data
+                        case .failure(_):
+                            return
+                        }
+                    }
+                }
+                TextField("Change username", text: $name)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+
+                TextField("Write a new bio", text: $text)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+
+                Picker("Location", selection: $city) {
+                    ForEach(cityList, id: \.self) { city in
+                        Text(city)
+                    }
+                }
+
+                Button("Save Edits") {
+                    if let data = imageData {
+                        DM.putImage(image: UIImage(data: data)!, path: "avatars")
+                    }
+                    DM.editUser(id: id, name: name, text: text, city: city,
+                                views: DM.my().views)
+                    editInfo = false
+                }
+                .disabled(name == "" && text == "")
+                .buttonStyle(.borderedProminent)
+
+                Button("Cancel") {
+                    editInfo = false
+                }
+                .buttonStyle(.bordered)
+            }
+        }
+    }
 }

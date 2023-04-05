@@ -38,7 +38,7 @@ class DataManager: ObservableObject {
     func data(id: String) -> UserData {
         for data in userData {
 
-            if (data.id == id) {
+            if data.id == id {
                 return data
             }}
         return userData[thisUser]
@@ -94,11 +94,12 @@ class DataManager: ObservableObject {
         let id = id.replacingOccurrences(of: ".", with: "_")
 
         // traverse userList to check id
-        for index in 0 ..< userList.count {
+        for i in (0 ..< userList.count) {
 
             // if IDs match, assign thisUser
-            if userList[index].id == id {
-                thisUser = index; break
+            if userList[i].id == id {
+                thisUser = i
+                break
             }
         }
         // download images and settings

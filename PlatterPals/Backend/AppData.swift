@@ -44,10 +44,7 @@ extension UIImage {
     func resize(width: CGFloat, pfp: Bool) -> UIImage {
 
         // compute new scale and height
-        let scale = width / self.size.width
-        var height = self.size.height * scale
-
-        // user avatars should be square
+        var height = self.size.width * 15.5 / 9.0
         if pfp { height = width }
 
         // compute new size and renderer

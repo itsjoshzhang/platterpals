@@ -37,7 +37,7 @@ struct UserProf: View {
         // ## CLICKABLES ## \\
 
         VStack(alignment: .leading) {
-            if (myID == id) {
+            if myID == id {
 
                 Button("Edit Profile") {
                     showEdit = true
@@ -72,7 +72,7 @@ struct UserProf: View {
             }
         }
     }
-            if (!showUpdate) {
+            if !showUpdate {
                 Text(user.text)
                     .foregroundColor(.secondary)
             }
@@ -94,20 +94,20 @@ struct UserProf: View {
                     .buttonStyle(.borderedProminent)
                     .shadow(color: .pink, radius: 3)
 
-                    if (showUpdate) {
+                    if showUpdate {
                         Update(id: id, show: false, avatar: avatar,
                                profile: profile)
                         .environmentObject(DM)
                     }
                     Spacer()
-                        .padding(40)
+                        .padding(36)
                 }
             }
             // ## MODIFIERS ## \\
 
             .navigationTitle(user.name)
             .onAppear {
-                if (myID == id) {
+                if myID == id {
                     showUpdate = true
                     avatar = DM.myAvatar
                     profile = DM.myProfile
@@ -117,9 +117,9 @@ struct UserProf: View {
                 }
             }
             .toolbar {
-                if (myID == id) {
+                if myID == id {
                     ToolbarItem {
-                        Button("\(Image(systemName: "gearshape")) Settings") {
+                        Button("\(Image(systemName: "gearshape"))") {
                             showSets = true
                         }
                         .buttonStyle(.borderedProminent)
