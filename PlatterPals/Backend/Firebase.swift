@@ -274,4 +274,5 @@ class DataManager: ObservableObject {
                     
             self.settings = Setting(id: docID, notifs: notifs, emails:
                             emails, privacy: privacy, location: location)
-            return }}}}}
+            return
+    }}}}}

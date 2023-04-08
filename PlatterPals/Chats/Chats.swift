@@ -10,7 +10,9 @@ struct Chats: View {
         NavigationStack {
         ZStack {
         Back()
+
         VStack(spacing: 16) {
+        Spacer()
         List {
 
         ForEach(idList, id: \.self) { id in
@@ -23,6 +25,7 @@ struct Chats: View {
         .onMove(perform: move(fromOffsets:toOffset:))
         }
         .listStyle(.plain)
+        .padding(.top, 80)
         }
         }
         .navigationTitle("Chats")

@@ -5,6 +5,7 @@ struct Home: View {
     // ## TRACK INFO ## \\
     @State var name = ""
     @State var city = "Berkeley"
+    @State var following = false
     @FocusState var focus: Bool
     @State var showSearch = false
     @State var showUpload = false
@@ -25,7 +26,7 @@ struct Home: View {
 
         // ## USER SEARCH ## \\
 
-        TextField("Search...", text: $name)
+        TextField("Search for a user:", text: $name)
             .textFieldStyle(.roundedBorder)
             .padding(.horizontal, 16)
             .focused($focus)
@@ -38,20 +39,36 @@ struct Home: View {
                 .foregroundColor(.secondary)
 
             Picker("", selection: $city) {
-                ForEach(["Berkeley", "All"], id: \.self) {city in
+                ForEach(["Berkeley"], id: \.self) { city in
                     Text(city)
                 }
             }
-        }
+            Spacer()
+
         // ## PROFILES ## \\
+
+            Toggle("Following ✓", isOn: $following)
+                .toggleStyle(.button)
+                .onTapGesture {
+                    following.toggle()
+                }
+        }
+        .padding(.horizontal, 16)
 
         ForEach(DM.userList, id: \.self) { user in
             let id = DM.my().id
-            let city = DM.my().city
 
-            if user.id != id {
-                Update(id: user.id, show: true)
-                    .environmentObject(DM)
+            let update = Update(id: user.id, show: true)
+                .environmentObject(DM)
+
+            if following {
+                let favs = DM.data(id: id).favUsers
+
+                if (favs.contains(user.id) && user.city == city) {
+                    update
+                }
+            } else if (user.id != id && user.city == city) {
+                update
                 }
             }
         }

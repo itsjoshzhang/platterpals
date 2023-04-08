@@ -16,7 +16,7 @@
 		F25ED26E296FBBA900A6C8F0 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25ED26D296FBBA900A6C8F0 /* Assets.swift */; };
 		F25ED271296FCB2900A6C8F0 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F25ED270296FCB2900A6C8F0 /* FirebaseFirestoreSwift */; };
 		F26B3F0A296F8DF600E28DBD /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26B3F09296F8DF600E28DBD /* Update.swift */; };
-		F2B1A7B129DD59A600AB305B /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B1A7B029DD59A600AB305B /* Assets.swift */; };
+		F2B1A7B129DD59A600AB305B /* Assets2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B1A7B029DD59A600AB305B /* Assets2.swift */; };
 		F2B1A7B329DD5A4C00AB305B /* Profile2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B1A7B229DD5A4C00AB305B /* Profile2.swift */; };
 		F2F494B9298313E3000E35BB /* Settings2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F494B8298313E3000E35BB /* Settings2.swift */; };
 		F2F6D8662961730000B8F4D7 /* Maps.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D8472961730000B8F4D7 /* Maps.swift */; };
@@ -45,7 +45,7 @@
 		F254380629D554A600E1AADE /* ChatGPT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatGPT.swift; sourceTree = "<group>"; };
 		F25ED26D296FBBA900A6C8F0 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		F26B3F09296F8DF600E28DBD /* Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Update.swift; sourceTree = "<group>"; };
-		F2B1A7B029DD59A600AB305B /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
+		F2B1A7B029DD59A600AB305B /* Assets2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets2.swift; sourceTree = "<group>"; };
 		F2B1A7B229DD5A4C00AB305B /* Profile2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile2.swift; sourceTree = "<group>"; };
 		F2F494B8298313E3000E35BB /* Settings2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings2.swift; sourceTree = "<group>"; };
 		F2F6D834296172B100B8F4D7 /* PlatterPals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlatterPals.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,7 +145,7 @@
 				F2F6D84F2961730000B8F4D7 /* Upload.swift */,
 				F2F6D84E2961730000B8F4D7 /* Profile.swift */,
 				F2B1A7B229DD5A4C00AB305B /* Profile2.swift */,
-				F2B1A7B029DD59A600AB305B /* Assets.swift */,
+				F2B1A7B029DD59A600AB305B /* Assets2.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -283,7 +283,7 @@
 				F2F6D87B2961730000B8F4D7 /* Splash.swift in Sources */,
 				F2F6D86A2961730000B8F4D7 /* Suggest.swift in Sources */,
 				F2F6D86C2961730000B8F4D7 /* Upload.swift in Sources */,
-				F2B1A7B129DD59A600AB305B /* Assets.swift in Sources */,
+				F2B1A7B129DD59A600AB305B /* Assets2.swift in Sources */,
 				F254380729D554A600E1AADE /* ChatGPT.swift in Sources */,
 				F2F6D8782961730000B8F4D7 /* Chats.swift in Sources */,
 				F2F6D8792961730000B8F4D7 /* ChatDM.swift in Sources */,

@@ -16,7 +16,7 @@ struct Maps: View {
         NavigationStack {
             VStack(spacing: 16) {
                 
-                Text("Tap a pin to view a profile")
+                Text("Tap a pin to show profile")
                     .font(.headline)
                     .foregroundColor(.pink)
                 
@@ -53,14 +53,11 @@ struct Maps: View {
                     .cornerRadius(8)
                     .padding(20)
                 }
-                .ignoresSafeArea()
             }
-            .navigationTitle("People Near Me")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }}}}}}
+            .navigationTitle("Nearby")
+        }
+    }
+}
 
 
 struct Marker: Identifiable {

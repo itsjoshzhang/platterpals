@@ -88,7 +88,7 @@ struct Signup: View {
                 .font(.headline)
 
             Picker("", selection: $city) {
-                ForEach(cityList, id: \.self) { city in
+                ForEach(["Berkeley"], id: \.self) { city in
                     Text(city)
                 }
             }

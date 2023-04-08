@@ -1,4 +1,5 @@
 import SwiftUI
+import Firebase
 
 struct Splash: View {
 
@@ -40,6 +41,8 @@ struct Splash: View {
                     Text("Finding the perfect dish...")
                         .font(.headline)
                 }
+            // ## TEMP LOGIC ## \\
+
                 if internet {
                     Text("Poor internet. Refresh App.")
                         .font(.headline)
@@ -66,6 +69,8 @@ struct Splash: View {
                     withAnimation {
                         showNext = true
                     }
+        // ## TEMP LOGIC ## \\
+
                 } else {
                     internet = true
                 }}}
@@ -75,3 +80,53 @@ struct Splash: View {
                     Button("Cancel") {
                         dismiss()
                     }}}}}}
+
+struct Reset: View {
+
+    // ## SETUP VIEW ## \\
+    @State var email = ""
+    @State var alertText = ""
+    @State var showAlert = false
+
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                Back()
+                VStack(spacing: 16) {
+
+                    // ## TEXTFIELDS ## \\
+
+                    Group {
+                        TextField("Email", text: $email)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled(true)
+                        Div()
+
+                        Text("We'll email you a reset link right away.")
+                    }
+                    .foregroundColor(.pink)
+
+                    // ## CLICKABLES ## \\
+
+                    Button("Reset Password") {
+                        resetPass()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(email == "")
+
+                    .alert(alertText, isPresented: $showAlert) {
+                        Button("OK", role: .cancel) {}
+                    }
+                }
+                .navigationTitle("Reset Password")
+                .padding(16)
+            }}}
+
+    // ## FUNCTIONS ## \\
+
+    func resetPass() {
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            if let error = error {
+                alertText = error.localizedDescription
+                showAlert = true
+            }}}}
