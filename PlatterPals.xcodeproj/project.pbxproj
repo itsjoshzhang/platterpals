@@ -90,6 +90,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F2A0160029E34CA4005DFDAD /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				F2F6D84E2961730000B8F4D7 /* Profile.swift */,
+				F2B1A7B229DD5A4C00AB305B /* Profile2.swift */,
+				F2F6D84F2961730000B8F4D7 /* Upload.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		F2F6D82B296172B100B8F4D7 = {
 			isa = PBXGroup;
 			children = (
@@ -117,6 +127,7 @@
 				F2F6D8612961730000B8F4D7 /* Login */,
 				F2F6D85D2961730000B8F4D7 /* Chats */,
 				F2F6D84D2961730000B8F4D7 /* Home */,
+				F2A0160029E34CA4005DFDAD /* Profile */,
 				F2F6D8492961730000B8F4D7 /* Misc */,
 				F2F6D8512961730000B8F4D7 /* Assets.xcassets */,
 				F2F6D8572961730000B8F4D7 /* Preview Content */,
@@ -140,9 +151,6 @@
 			children = (
 				F2F6D8502961730000B8F4D7 /* Home.swift */,
 				F26B3F09296F8DF600E28DBD /* Update.swift */,
-				F2F6D84F2961730000B8F4D7 /* Upload.swift */,
-				F2F6D84E2961730000B8F4D7 /* Profile.swift */,
-				F2B1A7B229DD5A4C00AB305B /* Profile2.swift */,
 				F2B1A7B029DD59A600AB305B /* Assets2.swift */,
 			);
 			path = Home;
