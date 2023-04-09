@@ -34,7 +34,7 @@ struct Update: View {
     var content: some View {
         Group {
             let myID = DM.my().id
-            let min = UIwidth / 2.0
+            let min = UIwidth * 0.5
             let user = DM.user(id: id)
             let heart = Image(systemName: "heart.fill")
 

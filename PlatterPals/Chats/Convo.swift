@@ -42,8 +42,7 @@ struct Convo: View {
                 }
                 .disabled(text == "")
             }
-            .padding(.vertical, 10)
-            .padding(.horizontal, 20)
+            .padding(16)
             .background(.secondary)
             .cornerRadius(60)
             .padding(10)

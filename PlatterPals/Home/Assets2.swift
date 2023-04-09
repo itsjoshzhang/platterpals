@@ -111,7 +111,7 @@ struct Search: View {
         .listStyle(.plain)
         }
         // ## USER LOGIC ## \\
-        
+
         .navigationTitle("Search 🔍")
 
         .onChange(of: name) { _ in

@@ -96,8 +96,8 @@ struct EditProf: View {
 
         HStack(spacing: 0) {
             Text("Location:")
-                .font(.headline)
                 .foregroundColor(.pink)
+                .font(.headline)
 
             Picker("", selection: $city) {
                 ForEach(["Berkeley"], id: \.self) { city in
@@ -109,6 +109,7 @@ struct EditProf: View {
         }
         TextField("Username", text: $name)
             .textFieldStyle(RoundedBorderTextFieldStyle())
+            .font(.headline)
         }
         }
         TextEditor(text: $text)

@@ -28,8 +28,8 @@ struct ChatDM: View {
                 Button("Start chat") {
                     showChat = true
                 }
-                .disabled(id == "")
                 .buttonStyle(.borderedProminent)
+                .disabled(id == "")
                 .padding(.top, 20)
 
                 Text("Wanna invite a friend?")

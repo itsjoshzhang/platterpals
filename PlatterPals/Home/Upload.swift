@@ -12,8 +12,12 @@ struct Upload: View {
     
     var body: some View {
         NavigationStack {
+        ZStack {
+        Back()
         ScrollView {
-        VStack(spacing: 16) {
+        VStack(spacing: 10) {
+        Spacer()
+            .padding(40)
 
         if let d = imageData, let image = UIImage(data: d) {
 
@@ -22,12 +26,16 @@ struct Upload: View {
                 .scaledToFit()
                 .frame(maxHeight: UIheight * 0.75)
         } else {
-            Image("upload")
-                .resizable()
-                .scaledToFit()
-                .opacity(0.25)
-                .border(.pink, width: 3)
-                .frame(maxHeight: UIheight * 0.5)
+            ZStack {
+                Rectangle()
+                    .fill(.white)
+                Image("upload")
+                    .resizable()
+                    .opacity(0.25)
+                    .border(.pink, width: 3)
+            }
+            .scaledToFit()
+            .frame(maxHeight: UIheight * 0.5)
         }
         Text("Use template for best result")
             .foregroundColor(.secondary)
@@ -49,6 +57,7 @@ struct Upload: View {
         }
         TextEditor(text: $text)
             .border(.secondary.opacity(0.25))
+            .frame(minHeight: UIwidth * 0.25)
 
         if text.count > 200 {
             Text("200 chars max")
@@ -60,13 +69,15 @@ struct Upload: View {
                 }
                 dismiss()
             }
-            .disabled(text == "")
             .buttonStyle(.borderedProminent)
+            .disabled(text == "")
         }
+        Spacer()
+            .padding(16)
         }
         .padding(16)
         }
-        .navigationTitle("Profile")
+        .navigationTitle("Profile 📸")
         .onAppear {
             text = DM.my().text
-        }}}}
+        }}}}}
