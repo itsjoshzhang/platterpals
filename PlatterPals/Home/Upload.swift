@@ -12,56 +12,61 @@ struct Upload: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 16) {
+        ScrollView {
+        VStack(spacing: 16) {
 
-                    if let data = imageData, let image =
-                        UIImage(data: data) {
+        if let d = imageData, let image = UIImage(data: d) {
 
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: UIheight)
-                    } else {
-                        Image("cards")
-                            .resizable()
-                            .scaledToFit()
-                            .opacity(0.25)
-                            .border(.pink, width: 3)
-                    }
-                    PhotosPicker("Upload Picture", selection: $imageItem,
-                                 matching: .images)
-                    .buttonStyle(.bordered)
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFit()
+                .frame(maxHeight: UIheight * 0.75)
+        } else {
+            Image("upload")
+                .resizable()
+                .scaledToFit()
+                .opacity(0.25)
+                .border(.pink, width: 3)
+                .frame(maxHeight: UIheight * 0.5)
+        }
+        Text("Use template for best result")
+            .foregroundColor(.secondary)
 
-                    .onChange(of: imageItem) { _ in
-                        imageItem?.loadTransferable(type: Data.self) { result in
+        PhotosPicker("Upload Picture", selection: $imageItem,
+                     matching: .images)
+        .buttonStyle(.bordered)
 
-                            switch result {
-                            case .success(let data):
-                                imageData = data
-                            case .failure(_):
-                                return
-                            }
-                        }
-                    }
-                    TextField("Write a bio", text: $text)
-                    Div()
+        .onChange(of: imageItem) { _ in
+            imageItem?.loadTransferable(type: Data.self) { result in
 
-                    Text("Crop image to portrait for best results")
-                        .foregroundColor(.pink)
-
-                    Button("Update Profile") {
-                        DM.putImage(image: UIImage(data: imageData!)!, path: "profiles")
-                        dismiss()
-                    }
-                    .disabled(imageData == nil || text == "")
-                    .buttonStyle(.borderedProminent)
+                switch result {
+                case .success(let data):
+                    imageData = data
+                case .failure(_):
+                    return
                 }
             }
-            .padding(20)
-            .navigationTitle("Update Profile")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }}}}}}
+        }
+        TextEditor(text: $text)
+            .border(.secondary.opacity(0.25))
+
+        if text.count > 200 {
+            Text("200 chars max")
+                .foregroundColor(.secondary)
+        } else {
+            Button("Save Edits") {
+                if let d = imageData, let image = UIImage(data: d) {
+                    DM.putImage(image: image, path: "avatars")
+                }
+                dismiss()
+            }
+            .disabled(text == "")
+            .buttonStyle(.borderedProminent)
+        }
+        }
+        .padding(16)
+        }
+        .navigationTitle("Profile")
+        .onAppear {
+            text = DM.my().text
+        }}}}

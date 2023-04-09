@@ -124,7 +124,6 @@ struct Search: View {
                     name.lowercased()) {
                     idList.append(user.id)
                 }}}
-
         .sheet(isPresented: $showProf) {
             UserProf(id: newID)
                 .environmentObject(DM)
