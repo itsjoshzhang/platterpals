@@ -20,6 +20,7 @@ struct Login: View {
     @EnvironmentObject var DM: DataManager
 
     // ## OTHER VIEWS ## \\
+
     var body: some View {
         if loggedIn {
             MyTabView()
@@ -60,8 +61,6 @@ struct Login: View {
                     .foregroundColor(.pink)
                     .focused($focus)
 
-                    // ## CONDITIONS ## \\
-
                     Button("Forgot your login?") {
                         showReset = true
                     }
@@ -82,7 +81,7 @@ struct Login: View {
                         Button("OK", role: .cancel) {}
                     }
                 }
-                .opacity(internet ? 1: 0)
+                .opacity(internet ? 1 : 0)
             }
             .padding(16)
         }

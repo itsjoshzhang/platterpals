@@ -5,9 +5,9 @@ struct Update: View {
     // ## TRACK INFO ## \\
     var id: String
     var show: Bool
-    let min = UIwidth / 2.0
     @State var scale = 0.9
     @State var swipe = 0.0
+    @State var views = 1
 
     // ## CONDITIONS ## \\
     @State var avatar: UIImage?
@@ -34,19 +34,20 @@ struct Update: View {
     var content: some View {
         Group {
             let myID = DM.my().id
+            let min = UIwidth / 2.0
             let user = DM.user(id: id)
             let heart = Image(systemName: "heart.fill")
 
         ZStack {
             if let image = profile {
-                let height = UIwidth * 15.5 / 9.0
+                let height = UIwidth * 16.0 / 9.0
 
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(maxHeight: height)
-                    .cornerRadius(16)
-                    .clipped()
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(maxHeight: height)
+                .cornerRadius(16)
+                .clipped()
 
         // ## USER INFO ## \\
 
@@ -55,32 +56,35 @@ struct Update: View {
             Text(user.name)
                 .font(.largeTitle).bold()
 
-            HStack {
-                Text("\(user.city), CA")
-                    .font(.headline)
-                Spacer()
+        HStack {
+            Text("\(user.city), CA")
+                .font(.headline)
+            Spacer()
 
-                Text("\(heart) \(user.views)")
-                    .font(.headline)
+            Text("\(heart) \(views)")
+                .font(.headline)
 
-                Button("\(Image(systemName: "flag"))") {
-                    showAlert = true
-                }
+            Button("\(Image(systemName: "flag"))") {
+                showAlert = true
             }
-            Text(user.text)
-                .padding(.top, 3)
+        }
+        Text(user.text)
+            .padding(.top, 3)
         }
         .shadow(color: .black, radius: 3)
         .foregroundColor(.white)
         .padding(16)
 
-            } else {
-                ProgressView()
-                    .scaleEffect(2)
-                    .tint(.pink)
-            }
-        // ## SHOW HEARTS ## \\
+        // ## OTHER VIEWS ## \\
 
+        } else if myID == id {
+            Text("Add a profile!")
+                .foregroundColor(.secondary)
+        } else {
+            ProgressView()
+                .scaleEffect(2)
+                .tint(.pink)
+        }
         Group {
             heart
                 .resizable()
@@ -130,6 +134,12 @@ struct Update: View {
                 getImage(path: "avatars")
                 getImage(path: "profiles")
             }
+            views = 1
+            for data in DM.userData {
+                if data.favUsers.contains(id) {
+                    views += 1
+                }
+            }
         }
         .sheet(isPresented: $showProf) {
             UserProf(id: id, avatar: avatar, profile: profile)
@@ -137,14 +147,13 @@ struct Update: View {
         }
         // ## EDIT PROFILE ## \\
 
-        .alert("Profile Details", isPresented: $showAlert) {
+        .confirmationDialog("", isPresented: $showAlert) {
             if myID == id {
-
-                Button("Delete Profile", role: .destructive) {
+                Button("Delete Profile") {
                     DM.delImage(path: "profiles")
                 }
             } else {
-                Button("Report Profile", role: .destructive) {
+                Button("Report Profile") {
                     withAnimation {
                         hideProf = true
                     }}}

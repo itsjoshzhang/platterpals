@@ -38,9 +38,9 @@ struct Signup: View {
         // ## SHOW IMAGE ## \\
 
         if let data = imageData {
-            RoundPic(image: UIImage(data: data), width: 160)
+            RoundPic(width: 160, image: UIImage(data: data))
         } else {
-            RoundPic(width: 160)
+            RoundPic(width: 160, image: nil)
         }
         PhotosPicker("Upload Picture", selection: $imageItem,
                      matching: .images)
@@ -49,8 +49,7 @@ struct Signup: View {
         // ## UPLOAD IMAGE ## \\
 
         .onChange(of: imageItem) { _ in
-            imageItem?.loadTransferable(type: Data.self) {
-                result in
+            imageItem?.loadTransferable(type: Data.self) { result in
 
                 switch result {
                 case .success(let data):
@@ -153,9 +152,6 @@ struct Signup: View {
                 alertText = error.localizedDescription
                 showAlert = true
             } else {
-
-                // ## CREATE USER ## \\
-
                 DM.makeUser(id: email, name: name, city: city)
                 DM.initUser(id: email)
 

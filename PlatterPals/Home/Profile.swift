@@ -4,6 +4,7 @@ struct UserProf: View {
 
     // ## TRACK INFO ## \\
     var id: String
+    @State var views = 1
     @State var avatar: UIImage?
     @State var profile: UIImage?
     @Environment(\.dismiss) var dismiss
@@ -12,8 +13,8 @@ struct UserProf: View {
     @State var showEdit = false
     @State var showChat = false
     @State var showSets = false
+    @State var showAlert = false
     @State var showUpdate = false
-    @State var showAction = false
 
     @EnvironmentObject var DM: DataManager
 
@@ -32,44 +33,43 @@ struct UserProf: View {
         Spacer()
             .padding(48)
         HStack(spacing: 16) {
-            RoundPic(image: avatar, width: 80)
+            RoundPic(width: 80, image: avatar)
 
         // ## CLICKABLES ## \\
 
         VStack(alignment: .leading) {
             if myID == id {
-
                 Button("Edit Profile") {
                     showEdit = true
                 }
                 .buttonStyle(.bordered)
 
             } else {
-                HStack {
-                    ProfHead(id: id)
-                        .environmentObject(DM)
-                    Spacer()
+        HStack {
+            ProfHead(id: id)
+                .environmentObject(DM)
+            Spacer()
 
-                    Button("\(Image(systemName: "message.fill"))") {
-                        showChat = true
-                    }
-                    .buttonStyle(.borderedProminent)
-
-                    Button("\(Image(systemName: "bell"))") {
-                        showAction = true
-                    }
-                    .buttonStyle(.bordered)
-                }
+            Button("\(Image(systemName: "message.fill"))") {
+                showChat = true
             }
-            // ## USER INFO ## \\
+            .buttonStyle(.borderedProminent)
 
-            HStack {
-                Text("\(user.city), CA")
-                    .font(.headline)
-                Spacer()
-
-                Text("\(Image(systemName: "heart")) \(user.views)")
+            Button("\(Image(systemName: "bell"))") {
+                showAlert = true
             }
+            .buttonStyle(.bordered)
+        }
+        }
+        // ## USER INFO ## \\
+
+        HStack {
+            Text("\(user.city), CA")
+                .font(.headline)
+            Spacer()
+
+            Text("\(Image(systemName: "heart")) \(views)")
+        }
         }
         }
         if !showUpdate {
@@ -115,7 +115,15 @@ struct UserProf: View {
                 getImage(path: "avatars")
                 getImage(path: "profiles")
             }
+            views = 1
+            for data in DM.userData {
+                if data.favUsers.contains(id) {
+                    views += 1
+                }
+            }
         }
+        // ## OTHER VIEWS ## \\
+
         .toolbar {
             if myID == id {
                 ToolbarItem {
@@ -124,11 +132,10 @@ struct UserProf: View {
                     }
                     .buttonStyle(.borderedProminent)
                 }}}
-
-        // ## OTHER VIEWS ## \\
-
         .sheet(isPresented: $showEdit) {
-            Text("Hi")
+            EditProf()
+                .environmentObject(DM)
+                .presentationDetents([.medium])
         }
         .fullScreenCover(isPresented: $showChat) {
             Convo(id: id)
@@ -138,15 +145,31 @@ struct UserProf: View {
             Settings()
                 .environmentObject(DM)
         }
-        .actionSheet(isPresented: $showAction) {
-            ActionSheet(title: Text("Notifications"),
-                buttons: [
-                    .destructive(Text("Block this user")),
-                    .default(Text("Mute notifications")),
-                    .cancel(Text("Cancel"))]
-            )}}}
-    
+        // ## BLOCK USER ## \\
+
+        .confirmationDialog("", isPresented: $showAlert) {
+            var data = DM.data(id: myID)
+
+            if data.blocked.contains(id) {
+                Button("UNBLOCK USER") {
+
+                    if let i = data.blocked.firstIndex(of: id) {
+                        data.blocked.remove(at: i)
+                        editData(data: data)
+                    }
+                }
+            } else {
+                Button("Block this user") {
+                    data.blocked.append(id)
+                    editData(data: data)
+                }}}}}
+
     // ## FUNCTIONS ## \\
+
+    func editData(data: UserData) {
+        DM.editData(id: data.id, fo: data.favFoods, us:
+            data.favUsers, ch: data.chatting, bl: data.blocked)
+    }
 
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")

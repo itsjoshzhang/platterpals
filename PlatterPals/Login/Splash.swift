@@ -20,39 +20,39 @@ struct Splash: View {
             if first {
                 Login().environmentObject(DM)
             } else {
-                Order().environmentObject(DM)}
-        } else {
+                Order().environmentObject(DM)
+        }} else {
             content
         }
     }
     var content: some View {
         ZStack {
-            Back()
+        Back()
 
-            // ## TEXT & LOGO ## \\
+        // ## TEXT & LOGO ## \\
 
-            VStack(spacing: 16) {
-                Image("logo")
-                
-                Text("PlatterPals")
-                    .font(.custom("Lobster", size: 50))
-                
-                if !first {
-                    Text("Finding the perfect dish...")
-                        .font(.headline)
-                }
-            // ## TEMP LOGIC ## \\
+        VStack(spacing: 16) {
+            Image("logo")
 
-                if internet {
-                    Text("Poor internet. Refresh App.")
-                        .font(.headline)
-                }
-                ProgressView()
-                    .scaleEffect(2)
-                    .tint(.pink)
-                    .padding(16)
+            Text("PlatterPals")
+                .font(.custom("Lobster", size: 50))
+
+            if !first {
+                Text("Finding the perfect dish...")
+                    .font(.headline)
             }
-            .foregroundColor(.pink)
+        // ## TEMP LOGIC ## \\
+
+            if internet {
+                Text("Poor internet. Refresh App.")
+                    .font(.headline)
+            }
+            ProgressView()
+                .scaleEffect(2)
+                .tint(.pink)
+                .padding(16)
+        }
+        .foregroundColor(.pink)
         }
         .scaleEffect(scale)
         .opacity(opacity)
@@ -60,26 +60,26 @@ struct Splash: View {
         // ## MODIFIERS ## \\
 
         .onAppear {
+        withAnimation {
+            scale = 1.0
+            opacity = 1.0
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        if DM.userData.count > 0 {
             withAnimation {
-                scale = 1.0
-                opacity = 1.0
+                showNext = true
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                if DM.userData.count > 0 {
-                    withAnimation {
-                        showNext = true
-                    }
         // ## TEMP LOGIC ## \\
 
-                } else {
-                    internet = true
-                }}}
+        } else {
+            internet = true
+        }}}
         .toolbar {
-            if first == false {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }}}}}}
+        if first == false {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Cancel") {
+                    dismiss()
+                }}}}}}
 
 struct Reset: View {
 
@@ -90,37 +90,37 @@ struct Reset: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                Back()
-                VStack(spacing: 16) {
+        ZStack {
+        Back()
+        VStack(spacing: 16) {
 
-                    // ## TEXTFIELDS ## \\
+        // ## TEXTFIELDS ## \\
 
-                    Group {
-                        TextField("Email", text: $email)
-                            .textInputAutocapitalization(.never)
-                            .autocorrectionDisabled(true)
-                        Div()
+        Group {
+            TextField("Email", text: $email)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled(true)
+            Div()
 
-                        Text("We'll email you a reset link right away.")
-                    }
-                    .foregroundColor(.pink)
+            Text("We'll send you a reset link!")
+        }
+        .foregroundColor(.pink)
 
-                    // ## CLICKABLES ## \\
+        // ## CLICKABLES ## \\
 
-                    Button("Reset Password") {
-                        resetPass()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(email == "")
+        Button("Reset Password") {
+            resetPass()
+        }
+        .buttonStyle(.borderedProminent)
+        .disabled(email == "")
 
-                    .alert(alertText, isPresented: $showAlert) {
-                        Button("OK", role: .cancel) {}
-                    }
-                }
-                .navigationTitle("Reset Password")
-                .padding(16)
-            }}}
+        .alert(alertText, isPresented: $showAlert) {
+            Button("OK", role: .cancel) {}
+        }
+        }
+        .navigationTitle("Reset Password")
+        .padding(16)
+    }}}
 
     // ## FUNCTIONS ## \\
 

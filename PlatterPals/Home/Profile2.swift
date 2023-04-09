@@ -3,114 +3,140 @@ import PhotosUI
 
 struct ProfHead: View {
 
+    // ## SETUP VIEW ## \\
     var id: String
     @State var showFollow = false
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
         HStack {
-            let myID = DM.my().id
-            var data = DM.data(id: myID)
-
+        var data = DM.data(id: DM.my().id)
         HStack {
-            if showFollow {
-            Button("Following") {
 
+        // ## FOLLOWING ## \\
+
+        if showFollow {
+        Button("Following") {
             if let i = data.favUsers.firstIndex(of: id) {
-                data.favUsers.remove(at: i)
 
-                editData(myID: myID, data: data)
+                data.favUsers.remove(at: i)
+                editData(data: data)
                 showFollow = false
             }
+        }
+        .buttonStyle(.bordered)
+        } else {
+            Button("Follow \(Image(systemName: "heart"))") {
+
+                data.favUsers.append(id)
+                editData(data: data)
+                showFollow = true
             }
-            .buttonStyle(.bordered)
-
-            } else {
-                Button("Follow \(Image(systemName: "heart"))") {
-                    data.favUsers.append(id)
-
-                    editData(myID: myID, data: data)
-                    showFollow = true
-                }
-                .buttonStyle(.borderedProminent)
+            .buttonStyle(.borderedProminent)
             }
         }
+    // ## FUNCTIONS ## \\
+
         .onAppear {
             showFollow = data.favUsers.contains(id)
-        }
-    }
-    }
-    func editData(myID: String, data: UserData) {
-        DM.editData(id: myID, fo: data.favFoods, us: data.favUsers,
-                    ch: data.chatting, bl: data.blocked)
+        }}}
+    func editData(data: UserData) {
+        DM.editData(id: data.id, fo: data.favFoods, us:
+            data.favUsers, ch: data.chatting, bl: data.blocked)
     }
 }
 
 struct EditProf: View {
 
+    // ## TRACK INFO ## \\
     @State var name = ""
     @State var text = ""
     @State var city = "Berkeley"
     @State var image: UIImage?
 
-    @State var editInfo = false
+    // ## CONDITIONS ## \\
     @State var showSets = false
     @State var imageData: Data?
     @State var imageItem: PhotosPickerItem?
+    @Environment(\.dismiss) var dismiss
 
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
-        NavigationStack {
-            let id = DM.my().id
+        VStack(spacing: 16) {
+        HStack(spacing: 16) {
 
-            if editInfo {
-                if let data = imageData {
-                    RoundPic(image: UIImage(data: data), width: 160)
-                } else {
-                    RoundPic(image: nil, width: 160)
-                }
+            // ## SHOW IMAGE ## \\
 
-                PhotosPicker("Upload Picture", selection: $imageItem,
-                             matching: .images)
-                .buttonStyle(.bordered)
+            if let data = imageData {
+                RoundPic(width: 160, image: UIImage(data: data))
+            } else {
+                RoundPic(width: 160, image: nil)
+            }
+        VStack(alignment: .leading, spacing: 16) {
 
-                .onChange(of: imageItem) { _ in
-                    imageItem?.loadTransferable(type: Data.self) { result in
+            // ## UPLOAD IMAGE ## \\
 
-                        switch result {
-                        case .success(let data):
-                            imageData = data
-                        case .failure(_):
-                            return
-                        }
+            PhotosPicker("Upload Picture", selection: $imageItem,
+                         matching: .images)
+            .buttonStyle(.bordered)
+
+            .onChange(of: imageItem) { _ in
+                imageItem?.loadTransferable(type: Data.self) { result in
+
+                    switch result {
+                    case .success(let data):
+                        imageData = data
+                    case .failure(_):
+                        return
                     }
                 }
-                TextField("Change username", text: $name)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+            }
+        // ## USER INFO ## \\
 
-                TextField("Write a new bio", text: $text)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+        HStack(spacing: 0) {
+            Text("Location:")
+                .font(.headline)
+                .foregroundColor(.pink)
 
-                Picker("Location", selection: $city) {
-                    ForEach(cityList, id: \.self) { city in
-                        Text(city)
-                    }
+            Picker("", selection: $city) {
+                ForEach(["Berkeley"], id: \.self) { city in
+                    Text(city)
                 }
+            }
+            .buttonStyle(.bordered)
+            .frame(maxWidth: UIwidth)
+        }
+        TextField("Username", text: $name)
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+        }
+        }
+        TextEditor(text: $text)
+            .border(.secondary.opacity(0.25))
 
-                Button("Save Edits") {
-                    if let data = imageData {
-                        DM.putImage(image: UIImage(data: data)!, path: "avatars")
-                    }
-                    DM.editUser(id: id, name: name, text: text, city: city,
-                                views: DM.my().views)
-                    editInfo = false
-                }
-                .disabled(name == "" && text == "")
-                .buttonStyle(.borderedProminent)
+        // ## SAVE LOGIC ## \\
 
-                Button("Cancel") {
-                    editInfo = false
+        if text.count > 200 {
+            Text("200 chars max")
+                .foregroundColor(.secondary)
+        } else {
+            Button("Save Edits") {
+                DM.editUser(id: DM.my().id, name: name, text: text,
+                            city: city, views: DM.my().views)
+
+                if let d = imageData, let image = UIImage(data: d) {
+                    DM.putImage(image: image, path: "avatars")
                 }
-                .buttonStyle(.bordered)
-            }}}}
+                dismiss()
+            }
+            .disabled(name == "" || text == "")
+            .buttonStyle(.borderedProminent)
+        }
+        }
+        .padding(16)
+        .onAppear {
+            name = DM.my().name
+            text = DM.my().text
+        }
+    }
+}

@@ -13,17 +13,17 @@ struct Row: View {
 
             // ## SHOW IMAGE ## \\
 
-            RoundPic(image: image, width: 64)
+            RoundPic(width: 64, image: image)
 
-            VStack(alignment: .leading, spacing: 8) {
-                Text(user.name)
-                    .font(.headline)
+        VStack(alignment: .leading, spacing: 8) {
+            Text(user.name)
+                .font(.headline)
 
-                Text("\(user.city), CA")
-                    .foregroundColor(.secondary)
-            }
+            Text("\(user.city), CA")
+                .foregroundColor(.secondary)
         }
-        .frame(width: UIwidth - 32, alignment: .leading)
+        }
+        .frame(alignment: .leading)
         .onAppear {
             getImage(id: id, path: "avatars")
         }
@@ -64,53 +64,55 @@ struct Search: View {
                 .shadow(color: .pink, radius: 3)
                 .textFieldStyle(.roundedBorder)
                 .autocorrectionDisabled(true)
+                .padding(.horizontal, 16)
                 .foregroundColor(.pink)
 
-            HStack(spacing: 0) {
-                Text("Location:")
-                    .foregroundColor(.secondary)
+        HStack(spacing: 0) {
+            Text("Location:")
+                .foregroundColor(.secondary)
 
-                Picker("", selection: $city) {
-                    ForEach(["Berkeley"], id: \.self) { city in
-                        Text(city)
-                    }
+            Picker("", selection: $city) {
+                ForEach(["Berkeley"], id: \.self) { city in
+                    Text(city)
                 }
-                Spacer()
-
-                Toggle("Following ✓", isOn: $following)
-                    .toggleStyle(.button)
-                    .onTapGesture {
-                    following.toggle()
-                    }
             }
-            // ## SHOW USERS ## \\
+            Spacer()
 
-            List {
-            ForEach(idList, id: \.self) { id in
-            Group {
-
-            let user = DM.user(id: id)
-            let row = Row(id: id)
-                .environmentObject(DM)
-
-            if following {
-                let f = DM.data(id: DM.my().id).favUsers
-
-                if (f.contains(id) && user.city == city) {
-                    row
-            }} else if (user.city == city) {
-                row
-            }}
-            .onTapGesture {
-                newID = id
-                showProf = true
-            }}}
-        .listStyle(.plain)
+            Toggle("Following ✓", isOn: $following)
+                .toggleStyle(.button)
+                .onTapGesture {
+                following.toggle()
+                }
         }
         .padding(.horizontal, 16)
-        .navigationTitle("Search 🔍")
 
+        // ## SHOW USERS ## \\
+
+        List {
+        ForEach(idList, id: \.self) { id in
+        Group {
+
+        let user = DM.user(id: id)
+        let row = Row(id: id)
+            .environmentObject(DM)
+
+        if following {
+            let f = DM.data(id: DM.my().id).favUsers
+
+            if (f.contains(id) && user.city == city) {
+                row
+        }} else if (user.city == city) {
+            row
+        }}
+        .onTapGesture {
+            newID = id
+            showProf = true
+        }}}
+        .listStyle(.plain)
+        }
         // ## USER LOGIC ## \\
+        
+        .navigationTitle("Search 🔍")
 
         .onChange(of: name) { _ in
             idList.removeAll()

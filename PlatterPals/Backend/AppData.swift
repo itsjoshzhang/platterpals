@@ -13,29 +13,24 @@ let foodList = ["All", "American", "Brazilian", "Caribbean", "Chinese",
                 "Korean", "Mexican", "Middle Eastern", "Thai", "Vietnamese"]
 
 struct RoundPic: View {
-    var image: UIImage?
     var width: Int
+    var image: UIImage?
+
     var body: some View {
-
-        // ## PROFILE PIC ## \\
-
-        if let image = image {
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFit()
-                .clipShape(Circle())
-                .frame(width: CGFloat(width))
-
-        // ## PLACEHOLDER ## \\
-
-        } else {
-            Image(systemName: "person.circle")
-                .resizable()
-                .scaledToFit()
-                .clipShape(Circle())
-                .foregroundColor(.secondary)
-                .frame(width: CGFloat(width))
+        Group {
+            if let image = image {
+                Image(uiImage: image)
+                    .resizable()
+            } else {
+                Image(systemName: "person.circle")
+                    .resizable()
+                    .opacity(0.25)
+                    .foregroundColor(.secondary)
+            }
         }
+        .scaledToFit()
+        .clipShape(Circle())
+        .frame(width: CGFloat(width))
     }
 }
 extension UIImage {
@@ -44,7 +39,7 @@ extension UIImage {
     func resize(width: CGFloat, pfp: Bool) -> UIImage {
 
         // compute new scale and height
-        var height = self.size.width * 15.5 / 9.0
+        var height = self.size.width * 16.0 / 9.0
         if pfp { height = width }
 
         // compute new size and renderer

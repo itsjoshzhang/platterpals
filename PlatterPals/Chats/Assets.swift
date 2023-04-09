@@ -5,7 +5,7 @@ struct TitleBar: View {
     var id: String
     @State var image: UIImage?
     @State var showProf = false
-    @State var showAction = false
+    @State var showAlert = false
     @Environment(\.dismiss) var dismiss
 
     @EnvironmentObject var DM: DataManager
@@ -16,20 +16,20 @@ struct TitleBar: View {
                 Button {
                     showProf = true
                 } label: {
-                    HStack(spacing: 16) {
+                HStack(spacing: 16) {
 
-                        RoundPic(image: image, width: 160)
-                        
-                        VStack(alignment: .leading) {
-                            let user = DM.user(id: id)
-                            Text(user.name)
-                                .font(.title).bold()
+                RoundPic(width: 160, image: image)
 
-                            Text("\(user.city), CA")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                    }
+                VStack(alignment: .leading) {
+                    let user = DM.user(id: id)
+                    Text(user.name)
+                        .font(.title).bold()
+
+                    Text("\(user.city), CA")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+                }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -37,7 +37,7 @@ struct TitleBar: View {
                     dismiss()
                 }
                 Button("\(Image(systemName: "bell"))") {
-                    showAction = true
+                    showAlert = true
                 }
 
             }
@@ -51,15 +51,15 @@ struct TitleBar: View {
             UserProf(id: id)
                 .environmentObject(DM)
         }
-        .actionSheet(isPresented: $showAction) {
-            ActionSheet(title: Text("Notifications"),
-                buttons: [
-                .destructive(Text("Block this user")),
-                .default(Text("Mute notifications")),
-                .cancel(Text("Cancel"))]
-            )
-        }
-    }
+        .confirmationDialog("", isPresented: $showAlert) {
+            Button("Block this user") {
+                var my = DM.data(id: DM.my().id)
+
+                my.blocked.append(id)
+                DM.editData(id: my.id, fo: my.favFoods, us: my.favUsers,
+                            ch: my.chatting, bl: my.blocked)
+            }}}
+
     func getImage(id: String, path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
 

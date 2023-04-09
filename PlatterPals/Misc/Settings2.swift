@@ -58,7 +58,7 @@ struct Settings2: View {
                 Div()
 
                 HStack {
-                    RoundPic(image: image, width: 160)
+                    RoundPic(width: 160, image: image)
 
                     VStack(alignment: .leading) {
                         Text(user.name)

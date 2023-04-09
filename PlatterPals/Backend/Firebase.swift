@@ -63,7 +63,7 @@ class DataManager: ObservableObject {
                 let name  = data["name"]  as? String ?? ""
                 let text  = data["text"]  as? String ?? ""
                 let city  = data["city"]  as? String ?? ""
-                let views = data["views"] as? Int    ?? 0
+                let views = data["views"] as? Int    ?? 1
                 
                 let user = User(id: id, name: name, text: text,
                                 city: city, views: views)
@@ -144,10 +144,9 @@ class DataManager: ObservableObject {
     func editSets(id: String, notifs: Bool, emails: Bool, privacy: Bool, location: Bool) {
         let setting = FS.collection("settings").document(id)
         
-        setting.setData(["id": id, "notifs": notifs, "emails": emails, "privacy": privacy,
-                         "location": location])
+        setting.setData(["id": id, "notifs": notifs, "emails": emails, "privacy": privacy, "location": location])
         settings = Setting(id: id, notifs: notifs, emails: emails, privacy: privacy,
-                           location: location)
+            location: location)
     }
     
     // called at Convo
