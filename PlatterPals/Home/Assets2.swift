@@ -44,10 +44,11 @@ struct Search: View {
 
     // ## TRACK INFO ## \\
     @State var name = ""
-    @State var newID = ""
+    @State var nextID = ""
     @State var city = "Berkeley"
 
-    @State var showProf = false
+    @State var showProf: Bool
+    @State var showNext = false
     @State var following = false
     @State var idList = [String]()
     @Environment(\.dismiss) var dismiss
@@ -105,8 +106,8 @@ struct Search: View {
             row
         }}
         .onTapGesture {
-            newID = id
-            showProf = true
+            nextID = id
+            showNext = true
         }}}
         .listStyle(.plain)
         }
@@ -124,7 +125,11 @@ struct Search: View {
                     name.lowercased()) {
                     idList.append(user.id)
                 }}}
-        .sheet(isPresented: $showProf) {
-            UserProf(id: newID)
-                .environmentObject(DM)
-            }}}}
+        .sheet(isPresented: $showNext) {
+            if showProf {
+                UserProf(id: nextID)
+                    .environmentObject(DM)
+            } else {
+                Convo(id: nextID)
+                    .environmentObject(DM)
+            }}}}}

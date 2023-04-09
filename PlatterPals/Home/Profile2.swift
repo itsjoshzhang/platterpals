@@ -68,14 +68,14 @@ struct EditProf: View {
 
             // ## SHOW IMAGE ## \\
 
-            if let data = imageData {
-                RoundPic(width: 160, image: UIImage(data: data))
+            if let d = imageData, let image = UIImage(data: d) {
+                RoundPic(width: 160, image: image)
             } else {
                 RoundPic(width: 160, image: nil)
             }
         VStack(alignment: .leading, spacing: 16) {
 
-            // ## UPLOAD IMAGE ## \\
+            // ## UPLOAD PIC ## \\
 
             PhotosPicker("Upload Picture", selection: $imageItem,
                          matching: .images)

@@ -6,7 +6,6 @@ struct Home: View {
     @State var name = ""
     @State var city = "Berkeley"
     @State var following = false
-    @FocusState var focus: Bool
     @State var showSearch = false
     @State var showUpload = false
 
@@ -29,11 +28,9 @@ struct Home: View {
         TextField("Search for a user:", text: $name)
             .textFieldStyle(.roundedBorder)
             .padding(.horizontal, 16)
-            .focused($focus)
             .onTapGesture {
                 showSearch = true
             }
-
         HStack(spacing: 0) {
             Text("Location:")
                 .foregroundColor(.secondary)
@@ -45,8 +42,6 @@ struct Home: View {
             }
             Spacer()
 
-        // ## PROFILES ## \\
-
             Toggle("Following ✓", isOn: $following)
                 .toggleStyle(.button)
                 .onTapGesture {
@@ -54,6 +49,8 @@ struct Home: View {
                 }
         }
         .padding(.horizontal, 16)
+
+        // ## PROFILES ## \\
 
         ForEach(DM.userList, id: \.self) { user in
             let id = DM.my().id
@@ -91,6 +88,6 @@ struct Home: View {
                 .environmentObject(DM)
         }
         .sheet(isPresented: $showSearch) {
-            Search()
+            Search(showProf: true)
                 .environmentObject(DM)
         }}}}}

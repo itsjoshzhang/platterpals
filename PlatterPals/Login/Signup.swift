@@ -37,8 +37,8 @@ struct Signup: View {
 
         // ## SHOW IMAGE ## \\
 
-        if let data = imageData {
-            RoundPic(width: 160, image: UIImage(data: data))
+        if let d = imageData, let image = UIImage(data: d) {
+            RoundPic(width: 160, image: image)
         } else {
             RoundPic(width: 160, image: nil)
         }
@@ -46,7 +46,7 @@ struct Signup: View {
                      matching: .images)
         .buttonStyle(.bordered)
 
-        // ## UPLOAD IMAGE ## \\
+        // ## UPLOAD PIC ## \\
 
         .onChange(of: imageItem) { _ in
             imageItem?.loadTransferable(type: Data.self) { result in

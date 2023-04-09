@@ -39,7 +39,7 @@ extension UIImage {
     func resize(width: CGFloat, pfp: Bool) -> UIImage {
 
         // compute new scale and height
-        var height = self.size.width * 16.0 / 9.0
+        var height = width * 16.0 / 9.0
         if pfp { height = width }
 
         // compute new size and renderer

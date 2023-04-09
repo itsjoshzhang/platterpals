@@ -2,64 +2,63 @@ import SwiftUI
 
 struct Chats: View {
 
+    @State var name = ""
+    @State var nextID = ""
+    @State var showConvo = false
+    @State var showSearch = false
     @State var idList = [String]()
-    @State var showChatDM = false
+
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
         ZStack {
         Back()
-
         VStack(spacing: 16) {
-        Spacer()
-        List {
 
+        TextField("Search for a user:", text: $name)
+            .textFieldStyle(.roundedBorder)
+            .padding(.horizontal, 16)
+            .padding(.top, 120)
+            .onTapGesture {
+                showSearch = true
+            }
+        List {
         ForEach(idList, id: \.self) { id in
-            NavigationLink(value: id) {
-                Row(id: id)
+
+        Row(id: id)
+            .environmentObject(DM)
+            .onTapGesture {
+                showConvo = true
+            }
+            .fullScreenCover(isPresented: $showConvo) {
+                Convo(id: id)
                     .environmentObject(DM)
             }
         }
-        .onDelete(perform: deleteItems(atOffsets:))
+        .onDelete(perform: delete(atOffsets:))
         .onMove(perform: move(fromOffsets:toOffset:))
         }
         .listStyle(.plain)
-        .padding(.top, 80)
+        //.padding(.top, 110)
         }
         }
         .navigationTitle("Chats")
         .onAppear {
             let data = DM.data(id: DM.my().id)
-
             for id in data.chatting {
+
                 if !idList.contains(id) {
                     idList.append(id)
-                }
-            }
-        }
-        .navigationDestination(for: User.self) { user in
-        Convo(id: user.id)
-            .environmentObject(DM)
-        }
-        .toolbar {
-        ToolbarItem {
-            Button("New Chat") {
-                showChatDM = true
-            }
-            .buttonStyle(.borderedProminent)
-        }
-        }
-        .fullScreenCover(isPresented: $showChatDM) {
-        ChatDM()
-            .environmentObject(DM)
-        }
-        }
-        }
-    func deleteItems(atOffsets offsets: IndexSet) {
+                }}}
+        .sheet(isPresented: $showSearch) {
+            Search(showProf: false)
+                .environmentObject(DM)
+        }}}
+    func delete(atOffsets offsets: IndexSet) {
         idList.remove(atOffsets: offsets)
     }
-    func move(fromOffsets source: IndexSet, toOffset destination: Int) {
-        idList.move(fromOffsets: source, toOffset: destination)
+    func move(fromOffsets start: IndexSet, toOffset end: Int) {
+        idList.move(fromOffsets: start, toOffset: end)
     }
 }

@@ -18,7 +18,7 @@ struct TitleBar: View {
                 } label: {
                 HStack(spacing: 16) {
 
-                RoundPic(width: 160, image: image)
+                RoundPic(width: 80, image: image)
 
                 VStack(alignment: .leading) {
                     let user = DM.user(id: id)

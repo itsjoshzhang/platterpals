@@ -16,7 +16,7 @@ struct ChatDM: View {
 
         NavigationStack {
             VStack(spacing: 16) {
-                RoundPic(width: 160, image: image)
+                RoundPic(width: 80, image: image)
 
                 TextField("Username", text: $name)
                     .autocorrectionDisabled(true)

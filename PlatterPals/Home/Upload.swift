@@ -3,7 +3,8 @@ import PhotosUI
 
 struct Upload: View {
 
-    @State var text: String = ""
+    // ## SETUP VIEW ## \\
+    @State var text = ""
     @State var imageData: Data?
     @State var imageItem: PhotosPickerItem?
     @Environment(\.dismiss) var dismiss
@@ -15,12 +16,13 @@ struct Upload: View {
         ZStack {
         Back()
         ScrollView {
-        VStack(spacing: 10) {
+        VStack(spacing: 16) {
         Spacer()
-            .padding(40)
+            .padding(32)
+
+        // ## SHOW IMAGE ## \\
 
         if let d = imageData, let image = UIImage(data: d) {
-
             Image(uiImage: image)
                 .resizable()
                 .scaledToFit()
@@ -37,6 +39,8 @@ struct Upload: View {
             .scaledToFit()
             .frame(maxHeight: UIheight * 0.5)
         }
+        // ## UPLOAD PIC ## \\
+
         Text("Use template for best result")
             .foregroundColor(.secondary)
 
@@ -55,6 +59,8 @@ struct Upload: View {
                 }
             }
         }
+        // ## TEXTFIELDS ## \\
+
         TextEditor(text: $text)
             .border(.secondary.opacity(0.25))
             .frame(minHeight: UIwidth * 0.25)
@@ -65,17 +71,14 @@ struct Upload: View {
         } else {
             Button("Save Edits") {
                 if let d = imageData, let image = UIImage(data: d) {
-                    DM.putImage(image: image, path: "avatars")
+                    DM.putImage(image: image, path: "profiles")
                 }
                 dismiss()
             }
             .buttonStyle(.borderedProminent)
             .disabled(text == "")
         }
-        Spacer()
-            .padding(16)
-        }
-        .padding(16)
+        Spacer().padding(16) }.padding(16)
         }
         .navigationTitle("Profile 📸")
         .onAppear {

@@ -1,85 +1,36 @@
-// TODO: updating location & user markers
-
 import SwiftUI
 import MapKit
 import CoreLocationUI
 
 struct Maps: View {
-    
-    @State var showProf = false
-    @Environment(\.dismiss) var dismiss
+
     @StateObject var mapsData = MapsData()
-    
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 16) {
-                
-                Text("Tap a pin to show profile")
-                    .font(.headline)
-                    .foregroundColor(.pink)
-                
-                ZStack(alignment: .bottom) {
-                    Map(coordinateRegion: $mapsData.region, showsUserLocation:
-                            true, annotationItems: markers) { marker in
-                        
-                        MapAnnotation(coordinate: marker.coord) {
-                            VStack {
-                                Image(marker.image)
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                                    .clipShape(Circle())
-                                
-                                Image(systemName: "mappin")
-                                Text(marker.user)
-                                    .font(.headline)
-                                    .foregroundColor(.pink)
-                            }
-                            .onTapGesture {
-                                showProf = true
-                            }
-                            .sheet(isPresented: $showProf) {
-                                UserProf(id: marker.user)
-                                    .environmentObject(DM)
-                            }
-                        }
-                    }
-                    LocationButton(.currentLocation) {
-                        mapsData.requestLocation()
-                    }
-                    .tint(.pink)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                    .padding(20)
-                }
+        VStack(spacing: 16) {
+            Text("Tap a pin to display profile")
+                .font(.headline)
+                .foregroundColor(.pink)
+
+        ZStack(alignment: .bottom) {
+            Map(coordinateRegion: $mapsData.region,
+                showsUserLocation: true)
+
+            LocationButton(.currentLocation) {
+                mapsData.requestLocation()
             }
-            .navigationTitle("Nearby")
+            .foregroundColor(.white)
+            .cornerRadius(8)
+            .tint(.pink)
+            .padding(16)
+        }
+        }
+        .navigationTitle("Near Me")
         }
     }
 }
-
-
-struct Marker: Identifiable {
-    var id = UUID()
-    var user: String
-    var image: String
-    var coord: CLLocationCoordinate2D
-}
-
-var markers = [
-    Marker(user: "Josh Z", image: "pfp1", coord: CLLocationCoordinate2D(
-        latitude: 37.867, longitude: -122.260)),
-    
-    Marker(user: "Saira G", image: "pfp2", coord: CLLocationCoordinate2D(
-        latitude: 37.868, longitude: -122.255)),
-    
-    Marker(user: "Albert Y", image: "pfp3", coord: CLLocationCoordinate2D(
-        latitude: 37.874, longitude: -122.257)),
-    
-    Marker(user: "Anka X", image: "pfp4", coord: CLLocationCoordinate2D(
-        latitude: 37.869, longitude: -122.265))]
-
 
 class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
     
@@ -87,28 +38,21 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
         center: CLLocationCoordinate2D(latitude: 37.872, longitude: -122.259),
         span: MKCoordinateSpan(latitudeDelta: 0.016, longitudeDelta: 0.016))
     
-    var locationManager = CLLocationManager()
+    var LM = CLLocationManager()
     
     override init() {
         super.init()
-        locationManager.delegate = self
+        LM.delegate = self
     }
     func requestLocation() {
-        locationManager.requestWhenInUseAuthorization()
+        LM.requestWhenInUseAuthorization()
     }
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let location = locations.first
+    func locationManager(_ manager: CLLocationManager, _ places: [CLLocation]) {
+        let place = places.first
         
         DispatchQueue.main.async {
-            self.region = MKCoordinateRegion(center: location!.coordinate,
-                span: MKCoordinateSpan(latitudeDelta: 0.016, longitudeDelta: 0.016))
+            self.region = MKCoordinateRegion(center: place!.coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 0.016, longitudeDelta: 0.016))
         }
-    }
-}
-
-struct Location_Previews: PreviewProvider {
-    static var previews: some View {
-        Maps()
-            .environmentObject(DataManager())
     }
 }
