@@ -3,7 +3,6 @@ import SwiftUI
 struct Home: View {
 
     // ## TRACK INFO ## \\
-    @State var name = ""
     @State var city = "Berkeley"
     @State var following = false
     @State var showSearch = false
@@ -50,7 +49,7 @@ struct Home: View {
 
         // ## PROFILES ## \\
 
-        ForEach(DM.userList, id: \.self) { user in
+        ForEach(DM.userList) { user in
             let id = DM.my().id
 
             let update = Update(id: user.id, show: true)

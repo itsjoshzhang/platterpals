@@ -81,7 +81,7 @@ struct Login: View {
                         Button("OK", role: .cancel) {}
                     }
                 }
-                .opacity(internet ? 1 : 0)
+                .opacity(internet ? 1: 0)
             }
             .padding(16)
         }

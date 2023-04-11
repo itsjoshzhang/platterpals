@@ -167,6 +167,8 @@ class DataManager: ObservableObject {
                             rating, "time": time])
     }
 
+    // ## IMAGE LOGIC ## \\
+
     // called at Upload
     func putImage(image: UIImage, path: String) {
 
@@ -188,6 +190,20 @@ class DataManager: ObservableObject {
         }
     }
 
+    // called at init
+    func getImage(path: String) {
+        let SR = SR.child("\(path)/\(my().id).jpg")
+
+        SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
+            if let data = data {
+
+                DispatchQueue.main.async {
+                    if path == "avatars" {
+                        self.myAvatar = UIImage(data: data)
+                    } else {
+                        self.myProfile = UIImage(data: data)
+                    }}}}}
+
     // called at Update
     func delImage(path: String) {
         let SR = SR.child("\(path)/\(my().id).jpg")
@@ -199,28 +215,6 @@ class DataManager: ObservableObject {
     // 3. loop through all documents
     // 4. access values = map {data}
     // 5. if condition, add to array
-
-    // called at Chats
-    func getChats(senderID: String, getterID: String) -> [Message] {
-        var messages = [Message]()
-
-        FS.collection("messages").addSnapshotListener { col,_ in
-            for doc in col!.documents {
-                let data = doc.data()
-                
-                let id     = data["id"]     as? String ?? ""
-                let text   = data["text"]   as? String ?? ""
-                let sender = data["sender"] as? String ?? ""
-                let getter = data["getter"] as? String ?? ""
-                let time   = data["time"]   as? Date   ?? Date()
-
-                if (sender == senderID && getter == getterID) {
-                    messages.append(Message(id: id, text: text, sender:
-                                    sender, getter: getter, time: time))
-                    messages.sort { $0.time < $1.time }
-                    return }}}
-        return messages
-    }
 
     // called at Order
     func getOrder(id: String) -> [AIOrder] {
@@ -242,20 +236,6 @@ class DataManager: ObservableObject {
                     return }}}
         return aiOrders
     }
-
-    // called at init
-    func getImage(path: String) {
-        let SR = SR.child("\(path)/\(my().id).jpg")
-
-        SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
-            if let data = data {
-
-                DispatchQueue.main.async {
-                    if path == "avatars" {
-                        self.myAvatar = UIImage(data: data)
-                    } else {
-                        self.myProfile = UIImage(data: data)
-                    }}}}}
 
     // called at init
     func getSetts() {

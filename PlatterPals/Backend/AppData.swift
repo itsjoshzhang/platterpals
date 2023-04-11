@@ -70,7 +70,7 @@ struct User: Identifiable, Hashable {
     var views: Int
 }
 
-struct UserData: Identifiable {
+struct UserData: Identifiable, Hashable {
     let id: String
     var favFoods: [String]
     var favUsers: [String]
@@ -78,7 +78,7 @@ struct UserData: Identifiable {
     var blocked: [String]
 }
 
-struct Message: Identifiable, Hashable {
+struct Message: Identifiable, Hashable, Codable {
     let id: String
     let text: String
     let sender: String
@@ -86,7 +86,7 @@ struct Message: Identifiable, Hashable {
     let time: Date
 }
 
-struct AIOrder: Identifiable {
+struct AIOrder: Identifiable, Hashable {
     let id: String
     let order: String
     let place: String
@@ -94,7 +94,7 @@ struct AIOrder: Identifiable {
     let time: Date
 }
 
-struct Setting: Identifiable{
+struct Setting: Identifiable, Hashable {
     var id = ""
     var notifs = true
     var emails = true

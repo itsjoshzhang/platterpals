@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct TitleBar: View {
-    
+
+    // ## TRACK INFO ## \\
     var id: String
     @State var image: UIImage?
     @State var showProf = false
@@ -9,45 +10,48 @@ struct TitleBar: View {
     @Environment(\.dismiss) var dismiss
 
     @EnvironmentObject var DM: DataManager
-    
+
+    // ## SETUP VIEW ## \\
+
     var body: some View {
         VStack {
-            HStack(spacing: 16) {
-                Button {
-                    showProf = true
-                } label: {
-                HStack(spacing: 16) {
+        HStack(spacing: 16) {
+        Button {
+            showProf = true
+        } label: {
+        HStack(spacing: 16) {
 
-                RoundPic(width: 80, image: image)
+        // ## USER INFO ## \\
 
-                VStack(alignment: .leading) {
-                    let user = DM.user(id: id)
-                    Text(user.name)
-                        .font(.title).bold()
+        RoundPic(width: 80, image: image)
 
-                    Text("\(user.city), CA")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
+        VStack(alignment: .leading) {
+            let user = DM.user(id: id)
+            Text(user.name)
+                .font(.largeTitle).bold()
 
-                Button("\(Image(systemName: "arrow.uturn.backward"))") {
-                    dismiss()
-                }
-                Button("\(Image(systemName: "bell"))") {
-                    showAlert = true
-                }
+            Text("\(user.city), CA")
+                .font(.headline)
+                .foregroundColor(.secondary)
+        }}}
+        .frame(width: UIwidth, alignment: .leading)
 
-            }
-            .padding(.horizontal, 20)
-            Div()
+        Button("\(Image(systemName: "arrowshape.turn.up.backward.2"))") {
+            dismiss()
+        }
+        Button("\(Image(systemName: "bell"))") {
+            showAlert = true
+        }
+        }
+        .padding(.horizontal, 16)
+        Div()
+
+        // ## MODIFIERS ## \\
         }
         .onAppear {
             getImage(id: id, path: "avatars")
         }
-        .fullScreenCover(isPresented: $showProf) {
+        .sheet(isPresented: $showProf) {
             UserProf(id: id)
                 .environmentObject(DM)
         }
@@ -56,9 +60,11 @@ struct TitleBar: View {
                 var my = DM.data(id: DM.my().id)
 
                 my.blocked.append(id)
-                DM.editData(id: my.id, fo: my.favFoods, us: my.favUsers,
-                            ch: my.chatting, bl: my.blocked)
+                DM.editData(id: my.id, fo: my.favFoods, us:
+                    my.favUsers, ch: my.chatting, bl: my.blocked)
             }}}
+
+    // ## FUNCTIONS ## \\
 
     func getImage(id: String, path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
@@ -71,7 +77,8 @@ struct TitleBar: View {
                 }}}}}
 
 struct Bubble: View {
-    
+
+    // ## SETUP VIEW ## \\
     var message: Message
     @State var showTime = false
     @EnvironmentObject var DM: DataManager
@@ -80,20 +87,27 @@ struct Bubble: View {
         let sender = (message.sender == DM.my().id)
         VStack(alignment: sender ? .trailing: .leading) {
 
+            // ## SHOW TEXT ## \\
+
             Text(message.text)
                 .padding(16)
-                .background(sender ? Color.pink.opacity(0.25): .secondary)
-                .cornerRadius(30)
+                .background(sender ? .pink.opacity(0.25): .secondary)
+                .cornerRadius(32)
 
-                .frame(maxWidth: 300, alignment: sender ? .trailing: .leading)
+                .frame(width: UIwidth, alignment: sender ?
+                    .trailing: .leading)
                 .onTapGesture {
                     showTime.toggle()
                 }
+            // ## SHOW TIME ## \\
+
             if showTime {
-                Text("\(message.time.formatted(.dateTime.hour().minute()))")
-                    .font(.caption)
+                let time = message.time.formatted(.dateTime.hour()
+                    .minute())
+                Text("\(time)")
                     .foregroundColor(.secondary)
                     .padding(.horizontal, 16)
+                    .font(.caption)
             }
         }
         .padding(.horizontal, 16)

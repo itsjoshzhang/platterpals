@@ -105,7 +105,7 @@ struct EditProf: View {
                 }
             }
             .buttonStyle(.bordered)
-            .frame(maxWidth: UIwidth)
+            .frame(width: UIwidth)
         }
         TextField("Username", text: $name)
             .textFieldStyle(RoundedBorderTextFieldStyle())

@@ -6,7 +6,7 @@ struct Chats: View {
     @State var nextID = ""
     @State var showConvo = false
     @State var showSearch = false
-    @State var idList = [String]()
+    @State var chatting = [String]()
 
     @EnvironmentObject var DM: DataManager
 
@@ -14,6 +14,7 @@ struct Chats: View {
 
     var body: some View {
         NavigationStack {
+            let data = DM.data(id: DM.my().id)
         ZStack {
         Back()
 
@@ -26,7 +27,7 @@ struct Chats: View {
         // ## SHOW CONVOS ## \\
 
         List {
-        ForEach(idList, id: \.self) { id in
+        ForEach(chatting, id: \.self) { id in
         Row(id: id)
             .environmentObject(DM)
             .onTapGesture {
@@ -47,20 +48,25 @@ struct Chats: View {
 
         .navigationTitle("Chats")
         .onAppear {
-            let data = DM.data(id: DM.my().id)
-            for id in data.chatting {
-
-                if !idList.contains(id) {
-                    idList.append(id)
-        }}}
+            chatting = data.chatting
+        }
         .sheet(isPresented: $showSearch) {
             Search(showProf: false)
                 .environmentObject(DM)
         }}}
+
+    // ## FUNCTIONS ## \\
+
     func delete(atOffsets offsets: IndexSet) {
-        idList.remove(atOffsets: offsets)
+        chatting.remove(atOffsets: offsets)
+
+        var my = DM.data(id: DM.my().id)
+        my.chatting = chatting
+
+        DM.editData(id: my.id, fo: my.favFoods, us: my.favUsers,
+                    ch: my.chatting, bl: my.blocked)
     }
     func move(fromOffsets start: IndexSet, toOffset end: Int) {
-        idList.move(fromOffsets: start, toOffset: end)
+        chatting.move(fromOffsets: start, toOffset: end)
     }
 }

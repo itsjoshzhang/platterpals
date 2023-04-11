@@ -51,7 +51,7 @@ struct Search: View {
     // ## CONDITIONS ## \\
     @State var showNext = false
     @State var following = false
-    @State var idList = [String]()
+    @State var userIDs = [String]()
     @Environment(\.dismiss) var dismiss
 
     @EnvironmentObject var DM: DataManager
@@ -91,7 +91,7 @@ struct Search: View {
         // ## SHOW USERS ## \\
 
         List {
-        ForEach(idList, id: \.self) { id in
+        ForEach(userIDs, id: \.self) { id in
         Group {
 
         let user = DM.user(id: id)
@@ -117,14 +117,14 @@ struct Search: View {
         .navigationTitle("Search 🔍")
 
         .onChange(of: name) { _ in
-            idList.removeAll()
+            userIDs.removeAll()
 
             for i in (0 ..< min(DM.userList.count, 4)) {
                 let user = DM.userList[i]
 
                 if user.name.lowercased().contains(
                     name.lowercased()) {
-                    idList.append(user.id)
+                    userIDs.append(user.id)
                 }}}
         .sheet(isPresented: $showNext) {
             if showProf {
