@@ -55,7 +55,6 @@ struct Home: View {
 
             if following {
                 let favs = DM.md().favUsers
-
                 if (favs.contains(user.id) && user.city == city) {
                     update
                 }
@@ -72,10 +71,10 @@ struct Home: View {
         .navigationTitle("PlatterPals")
         .toolbar {
             ToolbarItem {
-                Button("\(Image(systemName: "square.and.arrow.up"))") {
-                    showUpload = true
-                }
-                .buttonStyle(.borderedProminent)
+            Button("\(Image(systemName: "square.and.arrow.up"))") {
+            showUpload = true
+            }
+            .buttonStyle(.borderedProminent)
             }
         }
         .sheet(isPresented: $showUpload) {

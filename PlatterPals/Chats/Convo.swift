@@ -60,12 +60,12 @@ struct Convo: View {
         }
         .onAppear {
             getChats(sender: myID, getter: id)
-            var chats = DM.md().chatting
+            var data = DM.md()
             focus = true
 
-            if !chats.contains(id) {
-                chats.append(id)
-                DM.editData()
+            if !data.chatting.contains(id) {
+                data.chatting.append(id)
+                DM.editData(data: data)
             }}}
         .onTapGesture {
             focus = false
@@ -76,12 +76,12 @@ struct Convo: View {
     func getChats(sender: String, getter: String) {
         FS.collection("messages").addSnapshotListener { snap, error in
         messages = snap!.documents.compactMap { doc -> Message? in
-        do {
-            let msg = try doc.data(as: Message.self)
+
+        if let msg = try? doc.data(as: Message.self) {
             if (msg.sender == sender && msg.getter == getter) {
                 return msg
             }
-        } catch {}
+        }
         return nil
         }
         messages.sort {

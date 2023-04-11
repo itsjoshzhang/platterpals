@@ -28,11 +28,9 @@ struct Settings: View {
 
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-            }
+                Button("Cancel") {
+                dismiss()
+                }}}
             .navigationDestination(for: SetItem.self) { item in
                 Settings2(anchor: item.title)
                     .environmentObject(DM)

@@ -23,13 +23,12 @@ struct Splash: View {
                 Order().environmentObject(DM)
         }} else {
             content
-        }
-    }
+        }}
     var content: some View {
         ZStack {
         Back()
 
-        // ## TEXT & LOGO ## \\
+        // ## LOGO & TEXT ## \\
 
         VStack(spacing: 16) {
             Image("logo")
@@ -41,8 +40,6 @@ struct Splash: View {
                 Text("Finding the perfect dish...")
                     .font(.headline)
             }
-        // ## TEMP LOGIC ## \\
-
             if internet {
                 Text("Poor internet. Refresh App.")
                     .font(.headline)
@@ -65,21 +62,21 @@ struct Splash: View {
             opacity = 1.0
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-        if DM.userData.count > 0 {
-            withAnimation {
-                showNext = true
-            }
-        // ## TEMP LOGIC ## \\
 
-        } else {
-            internet = true
-        }}}
+            if (DM.userList.count > 0 && DM.userList.count ==
+                DM.userData.count) {
+                withAnimation {
+                    showNext = true
+                }
+            } else {
+                internet = true
+            }}}
         .toolbar {
-        if first == false {
+            if first == false {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button("Cancel") {
-                    dismiss()
-                }}}}}}
+            Button("Cancel") {
+                dismiss()
+            }}}}}}
 
 struct Reset: View {
 

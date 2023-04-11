@@ -100,7 +100,6 @@ struct Search: View {
 
         if following {
             let favs = DM.md().favUsers
-
             if (favs.contains(id) && user.city == city) {
                 row
         }} else if (user.city == city) {

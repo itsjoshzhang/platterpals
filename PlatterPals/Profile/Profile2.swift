@@ -10,20 +10,20 @@ struct ProfHead: View {
 
     var body: some View {
         HStack {
-            var favs = DM.md().favUsers
             var user = DM.user(id: id)
+            var data = DM.md()
         HStack {
 
         // ## CLICKABLES ## \\
 
         if showFollow {
         Button("Following") {
-            if let i = favs.firstIndex(of: id) {
+            if let i = data.favUsers.firstIndex(of: id) {
 
-                favs.remove(at: i)
-                DM.editData()
                 user.views -= 1
+                data.favUsers.remove(at: i)
                 DM.editUser(user: user)
+                DM.editData(data: data)
                 showFollow = false
             }
         }
@@ -31,17 +31,17 @@ struct ProfHead: View {
         } else {
             Button("Follow \(Image(systemName: "heart"))") {
 
-                favs.append(id)
-                DM.editData()
                 user.views += 1
+                data.favUsers.append(id)
                 DM.editUser(user: user)
+                DM.editData(data: data)
                 showFollow = true
             }
             .buttonStyle(.borderedProminent)
             }
         }
         .onAppear {
-            showFollow = favs.contains(id)
+            showFollow = data.favUsers.contains(id)
         }}}}
 
 struct EditProf: View {

@@ -73,7 +73,6 @@ class DataManager: ObservableObject {
                 self.userList.append(user)
             }
         }
-
         FS.collection("userData").getDocuments { col,_ in
             for doc in col!.documents {
                 let data = doc.data()
@@ -133,12 +132,11 @@ class DataManager: ObservableObject {
     }
     
     // called everywhere
-    func editData() {
-        let md = md()
-        let doc = FS.collection("userData").document(md.id)
+    func editData(data: UserData) {
+        let doc = FS.collection("userData").document(data.id)
         
-        doc.setData(["id": md.id, "favFoods": md.favFoods, "favUsers":
-            md.favUsers, "chatting": md.chatting, "blocked": md.blocked])
+        doc.setData(["id": data.id, "favFoods": data.favFoods, "favUsers":
+            data.favUsers, "chatting": data.chatting, "blocked": data.blocked])
     }
     
     // called at Settings
