@@ -54,7 +54,7 @@ struct Home: View {
                 .environmentObject(DM)
 
             if following {
-                let favs = DM.md().favUsers
+                let favs = DM.data(id: DM.my().id).favUsers
                 if (favs.contains(user.id) && user.city == city) {
                     update
                 }

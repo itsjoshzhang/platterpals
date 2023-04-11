@@ -84,7 +84,7 @@ struct Block: View {
         // ## SHOW ALERT ## \\
 
         .confirmationDialog("", isPresented: $showAlert) {
-        var data = DM.md()
+        var data = DM.data(id: DM.my().id)
 
             if data.blocked.contains(id) {
             Button("UNBLOCK USER") {

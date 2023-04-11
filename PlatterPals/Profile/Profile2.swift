@@ -11,7 +11,7 @@ struct ProfHead: View {
     var body: some View {
         HStack {
             var user = DM.user(id: id)
-            var data = DM.md()
+            var data = DM.data(id: DM.my().id)
         HStack {
 
         // ## UNFOLLOW ## \\
@@ -21,9 +21,8 @@ struct ProfHead: View {
             if let i = data.favUsers.firstIndex(of: id) {
 
                 user.views -= 1
+                DM.editUser(user: user, views: -1)
                 data.favUsers.remove(at: i)
-
-                DM.editUser(user: user)
                 DM.editData(id: data.id, ff: data.favFoods, fu:
                     data.favUsers, ch: data.chatting, bl: data.blocked)
                 showFollow = false
@@ -37,9 +36,8 @@ struct ProfHead: View {
             Button("Follow \(Image(systemName: "heart"))") {
 
                 user.views += 1
+                DM.editUser(user: user, views: 1)
                 data.favUsers.append(id)
-
-                DM.editUser(user: user)
                 DM.editData(id: data.id, ff: data.favFoods, fu:
                     data.favUsers, ch: data.chatting, bl: data.blocked)
                 showFollow = true

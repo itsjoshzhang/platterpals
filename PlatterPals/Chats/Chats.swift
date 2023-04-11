@@ -48,7 +48,7 @@ struct Chats: View {
 
         .navigationTitle("Chats")
         .onAppear {
-            chatting = DM.md().chatting
+            chatting = DM.data(id: DM.my().id).chatting
         }
         .sheet(isPresented: $showSearch) {
             Search(showProf: false)
@@ -58,7 +58,7 @@ struct Chats: View {
     // ## FUNCTIONS ## \\
 
     func delete(atOffsets offsets: IndexSet) {
-        var data = DM.md()
+        var data = DM.data(id: DM.my().id)
         chatting.remove(atOffsets: offsets)
         data.chatting = chatting
 

@@ -116,29 +116,29 @@ class DataManager: ObservableObject {
 
         // create new user
         let user = User(id: id, name: name, text: "", city: city, views: 1)
-        userList.append(user)
         editUser(user: user)
 
         // create new data
         let data = UserData(id: id, favFoods: [String](), favUsers:
             [String](), chatting: [String](), blocked: [String]())
-        userData.append(data)
         editData(id: data.id, ff: data.favFoods, fu: data.favUsers,
                  ch: data.chatting, bl: data.blocked)
 
         // create new sets
         let sets = Setting(id: id, notifs: true, emails: true, privacy:
                             true, location: true)
-        settings = sets
         editSets(s: sets)
     }
     
     // called at Profile
-    func editUser(user: User) {
+    func editUser(user: User, views: Int = 0) {
         let doc = FS.collection("userList").document(user.id)
 
         doc.setData(["id": user.id, "name": user.name, "text": user.text,
-                     "city": user.city, "views": user.views])
+                     "city": user.city, "views": user.views + views])
+        if views == 0 {
+            userList[thisUser] = user
+        }
     }
     
     // called everywhere
@@ -148,6 +148,7 @@ class DataManager: ObservableObject {
         
         doc.setData(["id": id, "favFoods": ff, "favUsers": fu, "chatting":
                     ch, "blocked": bl])
+        userData[thisUser] = UserData(id: id, favFoods: ff, favUsers: fu, chatting: ch, blocked: bl)
     }
     
     // called at Settings
@@ -156,6 +157,7 @@ class DataManager: ObservableObject {
         
         doc.setData(["id": s.id, "notifs": s.notifs, "emails": s.emails,
                      "privacy": s.privacy, "location": s.location])
+        settings = s
     }
 
     // called at Convo
