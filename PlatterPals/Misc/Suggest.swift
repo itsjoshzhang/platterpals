@@ -36,9 +36,7 @@ struct Suggest: View {
                         .textCase(.none))
                     {
                         Picker("Friend's name", selection: $friend) {
-                            let data = DM.data(id: DM.my().id)
-
-                            ForEach(data.favUsers, id: \.self) { id in
+                            ForEach(DM.md().favUsers, id: \.self) { id in
                                 Text(DM.user(id: id).name)
                             }
                         }
@@ -66,6 +64,6 @@ struct Order: View {
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
-        Text("")
+        Text("Hi!")
     }
 }

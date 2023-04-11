@@ -4,6 +4,7 @@ import SwiftUI
 
 let UIwidth = UIScreen.main.bounds.size.width
 let UIheight = UIScreen.main.bounds.size.height
+let gray = Color.secondary.opacity(0.25)
 
 let cityList = ["Berkeley", "Fremont", "Oakland", "Palo Alto",
                 "Pleasanton", "San Francisco", "San Jose"]

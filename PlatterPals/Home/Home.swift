@@ -20,7 +20,7 @@ struct Home: View {
         ScrollView {
         VStack(spacing: 16) {
         Spacer()
-            .padding(48)
+            .padding(50)
 
         // ## USER SEARCH ## \\
 
@@ -50,18 +50,16 @@ struct Home: View {
         // ## PROFILES ## \\
 
         ForEach(DM.userList) { user in
-            let id = DM.my().id
-
             let update = Update(id: user.id, show: true)
                 .environmentObject(DM)
 
             if following {
-                let favs = DM.data(id: id).favUsers
+                let favs = DM.md().favUsers
 
                 if (favs.contains(user.id) && user.city == city) {
                     update
                 }
-            } else if (user.id != id && user.city == city) {
+            } else if (user.id != DM.my().id && user.city == city) {
                 update
                 }
             }

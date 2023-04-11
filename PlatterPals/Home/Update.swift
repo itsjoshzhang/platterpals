@@ -61,7 +61,7 @@ struct Update: View {
                 .font(.headline)
             Spacer()
 
-            Text("\(heart) \(views)")
+            Text("\(heart) \(user.views)")
                 .font(.headline)
 
             Button("\(Image(systemName: "flag"))") {
@@ -121,9 +121,7 @@ struct Update: View {
                 }
                 scale = 0.9
                 swipe = 0.0
-            }
-        }
-        )
+            }})
         // ## GET IMAGES ## \\
 
         .onAppear {
@@ -134,12 +132,6 @@ struct Update: View {
                 getImage(path: "avatars")
                 getImage(path: "profiles")
             }
-            views = 1
-            for data in DM.userData {
-                if data.favUsers.contains(id) {
-                    views += 1
-                }
-            }
         }
         .sheet(isPresented: $showProf) {
             UserProf(id: id, avatar: avatar, profile: profile)
@@ -149,7 +141,7 @@ struct Update: View {
 
         .confirmationDialog("", isPresented: $showAlert) {
             if myID == id {
-                Button("Delete Profile") {
+                Button("DELETE PROFILE") {
                     DM.delImage(path: "profiles")
                 }
             } else {

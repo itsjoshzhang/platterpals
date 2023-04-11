@@ -5,6 +5,7 @@ struct Upload: View {
 
     // ## SETUP VIEW ## \\
     @State var text = ""
+    @FocusState var focus: Bool
     @State var imageData: Data?
     @State var imageItem: PhotosPickerItem?
     @Environment(\.dismiss) var dismiss
@@ -62,8 +63,12 @@ struct Upload: View {
         // ## TEXTFIELDS ## \\
 
         TextEditor(text: $text)
-            .border(.secondary.opacity(0.25))
             .frame(minHeight: UIwidth * 0.25)
+            .focused($focus)
+            .border(gray)
+            .onTapGesture {
+                focus = true
+            }
 
         if text.count > 200 {
             Text("200 chars max")
@@ -78,9 +83,18 @@ struct Upload: View {
             .buttonStyle(.borderedProminent)
             .disabled(text == "")
         }
-        Spacer().padding(16) }.padding(16)
+        // ## OTHER STUFF ## \\
+
+        Spacer()
+            .padding(100)
+        }
+        .padding(16)
         }
         .navigationTitle("Profile 📸")
         .onAppear {
             text = DM.my().text
-        }}}}}
+        }
+        }
+        .onTapGesture {
+            focus = false
+        }}}}

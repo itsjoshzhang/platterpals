@@ -6,7 +6,6 @@ struct TitleBar: View {
     var id: String
     @State var image: UIImage?
     @State var showProf = false
-    @State var showAlert = false
     @Environment(\.dismiss) var dismiss
 
     @EnvironmentObject var DM: DataManager
@@ -15,7 +14,7 @@ struct TitleBar: View {
 
     var body: some View {
         VStack {
-        HStack(spacing: 16) {
+        HStack {
         Button {
             showProf = true
         } label: {
@@ -28,25 +27,26 @@ struct TitleBar: View {
         VStack(alignment: .leading) {
             let user = DM.user(id: id)
             Text(user.name)
-                .font(.largeTitle).bold()
+                .font(.title).bold()
 
             Text("\(user.city), CA")
-                .font(.headline)
+                .font(.subheadline)
                 .foregroundColor(.secondary)
         }}}
-        .frame(width: UIwidth, alignment: .leading)
+        Spacer()
 
-        Button("\(Image(systemName: "arrowshape.turn.up.backward.2"))") {
+        Button("\(Image(systemName: "chevron.down"))") {
             dismiss()
         }
-        Button("\(Image(systemName: "bell"))") {
-            showAlert = true
-        }
+        .buttonStyle(.bordered)
+
+        // ## MODIFIERS ## \\
+
+        Block(id: id)
+            .environmentObject(DM)
         }
         .padding(.horizontal, 16)
         Div()
-
-        // ## MODIFIERS ## \\
         }
         .onAppear {
             getImage(id: id, path: "avatars")
@@ -55,15 +55,7 @@ struct TitleBar: View {
             UserProf(id: id)
                 .environmentObject(DM)
         }
-        .confirmationDialog("", isPresented: $showAlert) {
-            Button("Block this user") {
-                var my = DM.data(id: DM.my().id)
-
-                my.blocked.append(id)
-                DM.editData(id: my.id, fo: my.favFoods, us:
-                    my.favUsers, ch: my.chatting, bl: my.blocked)
-            }}}
-
+        }
     // ## FUNCTIONS ## \\
 
     func getImage(id: String, path: String) {
@@ -76,6 +68,38 @@ struct TitleBar: View {
                     image = UIImage(data: data)
                 }}}}}
 
+struct Block: View {
+
+    // ## SETUP VIEW ## \\
+    var id: String
+    @State var showAlert = false
+    @EnvironmentObject var DM: DataManager
+
+    var body: some View {
+        Button("\(Image(systemName: "bell"))") {
+            showAlert = true
+        }
+        .buttonStyle(.bordered)
+
+        // ## SHOW ALERT ## \\
+
+        .confirmationDialog("", isPresented: $showAlert) {
+        var block = DM.md().blocked
+
+        if block.contains(id) {
+            Button("UNBLOCK USER") {
+
+            if let i = block.firstIndex(of: id) {
+                block.remove(at: i)
+                DM.editData()
+            }
+        }
+        } else {
+            Button("Block this user") {
+                block.append(id)
+                DM.editData()
+            }}}}}
+
 struct Bubble: View {
 
     // ## SETUP VIEW ## \\
@@ -87,29 +111,27 @@ struct Bubble: View {
         let sender = (message.sender == DM.my().id)
         VStack(alignment: sender ? .trailing: .leading) {
 
-            // ## SHOW TEXT ## \\
+        // ## SHOW TEXT ## \\
 
-            Text(message.text)
-                .padding(16)
-                .background(sender ? .pink.opacity(0.25): .secondary)
-                .cornerRadius(32)
+        Text(message.text)
+            .padding(16)
+            .background(sender ? .pink.opacity(0.25): .secondary)
+            .cornerRadius(16)
 
-                .frame(width: UIwidth, alignment: sender ?
-                    .trailing: .leading)
-                .onTapGesture {
+            .frame(maxWidth: UIwidth, alignment: sender ?
+                .trailing: .leading)
+            .padding(.horizontal, 16)
+            .gesture(
+                DragGesture(minimumDistance: 50)
+                .onEnded { _ in
                     showTime.toggle()
                 }
-            // ## SHOW TIME ## \\
+            )
+        // ## SHOW TIME ## \\
 
-            if showTime {
-                let time = message.time.formatted(.dateTime.hour()
-                    .minute())
-                Text("\(time)")
-                    .foregroundColor(.secondary)
-                    .padding(.horizontal, 16)
-                    .font(.caption)
-            }
-        }
-        .padding(.horizontal, 16)
-    }
-}
+        if showTime {
+            Text("\(message.time.formatted(.dateTime.hour().minute()))")
+                .foregroundColor(.secondary)
+                .padding(.horizontal, 16)
+                .font(.caption)
+            }}}}

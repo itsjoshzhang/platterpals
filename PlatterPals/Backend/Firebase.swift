@@ -24,24 +24,27 @@ class DataManager: ObservableObject {
         return userList[thisUser]
     }
 
+    // return my data
+    func md() -> UserData {
+        return userData[thisUser]
+    }
+
     // returns a User
     func user(id: String) -> User {
         for user in userList {
-
             if (user.id == id || user.name == id) {
                 return user
             }}
-        return User(id: "", name: "", text: "", city: "", views: 0)
+        return my()
     }
 
     // returns UserData
     func data(id: String) -> UserData {
         for data in userData {
-
             if data.id == id {
                 return data
             }}
-        return userData[thisUser]
+        return md()
     }
 
     private func initInfo() {
@@ -112,59 +115,57 @@ class DataManager: ObservableObject {
     func makeUser(id: String, name: String, city: String) {
         let id = id.replacingOccurrences(of: ".", with: "_")
 
-        // call editFuncs to create data
-        editUser(id: id, name: name, text: "", city: city, views: 1)
-        editData(id: id, fo: [String](), us: [String](), ch: [String](), bl: [String]())
-        editSets(id: id, notifs: true, emails: true, privacy: true, location: true)
-    }
-    
-    // 1. makeUser chooses edit func
-    // 2. access firebase collection
-    // 3. create document using {id}
-    // 4. setData to document values
-    // 5. set instance var = new obj
-    
-    // called at Profile
-    func editUser(id: String, name: String, text: String, city: String, views: Int) {
-        let user = FS.collection("userList").document(id)
+        // append new objects onto lists
+        userList.append(User(id: id, name: name, text: "", city: city, views: 1))
+        userData.append(UserData(id: id, favFoods: [String](), favUsers: [String](),
 
-        user.setData(["id": id, "name": name, "text": text, "city": city, "views": views])
-        userList[thisUser] = User(id: id, name: name, text: text, city: city, views: views)
+                        chatting: [String](), blocked: [String]()))
+        settings = Setting(id: id, notifs: true, emails: true, privacy: true,
+                           location: true)
     }
     
     // called at Profile
-    func editData(id: String, fo: [String], us: [String], ch: [String], bl: [String]) {
-        let data = FS.collection("userData").document(id)
+    func editUser(user: User) {
+        let doc = FS.collection("userList").document(user.id)
+
+        doc.setData(["id": user.id, "name": user.name, "text": user.text,
+                     "city": user.city, "views": user.views])
+    }
+    
+    // called everywhere
+    func editData() {
+        let md = md()
+        let doc = FS.collection("userData").document(md.id)
         
-        data.setData(["id": id, "favFoods": fo, "favUsers": us, "chatting": ch, "blocked": bl])
-        userData[thisUser] = UserData(id: id, favFoods: fo, favUsers: us, chatting: ch, blocked: bl)
+        doc.setData(["id": md.id, "favFoods": md.favFoods, "favUsers":
+            md.favUsers, "chatting": md.chatting, "blocked": md.blocked])
     }
     
     // called at Settings
-    func editSets(id: String, notifs: Bool, emails: Bool, privacy: Bool, location: Bool) {
-        let setting = FS.collection("settings").document(id)
+    func editSets() {
+        let s = settings
+        let doc = FS.collection("settings").document(s.id)
         
-        setting.setData(["id": id, "notifs": notifs, "emails": emails, "privacy": privacy, "location": location])
-        settings = Setting(id: id, notifs: notifs, emails: emails, privacy: privacy,
-            location: location)
+        doc.setData(["id": s.id, "notifs": s.notifs, "emails": s.emails,
+                     "privacy": s.privacy, "location": s.location])
     }
-    
+
     // called at Convo
     func sendChat(text: String, sender: String, getter: String, time: Date) {
         let id = UUID().uuidString
-        let message = FS.collection("messages").document(id)
+        let doc = FS.collection("messages").document(id)
         
-        message.setData(["id": id, "text": text, "sender": sender, "getter":
-                            getter, "time": time])
+        doc.setData(["id": id, "text": text, "sender": sender, "getter":
+                    getter, "time": time])
     }
     
     // called at Order
     func sendOrder(order: String, place: String, rating: Int, time: Date) {
         let id = UUID().uuidString
-        let AIOrder = FS.collection("aiOrders").document(id)
+        let doc = FS.collection("aiOrders").document(id)
         
-        AIOrder.setData(["id": id, "order": order, "place": place, "rating":
-                            rating, "time": time])
+        doc.setData(["id": id, "order": order, "place": place, "rating":
+                    rating, "time": time])
     }
 
     // ## IMAGE LOGIC ## \\

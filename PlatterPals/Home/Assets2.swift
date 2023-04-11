@@ -99,9 +99,9 @@ struct Search: View {
             .environmentObject(DM)
 
         if following {
-            let f = DM.data(id: DM.my().id).favUsers
+            let favs = DM.md().favUsers
 
-            if (f.contains(id) && user.city == city) {
+            if (favs.contains(id) && user.city == city) {
                 row
         }} else if (user.city == city) {
             row

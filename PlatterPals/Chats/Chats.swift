@@ -14,7 +14,6 @@ struct Chats: View {
 
     var body: some View {
         NavigationStack {
-            let data = DM.data(id: DM.my().id)
         ZStack {
         Back()
 
@@ -41,6 +40,7 @@ struct Chats: View {
         .onDelete(perform: delete(atOffsets:))
         .onMove(perform: move(fromOffsets:toOffset:))
         }
+        .opacity(chatting.isEmpty ? 0: 1)
         .listStyle(.plain)
         }
         }
@@ -48,7 +48,7 @@ struct Chats: View {
 
         .navigationTitle("Chats")
         .onAppear {
-            chatting = data.chatting
+            chatting = DM.md().chatting
         }
         .sheet(isPresented: $showSearch) {
             Search(showProf: false)
@@ -58,13 +58,10 @@ struct Chats: View {
     // ## FUNCTIONS ## \\
 
     func delete(atOffsets offsets: IndexSet) {
+        var data = DM.md()
         chatting.remove(atOffsets: offsets)
-
-        var my = DM.data(id: DM.my().id)
-        my.chatting = chatting
-
-        DM.editData(id: my.id, fo: my.favFoods, us: my.favUsers,
-                    ch: my.chatting, bl: my.blocked)
+        data.chatting = chatting
+        DM.editData()
     }
     func move(fromOffsets start: IndexSet, toOffset end: Int) {
         chatting.move(fromOffsets: start, toOffset: end)

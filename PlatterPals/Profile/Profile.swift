@@ -31,7 +31,7 @@ struct UserProf: View {
         VStack(alignment: .leading, spacing: 16) {
 
         Spacer()
-            .padding(48)
+            .padding(50)
         HStack(spacing: 16) {
             RoundPic(width: 80, image: avatar)
 
@@ -55,10 +55,8 @@ struct UserProf: View {
             }
             .buttonStyle(.borderedProminent)
 
-            Button("\(Image(systemName: "bell"))") {
-                showAlert = true
-            }
-            .buttonStyle(.bordered)
+            Block(id: id)
+                .environmentObject(DM)
         }
         }
         // ## USER INFO ## \\
@@ -68,10 +66,9 @@ struct UserProf: View {
                 .font(.headline)
             Spacer()
 
-            Text("\(Image(systemName: "heart")) \(views)")
-        }
-        }
-        }
+            Text("\(Image(systemName: "heart")) \(user.views)")
+        }}}
+
         if !showUpdate {
             Text(user.text)
                 .foregroundColor(.secondary)
@@ -115,23 +112,17 @@ struct UserProf: View {
                 getImage(path: "avatars")
                 getImage(path: "profiles")
             }
-            views = 1
-            for data in DM.userData {
-                if data.favUsers.contains(id) {
-                    views += 1
-                }
-            }
         }
         // ## OTHER VIEWS ## \\
 
         .toolbar {
             if myID == id {
-                ToolbarItem {
-                    Button("\(Image(systemName: "gearshape"))") {
-                        showSets = true
-                    }
-                    .buttonStyle(.borderedProminent)
-                }}}
+            ToolbarItem {
+            Button("\(Image(systemName: "gearshape"))") {
+                showSets = true
+            }
+            .buttonStyle(.borderedProminent)
+            }}}
         .sheet(isPresented: $showEdit) {
             EditProf()
                 .environmentObject(DM)
@@ -144,32 +135,9 @@ struct UserProf: View {
         .fullScreenCover(isPresented: $showSets) {
             Settings()
                 .environmentObject(DM)
-        }
-        // ## BLOCK USER ## \\
-
-        .confirmationDialog("", isPresented: $showAlert) {
-            var data = DM.data(id: myID)
-
-            if data.blocked.contains(id) {
-                Button("UNBLOCK USER") {
-
-                    if let i = data.blocked.firstIndex(of: id) {
-                        data.blocked.remove(at: i)
-                        editData(data: data)
-                    }
-                }
-            } else {
-                Button("Block this user") {
-                    data.blocked.append(id)
-                    editData(data: data)
-                }}}}}
+        }}}
 
     // ## FUNCTIONS ## \\
-
-    func editData(data: UserData) {
-        DM.editData(id: data.id, fo: data.favFoods, us:
-            data.favUsers, ch: data.chatting, bl: data.blocked)
-    }
 
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
