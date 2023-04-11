@@ -21,8 +21,8 @@ struct ProfHead: View {
             if let i = data.favUsers.firstIndex(of: id) {
 
                 user.views -= 1
-                DM.editUser(user: user, views: -1)
                 data.favUsers.remove(at: i)
+                DM.editUser(user: user, views: true)
                 DM.editData(id: data.id, ff: data.favFoods, fu:
                     data.favUsers, ch: data.chatting, bl: data.blocked)
                 showFollow = false
@@ -36,7 +36,7 @@ struct ProfHead: View {
             Button("Follow \(Image(systemName: "heart"))") {
 
                 user.views += 1
-                DM.editUser(user: user, views: 1)
+                DM.editUser(user: user, views: true)
                 data.favUsers.append(id)
                 DM.editData(id: data.id, ff: data.favFoods, fu:
                     data.favUsers, ch: data.chatting, bl: data.blocked)
@@ -129,7 +129,7 @@ struct EditProf: View {
                 user.name = name
                 user.text = text
                 user.city = city
-                DM.editUser(user: user)
+                DM.editUser(user: user, views: false)
 
                 if let d = imageData, let image = UIImage(data: d) {
                     DM.putImage(image: image, path: "avatars")

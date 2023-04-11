@@ -63,7 +63,7 @@ struct Convo: View {
             var data = DM.data(id: DM.my().id)
             focus = true
 
-            if !data.chatting.contains(id) {
+            if !(data.chatting.contains(id) || id == "") {
                 data.chatting.append(id)
 
                 DM.editData(id: data.id, ff: data.favFoods, fu:

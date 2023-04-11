@@ -116,7 +116,7 @@ class DataManager: ObservableObject {
 
         // create new user
         let user = User(id: id, name: name, text: "", city: city, views: 1)
-        editUser(user: user)
+        editUser(user: user, views: false)
 
         // create new data
         let data = UserData(id: id, favFoods: [String](), favUsers:
@@ -131,12 +131,12 @@ class DataManager: ObservableObject {
     }
     
     // called at Profile
-    func editUser(user: User, views: Int = 0) {
+    func editUser(user: User, views: Bool) {
         let doc = FS.collection("userList").document(user.id)
 
         doc.setData(["id": user.id, "name": user.name, "text": user.text,
-                     "city": user.city, "views": user.views + views])
-        if views == 0 {
+                     "city": user.city, "views": user.views])
+        if views == false {
             userList[thisUser] = user
         }
     }

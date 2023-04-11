@@ -14,12 +14,13 @@ struct Chats: View {
 
     var body: some View {
         NavigationStack {
+            let data = DM.data(id: DM.my().id)
         ZStack {
         Back()
 
         VStack(spacing: 16) {
         Box()
-            .padding(.top, 120)
+            .padding(.top, 124)
             .onTapGesture {
                 showSearch = true
             }
@@ -48,8 +49,11 @@ struct Chats: View {
 
         .navigationTitle("Chats")
         .onAppear {
-            chatting = DM.data(id: DM.my().id).chatting
-        }
+            for id in data.chatting {
+                if !(data.blocked.contains(id) ||
+                    chatting.contains(id)) {
+                    chatting.append(id)
+                }}}
         .sheet(isPresented: $showSearch) {
             Search(showProf: false)
                 .environmentObject(DM)

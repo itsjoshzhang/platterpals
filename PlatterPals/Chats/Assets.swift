@@ -46,6 +46,7 @@ struct TitleBar: View {
             .environmentObject(DM)
         }
         .padding(.horizontal, 16)
+        .padding(.top, 16)
         Div()
         }
         .onAppear {

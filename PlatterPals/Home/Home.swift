@@ -50,19 +50,17 @@ struct Home: View {
         // ## PROFILES ## \\
 
         ForEach(DM.userList) { user in
+
+            let data = DM.data(id: DM.my().id)
             let update = Update(id: user.id, show: true)
                 .environmentObject(DM)
 
-            if following {
-                let favs = DM.data(id: DM.my().id).favUsers
-                if (favs.contains(user.id) && user.city == city) {
+            if (!data.blocked.contains(user.id) && user.city == city) {
+                if (following && data.favUsers.contains(user.id)) {
                     update
-                }
-            } else if (user.id != DM.my().id && user.city == city) {
-                update
-                }
-            }
-        }
+                } else if (DM.my().id != user.id) {
+                    update
+                }}}}
         Spacer()
             .padding(36)
         }

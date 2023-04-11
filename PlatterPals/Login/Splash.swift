@@ -36,7 +36,7 @@ struct Splash: View {
             Text("PlatterPals")
                 .font(.custom("Lobster", size: 50))
 
-            if !first {
+            if first == false {
                 Text("Finding the perfect dish...")
                     .font(.headline)
             }
@@ -99,7 +99,7 @@ struct Reset: View {
                 .autocorrectionDisabled(true)
             Div()
 
-            Text("We'll send you a reset link!")
+            Text("We'll send you a reset link.")
         }
         .foregroundColor(.pink)
 

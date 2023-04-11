@@ -43,7 +43,7 @@ struct Suggest: View {
                 .font(.headline)
         }
         }
-        .navigationTitle("Let's Order!")
+        .navigationTitle("Let's Order")
         .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
         Button("Cancel") {
@@ -58,6 +58,6 @@ struct Order: View {
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
-        Text("Hi!")
+        Text("Hi")
     }
 }

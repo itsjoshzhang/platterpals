@@ -69,7 +69,7 @@ struct UserProf: View {
             Text("\(Image(systemName: "heart")) \(user.views)")
         }}}
 
-        if !showUpdate {
+        if showUpdate == false {
             Text(user.text)
                 .foregroundColor(.secondary)
         }
