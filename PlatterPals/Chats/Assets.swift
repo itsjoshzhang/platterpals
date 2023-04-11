@@ -91,13 +91,16 @@ struct Block: View {
 
             if let i = data.blocked.firstIndex(of: id) {
                 data.blocked.remove(at: i)
-                DM.editData(data: data)
-            }
-        }
+
+                DM.editData(id: data.id, ff: data.favFoods, fu:
+                    data.favUsers, ch: data.chatting, bl: data.blocked)
+            }}
         } else {
             Button("Block this user") {
                 data.blocked.append(id)
-                DM.editData(data: data)
+
+                DM.editData(id: data.id, ff: data.favFoods, fu:
+                    data.favUsers, ch: data.chatting, bl: data.blocked)
             }}}}}
 
 struct Bubble: View {

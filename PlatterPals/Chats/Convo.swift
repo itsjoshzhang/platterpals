@@ -65,7 +65,9 @@ struct Convo: View {
 
             if !data.chatting.contains(id) {
                 data.chatting.append(id)
-                DM.editData(data: data)
+
+                DM.editData(id: data.id, ff: data.favFoods, fu:
+                    data.favUsers, ch: data.chatting, bl: data.blocked)
             }}}
         .onTapGesture {
             focus = false

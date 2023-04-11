@@ -14,7 +14,7 @@ struct ProfHead: View {
             var data = DM.md()
         HStack {
 
-        // ## CLICKABLES ## \\
+        // ## UNFOLLOW ## \\
 
         if showFollow {
         Button("Following") {
@@ -22,19 +22,26 @@ struct ProfHead: View {
 
                 user.views -= 1
                 data.favUsers.remove(at: i)
+
                 DM.editUser(user: user)
-                DM.editData(data: data)
+                DM.editData(id: data.id, ff: data.favFoods, fu:
+                    data.favUsers, ch: data.chatting, bl: data.blocked)
                 showFollow = false
             }
         }
         .buttonStyle(.bordered)
+
+        // ## REFOLLOW ## \\
+
         } else {
             Button("Follow \(Image(systemName: "heart"))") {
 
                 user.views += 1
                 data.favUsers.append(id)
+
                 DM.editUser(user: user)
-                DM.editData(data: data)
+                DM.editData(id: data.id, ff: data.favFoods, fu:
+                    data.favUsers, ch: data.chatting, bl: data.blocked)
                 showFollow = true
             }
             .buttonStyle(.borderedProminent)

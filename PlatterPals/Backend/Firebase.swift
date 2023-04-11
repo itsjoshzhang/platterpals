@@ -114,13 +114,23 @@ class DataManager: ObservableObject {
     func makeUser(id: String, name: String, city: String) {
         let id = id.replacingOccurrences(of: ".", with: "_")
 
-        // append new objects onto lists
-        userList.append(User(id: id, name: name, text: "", city: city, views: 1))
-        userData.append(UserData(id: id, favFoods: [String](), favUsers: [String](),
+        // create new user
+        let user = User(id: id, name: name, text: "", city: city, views: 1)
+        userList.append(user)
+        editUser(user: user)
 
-                        chatting: [String](), blocked: [String]()))
-        settings = Setting(id: id, notifs: true, emails: true, privacy: true,
-                           location: true)
+        // create new data
+        let data = UserData(id: id, favFoods: [String](), favUsers:
+            [String](), chatting: [String](), blocked: [String]())
+        userData.append(data)
+        editData(id: data.id, ff: data.favFoods, fu: data.favUsers,
+                 ch: data.chatting, bl: data.blocked)
+
+        // create new sets
+        let sets = Setting(id: id, notifs: true, emails: true, privacy:
+                            true, location: true)
+        settings = sets
+        editSets(s: sets)
     }
     
     // called at Profile
@@ -132,16 +142,16 @@ class DataManager: ObservableObject {
     }
     
     // called everywhere
-    func editData(data: UserData) {
-        let doc = FS.collection("userData").document(data.id)
+    func editData(id: String, ff: [String], fu: [String], ch: [String],
+                  bl: [String]) {
+        let doc = FS.collection("userData").document(id)
         
-        doc.setData(["id": data.id, "favFoods": data.favFoods, "favUsers":
-            data.favUsers, "chatting": data.chatting, "blocked": data.blocked])
+        doc.setData(["id": id, "favFoods": ff, "favUsers": fu, "chatting":
+                    ch, "blocked": bl])
     }
     
     // called at Settings
-    func editSets() {
-        let s = settings
+    func editSets(s: Setting) {
         let doc = FS.collection("settings").document(s.id)
         
         doc.setData(["id": s.id, "notifs": s.notifs, "emails": s.emails,
