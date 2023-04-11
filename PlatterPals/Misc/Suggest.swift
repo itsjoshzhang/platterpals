@@ -1,5 +1,7 @@
 import SwiftUI
 
+// https://github.com/alfianlosari/ChatGPTSwiftUI
+
 struct Suggest: View {
     
     @State var place = ""

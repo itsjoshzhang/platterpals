@@ -25,9 +25,7 @@ struct Home: View {
 
         // ## USER SEARCH ## \\
 
-        TextField("Search for a user:", text: $name)
-            .textFieldStyle(.roundedBorder)
-            .padding(.horizontal, 16)
+        Box()
             .onTapGesture {
                 showSearch = true
             }

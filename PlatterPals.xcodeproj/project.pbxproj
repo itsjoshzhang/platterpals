@@ -12,7 +12,6 @@
 		F24A95E1296E080C00FD62F2 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = F24A95E0296E080C00FD62F2 /* FirebaseFirestore */; };
 		F24A95E3296E080C00FD62F2 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = F24A95E2296E080C00FD62F2 /* FirebaseStorage */; };
 		F24BFEAB296CBDF100B2E616 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F24BFEAA296CBDF100B2E616 /* GoogleService-Info.plist */; };
-		F254380729D554A600E1AADE /* ChatGPT.swift in Sources */ = {isa = PBXBuildFile; fileRef = F254380629D554A600E1AADE /* ChatGPT.swift */; };
 		F25ED26E296FBBA900A6C8F0 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25ED26D296FBBA900A6C8F0 /* Assets.swift */; };
 		F25ED271296FCB2900A6C8F0 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F25ED270296FCB2900A6C8F0 /* FirebaseFirestoreSwift */; };
 		F26B3F0A296F8DF600E28DBD /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26B3F09296F8DF600E28DBD /* Update.swift */; };
@@ -41,7 +40,6 @@
 /* Begin PBXFileReference section */
 		F229820C296BFBCB00804296 /* Lobster.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lobster.ttf; sourceTree = "<group>"; };
 		F24BFEAA296CBDF100B2E616 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		F254380629D554A600E1AADE /* ChatGPT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatGPT.swift; sourceTree = "<group>"; };
 		F25ED26D296FBBA900A6C8F0 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		F26B3F09296F8DF600E28DBD /* Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Update.swift; sourceTree = "<group>"; };
 		F2B1A7B029DD59A600AB305B /* Assets2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets2.swift; sourceTree = "<group>"; };
@@ -161,7 +159,6 @@
 			children = (
 				F2F6D8542961730000B8F4D7 /* AppData.swift */,
 				F2F6D8562961730000B8F4D7 /* AppInit.swift */,
-				F254380629D554A600E1AADE /* ChatGPT.swift */,
 				F2F6D8532961730000B8F4D7 /* Firebase.swift */,
 			);
 			path = Backend;
@@ -289,7 +286,6 @@
 				F2F6D86A2961730000B8F4D7 /* Suggest.swift in Sources */,
 				F2F6D86C2961730000B8F4D7 /* Upload.swift in Sources */,
 				F2B1A7B129DD59A600AB305B /* Assets2.swift in Sources */,
-				F254380729D554A600E1AADE /* ChatGPT.swift in Sources */,
 				F2F6D8782961730000B8F4D7 /* Chats.swift in Sources */,
 				F2F6D8662961730000B8F4D7 /* Maps.swift in Sources */,
 				F2B1A7B329DD5A4C00AB305B /* Profile2.swift in Sources */,

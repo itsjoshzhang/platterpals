@@ -46,8 +46,9 @@ struct Search: View {
     @State var name = ""
     @State var nextID = ""
     @State var city = "Berkeley"
-
     @State var showProf: Bool
+
+    // ## CONDITIONS ## \\
     @State var showNext = false
     @State var following = false
     @State var idList = [String]()
@@ -55,18 +56,18 @@ struct Search: View {
 
     @EnvironmentObject var DM: DataManager
 
-    // ## TEXTFIELDS ## \\
-
     var body: some View {
         NavigationStack {
         VStack(spacing: 16) {
 
-            TextField("Type in a username", text: $name)
-                .shadow(color: .pink, radius: 3)
-                .textFieldStyle(.roundedBorder)
-                .autocorrectionDisabled(true)
-                .padding(.horizontal, 16)
-                .foregroundColor(.pink)
+        // ## TEXTFIELDS ## \\
+
+        TextField("Type in a username", text: $name)
+            .shadow(color: .pink, radius: 3)
+            .textFieldStyle(.roundedBorder)
+            .autocorrectionDisabled(true)
+            .padding(.horizontal, 16)
+            .foregroundColor(.pink)
 
         HStack(spacing: 0) {
             Text("Location:")

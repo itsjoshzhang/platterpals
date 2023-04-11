@@ -31,7 +31,6 @@ struct Maps: View {
         }
     }
 }
-
 class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     @Published var region = MKCoordinateRegion(
@@ -46,13 +45,19 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     func requestLocation() {
         LM.requestWhenInUseAuthorization()
+        LM.requestLocation()
     }
-    func locationManager(_ manager: CLLocationManager, _ places: [CLLocation]) {
-        let place = places.first
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations
+                         locations: [CLLocation]) {
+        let location = locations.first
         
         DispatchQueue.main.async {
-            self.region = MKCoordinateRegion(center: place!.coordinate,
+            self.region = MKCoordinateRegion(center: location!.coordinate,
             span: MKCoordinateSpan(latitudeDelta: 0.016, longitudeDelta: 0.016))
         }
+    }
+    func locationManager(_ manager: CLLocationManager, didFailWithError
+                         error: Error) {
+        print(error.localizedDescription)
     }
 }

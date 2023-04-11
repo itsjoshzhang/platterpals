@@ -124,3 +124,14 @@ struct Back: View {
             .ignoresSafeArea()
     }
 }
+struct Box: View {
+    var body: some View {
+        Text("Search for a user:")
+            .padding(.leading, 8)
+            .foregroundColor(.secondary)
+            .frame(width: UIwidth - 32, height: 32,
+                   alignment: .leading)
+            .overlay(RoundedRectangle(cornerRadius: 8)
+                    .stroke(.secondary))
+    }
+}
