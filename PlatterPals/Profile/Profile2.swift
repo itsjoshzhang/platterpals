@@ -23,8 +23,7 @@ struct ProfHead: View {
                 user.views -= 1
                 data.favUsers.remove(at: i)
                 DM.editUser(user: user, views: true)
-                DM.editData(id: data.id, ff: data.favFoods, fu:
-                    data.favUsers, ch: data.chatting, bl: data.blocked)
+                DM.editData(data: data)
                 showFollow = false
             }
         }
@@ -38,8 +37,7 @@ struct ProfHead: View {
                 user.views += 1
                 DM.editUser(user: user, views: true)
                 data.favUsers.append(id)
-                DM.editData(id: data.id, ff: data.favFoods, fu:
-                    data.favUsers, ch: data.chatting, bl: data.blocked)
+                DM.editData(data: data)
                 showFollow = true
             }
             .buttonStyle(.borderedProminent)

@@ -66,8 +66,7 @@ struct Chats: View {
         chatting.remove(atOffsets: offsets)
         data.chatting = chatting
 
-        DM.editData(id: data.id, ff: data.favFoods, fu: data.favUsers,
-                    ch: data.chatting, bl: data.blocked)
+        DM.editData(data: data)
     }
     func move(fromOffsets start: IndexSet, toOffset end: Int) {
         chatting.move(fromOffsets: start, toOffset: end)

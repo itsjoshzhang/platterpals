@@ -52,12 +52,6 @@ class DataManager: ObservableObject {
         userList.removeAll()
         userData.removeAll()
         
-        // 1. access firebase collection
-        // 2. loop through all documents
-        // 3. access values = map {data}
-        // 4. create object using values
-        // 5. append object to each list
-        
         FS.collection("userList").getDocuments { col,_ in
             for doc in col!.documents {
                 let data = doc.data()
@@ -121,13 +115,12 @@ class DataManager: ObservableObject {
         // create new data
         let data = UserData(id: id, favFoods: [String](), favUsers:
             [String](), chatting: [String](), blocked: [String]())
-        editData(id: data.id, ff: data.favFoods, fu: data.favUsers,
-                 ch: data.chatting, bl: data.blocked)
+        editData(data: data)
 
         // create new sets
         let sets = Setting(id: id, notifs: true, emails: true, privacy:
                             true, location: true)
-        editSets(s: sets)
+        editSets(sets: sets)
     }
     
     // called at Profile
@@ -142,22 +135,20 @@ class DataManager: ObservableObject {
     }
     
     // called everywhere
-    func editData(id: String, ff: [String], fu: [String], ch: [String],
-                  bl: [String]) {
-        let doc = FS.collection("userData").document(id)
+    func editData(data: UserData) {
+        let doc = FS.collection("userData").document(data.id)
         
-        doc.setData(["id": id, "favFoods": ff, "favUsers": fu, "chatting":
-                    ch, "blocked": bl])
-        userData[thisUser] = UserData(id: id, favFoods: ff, favUsers: fu, chatting: ch, blocked: bl)
+        doc.setData(["id": data.id, "favFoods": data.favFoods, "favUsers": data.favUsers, "chatting": data.chatting, "blocked": data.blocked])
+        userData[thisUser] = data
     }
     
     // called at Settings
-    func editSets(s: Setting) {
-        let doc = FS.collection("settings").document(s.id)
+    func editSets(sets: Setting) {
+        let doc = FS.collection("settings").document(sets.id)
         
-        doc.setData(["id": s.id, "notifs": s.notifs, "emails": s.emails,
-                     "privacy": s.privacy, "location": s.location])
-        settings = s
+        doc.setData(["id": sets.id, "notifs": sets.notifs, "emails": sets.emails,
+                     "privacy": sets.privacy, "location": sets.location])
+        settings = sets
     }
 
     // called at Convo
@@ -177,8 +168,6 @@ class DataManager: ObservableObject {
         doc.setData(["id": id, "order": order, "place": place, "rating":
                     rating, "time": time])
     }
-
-    // ## IMAGE LOGIC ## \\
 
     // called at Upload
     func putImage(image: UIImage, path: String) {
@@ -220,12 +209,6 @@ class DataManager: ObservableObject {
         let SR = SR.child("\(path)/\(my().id).jpg")
         SR.delete { _ in }
     }
-    
-    // 1. create object result array
-    // 2. access firebase collection
-    // 3. loop through all documents
-    // 4. access values = map {data}
-    // 5. if condition, add to array
 
     // called at Order
     func getOrder(id: String) -> [AIOrder] {
