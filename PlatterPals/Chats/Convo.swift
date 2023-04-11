@@ -60,7 +60,7 @@ struct Convo: View {
         }
         .onAppear {
             getChats(sender: myID, getter: id)
-            var data = DM.data(id: DM.my().id)
+            var data = DM.md()
             focus = true
 
             if !(data.chatting.contains(id) || id == "") {

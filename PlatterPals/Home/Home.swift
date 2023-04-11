@@ -51,7 +51,7 @@ struct Home: View {
 
         ForEach(DM.userList) { user in
 
-            let data = DM.data(id: DM.my().id)
+            let data = DM.md()
             let update = Update(id: user.id, show: true)
                 .environmentObject(DM)
 

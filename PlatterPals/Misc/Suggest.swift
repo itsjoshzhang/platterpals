@@ -34,7 +34,7 @@ struct Suggest: View {
             .textCase(.none))
         {
             Picker("Friend's name", selection: $friend) {
-                ForEach(DM.data(id: DM.my().id).favUsers, id: \.self) { id in
+                ForEach(DM.md().favUsers, id: \.self) { id in
                     Text(DM.user(id: id).name)
                 }}}}
 

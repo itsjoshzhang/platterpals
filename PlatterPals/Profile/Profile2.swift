@@ -11,7 +11,7 @@ struct ProfHead: View {
     var body: some View {
         HStack {
             var user = DM.user(id: id)
-            var data = DM.data(id: DM.my().id)
+            var data = DM.md()
         HStack {
 
         // ## UNFOLLOW ## \\

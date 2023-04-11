@@ -99,10 +99,11 @@ struct Search: View {
             .environmentObject(DM)
 
         if following {
-            let favs = DM.data(id: DM.my().id).favUsers
+            let favs = DM.md().favUsers
             if (favs.contains(id) && user.city == city) {
                 row
-        }} else if (user.city == city) {
+            }
+        } else if (user.city == city) {
             row
         }}
         .onTapGesture {
