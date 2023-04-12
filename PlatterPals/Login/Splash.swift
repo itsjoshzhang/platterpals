@@ -98,8 +98,8 @@ struct Reset: View {
             .autocorrectionDisabled(true)
         Div()
 
-        Text("We'll send you a reset link.")
-            .foregroundColor(.pink)
+        Text("We'll send you a reset link!")
+            .foregroundColor(.secondary)
 
         // ## CLICKABLES ## \\
 

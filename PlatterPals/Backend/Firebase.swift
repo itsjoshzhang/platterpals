@@ -118,7 +118,7 @@ class DataManager: ObservableObject {
         editData(data: data)
 
         // create new sets
-        let sets = Setting(id: id, notifs: true, emails: true, privacy:
+        let sets = Setting(id: id, notifs: true, suggest: true, privacy:
                             true, location: true)
         editSets(sets: sets)
     }
@@ -146,7 +146,7 @@ class DataManager: ObservableObject {
     func editSets(sets: Setting) {
         let doc = FS.collection("settings").document(sets.id)
         
-        doc.setData(["id": sets.id, "notifs": sets.notifs, "emails": sets.emails,
+        doc.setData(["id": sets.id, "notifs": sets.notifs, "suggest": sets.suggest,
                      "privacy": sets.privacy, "location": sets.location])
         settings = sets
     }
@@ -241,11 +241,11 @@ class DataManager: ObservableObject {
                 if docID == self.my().id {
 
                     let notifs   = data["notifs"]   as? Bool ?? true
-                    let emails   = data["emails"]   as? Bool ?? true
+                    let suggest  = data["suggest"]   as? Bool ?? true
                     let privacy  = data["privacy"]  as? Bool ?? true
                     let location = data["location"] as? Bool ?? true
                     
-            self.settings = Setting(id: docID, notifs: notifs, emails:
-                            emails, privacy: privacy, location: location)
+            self.settings = Setting(id: docID, notifs: notifs, suggest:
+                            suggest, privacy: privacy, location: location)
             return
     }}}}}

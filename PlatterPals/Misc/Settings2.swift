@@ -1,154 +1,148 @@
 import SwiftUI
 
 struct Settings2: View {
-    
-    var anchor: String
-    @State var toggle1 = true
-    @State var toggle2 = true
-    @State var toggle3 = false
 
-    @State var image: UIImage?
+    @State var notifs = true
+    @State var suggest = true
+    @State var privacy = true
+    @State var location = true
+
     @State var showReset = false
     @State var showTerms = false
     @State var showDelete = false
-    
+    @State var toggle = false
+
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
-        ScrollViewReader { value in
-            let my = DM.my()
+        ZStack {
+        Back()
+        VStack(alignment: .leading, spacing: 14) {
 
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-            Group {
-                Text("Chats")
-                    .font(.headline)
-                    .padding(.top, 20)
-                    .id("Chats")
-                Div()
-                Text("Blocked users: None")
+        Group {
+        HStack {
+            Text("Chats")
+                .font(.headline)
+            Spacer()
+            Button("Save Edits") {
 
-                HStack {
-                    Text("Allow chat notifications")
-                    Spacer()
-                    Toggle("", isOn: $toggle1)
-                        .frame(width: 100)
-                }
-            }
-            Group {
-                Text("Home")
-                    .font(.headline)
-                    .padding(.top, 20)
-                    .id("Home")
-                Div()
-                Text("Profile swipe history: None")
+                var sets = DM.settings
+                sets.notifs = notifs
+                sets.suggest = suggest
+                sets.privacy = privacy
+                sets.location = location
 
-                HStack {
-                    Text("Allow profile suggestions")
-                    Spacer()
-                    Toggle("", isOn: $toggle2)
-                        .frame(width: 100)
-                }
+                DM.editSets(sets: sets)
+                dismiss()
             }
-            Group {
-                Text("Profile")
-                    .font(.headline)
-                    .padding(.top, 20)
-                    .id("Profile")
-                Div()
-
-                HStack {
-                    RoundPic(width: 160, image: image)
-
-                    VStack(alignment: .leading) {
-                        Text(my.name)
-                            .font(.headline)
-                        Text(my.text)
-                    }
-                }
-            }
-            Group {
-                Text("Security")
-                    .font(.headline)
-                    .padding(.top, 20)
-                    .id("Security")
-                Div()
-                Text("Payment methods: None")
-
-                HStack {
-                    Text(my.id)
-
-                    Button("Reset Password") {
-                        showReset = true
-                    }
-                    .buttonStyle(.bordered)
-                }
-            }
-            Group {
-                Text("Account")
-                    .font(.headline)
-                    .padding(.top, 20)
-                    .id("Account")
-                Div()
-
-                if toggle3 {
-                    Button("Cancel deletion") {
-                        showDelete = false
-                        toggle3 = false
-                    }
-                    .buttonStyle(.bordered)
-
-                    Text("Delete account: processing")
-                        .foregroundColor(.secondary)
-
-                } else {
-                    Button("Delete account") {
-                        showDelete = true
-                        toggle3 = true
-                    }
-                    .buttonStyle(.bordered)
-                }
-            }
-            Group {
-                Text("Terms")
-                    .font(.headline)
-                    .padding(.top, 20)
-                    .id("Terms")
-                Div()
-
-                Button("Terms and EULA") {
-                    showTerms = true
-                }
-            }
-            }
-            }
-            .padding(.horizontal, 20)
-            .fullScreenCover(isPresented: $showReset) {
-                Reset()
-                    .environmentObject(DM)
-            }
-            .fullScreenCover(isPresented: $showTerms) {
-                Terms()
-                    .environmentObject(DM)
-            }
-            .alert(isPresented: $showDelete) {
-                Alert(title: Text("Delete account"),
-                      message: Text("Deletion may take up to 24 hours."),
-                      dismissButton: .default(Text("Continue")))
-            }
-            .onAppear {
-                getImage(id: my.id, path: "avatars")
-                value.scrollTo(anchor, anchor: .top)
-            }
+            .buttonStyle(.borderedProminent)
         }
+        Div()
+        Text("Blocked users: None")
+                .foregroundColor(.secondary)
+        HStack {
+            Text("Allow chat notifications")
+                .foregroundColor(.secondary)
+            Spacer()
+            Toggle("", isOn: $notifs)
+                .frame(width: 64)
+        }
+        }
+        Group {
+        Text("Home")
+            .font(.headline)
+        Div()
+        HStack {
+            Text("Allow profile suggestions")
+                .foregroundColor(.secondary)
+            Spacer()
+            Toggle("", isOn: $suggest)
+                .frame(width: 64)
+        }
+        HStack {
+            Text("Show location to restaurants")
+                .foregroundColor(.secondary)
+            Spacer()
+            Toggle("", isOn: $location)
+                .frame(width: 64)
+        }
+        }
+        Group {
+        Text("Orders")
+            .font(.headline)
+        Div()
+        Text("Order history: None")
+            .foregroundColor(.secondary)
+        Text("Favorite foods: None")
+            .foregroundColor(.secondary)
+        }
+
+        Group {
+        Text("Security")
+            .font(.headline)
+        Div()
+        HStack {
+            Text(DM.my().id)
+
+            Button("Reset Password") {
+                showReset = true
+            }
+            .buttonStyle(.bordered)
+        }
+        HStack {
+            Text("Enable private profile")
+                .foregroundColor(.secondary)
+            Spacer()
+            Toggle("", isOn: $privacy)
+                .frame(width: 64)
+        }
+        }
+        Group {
+        Text("Account")
+            .font(.headline)
+        Div()
+        Button("Terms and EULA") {
+            showTerms = true
+        }
+        if toggle {
+            HStack {
+                Button("Cancel deletion") {
+                    showDelete = false
+                    toggle = false
+                }
+                .buttonStyle(.bordered)
+
+                Text("Deletion processing")
+                    .foregroundColor(.secondary)
+            }
+        } else {
+            Button("Delete account") {
+                showDelete = true
+                toggle = true
+            }
+            .buttonStyle(.bordered)
+        }}}}
+
+        .sheet(isPresented: $showReset) {
+        Reset()
+            .presentationDetents([.medium])
+        }
+        .sheet(isPresented: $showTerms) {
+        Terms()
+        }
+        .alert(isPresented: $showDelete) {
+        Alert(title: Text("Delete account"),
+              message: Text("Deletion may take up to 24 hours."),
+              dismissButton: .default(Text("Continue")))
+        }
+        .onAppear {
+            let sets = DM.settings
+            notifs = sets.notifs
+            suggest = sets.suggest
+            privacy = sets.privacy
+            location = sets.location
+        }
+        .padding(.horizontal, 16)
     }
-    func getImage(id: String, path: String) {
-        let SR = SR.child("\(path)/\(id).jpg")
-
-        SR.getData(maxSize: 8 * 1024 * 1024) { data, error in
-            if let data = data {
-
-                DispatchQueue.main.async {
-                    image = UIImage(data: data)
-                }}}}
 }

@@ -7,7 +7,6 @@ struct UserProf: View {
     @State var views = 1
     @State var avatar: UIImage?
     @State var profile: UIImage?
-    @Environment(\.dismiss) var dismiss
 
     // ## CONDITIONS ## \\
     @State var showEdit = false

@@ -21,7 +21,6 @@ struct Guide2: View {
     var image: Int
     var title: String
     var text: String
-
     @Environment(\.dismiss) var dismiss
     
     var body: some View {

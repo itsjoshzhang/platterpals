@@ -8,7 +8,6 @@ struct Suggest: View {
     @State var food = "All"
     @State var friend: User?
     @State var showSplash = false
-    @Environment(\.dismiss) var dismiss
     
     @EnvironmentObject var DM: DataManager
     
@@ -44,11 +43,7 @@ struct Suggest: View {
         }
         }
         .navigationTitle("Let's Order")
-        .toolbar {
-        ToolbarItem(placement: .navigationBarLeading) {
-        Button("Cancel") {
-        dismiss()
-        }}}
+
         .fullScreenCover(isPresented: $showSplash) {
         Splash(first: false)
             .environmentObject(DM)

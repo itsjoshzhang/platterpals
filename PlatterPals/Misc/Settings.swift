@@ -4,8 +4,6 @@ import Firebase
 struct Settings: View {
 
     @State var loggedOut = false
-    @Environment(\.dismiss) var dismiss
-
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
@@ -17,17 +15,22 @@ struct Settings: View {
     }
 	var content: some View {
         NavigationStack {
+        ZStack {
+        Back()
+        VStack {
             List(SetItem.items) { item in
+
             NavigationLink(value: item) {
                 SetRow(title: item.title, text: item.text,
                    image: item.image)
             }
             }
+            .padding(.top, 100)
             .listStyle(.plain)
             .navigationTitle("Settings")
 
             .navigationDestination(for: SetItem.self) { item in
-                Settings2(anchor: item.title)
+                Settings2()
                     .environmentObject(DM)
             }
             Button("Sign Out") {
@@ -35,7 +38,7 @@ struct Settings: View {
                 loggedOut = true
             }
             .buttonStyle(.borderedProminent)
-        }}}
+            }}}}}
 
 struct SetRow: View {
     

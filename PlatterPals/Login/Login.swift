@@ -16,7 +16,6 @@ struct Login: View {
     @State var showReset = false
     @State var showSignup = false
 
-    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
     // ## OTHER VIEWS ## \\

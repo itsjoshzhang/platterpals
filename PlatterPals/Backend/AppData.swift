@@ -56,10 +56,10 @@ extension UIImage {
 extension SetItem {
     static let items = [
         SetItem(title: "Chats", text: "Blocked users & notifications", image: "message"),
-        SetItem(title: "Home", text: "Suggested users & restaurants", image: "house"),
-        SetItem(title: "Profile", text: "Profile image, bio, publicity", image: "person"),
-        SetItem(title: "Security", text: "Login info & payment methods", image: "lock"),
-        SetItem(title: "Account", text: "Upload data & delete account", image: "key"),
+        SetItem(title: "Home", text: "Following users & restaurants", image: "house"),
+        SetItem(title: "Orders", text: "Order history & favorite foods", image: "person"),
+        SetItem(title: "Security", text: "Signin info & account privacy", image: "lock"),
+        SetItem(title: "Account", text: "Upload data or delete account", image: "key"),
     ]
 }
 
@@ -98,7 +98,7 @@ struct AIOrder: Identifiable, Hashable {
 struct Setting: Identifiable, Hashable {
     var id = ""
     var notifs = true
-    var emails = true
+    var suggest = true
     var privacy = true
     var location = true
 }

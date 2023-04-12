@@ -12,7 +12,7 @@ struct Maps: View {
         VStack(spacing: 16) {
             Text("Tap a pin to display profile")
                 .font(.headline)
-                .foregroundColor(.pink)
+                .foregroundColor(.secondary)
 
         ZStack(alignment: .bottom) {
             Map(coordinateRegion: $mapsData.region,

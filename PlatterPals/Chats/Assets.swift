@@ -7,7 +7,6 @@ struct TitleBar: View {
     @State var image: UIImage?
     @State var hideBar = false
     @State var showProf = false
-    @Environment(\.dismiss) var dismiss
 
     @EnvironmentObject var DM: DataManager
 
@@ -17,6 +16,7 @@ struct TitleBar: View {
             Button("\(Image(systemName: "chevron.down"))") {
             withAnimation {
             hideBar = false }}
+            .buttonStyle(.bordered)
         } else {
             content }}
     var content: some View {

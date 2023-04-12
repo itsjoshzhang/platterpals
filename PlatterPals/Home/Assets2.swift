@@ -60,7 +60,6 @@ struct Search: View {
     @FocusState var focus: Bool
     @State var showNext = false
     @State var following = false
-    @Environment(\.dismiss) var dismiss
 
     @EnvironmentObject var DM: DataManager
 
