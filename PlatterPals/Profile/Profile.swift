@@ -69,7 +69,7 @@ struct UserProf: View {
             Text("\(Image(systemName: "heart")) \(user.views)")
         }}}
 
-        if showUpdate == false {
+        if showUpdate  == false {
             Text(user.text)
                 .foregroundColor(.secondary)
         }
@@ -128,11 +128,11 @@ struct UserProf: View {
                 .environmentObject(DM)
                 .presentationDetents([.medium])
         }
-        .fullScreenCover(isPresented: $showChat) {
+        .sheet(isPresented: $showChat) {
             Convo(id: id)
                 .environmentObject(DM)
         }
-        .fullScreenCover(isPresented: $showSets) {
+        .sheet(isPresented: $showSets) {
             Settings()
                 .environmentObject(DM)
         }}}

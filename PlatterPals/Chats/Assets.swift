@@ -5,14 +5,21 @@ struct TitleBar: View {
     // ## TRACK INFO ## \\
     var id: String
     @State var image: UIImage?
+    @State var hideBar = false
     @State var showProf = false
     @Environment(\.dismiss) var dismiss
 
     @EnvironmentObject var DM: DataManager
 
     // ## SETUP VIEW ## \\
-
     var body: some View {
+        if hideBar {
+            Button("\(Image(systemName: "chevron.down"))") {
+            withAnimation {
+            hideBar = false }}
+        } else {
+            content }}
+    var content: some View {
         VStack {
         HStack {
         Button {
@@ -30,13 +37,15 @@ struct TitleBar: View {
                 .font(.title).bold()
 
             Text("\(user.city), CA")
-                .font(.subheadline)
                 .foregroundColor(.secondary)
+                .font(.subheadline)
         }}}
         Spacer()
 
-        Button("\(Image(systemName: "chevron.down"))") {
-            dismiss()
+        Button("\(Image(systemName: "chevron.up"))") {
+            withAnimation {
+                hideBar = true
+            }
         }
         .buttonStyle(.bordered)
 
@@ -46,7 +55,6 @@ struct TitleBar: View {
             .environmentObject(DM)
         }
         .padding(.horizontal, 16)
-        .padding(.top, 16)
         Div()
         }
         .onAppear {
@@ -56,13 +64,13 @@ struct TitleBar: View {
             UserProf(id: id)
                 .environmentObject(DM)
         }
-        }
+    }
     // ## FUNCTIONS ## \\
 
     func getImage(id: String, path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
 
-        SR.getData(maxSize: 8 * 1024 * 1024) { data, error in
+        SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
             if let data = data {
 
                 DispatchQueue.main.async {

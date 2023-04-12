@@ -49,17 +49,15 @@ struct Login: View {
 
                     // ## TEXTFIELDS ## \\
 
-                    Group {
-                        TextField("Email", text: $email)
-                            .textInputAutocapitalization(.never)
-                            .autocorrectionDisabled(true)
-                        Div()
+                    TextField("Email", text: $email)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled(true)
+                        .focused($focus)
+                    Div()
 
-                        SecureField("Password", text: $password)
-                        Div()
-                    }
-                    .foregroundColor(.pink)
-                    .focused($focus)
+                    SecureField("Password", text: $password)
+                        .focused($focus)
+                    Div()
 
                     Button("Forgot your login?") {
                         showReset = true

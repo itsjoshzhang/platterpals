@@ -103,7 +103,8 @@ struct Setting: Identifiable, Hashable {
     var location = true
 }
 
-struct SetItem: Hashable {
+struct SetItem: Identifiable, Hashable {
+    let id = UUID()
     let title: String
     let text: String
     let image: String

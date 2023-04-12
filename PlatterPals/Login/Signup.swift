@@ -73,8 +73,6 @@ struct Signup: View {
         }
         .textInputAutocapitalization(.never)
         .autocorrectionDisabled(true)
-        .foregroundColor(.pink)
-
         .focused($focus)
         .onTapGesture {
             focus = true
@@ -83,7 +81,6 @@ struct Signup: View {
 
         HStack {
             Text("Location:")
-                .foregroundColor(.pink)
                 .font(.headline)
 
             Picker("", selection: $city) {

@@ -8,22 +8,29 @@ struct Row: View {
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
+        ZStack {
+        Rectangle()
+            .fill(.white)
         HStack(spacing: 16) {
-            let user = DM.user(id: id)
 
-            // ## SHOW IMAGE ## \\
+        // ## SHOW IMAGE ## \\
 
-            RoundPic(width: 64, image: image)
+        RoundPic(width: 64, image: image)
 
         VStack(alignment: .leading, spacing: 8) {
+            let user = DM.user(id: id)
+
             Text(user.name)
+                .foregroundColor(.pink)
                 .font(.headline)
 
             Text("\(user.city), CA")
                 .foregroundColor(.secondary)
+                .font(.subheadline)
         }
         }
-        .frame(alignment: .leading)
+        .frame(maxWidth: UIwidth - 32, alignment: .leading)
+        }
         .onAppear {
             getImage(id: id, path: "avatars")
         }
@@ -46,28 +53,33 @@ struct Search: View {
     @State var name = ""
     @State var nextID = ""
     @State var city = "Berkeley"
-    @State var showProf: Bool
+    @State var userIDs = [String]()
 
     // ## CONDITIONS ## \\
+    @State var showProf: Bool
+    @FocusState var focus: Bool
     @State var showNext = false
     @State var following = false
-    @State var userIDs = [String]()
     @Environment(\.dismiss) var dismiss
 
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
         NavigationStack {
+        ZStack{
+        Back()
         VStack(spacing: 16) {
 
         // ## TEXTFIELDS ## \\
 
         TextField("Type in a username", text: $name)
-            .shadow(color: .pink, radius: 3)
-            .textFieldStyle(.roundedBorder)
-            .autocorrectionDisabled(true)
+            .padding(4)
+            .overlay(RoundedRectangle(cornerRadius: 8)
+                    .stroke(.secondary))
+
             .padding(.horizontal, 16)
-            .foregroundColor(.pink)
+            .padding(.top, 256)
+            .focused($focus)
 
         HStack(spacing: 0) {
             Text("Location:")
@@ -92,30 +104,40 @@ struct Search: View {
 
         List {
         ForEach(userIDs, id: \.self) { id in
-        Group {
+        let favs = DM.md().favUsers
 
-        let user = DM.user(id: id)
-        let row = Row(id: id)
-            .environmentObject(DM)
-
-        if following {
-            let favs = DM.md().favUsers
-            if (favs.contains(id) && user.city == city) {
-                row
+        if showProf {
+            let row = Row(id: id)
+                .environmentObject(DM)
+                .onTapGesture {
+                    nextID = id
+                    showNext = true
+                }
+            if following { if favs.contains(id) { row
+            }} else { row
             }
-        } else if (user.city == city) {
-            row
-        }}
-        .onTapGesture {
-            nextID = id
-            showNext = true
-        }}}
-        .listStyle(.plain)
-        }
+        } else {
+            let link = NavigationLink(value: id) {
+                Row(id: id)
+                    .environmentObject(DM)
+            }
+            if following { if favs.contains(id) { link
+            }} else { link }}}}
+
         // ## USER LOGIC ## \\
 
-        .navigationTitle("Search 🔍")
+        .listStyle(.plain)
+        .opacity(userIDs.isEmpty ? 0 : 1)
 
+        .navigationDestination(for: String.self) { id in
+            Convo(id: id)
+                .environmentObject(DM)
+            }
+        }
+        .navigationTitle("Search 🔍")
+        .onAppear {
+            focus = true
+        }
         .onChange(of: name) { _ in
             userIDs.removeAll()
 
@@ -125,12 +147,8 @@ struct Search: View {
                 if user.name.lowercased().contains(
                     name.lowercased()) {
                     userIDs.append(user.id)
-                }}}
+        }}}
         .sheet(isPresented: $showNext) {
-            if showProf {
-                UserProf(id: nextID)
-                    .environmentObject(DM)
-            } else {
-                Convo(id: nextID)
-                    .environmentObject(DM)
-            }}}}}
+            UserProf(id: nextID)
+                .environmentObject(DM)
+        }}}}}

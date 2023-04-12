@@ -16,7 +16,7 @@ struct Settings2: View {
     
     var body: some View {
         ScrollViewReader { value in
-            let user = DM.my()
+            let my = DM.my()
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
@@ -61,9 +61,9 @@ struct Settings2: View {
                     RoundPic(width: 160, image: image)
 
                     VStack(alignment: .leading) {
-                        Text(user.name)
+                        Text(my.name)
                             .font(.headline)
-                        Text(user.text)
+                        Text(my.text)
                     }
                 }
             }
@@ -76,7 +76,7 @@ struct Settings2: View {
                 Text("Payment methods: None")
 
                 HStack {
-                    Text(user.id)
+                    Text(my.id)
 
                     Button("Reset Password") {
                         showReset = true
@@ -137,7 +137,7 @@ struct Settings2: View {
                       dismissButton: .default(Text("Continue")))
             }
             .onAppear {
-                getImage(id: user.id, path: "avatars")
+                getImage(id: my.id, path: "avatars")
                 value.scrollTo(anchor, anchor: .top)
             }
         }

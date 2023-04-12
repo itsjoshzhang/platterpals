@@ -40,7 +40,7 @@ struct Update: View {
 
         ZStack {
             if let image = profile {
-                let height = UIwidth * 16.0 / 9.0
+            let height = UIwidth * 16.0 / 9.0
 
             Image(uiImage: image)
                 .resizable()

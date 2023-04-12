@@ -92,16 +92,14 @@ struct Reset: View {
         VStack(spacing: 16) {
 
         // ## TEXTFIELDS ## \\
+            
+        TextField("Email", text: $email)
+            .textInputAutocapitalization(.never)
+            .autocorrectionDisabled(true)
+        Div()
 
-        Group {
-            TextField("Email", text: $email)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled(true)
-            Div()
-
-            Text("We'll send you a reset link.")
-        }
-        .foregroundColor(.pink)
+        Text("We'll send you a reset link.")
+            .foregroundColor(.pink)
 
         // ## CLICKABLES ## \\
 

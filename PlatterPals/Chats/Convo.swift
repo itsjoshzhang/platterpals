@@ -12,8 +12,8 @@ struct Convo: View {
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
-        ZStack {
-        let myID = DM.my().id
+        ZStack(alignment: .top) {
+            let myID = DM.my().id
         VStack {
 
         // ## CHATS LOGIC ## \\
@@ -55,8 +55,8 @@ struct Convo: View {
         .padding(8)
         .background(gray)
         .cornerRadius(32)
-        .padding(.bottom, 16)
         .padding(.horizontal, 16)
+        .padding(.bottom, 8)
         }
         .onAppear {
             getChats(sender: myID, getter: id)

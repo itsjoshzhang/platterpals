@@ -67,6 +67,7 @@ struct EditProf: View {
 
     var body: some View {
         VStack(spacing: 16) {
+            var my = DM.my()
         HStack(spacing: 16) {
 
         if let d = imageData, let image = UIImage(data: d) {
@@ -96,7 +97,6 @@ struct EditProf: View {
 
         HStack(spacing: 0) {
             Text("Location:")
-                .foregroundColor(.pink)
                 .font(.headline)
 
             Picker("", selection: $city) {
@@ -117,31 +117,28 @@ struct EditProf: View {
 
         // ## SAVE LOGIC ## \\
 
-        if text.count > 200 {
+        if (text.count > 200) {
             Text("200 chars max")
                 .foregroundColor(.secondary)
         } else {
             Button("Save Edits") {
-
-                var user = DM.my()
-                user.name = name
-                user.text = text
-                user.city = city
-                DM.editUser(user: user, views: false)
-
                 if let d = imageData, let image = UIImage(data: d) {
                     DM.putImage(image: image, path: "avatars")
                 }
+                my.name = name
+                my.text = text
+                my.city = city
+
+                DM.editUser(user: my, views: false)
                 dismiss()
             }
             .disabled(name == "" || text == "")
             .buttonStyle(.borderedProminent)
-        }
-        }
+
+            .onAppear {
+                name = my.name
+                text = my.text
+            }}}
         .padding(16)
-        .onAppear {
-            name = DM.my().name
-            text = DM.my().text
-        }
     }
 }

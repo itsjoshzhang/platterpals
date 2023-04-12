@@ -2,15 +2,11 @@ import SwiftUI
 
 struct Chats: View {
 
-    // ## TRACK INFO ## \\
-    @State var nextID = ""
-    @State var showConvo = false
+    // ## SETUP VIEW ## \\
     @State var showSearch = false
     @State var chatting = [String]()
 
     @EnvironmentObject var DM: DataManager
-
-    // ## SETUP VIEW ## \\
 
     var body: some View {
         NavigationStack {
@@ -27,11 +23,9 @@ struct Chats: View {
             }
         List {
         ForEach(chatting, id: \.self) { id in
-        Row(id: id)
-            .environmentObject(DM)
-            .onTapGesture {
-                nextID = id
-                showConvo = true
+        NavigationLink(value: id) {
+            Row(id: id)
+                .environmentObject(DM)
             }
         }
         .onDelete(perform: delete(atOffsets:))
@@ -39,6 +33,10 @@ struct Chats: View {
         }
         // ## CONVOS LOGIC ## \\
 
+        .navigationDestination(for: String.self) { id in
+            Convo(id: id)
+                .environmentObject(DM)
+        }
         .onChange(of: DM.md().chatting) {_ in
             refresh()
         }
@@ -53,17 +51,15 @@ struct Chats: View {
         .sheet(isPresented: $showSearch) {
             Search(showProf: false)
                 .environmentObject(DM)
-        }
-        .fullScreenCover(isPresented: $showConvo) {
-            Convo(id: nextID)
-                .environmentObject(DM)
         }}}
 
     // ## FUNCTIONS ## \\
 
     func refresh() {
-        for id in DM.md().chatting {
-            if !(DM.md().blocked.contains(id) ||
+        let data = DM.md()
+        for id in data.chatting {
+
+            if !(data.blocked.contains(id) ||
                 chatting.contains(id)) {
                 chatting.append(id)
             }}}
