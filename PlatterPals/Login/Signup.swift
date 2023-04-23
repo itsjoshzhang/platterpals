@@ -129,9 +129,9 @@ struct Signup: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button("Cancel") {
-                    dismiss()
-                }}}
+            Button("Cancel") {
+                dismiss()
+            }}}
         .sheet(isPresented: $showGuide) {
             Guide()
         }
