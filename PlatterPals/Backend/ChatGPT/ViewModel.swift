@@ -69,7 +69,7 @@ class ViewModel: ObservableObject {
             isInteractingWithChatGPT: true,
             sendImage: "profile",
             send: .attributed(attributedSend),
-            responseImage: "openai",
+            responseImage: "logo",
             responseError: nil)
         
         self.messages.append(messageRow)
@@ -134,7 +134,7 @@ class ViewModel: ObservableObject {
             isInteractingWithChatGPT: true,
             sendImage: "profile",
             send: .rawText(text),
-            responseImage: "openai",
+            responseImage: "logo",
             response: .rawText(streamText),
             responseError: nil)
         

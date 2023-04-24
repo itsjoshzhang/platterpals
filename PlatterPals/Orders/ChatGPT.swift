@@ -6,6 +6,7 @@ struct ChatGPT: View {
     @StateObject var vm = ViewModel(api: ChatGPTAPI(
         apiKey: "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"))
     @State var isShowingTokenizer = false
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
@@ -14,6 +15,7 @@ struct ChatGPT: View {
         ToolbarItem {
             Button("Clear") {
                 vm.clearMessages()
+                dismiss()
             }
             .disabled(vm.isInteractingWithChatGPT)
         }

@@ -31,7 +31,7 @@ struct ContentView: View {
                 }
                 #if os(iOS) || os(macOS)
                 Divider()
-                bottomView(image: "profile", proxy: proxy)
+                bottomView(image: "logo", proxy: proxy)
                 Spacer()
                 #endif
             }

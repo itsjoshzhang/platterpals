@@ -39,6 +39,10 @@ struct Suggest: View {
             Text("\(friend.name)'s favorite foods:")
                 .font(.headline)
         }
+        Button("Test API") {
+            showSplash = true
+        }
+        .buttonStyle(.borderedProminent)
         }
         .navigationTitle("Let's Order")
 

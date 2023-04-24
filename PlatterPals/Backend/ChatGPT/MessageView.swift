@@ -125,13 +125,13 @@ struct MessageRowView_Previews: PreviewProvider {
     static let message = MessageRow(
         isInteractingWithChatGPT: true, sendImage: "profile",
         send: .rawText("What is SwiftUI?"),
-        responseImage: "openai",
+        responseImage: "logo",
         response: responseMessageRowType)
     
     static let message2 = MessageRow(
         isInteractingWithChatGPT: false, sendImage: "profile",
         send: .rawText("What is SwiftUI?"),
-        responseImage: "openai",
+        responseImage: "logo",
         response: .rawText(""),
         responseError: "ChatGPT is currently not available")
         
