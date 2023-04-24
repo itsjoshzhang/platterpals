@@ -10,10 +10,10 @@ struct Settings: View {
     @State var location = true
 
     // ## FALSE BOOLS ## \\
-    @State var delete = false
     @State var loggedOut = false
     @State var showReset = false
     @State var showTerms = false
+    @State var showAlert = false
     @State var showDelete = false
 
     @Environment(\.dismiss) var dismiss
@@ -32,7 +32,7 @@ struct Settings: View {
         NavigationStack {
         ZStack {
         Back()
-        VStack {
+        ScrollView {
         VStack(alignment: .leading, spacing: 16) {
 
         // ## CHATS INFO ## \\
@@ -41,35 +41,33 @@ struct Settings: View {
         HStack {
             Text("Chats")
                 .font(.headline)
+                .foregroundColor(.black)
             Spacer()
         }
         Div()
         HStack {
             Text("Allow chat notifications")
-                .foregroundColor(.secondary)
             Spacer()
             Toggle("", isOn: $notifs)
                 .frame(width: 50)
         }
         Text("Blocked users: None")
-            .foregroundColor(.secondary)
         }
         // ## HOME SCREEN ## \\
 
         Group {
         Text("Home")
             .font(.headline)
+            .foregroundColor(.black)
         Div()
         HStack {
             Text("Allow profile suggestions")
-                .foregroundColor(.secondary)
             Spacer()
             Toggle("", isOn: $suggest)
                 .frame(width: 50)
         }
         HStack {
             Text("Allow location sharing")
-                .foregroundColor(.secondary)
             Spacer()
             Toggle("", isOn: $location)
                 .frame(width: 50)
@@ -80,31 +78,30 @@ struct Settings: View {
         Group {
         Text("Orders")
             .font(.headline)
+            .foregroundColor(.black)
         Div()
         Text("Order history: None")
-            .foregroundColor(.secondary)
         Text("Favorite foods: None")
-            .foregroundColor(.secondary)
         }
         // ## SECURITY ## \\
 
         Group {
         Text("Security")
             .font(.headline)
+            .foregroundColor(.black)
         Div()
         HStack {
             Text(DM.my().id)
-                .foregroundColor(.secondary)
                 .font(.subheadline)
             Spacer()
             Button("Reset Password") {
                 showReset = true
             }
             .buttonStyle(.bordered)
+            .foregroundColor(.pink)
         }
         HStack {
             Text("Enable private profile")
-                .foregroundColor(.secondary)
             Spacer()
             Toggle("", isOn: $privacy)
                 .frame(width: 50)
@@ -115,33 +112,38 @@ struct Settings: View {
         Group {
         Text("Account")
             .font(.headline)
+            .foregroundColor(.black)
         Div()
         Button("Terms and EULA") {
             showTerms = true
         }
-        if delete {
+        if showDelete {
             HStack {
             Button("Cancel Deletion") {
                 showDelete = false
-                delete = false
             }
             .buttonStyle(.bordered)
             Spacer()
             Text("Deletion processing")
-                .foregroundColor(.secondary)
                 .font(.subheadline)
+                .foregroundColor(.secondary)
             }
         } else {
             Button("Delete Account") {
+                showAlert = true
                 showDelete = true
-                delete = true
             }
             .buttonStyle(.bordered)
-        }}}
-
+        }
+        }
+        .foregroundColor(.pink)
+        }
         // ## MODIFIERS ## \\
 
+        .padding(.top, 64)
         .padding(.horizontal, 16)
+        .foregroundColor(.secondary)
+
         .onAppear {
             let sets = DM.settings
             notifs = sets.notifs
@@ -155,10 +157,8 @@ struct Settings: View {
         .sheet(isPresented: $showTerms) {
             Terms()
         }
-        .alert(isPresented: $showDelete) {
-            Alert(title: Text("Delete account"),
-              message: Text("Deletion may take up to 24 hours."),
-              dismissButton: .default(Text("Continue")))
+        .alert("Deletion may take ~24 hours.", isPresented: $showAlert) {
+            Button("OK", role: .cancel) {}
         }
         // ## SAVE/SIGNOUT ## \\
 
@@ -171,6 +171,7 @@ struct Settings: View {
                 sets.suggest = suggest
                 sets.privacy = privacy
                 sets.location = location
+
                 DM.editSets(sets: sets)
                 dismiss()
             }

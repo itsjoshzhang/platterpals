@@ -12,7 +12,6 @@ struct UserProf: View {
     @State var showEdit = false
     @State var showChat = false
     @State var showSets = false
-    @State var showAlert = false
     @State var showUpdate = false
 
     @EnvironmentObject var DM: DataManager
