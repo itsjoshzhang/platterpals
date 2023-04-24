@@ -1,7 +1,5 @@
 import SwiftUI
 
-// https://github.com/alfianlosari/ChatGPTSwiftUI
-
 struct Suggest: View {
     
     @State var place = ""
@@ -45,8 +43,8 @@ struct Suggest: View {
         .navigationTitle("Let's Order")
 
         .fullScreenCover(isPresented: $showSplash) {
-        Splash(first: false)
-            .environmentObject(DM)
+            ChatGPT()
+                .environmentObject(DM)
         }}}}
 
 struct Order: View {

@@ -1,11 +1,5 @@
-//
-//  ChatGPTAPIModels.swift
-//  XCAChatGPT
-//
-//  Created by Alfian Losari on 03/03/23.
-//
-
 import Foundation
+import Markdown
 
 struct GPTMessage: Codable {
     let role: String
@@ -13,9 +7,9 @@ struct GPTMessage: Codable {
 }
 
 extension Array where Element == GPTMessage {
-    
-    var contentCount: Int { reduce(0, { $0 + $1.content.count })}
-}
+    var contentCount: Int {
+        reduce(0, { $0 + $1.content.count
+})}}
 
 struct Request: Codable {
     let model: String
@@ -63,3 +57,18 @@ struct StreamMessage: Decodable {
     let content: String?
 }
 
+struct ParserResult: Identifiable {
+    let id = UUID()
+    let attributedString: AttributedString
+    let isCodeBlock: Bool
+    let codeBlockLanguage: String?
+}
+
+actor ResponseParsingTask {
+    func parse(text: String) async -> AttributedOutput {
+        let document = Document(parsing: text)
+        var markdownParser = MarkdownAttributedStringParser()
+        let results = markdownParser.parserResults(from: document)
+        return AttributedOutput(string: text, results: results)
+    }
+}

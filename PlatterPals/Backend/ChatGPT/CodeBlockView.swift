@@ -1,10 +1,3 @@
-//
-//  CodeBlockView.swift
-//  XCAChatGPT
-//
-//  Created by Alfian Losari on 19/04/23.
-//
-
 import SwiftUI
 import Markdown
 
@@ -107,5 +100,3 @@ struct CodeBlockView_Previews: PreviewProvider {
         CodeBlockView(parserResult: parserResult)
     }
 }
-
-

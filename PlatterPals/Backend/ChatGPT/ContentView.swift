@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  XCAChatGPT
-//
-//  Created by Alfian Losari on 01/02/23.
-//
-
 import SwiftUI
 import AVKit
 
@@ -101,13 +94,5 @@ struct ContentView: View {
     private func scrollToBottom(proxy: ScrollViewProxy) {
         guard let id = vm.messages.last?.id else { return }
         proxy.scrollTo(id, anchor: .bottomTrailing)
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            ContentView(vm: ViewModel(api: ChatGPTAPI(apiKey: "PROVIDE_API_KEY")))
-        }
     }
 }

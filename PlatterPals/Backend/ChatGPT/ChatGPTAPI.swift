@@ -1,10 +1,3 @@
-//
-//  ChatGPTAPI.swift
-//  XCAChatGPT
-//
-//  Created by Alfian Losari on 01/02/23.
-//
-
 import Foundation
 
 class ChatGPTAPI: @unchecked Sendable {
@@ -145,19 +138,13 @@ class ChatGPTAPI: @unchecked Sendable {
             throw error
         }
     }
-    
     func deleteHistoryList() {
         self.historyList.removeAll()
     }
 }
 
 extension String: CustomNSError {
-    
     public var errorUserInfo: [String : Any] {
-        [
-            NSLocalizedDescriptionKey: self
-        ]
+        [ NSLocalizedDescriptionKey: self ]
     }
 }
-
-

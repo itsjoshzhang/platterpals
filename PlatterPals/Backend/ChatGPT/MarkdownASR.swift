@@ -1,17 +1,7 @@
-//
-//  MarkdownAttributedStringParser.swift
-//  XCAChatGPT
-//
-//  Created by Alfian Losari on 19/04/23.
-//
-
 import Foundation
 import UIKit
 import Markdown
 import Highlighter
-
-/// Based on the source code from Christian Selig
-/// https://github.com/christianselig/Markdownosaur/blob/main/Sources/Markdownosaur/Markdownosaur.swift
 
 public struct MarkdownAttributedStringParser: MarkupVisitor {
     let baseFontSize: CGFloat = UIFont.preferredFont(forTextStyle: .body).pointSize
@@ -448,4 +438,3 @@ extension NSAttributedString {
         return NSAttributedString(string: "\n\n", attributes: [.font: UIFont.systemFont(ofSize: fontSize, weight: .regular)])
     }
 }
-
