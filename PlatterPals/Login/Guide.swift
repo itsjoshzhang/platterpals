@@ -3,14 +3,14 @@ import SwiftUI
 struct Guide: View {
     var body: some View {
         TabView {
-            Guide2(image: 1, title: "Welcome to PlatterPals",
-            text: "Find food and restaurants in your area using an intelligent AI. Make friends with similar palates and meet your culinary soulmate.")
+            Guide2(image: 1, title: "Welcome to PlatterPals!",
+            text: "Find food and restaurants in your area using an intelligent AI. Make friends with similar palates and meet your culinary soulmate!")
 
             Guide2(image: 2, title: "Can't decide what to eat?",
-            text: "Let your GPT-powered AI assistant generate the perfect order. Just fill in your favorite cuisines and follow some foodies near you.")
+            text: "Let your GPT-powered AI assistant generate the perfect order. Just fill in your favorite cuisines and follow some foodies near you!")
 
-            Guide2(image: 3, title: "Go find your PlatterPal",
-            text: "We've made it easy to match with people who meet your tastes. Simply swipe left on a profile to remove and swipe right to approve.")
+            Guide2(image: 3, title: "Go find your PlatterPal!",
+            text: "We've made it easy to match with people who meet your tastes. Simply swipe left on a profile to remove and swipe right to approve!")
         }
         .indexViewStyle(.page(backgroundDisplayMode: .always))
         .tabViewStyle(.page(indexDisplayMode: .always))
@@ -42,7 +42,7 @@ struct Guide2: View {
                 .foregroundColor(.secondary)
             
             if image == 3 {
-                Button("Get started :)") {
+                Button("Get Started :)") {
                     dismiss()
                 }
                 .buttonStyle(.borderedProminent)
@@ -66,10 +66,7 @@ struct Terms: View {
 
         Text("PlatterPals will act on such content within 24 hours by removing it and banning the flagged user. For support or inquiries, please visit www.platterpals.com.")
         }
+        .navigationTitle("Terms and EULA")
         .foregroundColor(.secondary)
         .padding(16)
-        }
-        .navigationTitle("Terms and EULA")
-        }
-    }
-}
+        }}}}

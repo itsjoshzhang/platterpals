@@ -31,23 +31,23 @@ struct Splash: View {
         // ## LOGO & TEXT ## \\
 
         VStack(spacing: 16) {
-            Image("logo")
+        Image("logo")
 
-            Text("PlatterPals")
-                .font(.custom("Lobster", size: 50))
+        Text("PlatterPals")
+            .font(.custom("Lobster", size: 50))
 
-            if first == false {
-                Text("Finding the perfect dish...")
-                    .font(.headline)
-            }
-            if internet {
-                Text("Poor internet. Refresh App.")
-                    .font(.headline)
-            }
-            ProgressView()
-                .scaleEffect(2)
-                .tint(.pink)
-                .padding(16)
+        if first == false {
+            Text("Finding the perfect dish...")
+                .font(.headline)
+        }
+        if internet {
+            Text("Poor internet. Refresh App.")
+                .font(.headline)
+        }
+        ProgressView()
+            .scaleEffect(2)
+            .tint(.pink)
+            .padding(16)
         }
         .foregroundColor(.pink)
         }
@@ -57,26 +57,21 @@ struct Splash: View {
         // ## MODIFIERS ## \\
 
         .onAppear {
-        withAnimation {
-            scale = 1.0
-            opacity = 1.0
-        }
+            withAnimation {
+                scale = 1.0
+                opacity = 1.0
+            }
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            let list = DM.userList.count
 
-            if (DM.userList.count > 0 && DM.userList.count ==
-                DM.userData.count) {
+            if (list > 0 && list == DM.userData.count) {
                 withAnimation {
                     showNext = true
                 }
             } else {
-                internet = true
-            }}}
-        .toolbar {
-            if first == false {
-            ToolbarItem(placement: .navigationBarLeading) {
-            Button("Cancel") {
-                dismiss()
-            }}}}}}
+                withAnimation {
+                    internet = true
+                }}}}}}
 
 struct Reset: View {
 
@@ -84,6 +79,8 @@ struct Reset: View {
     @State var email = ""
     @State var alertText = ""
     @State var showAlert = false
+    @FocusState var focus: Bool
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         NavigationStack {
@@ -96,32 +93,35 @@ struct Reset: View {
         TextField("Email", text: $email)
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled(true)
+            .focused($focus)
         Div()
 
         Text("We'll send you a reset link!")
             .foregroundColor(.secondary)
 
-        // ## CLICKABLES ## \\
-
         Button("Reset Password") {
             resetPass()
         }
-        .buttonStyle(.borderedProminent)
         .disabled(email == "")
+        .buttonStyle(.borderedProminent)
 
         .alert(alertText, isPresented: $showAlert) {
-            Button("OK", role: .cancel) {}
-        }
-        }
+            Button("OK", role: .cancel) {
+        }}}
+
+        // ## FUNCTIONS ## \\
+
         .navigationTitle("Reset Password")
         .padding(16)
-    }}}
-
-    // ## FUNCTIONS ## \\
+        .onAppear {
+            focus = true
+        }}}}
 
     func resetPass() {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             if let error = error {
                 alertText = error.localizedDescription
                 showAlert = true
+            } else {
+                dismiss()
             }}}}

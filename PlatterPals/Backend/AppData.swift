@@ -4,7 +4,7 @@ import SwiftUI
 
 let UIwidth = UIScreen.main.bounds.size.width
 let UIheight = UIScreen.main.bounds.size.height
-let gray = Color.secondary.opacity(0.25)
+let UIgray = Color.secondary.opacity(0.25)
 
 let cityList = ["Berkeley", "Fremont", "Oakland", "Palo Alto",
                 "Pleasanton", "San Francisco", "San Jose"]
@@ -53,16 +53,15 @@ extension UIImage {
         }
     }
 }
-extension SetItem {
-    static let items = [
-        SetItem(title: "Chats", text: "Blocked users & notifications", image: "message"),
-        SetItem(title: "Home", text: "Following users & restaurants", image: "house"),
-        SetItem(title: "Orders", text: "Order history & favorite foods", image: "person"),
-        SetItem(title: "Security", text: "Signin info & account privacy", image: "lock"),
-        SetItem(title: "Account", text: "Upload data or delete account", image: "key"),
-    ]
-}
-
+//extension SetItem {
+//    static let items = [
+//        SetItem(title: "Chats", text: "Blocked users & notifications", image: "message"),
+//        SetItem(title: "Home", text: "Following users & restaurants", image: "house"),
+//        SetItem(title: "Orders", text: "Order history & favorite foods", image: "person"),
+//        SetItem(title: "Security", text: "Signin info & account privacy", image: "lock"),
+//        SetItem(title: "Account", text: "Upload data or delete account", image: "key"),
+//    ]
+//}
 struct User: Identifiable, Hashable {
     let id: String
     var name: String
@@ -103,17 +102,17 @@ struct Setting: Identifiable, Hashable {
     var location = true
 }
 
-struct SetItem: Identifiable, Hashable {
-    let id = UUID()
-    let title: String
-    let text: String
-    let image: String
-}
+//struct SetItem: Identifiable, Hashable {
+//    let id = UUID()
+//    let title: String
+//    let text: String
+//    let image: String
+//}
 
 struct Div: View {
     var body: some View {
         Divider()
-            .frame(height: 3)
+            .frame(width: UIwidth - 32, height: 3)
             .overlay(.pink)
     }
 }

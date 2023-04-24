@@ -113,7 +113,7 @@ struct EditProf: View {
         }
         }
         TextEditor(text: $text)
-            .border(gray)
+            .border(UIgray)
 
         // ## SAVE LOGIC ## \\
 

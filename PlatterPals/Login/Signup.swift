@@ -29,16 +29,16 @@ struct Signup: View {
         NavigationStack {
         ZStack {
         Back()
-
         ScrollView {
         VStack(spacing: 16) {
-        Spacer()
-            .padding(32)
 
         // ## SHOW IMAGE ## \\
 
         if let d = imageData, let image = UIImage(data: d) {
             RoundPic(width: 160, image: image)
+
+            Text("Crop to square for best result")
+                .foregroundColor(.secondary)
         } else {
             RoundPic(width: 160, image: nil)
         }
@@ -77,7 +77,7 @@ struct Signup: View {
         .onTapGesture {
             focus = true
         }
-        // ## LOCATIONS ## \\
+        // ## USER INFO ## \\
 
         HStack {
             Text("Location:")
@@ -90,8 +90,6 @@ struct Signup: View {
             }
             .buttonStyle(.bordered)
         }
-        // ## TERMS GUIDE ## \\
-
         HStack {
             Text("I agree to the")
                 .foregroundColor(.secondary)
@@ -110,28 +108,22 @@ struct Signup: View {
                 signupAuth()
             }
             .disabled(name == "")
-            .padding(.bottom, 32)
+            .padding(.bottom, 100)
 
             .alert(alertText, isPresented: $showAlert) {
-                Button("OK", role: .cancel) {}
-            }
-        }
+                Button("OK", role: .cancel) {
+                }}}
+
         .buttonStyle(.borderedProminent)
         }
-        .padding(16)
+        .padding(.vertical, 100)
+        .padding(.horizontal, 16)
         }
         }
-        // ## MODIFIERS ## \\
-
         .navigationTitle("Create Account")
         .onTapGesture {
             focus = false
         }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-            Button("Cancel") {
-                dismiss()
-            }}}
         .sheet(isPresented: $showGuide) {
             Guide()
         }

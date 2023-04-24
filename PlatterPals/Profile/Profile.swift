@@ -116,23 +116,22 @@ struct UserProf: View {
 
         .toolbar {
             if myID == id {
-            ToolbarItem {
-            Button("\(Image(systemName: "gearshape"))") {
-                showSets = true
-            }
-            .buttonStyle(.borderedProminent)
-            }}}
+                ToolbarItem {
+                    Button("\(Image(systemName: "gearshape"))") {
+                        showSets = true
+                    }
+                    .buttonStyle(.borderedProminent)
+                }}}
         .sheet(isPresented: $showEdit) {
             EditProf()
                 .environmentObject(DM)
-                .presentationDetents([.medium])
         }
         .sheet(isPresented: $showChat) {
             Convo(id: id)
                 .environmentObject(DM)
         }
-        .fullScreenCover(isPresented: $showSets) {
-            Settings()
+        .sheet(isPresented: $showSets) {
+            Settings2()
                 .environmentObject(DM)
         }}}
 

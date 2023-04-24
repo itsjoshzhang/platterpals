@@ -54,7 +54,7 @@ struct Convo: View {
         .disabled(text == "")
         }
         .padding(8)
-        .background(gray)
+        .background(UIgray)
         .cornerRadius(32)
         .padding(.horizontal, 16)
         .padding(.bottom, 8)

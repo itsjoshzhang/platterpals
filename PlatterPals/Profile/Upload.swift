@@ -65,7 +65,7 @@ struct Upload: View {
         TextEditor(text: $text)
             .frame(minHeight: UIwidth * 0.25)
             .focused($focus)
-            .border(gray)
+            .border(UIgray)
             .onTapGesture {
                 focus = true
             }
