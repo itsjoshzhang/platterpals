@@ -10,8 +10,7 @@ struct Maps: View {
     var body: some View {
         NavigationStack {
         VStack(spacing: 16) {
-            Text("Tap a pin to display profile")
-                .font(.headline)
+            Text("Tap a pin to view a profile!")
                 .foregroundColor(.secondary)
 
         ZStack(alignment: .bottom) {
@@ -26,11 +25,9 @@ struct Maps: View {
             .tint(.pink)
             .padding(16)
         }
-        }
         .navigationTitle("Near Me")
-        }
-    }
-}
+        }}}}
+
 class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     @Published var region = MKCoordinateRegion(

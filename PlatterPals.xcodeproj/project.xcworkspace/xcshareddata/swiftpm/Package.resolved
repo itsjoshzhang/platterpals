@@ -55,6 +55,15 @@
       }
     },
     {
+      "identity" : "gptencoder",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/alfianlosari/GPTEncoder.git",
+      "state" : {
+        "revision" : "a86968867ab4380e36b904a14c42215f71efe8b4",
+        "version" : "1.0.4"
+      }
+    },
+    {
       "identity" : "grpc-ios",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/grpc/grpc-ios.git",
@@ -70,6 +79,15 @@
       "state" : {
         "revision" : "5ccda3981422a84186387dbb763ba739178b529c",
         "version" : "2.3.0"
+      }
+    },
+    {
+      "identity" : "highlighterswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/alfianlosari/HighlighterSwift",
+      "state" : {
+        "branch" : "main",
+        "revision" : "c15eea4e5e8f18b0a2d2173830fcaa250f742bc0"
       }
     },
     {
@@ -97,6 +115,24 @@
       "state" : {
         "revision" : "3e4e743631e86c8c70dbc6efdc7beaa6e90fd3bb",
         "version" : "2.1.1"
+      }
+    },
+    {
+      "identity" : "swift-cmark",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-cmark.git",
+      "state" : {
+        "branch" : "gfm",
+        "revision" : "86aeb491675de6f077a3a6df6cbcac1a25dcbee1"
+      }
+    },
+    {
+      "identity" : "swift-markdown",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-markdown.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "528d49cb5130e9c84081e13e7bd639a011b9f89d"
       }
     },
     {
