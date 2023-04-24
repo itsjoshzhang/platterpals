@@ -130,8 +130,8 @@ struct UserProf: View {
             Convo(id: id)
                 .environmentObject(DM)
         }
-        .sheet(isPresented: $showSets) {
-            Settings2()
+        .fullScreenCover(isPresented: $showSets) {
+            Settings()
                 .environmentObject(DM)
         }}}
 
