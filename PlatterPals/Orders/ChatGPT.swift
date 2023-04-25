@@ -3,10 +3,11 @@ import SwiftUI
 
 struct ChatGPT: View {
     
-    @StateObject var vm = ViewModel(api: ChatGPTAPI(
-        apiKey: "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"))
+    @StateObject var vm = ViewModel(api: ChatGPTAPI())
     @State var isShowingTokenizer = false
     @Environment(\.dismiss) var dismiss
+
+    @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {

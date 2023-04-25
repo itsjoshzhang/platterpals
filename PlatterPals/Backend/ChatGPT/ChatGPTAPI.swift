@@ -1,21 +1,29 @@
 import Foundation
 
 class ChatGPTAPI: @unchecked Sendable {
-    
-    private let systemMessage: GPTMessage
-    private let temperature: Double
-    private let model: String
-    
+
+    // ## PARAMETERS ## \\
     private let apiKey: String
+    private var model: String
+    private var temperature: Double
+    private var systemMessage: GPTMessage
     private var historyList = [GPTMessage]()
+
+    // ## URL LOGIC ## \\
     private let urlSession = URLSession.shared
+
     private var urlRequest: URLRequest {
         let url = URL(string: "https://api.openai.com/v1/chat/completions")!
         var urlRequest = URLRequest(url: url)
+
         urlRequest.httpMethod = "POST"
-        headers.forEach {  urlRequest.setValue($1, forHTTPHeaderField: $0) }
+        headers.forEach {
+            urlRequest.setValue($1, forHTTPHeaderField: $0)
+        }
         return urlRequest
     }
+
+    // ## MISC LOGIC ## \\
     
     let dateFormatter: DateFormatter = {
         let df = DateFormatter()
@@ -30,19 +38,32 @@ class ChatGPTAPI: @unchecked Sendable {
     }()
     
     private var headers: [String: String] {
-        [
-            "Content-Type": "application/json",
-            "Authorization": "Bearer \(apiKey)"
-        ]
+        ["Content-Type": "application/json",
+        "Authorization": "Bearer \(apiKey)"]
     }
-    
 
-    init(apiKey: String, model: String = "gpt-3.5-turbo", systemPrompt: String = "You are a helpful assistant", temperature: Double = 0.5) {
-        self.apiKey = apiKey
-        self.model = model
-        self.systemMessage = .init(role: "system", content: systemPrompt)
-        self.temperature = temperature
+    // ## PARAMETERS ## \\
+
+    init() {
+        apiKey = "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"
+        model = "gpt-3.5-turbo"
+        systemMessage = .init(role: "system", content: "You are a helpful assistant")
+        temperature = 0.5   // TODO: change default values
     }
+
+    func editParameters(model: String, system: String, temp: Double) {
+        self.model = model
+        systemMessage = .init(role: "system", content: system)
+        temperature = temp
+    }
+
+    private func jsonBody(text: String, stream: Bool = true) throws -> Data {
+        let request = Request(model: model, temperature: temperature,
+                              messages: generateMessages(from: text), stream: stream)
+        return try JSONEncoder().encode(request)
+    }
+
+    // ## HISTORY LIST ## \\
     
     private func generateMessages(from text: String) -> [GPTMessage] {
         var messages = [systemMessage] + historyList + [GPTMessage(role: "user", content: text)]
@@ -54,16 +75,16 @@ class ChatGPTAPI: @unchecked Sendable {
         return messages
     }
     
-    private func jsonBody(text: String, stream: Bool = true) throws -> Data {
-        let request = Request(model: model, temperature: temperature,
-                              messages: generateMessages(from: text), stream: stream)
-        return try JSONEncoder().encode(request)
-    }
-    
     private func appendToHistoryList(userText: String, responseText: String) {
         self.historyList.append(.init(role: "user", content: userText))
         self.historyList.append(.init(role: "assistant", content: responseText))
     }
+
+    func deleteHistoryList() {
+        self.historyList.removeAll()
+    }
+
+    // ## HTTP LOGIC ## \\
     
     func sendMessageStream(text: String) async throws -> AsyncThrowingStream<String, Error> {
         var urlRequest = self.urlRequest
@@ -87,6 +108,7 @@ class ChatGPTAPI: @unchecked Sendable {
             
             throw "Bad Response: \(httpResponse.statusCode), \(errorText)"
         }
+        // ## MSG STREAM ## \\
         
         return AsyncThrowingStream<String, Error> { continuation in
             Task(priority: .userInitiated) { [weak self] in
@@ -98,49 +120,43 @@ class ChatGPTAPI: @unchecked Sendable {
                            let data = line.dropFirst(6).data(using: .utf8),
                            let response = try? self.jsonDecoder.decode(StreamCompletionResponse.self, from: data),
                            let text = response.choices.first?.delta.content {
-                            responseText += text
-                            continuation.yield(text)
+                                responseText += text
+                                continuation.yield(text)
                         }
                     }
                     self.appendToHistoryList(userText: text, responseText: responseText)
                     continuation.finish()
                 } catch {
                     continuation.finish(throwing: error)
-                }
-            }
-        }
-    }
+                }}}}
 
-    func sendMessage(_ text: String) async throws -> String {
-        var urlRequest = self.urlRequest
-        urlRequest.httpBody = try jsonBody(text: text, stream: false)
-        
-        let (data, response) = try await urlSession.data(for: urlRequest)
-        
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw "Invalid response"
-        }
-        
-        guard 200...299 ~= httpResponse.statusCode else {
-            var error = "Bad Response: \(httpResponse.statusCode)"
-            if let errorResponse = try? jsonDecoder.decode(ErrorRootResponse.self, from: data).error {
-                error.append("\n\(errorResponse.message)")
-            }
-            throw error
-        }
-        
-        do {
-            let completionResponse = try self.jsonDecoder.decode(CompletionResponse.self, from: data)
-            let responseText = completionResponse.choices.first?.message.content ?? ""
-            self.appendToHistoryList(userText: text, responseText: responseText)
-            return responseText
-        } catch {
-            throw error
-        }
-    }
-    func deleteHistoryList() {
-        self.historyList.removeAll()
-    }
+//    func sendMessage(_ text: String) async throws -> String {
+//        var urlRequest = self.urlRequest
+//        urlRequest.httpBody = try jsonBody(text: text, stream: false)
+//
+//        let (data, response) = try await urlSession.data(for: urlRequest)
+//
+//        guard let httpResponse = response as? HTTPURLResponse else {
+//            throw "Invalid response"
+//        }
+//
+//        guard 200...299 ~= httpResponse.statusCode else {
+//            var error = "Bad Response: \(httpResponse.statusCode)"
+//            if let errorResponse = try? jsonDecoder.decode(ErrorRootResponse.self, from: data).error {
+//                error.append("\n\(errorResponse.message)")
+//            }
+//            throw error
+//        }
+//
+//        do {
+//            let completionResponse = try self.jsonDecoder.decode(CompletionResponse.self, from: data)
+//            let responseText = completionResponse.choices.first?.message.content ?? ""
+//            self.appendToHistoryList(userText: text, responseText: responseText)
+//            return responseText
+//        } catch {
+//            throw error
+//        }
+//    }
 }
 
 extension String: CustomNSError {
