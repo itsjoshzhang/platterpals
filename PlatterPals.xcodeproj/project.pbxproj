@@ -13,11 +13,11 @@
 		F24BFEAB296CBDF100B2E616 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F24BFEAA296CBDF100B2E616 /* GoogleService-Info.plist */; };
 		F25ED26E296FBBA900A6C8F0 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25ED26D296FBBA900A6C8F0 /* Assets.swift */; };
 		F26B3F0A296F8DF600E28DBD /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26B3F09296F8DF600E28DBD /* Update.swift */; };
+		F2A9437229F8E97600F87492 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A9437129F8E97600F87492 /* History.swift */; };
 		F2B1A7B129DD59A600AB305B /* Assets2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B1A7B029DD59A600AB305B /* Assets2.swift */; };
 		F2B1A7B329DD5A4C00AB305B /* Profile2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B1A7B229DD5A4C00AB305B /* Profile2.swift */; };
 		F2C568B129F6F9490029F077 /* Markdown in Frameworks */ = {isa = PBXBuildFile; productRef = F2C568B029F6F9490029F077 /* Markdown */; };
 		F2C568B429F6F9B10029F077 /* Highlighter in Frameworks */ = {isa = PBXBuildFile; productRef = F2C568B329F6F9B10029F077 /* Highlighter */; };
-		F2D26E4629F6EE40005E2488 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E3B29F6EE3F005E2488 /* ContentView.swift */; };
 		F2D26E4729F6EE40005E2488 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E3C29F6EE3F005E2488 /* ViewModel.swift */; };
 		F2D26E4829F6EE40005E2488 /* MessageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E3D29F6EE40005E2488 /* MessageRow.swift */; };
 		F2D26E4929F6EE40005E2488 /* GPTAPIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E3E29F6EE40005E2488 /* GPTAPIModels.swift */; };
@@ -55,9 +55,9 @@
 		F24BFEAA296CBDF100B2E616 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F25ED26D296FBBA900A6C8F0 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		F26B3F09296F8DF600E28DBD /* Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Update.swift; sourceTree = "<group>"; };
+		F2A9437129F8E97600F87492 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		F2B1A7B029DD59A600AB305B /* Assets2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets2.swift; sourceTree = "<group>"; };
 		F2B1A7B229DD5A4C00AB305B /* Profile2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile2.swift; sourceTree = "<group>"; };
-		F2D26E3B29F6EE3F005E2488 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F2D26E3C29F6EE3F005E2488 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		F2D26E3D29F6EE40005E2488 /* MessageRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageRow.swift; sourceTree = "<group>"; };
 		F2D26E3E29F6EE40005E2488 /* GPTAPIModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPTAPIModels.swift; sourceTree = "<group>"; };
@@ -130,7 +130,6 @@
 				F2D26E4429F6EE40005E2488 /* ChatGPTAPI.swift */,
 				F2D26E3E29F6EE40005E2488 /* GPTAPIModels.swift */,
 				F2D26E4229F6EE40005E2488 /* CodeBlockView.swift */,
-				F2D26E3B29F6EE3F005E2488 /* ContentView.swift */,
 				F2D26E3D29F6EE40005E2488 /* MessageRow.swift */,
 				F2D26E3F29F6EE40005E2488 /* MarkdownASR.swift */,
 				F2D26E4129F6EE40005E2488 /* MessageView.swift */,
@@ -142,9 +141,9 @@
 		F2D26E5129F6EE50005E2488 /* Orders */ = {
 			isa = PBXGroup;
 			children = (
+				F2F6D84C2961730000B8F4D7 /* Suggest.swift */,
 				F2D26E5629F6EE50005E2488 /* ChatGPT.swift */,
-				F2D26E5329F6EE50005E2488 /* Tokenizer.swift */,
-				F2D26E5229F6EE50005E2488 /* TokenVM.swift */,
+				F2A9437129F8E97600F87492 /* History.swift */,
 			);
 			path = Orders;
 			sourceTree = "<group>";
@@ -188,8 +187,9 @@
 			isa = PBXGroup;
 			children = (
 				F2F6D8472961730000B8F4D7 /* Maps.swift */,
-				F2F6D84C2961730000B8F4D7 /* Suggest.swift */,
 				F2F494B8298313E3000E35BB /* Settings.swift */,
+				F2D26E5329F6EE50005E2488 /* Tokenizer.swift */,
+				F2D26E5229F6EE50005E2488 /* TokenVM.swift */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -333,7 +333,6 @@
 				F2D26E4829F6EE40005E2488 /* MessageRow.swift in Sources */,
 				F2D26E4929F6EE40005E2488 /* GPTAPIModels.swift in Sources */,
 				F2F6D86F2961730000B8F4D7 /* Firebase.swift in Sources */,
-				F2D26E4629F6EE40005E2488 /* ContentView.swift in Sources */,
 				F2F6D86D2961730000B8F4D7 /* Home.swift in Sources */,
 				F2F6D87B2961730000B8F4D7 /* Splash.swift in Sources */,
 				F2D26E5B29F6EE50005E2488 /* ChatGPT.swift in Sources */,
@@ -347,6 +346,7 @@
 				F2F6D8662961730000B8F4D7 /* Maps.swift in Sources */,
 				F2B1A7B329DD5A4C00AB305B /* Profile2.swift in Sources */,
 				F2F6D86B2961730000B8F4D7 /* Profile.swift in Sources */,
+				F2A9437229F8E97600F87492 /* History.swift in Sources */,
 				F2D26E4F29F6EE40005E2488 /* ChatGPTAPI.swift in Sources */,
 				F2F6D8722961730000B8F4D7 /* AppInit.swift in Sources */,
 				F2D26E4C29F6EE40005E2488 /* MessageView.swift in Sources */,

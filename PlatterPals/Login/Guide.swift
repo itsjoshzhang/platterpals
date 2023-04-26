@@ -42,7 +42,7 @@ struct Guide2: View {
                 .foregroundColor(.secondary)
             
             if image == 3 {
-                Button("Get Started :)") {
+                Button("Get Started") {
                     dismiss()
                 }
                 .buttonStyle(.borderedProminent)

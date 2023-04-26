@@ -12,7 +12,7 @@ class ViewModel: ObservableObject {
     private var synthesizer: AVSpeechSynthesizer?
     #endif
     
-    private let api: ChatGPTAPI
+    var api: ChatGPTAPI
     
     init(api: ChatGPTAPI, enableSpeech: Bool = false) {
         self.api = api

@@ -1,78 +1,118 @@
-import Foundation
 import SwiftUI
+import AVKit
 
 struct ChatGPT: View {
-    
-    @StateObject var vm = ViewModel(api: ChatGPTAPI())
-    @State var isShowingTokenizer = false
-    @Environment(\.dismiss) var dismiss
 
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
+    @EnvironmentObject var API: ViewModel
     
     var body: some View {
         NavigationStack {
-        ContentView(vm: vm)
+            ContentView(vm: API)
         .toolbar {
         ToolbarItem {
             Button("Clear") {
-                vm.clearMessages()
+                API.clearMessages()
                 dismiss()
             }
-            .disabled(vm.isInteractingWithChatGPT)
-        }
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button("Tokenizer") {
-                self.isShowingTokenizer = true
-            }
-            .disabled(vm.isInteractingWithChatGPT)
-        }}}
-        .fullScreenCover(isPresented: $isShowingTokenizer) {
-            NavigationTokenView()
-        }}}
+            .disabled(API.isInteractingWithChatGPT)
+        }}}}}
 
-struct NavigationTokenView: View {
-    @Environment(\.dismiss) var dismiss
+struct ContentView: View {
+
+    @Environment(\.colorScheme) var colorScheme
+    @ObservedObject var vm: ViewModel
+    @FocusState var isTextFieldFocused: Bool
 
     var body: some View {
-        NavigationStack {
-        TokenizerView()
-        .toolbar {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button("Close") {
-                dismiss()
-            }}}}
-        .interactiveDismissDisabled()
+        chatListView
+            .navigationTitle("XCA ChatGPT")
     }
-}
 
-struct TextView: UIViewRepresentable {
-    let output: TokenOutput
+    var chatListView: some View {
+        ScrollViewReader { proxy in
+            VStack(spacing: 0) {
+                ScrollView {
+                    LazyVStack(spacing: 0) {
 
-    let colors = [
-        UIColor(red: 199/255, green: 195/255, blue: 212/255, alpha: 1),
-        UIColor(red: 202/255, green: 236/255, blue: 202/255, alpha: 1),
-        UIColor(red: 241/255, green: 218/255, blue: 181/255, alpha: 1),
-        UIColor(red: 236/255, green: 180/255, blue: 180/255, alpha: 1),
-        UIColor(red: 183/255, green: 219/255, blue: 241/255, alpha: 1)]
+                    ForEach(vm.messages) { message in
+                    MessageRowView(message: message) { message in
+                    Task { @MainActor in
+                    await vm.retry(message: message)
+                    }}}}
 
-    func updateUIView(_ textView: UITextView, context: Context) {
-        let attributedText = NSMutableAttributedString()
-        output.stringTokens.enumerated().forEach { index, string in
-
-            let attributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.preferredFont(forTextStyle: .body),
-                .kern: 1,
-                .backgroundColor: colors[index % colors.count],]
-
-            let attributedTokenText = NSAttributedString(string:
-                                      string, attributes: attributes)
-            attributedText.append(attributedTokenText)
+                    .onTapGesture {
+                        isTextFieldFocused = false
+                    }
+                }
+                #if os(iOS) || os(macOS)
+                Divider()
+                bottomView(image: "logo", proxy: proxy)
+                Spacer()
+                #endif
+            }
+            .onChange(of: vm.messages.last?.responseText) { _ in
+                scrollToBottom(proxy: proxy)
+            }
         }
-        textView.attributedText = attributedText
+        .background(colorScheme == .light ? .white : Color(
+            red: 52/255, green: 53/255, blue: 65/255, opacity: 0.5))
     }
-    func makeUIView(context: Context) -> UITextView {
-        let tv = UITextView()
-        tv.isEditable = false
-        return tv
+
+    func bottomView(image: String, proxy: ScrollViewProxy) -> some View {
+        HStack(alignment: .top, spacing: 8) {
+
+            if image.hasPrefix("http"), let url = URL(string: image) {
+                AsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                } placeholder: {
+                    ProgressView()
+                }
+            } else {
+                Image(image)
+                    .resizable()
+                    .frame(width: 30, height: 30)
+            }
+            TextField("Send message", text: $vm.inputMessage, axis:
+                    .vertical)
+                #if os(iOS) || os(macOS)
+                .textFieldStyle(.roundedBorder)
+                #endif
+                .focused($isTextFieldFocused)
+                .disabled(vm.isInteractingWithChatGPT)
+
+            if vm.isInteractingWithChatGPT {
+                DotLoadingView().frame(width: 60, height: 30)
+            } else {
+                Button {
+                    Task { @MainActor in
+                        isTextFieldFocused = false
+                        scrollToBottom(proxy: proxy)
+                        await vm.sendTapped()
+                    }
+                } label: {
+                    Image(systemName: "paperplane.circle.fill")
+                        .rotationEffect(.degrees(45))
+                        .font(.system(size: 30))
+                }
+                #if os(macOS)
+                .buttonStyle(.borderless)
+                .keyboardShortcut(.defaultAction)
+                .foregroundColor(.accentColor)
+                #endif
+                .disabled(vm.inputMessage.trimmingCharacters(in:
+                        .whitespacesAndNewlines).isEmpty)
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 12)
+    }
+
+    private func scrollToBottom(proxy: ScrollViewProxy) {
+        guard let id = vm.messages.last?.id else { return }
+        proxy.scrollTo(id, anchor: .bottomTrailing)
     }
 }

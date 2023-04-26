@@ -124,6 +124,7 @@ struct UserProf: View {
         .sheet(isPresented: $showEdit) {
             EditProf()
                 .environmentObject(DM)
+                .presentationDetents([.medium])
         }
         .sheet(isPresented: $showChat) {
             Convo(id: id)

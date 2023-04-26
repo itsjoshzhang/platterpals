@@ -57,9 +57,8 @@ struct Upload: View {
                     imageData = data
                 case .failure(_):
                     return
-                }
-            }
-        }
+                }}}
+            
         // ## TEXTFIELDS ## \\
 
         TextEditor(text: $text)

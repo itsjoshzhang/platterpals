@@ -1,6 +1,6 @@
 import Foundation
 
-class ChatGPTAPI: @unchecked Sendable {
+class ChatGPTAPI: ObservableObject, @unchecked Sendable {
 
     // ## PARAMETERS ## \\
     private let apiKey: String
@@ -46,13 +46,14 @@ class ChatGPTAPI: @unchecked Sendable {
 
     init() {
         apiKey = "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"
-        model = "gpt-3.5-turbo"
-        systemMessage = .init(role: "system", content: "You are a helpful assistant")
-        temperature = 0.5   // TODO: change default values
+        model = "gpt-4"
+        systemMessage = .init(role: "system", content: "You are an AI named Foodie that suggests food and restaurants nearby.")
+        temperature = 0.5
     }
 
-    func editParameters(model: String, system: String, temp: Double) {
+    func editSets(model: String, text: String, temp: Double) {
         self.model = model
+        let system = systemMessage.content + text
         systemMessage = .init(role: "system", content: system)
         temperature = temp
     }

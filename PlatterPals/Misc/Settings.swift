@@ -23,7 +23,7 @@ struct Settings: View {
 
     var body: some View {
         if loggedOut {
-            Splash(first: true)
+            Splash()
         } else {
             content
         }
@@ -94,7 +94,7 @@ struct Settings: View {
             Text(DM.my().id)
                 .font(.subheadline)
             Spacer()
-            Button("Reset Password") {
+            Button("Reset Login") {
                 showReset = true
             }
             .buttonStyle(.bordered)
@@ -140,8 +140,8 @@ struct Settings: View {
         }
         // ## MODIFIERS ## \\
 
-        .padding(.top, 64)
-        .padding(.horizontal, 16)
+        .padding(16)
+        .padding(.top, 50)
         .foregroundColor(.secondary)
 
         .onAppear {

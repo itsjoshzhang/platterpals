@@ -44,7 +44,7 @@ struct Chats: View {
         .listStyle(.plain)
         }
         }
-        .navigationTitle("Chats")
+        .navigationTitle("My Chats")
         .onAppear {
             refresh()
         }

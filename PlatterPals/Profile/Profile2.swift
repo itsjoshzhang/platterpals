@@ -95,18 +95,13 @@ struct EditProf: View {
 
         // ## USER INFO ## \\
 
-        HStack(spacing: 0) {
-            Text("Location:")
-                .font(.headline)
-
-            Picker("", selection: $city) {
-                ForEach(["Berkeley"], id: \.self) { city in
-                    Text(city)
-                }
+        Picker("", selection: $city) {
+            ForEach(["Berkeley"], id: \.self) { city in
+                Text(city)
             }
-            .buttonStyle(.bordered)
-            .frame(maxWidth: UIwidth)
         }
+        .buttonStyle(.bordered)
+
         TextField("Username", text: $name)
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .font(.headline)

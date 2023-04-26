@@ -56,9 +56,8 @@ struct Signup: View {
                     imageData = data
                 case .failure(_):
                     return
-                }
-            }
-        }
+                }}}
+
         // ## TEXTFIELDS ## \\
 
         Group {
@@ -108,7 +107,7 @@ struct Signup: View {
                 signupAuth()
             }
             .disabled(name == "")
-            .padding(.bottom, 100)
+            .padding(.bottom, 105)
 
             .alert(alertText, isPresented: $showAlert) {
                 Button("OK", role: .cancel) {
@@ -116,11 +115,11 @@ struct Signup: View {
 
         .buttonStyle(.borderedProminent)
         }
-        .padding(.vertical, 100)
-        .padding(.horizontal, 16)
+        .padding(.vertical, 80)
+        .padding(16)
         }
         }
-        .navigationTitle("Create Account")
+        .navigationTitle("Sign Up")
         .onTapGesture {
             focus = false
         }

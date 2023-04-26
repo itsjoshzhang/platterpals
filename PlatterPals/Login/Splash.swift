@@ -4,7 +4,6 @@ import Firebase
 struct Splash: View {
 
     // ## TRACK INFO ## \\
-    @State var first: Bool
     @State var scale = 0.9
     @State var opacity = 0.0
     @State var showNext = false
@@ -13,17 +12,16 @@ struct Splash: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var DM = DataManager()
 
-    // ## OTHER VIEWS ## \\
+    // ## SETUP VIEW ## \\
 
     var body: some View {
         if showNext {
-            if first {
-                Login().environmentObject(DM)
-            } else {
-                Order().environmentObject(DM)
-        }} else {
+            Login()
+                .environmentObject(DM)
+        } else {
             content
-        }}
+        }
+    }
     var content: some View {
         ZStack {
         Back()
@@ -36,10 +34,6 @@ struct Splash: View {
         Text("PlatterPals")
             .font(.custom("Lobster", size: 50))
 
-        if first == false {
-            Text("Finding the perfect dish...")
-                .font(.headline)
-        }
         if internet {
             Text("Poor internet. Refresh App.")
                 .font(.headline)
@@ -99,8 +93,8 @@ struct Reset: View {
         Text("We'll send you a reset link!")
             .foregroundColor(.secondary)
 
-        Button("Reset Password") {
-            resetPass()
+        Button("Reset Login") {
+            resetLogin()
         }
         .disabled(email == "")
         .buttonStyle(.borderedProminent)
@@ -111,13 +105,13 @@ struct Reset: View {
 
         // ## FUNCTIONS ## \\
 
-        .navigationTitle("Reset Password")
+        .navigationTitle("Reset Login")
         .padding(16)
         .onAppear {
             focus = true
         }}}}
 
-    func resetPass() {
+    func resetLogin() {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             if let error = error {
                 alertText = error.localizedDescription
