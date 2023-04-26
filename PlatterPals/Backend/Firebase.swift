@@ -33,8 +33,7 @@ class DataManager: ObservableObject {
     func user(id: String) -> User {
         for user in userList {
             if (user.id == id || user.name == id) {
-                return user
-            }}
+                return user }}
         return my()
     }
 
@@ -42,8 +41,7 @@ class DataManager: ObservableObject {
     func data(id: String) -> UserData {
         for data in userData {
             if data.id == id {
-                return data
-            }}
+                return data }}
         return md()
     }
 

@@ -67,9 +67,9 @@ class ViewModel: ObservableObject {
         var streamText = ""
         var messageRow = MessageRow(
             isInteractingWithChatGPT: true,
-            sendImage: "profile",
+            sendImage: "logo",
             send: .attributed(attributedSend),
-            responseImage: "logo",
+            responseImage: "openai",
             responseError: nil)
         
         self.messages.append(messageRow)
@@ -132,9 +132,9 @@ class ViewModel: ObservableObject {
         var streamText = ""
         var messageRow = MessageRow(
             isInteractingWithChatGPT: true,
-            sendImage: "profile",
+            sendImage: "logo",
             send: .rawText(text),
-            responseImage: "logo",
+            responseImage: "openai",
             response: .rawText(streamText),
             responseError: nil)
         

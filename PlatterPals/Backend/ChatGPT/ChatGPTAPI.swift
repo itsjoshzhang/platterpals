@@ -3,11 +3,11 @@ import Foundation
 class ChatGPTAPI: ObservableObject, @unchecked Sendable {
 
     // ## PARAMETERS ## \\
-    private let apiKey: String
-    private var model: String
-    private var temperature: Double
-    private var systemMessage: GPTMessage
-    private var historyList = [GPTMessage]()
+    let apiKey: String
+    var model: String
+    var temperature: Double
+    var systemMessage: GPTMessage
+    var historyList = [GPTMessage]()
 
     // ## URL LOGIC ## \\
     private let urlSession = URLSession.shared
@@ -46,15 +46,14 @@ class ChatGPTAPI: ObservableObject, @unchecked Sendable {
 
     init() {
         apiKey = "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"
-        model = "gpt-4"
-        systemMessage = .init(role: "system", content: "You are an AI named Foodie that suggests food and restaurants nearby.")
+        model = "gpt-3.5-turbo"
+        systemMessage = .init(role: "system", content: "")
         temperature = 0.5
     }
 
     func editSets(model: String, text: String, temp: Double) {
         self.model = model
-        let system = systemMessage.content + text
-        systemMessage = .init(role: "system", content: system)
+        systemMessage = .init(role: "system", content: text)
         temperature = temp
     }
 

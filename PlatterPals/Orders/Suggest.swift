@@ -3,20 +3,21 @@ import SwiftUI
 struct Suggest: View {
 
     @State var place = ""
-    @State var friend = "All"
+    @State var friend = "None"
     @State var cuisine = "All"
     @State var showChatAI = false
     @State var showParams = false
 
-    @State var miles = 1
+    @State var miles = 0.5
+    @State var options = 1
     @State var temp = 0.5
-    @State var model = "gpt-4"
-    @State var models = ["gpt-3", "gpt-3.5-turbo", "gpt-4"]
+    @State var model = "GPT 3.5"
+    @State var models = ["GPT 3", "GPT 3.5", "GPT 4"]
 
     // TODO: fix these model names
 
     @EnvironmentObject var DM: DataManager
-    @StateObject var API = ViewModel(api: ChatGPTAPI())
+    @StateObject var VM = ViewModel(api: ChatGPTAPI())
     
     var body: some View {
         NavigationStack {
@@ -34,25 +35,44 @@ struct Suggest: View {
         Section("Refer from a friend?") {
 
         Picker("Friend's name", selection: $friend) {
-            ForEach(["All"] + DM.md().favUsers, id: \.self) { id in
-                if id == "All" {
-                    Text("All")
+            let md = DM.md().favUsers + DM.md().chatting
+
+            ForEach(["None"] + md, id: \.self) { id in
+                if id == "None" {
+                    Text("None")
                 } else {
                     Text(DM.user(id: id).name)
                 }}}
 
-        if friend != "All" {
+        if friend != "None" {
             VStack {
                 Text("\(DM.user(id: friend).name)'s favorite foods:")
                     .font(.headline)
                 Text("No favorites yet.")
                     .foregroundColor(.secondary)
-            }}}
+            }
+        } else {
+            Text("Currently using: Your order history")
+                .foregroundColor(.secondary)
+        }
+        }
+        Section("Search settings") {
 
-        Section("Search parameters") {
-
-        Stepper("Search within: \(miles) mile\(miles == 1 ? "": "s")",
-                value: $miles, in: 0...10, step: 1)
+        Stepper("Search within: \(miles, specifier: "%.1f") miles",
+                value: $miles, in: 0.5...5.0, step: 0.5)
+        Stepper("Show \(options) options",
+                value: $options, in: 1...5)
+        if !showParams {
+            Button("AI Parameters") {
+                withAnimation {
+                    showParams = true
+                }
+            }
+            .foregroundColor(.secondary)
+            .frame(width: UIwidth, alignment: .center)
+        }
+        }
+        Section("AI Parameters") {
         if showParams {
             VStack {
             HStack {
@@ -73,24 +93,43 @@ struct Suggest: View {
                 Text("GPT Version")
                 Picker("", selection: $model) {
                     ForEach(models, id: \.self) { id in
-                        Text(id)
+                        Text("\(id)")
                     }
             }
             .pickerStyle(.segmented)
             }
-        } else {
-            Button("AI Settings") {
-                withAnimation {
-                    showParams = true
+        }
+        }
+        }
+        Button("Let's Order") {
+            var text = "You are PlatterPal, an AI that finds nearby food and restaurants. "
+
+            if cuisine != "All" {
+                text = "Search for \(cuisine) food specifically. "
+            }
+            if place != "" {
+                text = "Search the menu of \(place). If not found, "
+            }
+            text += "Search within \(miles) miles of UC Berkeley. "
+
+            if friend != "None" {
+                let data = DM.data(id: friend).favFoods
+                if data.count > 0 {
+                    text += "Suggest food that is similar to \(data[0]) "
+                }
+            } else {
+                let data = DM.md().favFoods
+                if data.count > 0 {
+                    text += "Suggest food that is similar to \(data) "
                 }
             }
-            .foregroundColor(.secondary)
-            .frame(width: UIwidth, alignment: .center)
-        }}}
-
-        Button("Let's Order") {
-            var text = ""
-            API.api.editSets(model: model, text: text, temp: temp)
+            var model = model
+            switch model {
+                case "gpt-3": model = "text-davinci-003"
+                case "gpt-3.5": model = "gpt-3.5-turbo"
+                default: model = "gpt-3.5-turbo"
+            }
+            VM.api.editSets(model: model, text: text, temp: temp)
             showChatAI = true
         }
         .padding(.bottom, 16)
@@ -101,5 +140,5 @@ struct Suggest: View {
         .fullScreenCover(isPresented: $showChatAI) {
             ChatGPT()
             .environmentObject(DM)
-            .environmentObject(API)
+            .environmentObject(VM)
         }}}}

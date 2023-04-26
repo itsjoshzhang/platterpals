@@ -5,21 +5,29 @@ struct ChatGPT: View {
 
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
-    @EnvironmentObject var API: ViewModel
+    @EnvironmentObject var vm: ViewModel
     
     var body: some View {
         NavigationStack {
-            ContentView(vm: API)
+
+            var start = MessageRow(
+                isInteractingWithChatGPT: true, sendImage: "openai",
+                send: .rawText("Hi! I'm PlatterPal, your AI that finds nearby food and restaurants. Tap Find My Food to get started!"),
+                responseImage: "logo")
+
+            ContentView(start: start, vm: vm)
         .toolbar {
         ToolbarItem {
             Button("Clear") {
-                API.clearMessages()
+                //vm.clearMessages()
                 dismiss()
             }
-            .disabled(API.isInteractingWithChatGPT)
+            .disabled(vm.isInteractingWithChatGPT)
         }}}}}
 
 struct ContentView: View {
+
+    var start: MessageRow
 
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var vm: ViewModel
@@ -27,7 +35,7 @@ struct ContentView: View {
 
     var body: some View {
         chatListView
-            .navigationTitle("XCA ChatGPT")
+            .navigationTitle("PlatterPal AI")
     }
 
     var chatListView: some View {
@@ -36,7 +44,7 @@ struct ContentView: View {
                 ScrollView {
                     LazyVStack(spacing: 0) {
 
-                    ForEach(vm.messages) { message in
+                    ForEach([start] + vm.messages) { message in
                     MessageRowView(message: message) { message in
                     Task { @MainActor in
                     await vm.retry(message: message)
@@ -46,6 +54,10 @@ struct ContentView: View {
                         isTextFieldFocused = false
                     }
                 }
+                Text(vm.api.systemMessage.content)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+
                 #if os(iOS) || os(macOS)
                 Divider()
                 bottomView(image: "logo", proxy: proxy)
