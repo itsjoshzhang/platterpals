@@ -283,7 +283,6 @@
 				F2299D3429F6F409000AA6FC /* XCRemoteSwiftPackageReference "GPTEncoder" */,
 				F2C568AF29F6F9490029F077 /* XCRemoteSwiftPackageReference "swift-markdown" */,
 				F2C568B229F6F9B10029F077 /* XCRemoteSwiftPackageReference "HighlighterSwift" */,
-				F240D51129F71A5900F80745 /* XCRemoteSwiftPackageReference "ChatGPTSwift" */,
 			);
 			productRefGroup = F2F6D835296172B100B8F4D7 /* Products */;
 			projectDirPath = "";
@@ -573,14 +572,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
-			};
-		};
-		F240D51129F71A5900F80745 /* XCRemoteSwiftPackageReference "ChatGPTSwift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/alfianlosari/ChatGPTSwift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.0;
 			};
 		};
 		F2C568AF29F6F9490029F077 /* XCRemoteSwiftPackageReference "swift-markdown" */ = {

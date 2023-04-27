@@ -84,15 +84,14 @@ struct EditProf: View {
             .font(.headline)
 
         HStack(spacing: 0) {
-            Text("City: ")
+            Text("Location:")
                 .font(.headline)
             Picker("", selection: $city) {
                 ForEach(["Berkeley"], id: \.self) { city in
                     Text(city)
                 }}
             .frame(maxWidth: UIwidth, alignment: .leading)
-        }}}
-            
+        }
         // ## UPLOAD PIC ## \\
 
         PhotosPicker("Upload Picture", selection: $imageItem,
@@ -107,7 +106,7 @@ struct EditProf: View {
                     imageData = data
                 case .failure(_):
                     return
-                }}}
+                }}}}}
 
         TextEditor(text: $text)
             .border(UIgray)

@@ -1,5 +1,4 @@
 import SwiftUI
-import AVKit
 
 struct ChatGPT: View {
 

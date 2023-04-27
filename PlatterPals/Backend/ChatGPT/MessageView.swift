@@ -1,7 +1,5 @@
 import SwiftUI
-#if os(iOS)
 import Markdown
-#endif
 
 struct MessageRowView: View {
     
