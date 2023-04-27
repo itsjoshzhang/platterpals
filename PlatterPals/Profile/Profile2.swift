@@ -91,8 +91,8 @@ struct EditProf: View {
                     Text(city)
                 }}
             .frame(maxWidth: UIwidth, alignment: .leading)
-        }}
-
+        }}}
+            
         // ## UPLOAD PIC ## \\
 
         PhotosPicker("Upload Picture", selection: $imageItem,
@@ -107,7 +107,7 @@ struct EditProf: View {
                     imageData = data
                 case .failure(_):
                     return
-                }}}}
+                }}}
 
         TextEditor(text: $text)
             .border(UIgray)
