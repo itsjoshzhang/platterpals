@@ -67,7 +67,7 @@ struct EditProf: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            var my = DM.my()
+        var my = DM.my()
         HStack(spacing: 16) {
 
         if let d = imageData, let image = UIImage(data: d) {
@@ -76,6 +76,22 @@ struct EditProf: View {
             RoundPic(width: 120, image: nil)
         }
         VStack(alignment: .leading, spacing: 8) {
+
+        // ## USER INFO ## \\
+
+        TextField("Username", text: $name)
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .font(.headline)
+
+        HStack(spacing: 0) {
+            Text("City: ")
+                .font(.headline)
+            Picker("", selection: $city) {
+                ForEach(["Berkeley"], id: \.self) { city in
+                    Text(city)
+                }}
+            .frame(maxWidth: UIwidth, alignment: .leading)
+        }}
 
         // ## UPLOAD PIC ## \\
 
@@ -91,24 +107,7 @@ struct EditProf: View {
                     imageData = data
                 case .failure(_):
                     return
-                }}}
-
-        // ## USER INFO ## \\
-
-        TextField("Username", text: $name)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .font(.headline)
-
-        HStack(spacing: 0) {
-            Text("City: ")
-                .font(.headline)
-            Picker("", selection: $city) {
-                ForEach(["Berkeley"], id: \.self) { city in
-                    Text(city)
-                }
-            }
-            .frame(maxWidth: UIwidth, alignment: .leading)
-        }}}
+                }}}}
 
         TextEditor(text: $text)
             .border(UIgray)
