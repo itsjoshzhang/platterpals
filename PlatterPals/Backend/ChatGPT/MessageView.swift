@@ -10,13 +10,7 @@ struct MessageRowView: View {
     let retryCallback: (MessageRow) -> Void
     
     var imageSize: CGSize {
-        #if os(iOS) || os(macOS)
         CGSize(width: 25, height: 25)
-        #elseif os(watchOS)
-        CGSize(width: 20, height: 20)
-        #else
-        CGSize(width: 80, height: 80)
-        #endif
     }
     
     var body: some View {
@@ -30,19 +24,12 @@ struct MessageRowView: View {
             }}}
     
     func messageRow(rowType: MessageRowType, image: String, bgColor: Color, responseError: String? = nil, showDotLoading: Bool = false) -> some View {
-
-        #if !os(watchOS)
         HStack(alignment: .top, spacing: 24) {
             messageRowContent(rowType: rowType, image: image, responseError: responseError, showDotLoading: showDotLoading)
         }
-        #if os(tvOS)
-        .padding(32)
-        #else
         .padding(16)
-        #endif
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(bgColor)
-        #endif
     }
     
     @ViewBuilder
@@ -67,15 +54,9 @@ struct MessageRowView: View {
                 
             case .rawText(let text):
                 if !text.isEmpty {
-                    #if os(tvOS)
-                    responseTextView(text: text)
-                    #else
                     Text(text)
                         .multilineTextAlignment(.leading)
-                        #if os(iOS) || os(macOS)
                         .textSelection(.enabled)
-                        #endif
-                    #endif
                 }
             }
             if let error = responseError {
@@ -90,35 +71,16 @@ struct MessageRowView: View {
                 .padding(.top)
             }
             if showDotLoading {
-                #if os(tvOS)
-                ProgressView()
-                    .progressViewStyle(.circular)
-                    .padding()
-                #else
                 DotLoadingView()
                     .frame(width: 60, height: 30)
-                #endif
             }}}
     
     func attributedView(results: [ParserResult]) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(results) { parsed in
-                if parsed.isCodeBlock {
-//                    #if os(iOS)
-//                    CodeBlockView(parserResult: parsed)
-//                        .padding(.bottom, 24)
-//                    #else
-//                    Text(parsed.attributedString)
-//                        #if os(iOS) || os(macOS)
-//                        .textSelection(.enabled)
-//                        #endif
-//                    #endif
-                } else {
-                    Text(parsed.attributedString)
-                        #if os(iOS) || os(macOS)
-                        .textSelection(.enabled)
-                        #endif
-                }}}}}
+                Text(parsed.attributedString)
+                    .textSelection(.enabled)
+                }}}}
 
 struct MessageRowView_Previews: PreviewProvider {
     

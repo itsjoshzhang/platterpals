@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		F229820D296BFBCB00804296 /* Lobster.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F229820C296BFBCB00804296 /* Lobster.ttf */; };
 		F2299D3629F6F409000AA6FC /* GPTEncoder in Frameworks */ = {isa = PBXBuildFile; productRef = F2299D3529F6F409000AA6FC /* GPTEncoder */; };
-		F240D51329F71A5900F80745 /* ChatGPTSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F240D51229F71A5900F80745 /* ChatGPTSwift */; };
 		F24BFEAB296CBDF100B2E616 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F24BFEAA296CBDF100B2E616 /* GoogleService-Info.plist */; };
 		F25ED26E296FBBA900A6C8F0 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25ED26D296FBBA900A6C8F0 /* Assets.swift */; };
 		F26B3F0A296F8DF600E28DBD /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26B3F09296F8DF600E28DBD /* Update.swift */; };
@@ -23,7 +22,6 @@
 		F2D26E4929F6EE40005E2488 /* GPTAPIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E3E29F6EE40005E2488 /* GPTAPIModels.swift */; };
 		F2D26E4A29F6EE40005E2488 /* MarkdownASR.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E3F29F6EE40005E2488 /* MarkdownASR.swift */; };
 		F2D26E4C29F6EE40005E2488 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E4129F6EE40005E2488 /* MessageView.swift */; };
-		F2D26E4D29F6EE40005E2488 /* CodeBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E4229F6EE40005E2488 /* CodeBlockView.swift */; };
 		F2D26E4F29F6EE40005E2488 /* ChatGPTAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E4429F6EE40005E2488 /* ChatGPTAPI.swift */; };
 		F2D26E5B29F6EE50005E2488 /* ChatGPT.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E5629F6EE50005E2488 /* ChatGPT.swift */; };
 		F2D26E5E29F6F0F9005E2488 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F2D26E5D29F6F0F9005E2488 /* FirebaseAuth */; };
@@ -61,7 +59,6 @@
 		F2D26E3E29F6EE40005E2488 /* GPTAPIModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPTAPIModels.swift; sourceTree = "<group>"; };
 		F2D26E3F29F6EE40005E2488 /* MarkdownASR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkdownASR.swift; sourceTree = "<group>"; };
 		F2D26E4129F6EE40005E2488 /* MessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
-		F2D26E4229F6EE40005E2488 /* CodeBlockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeBlockView.swift; sourceTree = "<group>"; };
 		F2D26E4429F6EE40005E2488 /* ChatGPTAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatGPTAPI.swift; sourceTree = "<group>"; };
 		F2D26E5629F6EE50005E2488 /* ChatGPT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatGPT.swift; sourceTree = "<group>"; };
 		F2F494B8298313E3000E35BB /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -93,7 +90,6 @@
 				F2D26E6429F6F0F9005E2488 /* FirebaseStorage in Frameworks */,
 				F2D26E6029F6F0F9005E2488 /* FirebaseFirestore in Frameworks */,
 				F2C568B129F6F9490029F077 /* Markdown in Frameworks */,
-				F240D51329F71A5900F80745 /* ChatGPTSwift in Frameworks */,
 				F2D26E6229F6F0F9005E2488 /* FirebaseFirestoreSwift in Frameworks */,
 				F2C568B429F6F9B10029F077 /* Highlighter in Frameworks */,
 				F2299D3629F6F409000AA6FC /* GPTEncoder in Frameworks */,
@@ -125,7 +121,6 @@
 			children = (
 				F2D26E4429F6EE40005E2488 /* ChatGPTAPI.swift */,
 				F2D26E3E29F6EE40005E2488 /* GPTAPIModels.swift */,
-				F2D26E4229F6EE40005E2488 /* CodeBlockView.swift */,
 				F2D26E3D29F6EE40005E2488 /* MessageRow.swift */,
 				F2D26E3F29F6EE40005E2488 /* MarkdownASR.swift */,
 				F2D26E4129F6EE40005E2488 /* MessageView.swift */,
@@ -254,7 +249,6 @@
 				F2299D3529F6F409000AA6FC /* GPTEncoder */,
 				F2C568B029F6F9490029F077 /* Markdown */,
 				F2C568B329F6F9B10029F077 /* Highlighter */,
-				F240D51229F71A5900F80745 /* ChatGPTSwift */,
 			);
 			productName = PlateMates;
 			productReference = F2F6D834296172B100B8F4D7 /* PlatterPals.app */;
@@ -332,7 +326,6 @@
 				F2F6D86A2961730000B8F4D7 /* Suggest.swift in Sources */,
 				F2F6D86C2961730000B8F4D7 /* Upload.swift in Sources */,
 				F2B1A7B129DD59A600AB305B /* Assets2.swift in Sources */,
-				F2D26E4D29F6EE40005E2488 /* CodeBlockView.swift in Sources */,
 				F2F6D8782961730000B8F4D7 /* Chats.swift in Sources */,
 				F2D26E4729F6EE40005E2488 /* ViewModel.swift in Sources */,
 				F2F6D8662961730000B8F4D7 /* Maps.swift in Sources */,
@@ -621,11 +614,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F2299D3429F6F409000AA6FC /* XCRemoteSwiftPackageReference "GPTEncoder" */;
 			productName = GPTEncoder;
-		};
-		F240D51229F71A5900F80745 /* ChatGPTSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F240D51129F71A5900F80745 /* XCRemoteSwiftPackageReference "ChatGPTSwift" */;
-			productName = ChatGPTSwift;
 		};
 		F2C568B029F6F9490029F077 /* Markdown */ = {
 			isa = XCSwiftPackageProductDependency;

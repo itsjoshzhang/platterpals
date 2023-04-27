@@ -37,7 +37,7 @@ struct ChatGPT: View {
 
         // I don't know wtf this does.
         } else {
-            Suggest()
+            Text("")
             .onAppear {
             withAnimation {
                 fuckery = true
@@ -79,11 +79,9 @@ struct ContentView: View {
                     .font(.subheadline)
                     .foregroundColor(.secondary)
 
-                #if os(iOS) || os(macOS)
                 Divider()
                 bottomView(image: "logo", proxy: proxy)
                 Spacer()
-                #endif
             }
             .onChange(of: vm.messages.last?.responseText) { _ in
                 scrollToBottom(proxy: proxy)
@@ -111,9 +109,7 @@ struct ContentView: View {
             }
             TextField("Send message", text: $vm.inputMessage, axis:
                     .vertical)
-                #if os(iOS) || os(macOS)
                 .textFieldStyle(.roundedBorder)
-                #endif
                 .focused($isTextFieldFocused)
                 .disabled(vm.isInteractingWithChatGPT)
 
@@ -131,11 +127,6 @@ struct ContentView: View {
                         .rotationEffect(.degrees(45))
                         .font(.system(size: 30))
                 }
-                #if os(macOS)
-                .buttonStyle(.borderless)
-                .keyboardShortcut(.defaultAction)
-                .foregroundColor(.accentColor)
-                #endif
                 .disabled(vm.inputMessage.trimmingCharacters(in:
                         .whitespacesAndNewlines).isEmpty)
             }
