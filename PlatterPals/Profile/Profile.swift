@@ -87,7 +87,6 @@ struct UserProf: View {
             }
         }
         .buttonStyle(.borderedProminent)
-        .shadow(color: .pink, radius: 3)
 
         if showUpdate {
             Update(id: id, show: false, avatar: avatar,

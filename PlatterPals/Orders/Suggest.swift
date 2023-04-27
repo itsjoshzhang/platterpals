@@ -42,12 +42,11 @@ struct Suggest: View {
         }
         TextField("Restaurant name", text: $place)
         }
-        Section("Refer from a friend?") {
+        Section("Ask someone you know?") {
 
         Picker("Friend's name", selection: $friend) {
-            let md = DM.md().favUsers + DM.md().chatting
 
-            ForEach(["None"] + md, id: \.self) { id in
+            ForEach(friends(), id: \.self) { id in
                 if id == "None" {
                     Text("None")
                 } else {
@@ -67,11 +66,12 @@ struct Suggest: View {
         }
         }
         Section("Search settings") {
+            let s = options == 1 ? "": "s"
 
-        Stepper("Search within: \(miles, specifier: "%.1f") miles",
+        Stepper("Search within: \(miles, specifier: "%.1f") mile\(s)",
                 value: $miles, in: 0.5...5.0, step: 0.5)
 
-        Stepper("Show: \(options) search result\(options == 1 ? "": "s")",
+        Stepper("Show: \(options) search result\(s)",
             value: $options, in: 1...5)
         }
         Section(header: Text("AI Parameters")
@@ -123,6 +123,17 @@ struct Suggest: View {
         }}}}}}
 
     // ## FUNCTIONS ## \\
+
+    func friends() -> [String] {
+        var data = ["None"] + DM.md().favUsers
+
+        for id in DM.md().chatting {
+            if !data.contains(id) {
+                data.append(id)
+            }
+        }
+        return data
+    }
 
     func orderLogic() {
         // MARK: permanent

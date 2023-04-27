@@ -71,11 +71,11 @@ struct EditProf: View {
         HStack(spacing: 16) {
 
         if let d = imageData, let image = UIImage(data: d) {
-            RoundPic(width: 160, image: image)
+            RoundPic(width: 120, image: image)
         } else {
-            RoundPic(width: 160, image: nil)
+            RoundPic(width: 120, image: nil)
         }
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 8) {
 
         // ## UPLOAD PIC ## \\
 
@@ -95,18 +95,21 @@ struct EditProf: View {
 
         // ## USER INFO ## \\
 
-        Picker("", selection: $city) {
-            ForEach(["Berkeley"], id: \.self) { city in
-                Text(city)
-            }
-        }
-        .buttonStyle(.bordered)
-
         TextField("Username", text: $name)
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .font(.headline)
-        }
-        }
+
+        HStack(spacing: 0) {
+            Text("City: ")
+                .font(.headline)
+            Picker("", selection: $city) {
+                ForEach(["Berkeley"], id: \.self) { city in
+                    Text(city)
+                }
+            }
+            .frame(maxWidth: UIwidth, alignment: .leading)
+        }}}
+
         TextEditor(text: $text)
             .border(UIgray)
 

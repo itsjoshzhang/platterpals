@@ -78,8 +78,9 @@ struct Update: View {
         // ## OTHER VIEWS ## \\
 
         } else if myID == id {
-            Text("Add a profile.")
-                .foregroundColor(.secondary)
+            Text("No profile yet? Create one!")
+                .foregroundColor(.pink)
+                .font(.headline)
         } else {
             ProgressView()
                 .scaleEffect(2)
