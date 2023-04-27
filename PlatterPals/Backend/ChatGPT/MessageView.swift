@@ -104,15 +104,15 @@ struct MessageRowView: View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(results) { parsed in
                 if parsed.isCodeBlock {
-                    #if os(iOS)
-                    CodeBlockView(parserResult: parsed)
-                        .padding(.bottom, 24)
-                    #else
-                    Text(parsed.attributedString)
-                        #if os(iOS) || os(macOS)
-                        .textSelection(.enabled)
-                        #endif
-                    #endif
+//                    #if os(iOS)
+//                    CodeBlockView(parserResult: parsed)
+//                        .padding(.bottom, 24)
+//                    #else
+//                    Text(parsed.attributedString)
+//                        #if os(iOS) || os(macOS)
+//                        .textSelection(.enabled)
+//                        #endif
+//                    #endif
                 } else {
                     Text(parsed.attributedString)
                         #if os(iOS) || os(macOS)

@@ -72,7 +72,7 @@ struct Login: View {
             loginAuth()
         }
         .buttonStyle(.borderedProminent)
-        .disabled(email == "" || password == "")
+        .disabled(email.isEmpty || password.isEmpty)
 
         .alert(alertText, isPresented: $showAlert) {
             Button("OK", role: .cancel) {}

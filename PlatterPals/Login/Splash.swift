@@ -96,7 +96,7 @@ struct Reset: View {
         Button("Reset Login") {
             resetLogin()
         }
-        .disabled(email == "")
+        .disabled(email.isEmpty)
         .buttonStyle(.borderedProminent)
 
         .alert(alertText, isPresented: $showAlert) {

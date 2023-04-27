@@ -112,16 +112,16 @@ struct Search: View {
                     nextID = id
                     showNext = true
                 }
-            if following { if favs.contains(id) { row
-            }} else { row
-            }
+            if following && favs.contains(id) { row
+            } else { row }
         } else {
             let link = NavigationLink(value: id) {
                 Row(id: id)
                     .environmentObject(DM)
             }
-            if following { if favs.contains(id) { link
-            }} else { link }}}}
+            if following && favs.contains(id) { link
+            } else { link
+        }}}}
 
         // ## USER LOGIC ## \\
 

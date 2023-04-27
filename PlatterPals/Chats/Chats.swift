@@ -43,7 +43,6 @@ struct Chats: View {
         .opacity(chatting.isEmpty ? 0: 1)
         .listStyle(.plain)
         }
-        }
         .navigationTitle("My Chats")
         .onAppear {
             refresh()
@@ -51,7 +50,7 @@ struct Chats: View {
         .sheet(isPresented: $showSearch) {
             Search(showProf: false)
                 .environmentObject(DM)
-        }}}
+        }}}}
 
     // ## FUNCTIONS ## \\
 

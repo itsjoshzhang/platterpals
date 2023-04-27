@@ -25,8 +25,6 @@
 		F2D26E4C29F6EE40005E2488 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E4129F6EE40005E2488 /* MessageView.swift */; };
 		F2D26E4D29F6EE40005E2488 /* CodeBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E4229F6EE40005E2488 /* CodeBlockView.swift */; };
 		F2D26E4F29F6EE40005E2488 /* ChatGPTAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E4429F6EE40005E2488 /* ChatGPTAPI.swift */; };
-		F2D26E5729F6EE50005E2488 /* TokenVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E5229F6EE50005E2488 /* TokenVM.swift */; };
-		F2D26E5829F6EE50005E2488 /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E5329F6EE50005E2488 /* Tokenizer.swift */; };
 		F2D26E5B29F6EE50005E2488 /* ChatGPT.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E5629F6EE50005E2488 /* ChatGPT.swift */; };
 		F2D26E5E29F6F0F9005E2488 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F2D26E5D29F6F0F9005E2488 /* FirebaseAuth */; };
 		F2D26E6029F6F0F9005E2488 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = F2D26E5F29F6F0F9005E2488 /* FirebaseFirestore */; };
@@ -65,8 +63,6 @@
 		F2D26E4129F6EE40005E2488 /* MessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		F2D26E4229F6EE40005E2488 /* CodeBlockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeBlockView.swift; sourceTree = "<group>"; };
 		F2D26E4429F6EE40005E2488 /* ChatGPTAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatGPTAPI.swift; sourceTree = "<group>"; };
-		F2D26E5229F6EE50005E2488 /* TokenVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenVM.swift; sourceTree = "<group>"; };
-		F2D26E5329F6EE50005E2488 /* Tokenizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		F2D26E5629F6EE50005E2488 /* ChatGPT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatGPT.swift; sourceTree = "<group>"; };
 		F2F494B8298313E3000E35BB /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		F2F6D834296172B100B8F4D7 /* PlatterPals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlatterPals.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -188,8 +184,6 @@
 			children = (
 				F2F6D8472961730000B8F4D7 /* Maps.swift */,
 				F2F494B8298313E3000E35BB /* Settings.swift */,
-				F2D26E5329F6EE50005E2488 /* Tokenizer.swift */,
-				F2D26E5229F6EE50005E2488 /* TokenVM.swift */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -328,7 +322,6 @@
 				F25ED26E296FBBA900A6C8F0 /* Assets.swift in Sources */,
 				F2F6D87C2961730000B8F4D7 /* Signup.swift in Sources */,
 				F2F494B9298313E3000E35BB /* Settings.swift in Sources */,
-				F2D26E5829F6EE50005E2488 /* Tokenizer.swift in Sources */,
 				F26B3F0A296F8DF600E28DBD /* Update.swift in Sources */,
 				F2D26E4829F6EE40005E2488 /* MessageRow.swift in Sources */,
 				F2D26E4929F6EE40005E2488 /* GPTAPIModels.swift in Sources */,
@@ -340,7 +333,6 @@
 				F2F6D86C2961730000B8F4D7 /* Upload.swift in Sources */,
 				F2B1A7B129DD59A600AB305B /* Assets2.swift in Sources */,
 				F2D26E4D29F6EE40005E2488 /* CodeBlockView.swift in Sources */,
-				F2D26E5729F6EE50005E2488 /* TokenVM.swift in Sources */,
 				F2F6D8782961730000B8F4D7 /* Chats.swift in Sources */,
 				F2D26E4729F6EE40005E2488 /* ViewModel.swift in Sources */,
 				F2F6D8662961730000B8F4D7 /* Maps.swift in Sources */,

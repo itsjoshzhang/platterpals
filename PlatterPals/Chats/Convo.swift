@@ -46,12 +46,12 @@ struct Convo: View {
         } label: {
             Image(systemName: "paperplane.fill")
                 .padding(10)
-                .background((text == "") ? Color.secondary:
+                .background((text.isEmpty) ? Color.secondary:
                     Color.pink)
                 .cornerRadius(32)
                 .foregroundColor(.white)
         }
-        .disabled(text == "")
+        .disabled(text.isEmpty)
         }
         .padding(8)
         .background(UIgray)
@@ -64,7 +64,7 @@ struct Convo: View {
             var data = DM.md()
             focus = true
 
-            if !(data.chatting.contains(id) || id == "") {
+            if !(data.chatting.contains(id) || id.isEmpty) {
                 data.chatting.append(id)
 
                 DM.editData(data: data)

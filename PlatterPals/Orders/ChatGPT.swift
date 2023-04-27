@@ -3,53 +3,74 @@ import AVKit
 
 struct ChatGPT: View {
 
-    @Environment(\.dismiss) var dismiss
+    @State var dismiss = false
+    @State var fuckery = false
+
     @EnvironmentObject var DM: DataManager
     @EnvironmentObject var vm: ViewModel
-    
+
     var body: some View {
+        if dismiss {
+            Suggest()
+        } else {
+            content
+        }
+    }
+    var content: some View {
         NavigationStack {
 
-            var start = MessageRow(
-                isInteractingWithChatGPT: true, sendImage: "openai",
-                send: .rawText("Hi! I'm PlatterPal, your AI that finds nearby food and restaurants. Tap Find My Food to get started!"),
-                responseImage: "logo")
+        let system = MessageRow(
+            isInteractingWithChatGPT: true, sendImage: "openai",
+            send: .rawText("Hi! I'm PlatterPal, your AI that finds nearby food and restaurants. Tap Find My Food to get started!"),
+            responseImage: "logo")
 
-            ContentView(start: start, vm: vm)
-        .toolbar {
-        ToolbarItem {
-            Button("Clear") {
-                //vm.clearMessages()
-                dismiss()
-            }
-            .disabled(vm.isInteractingWithChatGPT)
-        }}}}}
+        if fuckery {
+            ContentView(system: system, vm: vm)
+            .navigationTitle("Your AI")
+
+            .toolbar {
+            ToolbarItem {
+            Button("Restart") {
+                withAnimation {
+                    dismiss = true
+                }}}}
+
+        // I don't know wtf this does.
+        } else {
+            Suggest()
+            .onAppear {
+            withAnimation {
+                fuckery = true
+            }}}}}}
+        // But it works so don't edit.
 
 struct ContentView: View {
 
-    var start: MessageRow
+    var system: MessageRow
 
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var vm: ViewModel
     @FocusState var isTextFieldFocused: Bool
 
     var body: some View {
-        chatListView
-            .navigationTitle("PlatterPal AI")
-    }
-
-    var chatListView: some View {
         ScrollViewReader { proxy in
             VStack(spacing: 0) {
                 ScrollView {
                     LazyVStack(spacing: 0) {
 
-                    ForEach([start] + vm.messages) { message in
+                    ForEach([system] + vm.messages) { message in
                     MessageRowView(message: message) { message in
                     Task { @MainActor in
                     await vm.retry(message: message)
-                    }}}}
+                    }}}
 
+                    Button("Find my food!") {
+                        Task { @MainActor in
+                            vm.inputMessage = "Find my food!"
+                            await vm.sendTapped()
+                        }
+                    }
+                    }
                     .onTapGesture {
                         isTextFieldFocused = false
                     }

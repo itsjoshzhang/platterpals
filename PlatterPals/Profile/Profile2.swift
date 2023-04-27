@@ -127,7 +127,7 @@ struct EditProf: View {
                 DM.editUser(user: my, views: false)
                 dismiss()
             }
-            .disabled(name == "" || text == "")
+            .disabled(name.isEmpty || text.isEmpty)
             .buttonStyle(.borderedProminent)
 
             .onAppear {

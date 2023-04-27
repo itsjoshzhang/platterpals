@@ -3,8 +3,8 @@ import SwiftUI
 struct Suggest: View {
 
     @State var place = ""
-    @State var friend = "None"
     @State var cuisine = "All"
+    @State var friend = "None"
     @State var showChatAI = false
     @State var showParams = false
 
@@ -14,14 +14,24 @@ struct Suggest: View {
     @State var model = "GPT 3.5"
     @State var models = ["GPT 3", "GPT 3.5", "GPT 4"]
 
-    // TODO: fix these model names
-
     @EnvironmentObject var DM: DataManager
     @StateObject var VM = ViewModel(api: ChatGPTAPI())
-    
+
+    @State var fuckery = false
+
     var body: some View {
+        if showChatAI {
+            ChatGPT()
+            .environmentObject(DM)
+            .environmentObject(VM)
+        } else {
+            content
+        }
+    }
+    var content: some View {
         NavigationStack {
         VStack(spacing: 16) {
+        if fuckery {
         Form {
         Section("Got something in mind?") {
 
@@ -60,19 +70,17 @@ struct Suggest: View {
 
         Stepper("Search within: \(miles, specifier: "%.1f") miles",
                 value: $miles, in: 0.5...5.0, step: 0.5)
-        Stepper("Show \(options) options",
-                value: $options, in: 1...5)
-        if !showParams {
-            Button("AI Parameters") {
+
+        Stepper("Show: \(options) search result\(options == 1 ? "": "s")",
+            value: $options, in: 1...5)
+        }
+        Section(header: Text("AI Parameters")
+            .underline()
+            .onTapGesture {
                 withAnimation {
-                    showParams = true
+                    showParams.toggle()
                 }
-            }
-            .foregroundColor(.secondary)
-            .frame(width: UIwidth, alignment: .center)
-        }
-        }
-        Section("AI Parameters") {
+            }){
         if showParams {
             VStack {
             HStack {
@@ -97,48 +105,60 @@ struct Suggest: View {
                     }
             }
             .pickerStyle(.segmented)
-            }
-        }
-        }
-        }
+        }}}}
+        .navigationTitle("Let's Order")
+
         Button("Let's Order") {
-            var text = "You are PlatterPal, an AI that finds nearby food and restaurants. "
-
-            if cuisine != "All" {
-                text = "Search for \(cuisine) food specifically. "
-            }
-            if place != "" {
-                text = "Search the menu of \(place). If not found, "
-            }
-            text += "Search within \(miles) miles of UC Berkeley. "
-
-            if friend != "None" {
-                let data = DM.data(id: friend).favFoods
-                if data.count > 0 {
-                    text += "Suggest food that is similar to \(data[0]) "
-                }
-            } else {
-                let data = DM.md().favFoods
-                if data.count > 0 {
-                    text += "Suggest food that is similar to \(data) "
-                }
-            }
-            var model = model
-            switch model {
-                case "gpt-3": model = "text-davinci-003"
-                case "gpt-3.5": model = "gpt-3.5-turbo"
-                default: model = "gpt-3.5-turbo"
-            }
-            VM.api.editSets(model: model, text: text, temp: temp)
-            showChatAI = true
+            orderLogic()
         }
         .padding(.bottom, 16)
         .buttonStyle(.borderedProminent)
-        }
-        .navigationTitle("Let's Order")
 
-        .fullScreenCover(isPresented: $showChatAI) {
-            ChatGPT()
-            .environmentObject(DM)
-            .environmentObject(VM)
-        }}}}
+    // I don't know wtf this does.
+    } else {
+        Text("")
+        .onAppear {
+        withAnimation {
+            fuckery = true
+        }}}}}}
+
+    // ## FUNCTIONS ## \\
+
+    func orderLogic() {
+        // MARK: permanent
+        var text = "You are PlatterPal, an AI that finds nearby food and restaurants. "
+
+        if !place.isEmpty {
+            text += "Search the menu of \(place). If not found, "
+        } else if cuisine != "All" {
+            text += "Search for \(cuisine) food specifically. "
+        }
+        // MARK: permanent
+        text += "Search within \(miles) miles of UC Berkeley. "
+
+        if friend != "None" {
+            let data = DM.data(id: friend).favFoods
+            if !data.isEmpty {
+                text += "Suggest food that is similar to \(data[0]) "
+            }
+        } else {
+            let data = DM.md().favFoods
+            if !data.isEmpty {
+                text += "Suggest food that is similar to \(data) "
+            }
+        }
+        // MARK: permanent
+        text += "Show only \(options) options."
+
+        var model = model
+        switch model {
+            case "gpt-3": model = "text-davinci-003"
+            case "gpt-3.5": model = "gpt-3.5-turbo"
+            default: model = "gpt-3.5-turbo"
+        }
+        VM.api.editSets(model: model, text: text, temp: temp)
+        withAnimation {
+            showChatAI = true
+        }
+    }
+}

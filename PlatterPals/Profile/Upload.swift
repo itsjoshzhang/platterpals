@@ -80,7 +80,7 @@ struct Upload: View {
                 dismiss()
             }
             .buttonStyle(.borderedProminent)
-            .disabled(text == "")
+            .disabled(text.isEmpty)
         }
         // ## OTHER STUFF ## \\
 
