@@ -1,6 +1,6 @@
-import Foundation
 import UIKit
 import Markdown
+import Foundation
 import Highlighter
 
 public struct MarkdownAttributedStringParser: MarkupVisitor {
