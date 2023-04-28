@@ -25,7 +25,7 @@ struct ChatGPT: View {
 
         if fuckery {
             ContentView(system: system, vm: vm)
-            .navigationTitle("Your AI")
+                .navigationTitle("Your AI")
 
             .toolbar {
             ToolbarItem {
@@ -41,53 +41,50 @@ struct ChatGPT: View {
             withAnimation {
                 fuckery = true
             }}}}}}
-        // But it works so don't edit.
 
 struct ContentView: View {
 
     var system: MessageRow
-
-    @Environment(\.colorScheme) var colorScheme
+    @FocusState var focus: Bool
     @ObservedObject var vm: ViewModel
-    @FocusState var isTextFieldFocused: Bool
 
     var body: some View {
         ScrollViewReader { proxy in
-            VStack(spacing: 0) {
-                ScrollView {
-                    LazyVStack(spacing: 0) {
+        VStack(spacing: 0) {
+        ScrollView {
+        LazyVStack(spacing: 0) {
 
-                    ForEach([system] + vm.messages) { message in
-                    MessageRowView(message: message) { message in
-                    Task { @MainActor in
-                    await vm.retry(message: message)
-                    }}}
-
-                    Button("Find my food!") {
-                        Task { @MainActor in
-                            vm.inputMessage = "Find my food!"
-                            await vm.sendTapped()
-                        }
-                    }
-                    }
-                    .onTapGesture {
-                        isTextFieldFocused = false
-                    }
+        ForEach([system] + vm.messages) { m in
+            MessageRowView(message: m) { m in
+                Task { @MainActor in
+                    await vm.retry(message: m)
+                }}}
+        if vm.messages.isEmpty {
+            Button("Find My Food!") {
+                Task { @MainActor in
+                    vm.inputMessage = "Find My Food!"
+                    await vm.sendTapped()
                 }
-                Text(vm.api.systemMessage.content)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-
-                Divider()
-                bottomView(image: "logo", proxy: proxy)
-                Spacer()
             }
-            .onChange(of: vm.messages.last?.responseText) { _ in
-                scrollToBottom(proxy: proxy)
-            }
+            .buttonStyle(.borderedProminent)
+            .shadow(color: .pink, radius: 4)
+        }}}
+        .onTapGesture {
+            focus = false
         }
-        .background(colorScheme == .light ? .white : Color(
-            red: 52/255, green: 53/255, blue: 65/255, opacity: 0.5))
+        Text(vm.api.systemMessage.content)
+            .font(.subheadline)
+            .foregroundColor(.secondary)
+        Divider()
+        bottomView(image: "logo", proxy: proxy)
+        Spacer()
+        }
+        .background(.gray.opacity(0.1))
+            // TODO: - Form gray color
+        .onChange(of: vm.messages.last?.responseText) {_ in
+            scrollToBottom(proxy: proxy)
+        }
+        }
     }
 
     func bottomView(image: String, proxy: ScrollViewProxy) -> some View {
@@ -109,7 +106,7 @@ struct ContentView: View {
             TextField("Send message", text: $vm.inputMessage, axis:
                     .vertical)
                 .textFieldStyle(.roundedBorder)
-                .focused($isTextFieldFocused)
+                .focused($focus)
                 .disabled(vm.isInteractingWithChatGPT)
 
             if vm.isInteractingWithChatGPT {
@@ -117,7 +114,7 @@ struct ContentView: View {
             } else {
                 Button {
                     Task { @MainActor in
-                        isTextFieldFocused = false
+                        focus = false
                         scrollToBottom(proxy: proxy)
                         await vm.sendTapped()
                     }

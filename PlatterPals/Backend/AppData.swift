@@ -96,7 +96,7 @@ struct Setting: Identifiable, Hashable {
 struct Div: View {
     var body: some View {
         Divider()
-            .frame(width: UIwidth - 32, height: 3)
+            .frame(width: UIwidth - 32, height: 2)
             .overlay(.pink)
     }
 }

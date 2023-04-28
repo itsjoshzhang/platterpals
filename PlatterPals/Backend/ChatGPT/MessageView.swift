@@ -3,7 +3,6 @@ import Markdown
 
 struct MessageRowView: View {
     
-    @Environment(\.colorScheme) private var colorScheme
     let message: MessageRow
     let retryCallback: (MessageRow) -> Void
     
@@ -13,11 +12,11 @@ struct MessageRowView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            messageRow(rowType: message.send, image: message.sendImage, bgColor: colorScheme == .light ? .white : Color(red: 52/255, green: 53/255, blue: 65/255, opacity: 0.5))
+            messageRow(rowType: message.send, image: message.sendImage, bgColor: .white.opacity(0.1))
             
             if let response = message.response {
                 Divider()
-                messageRow(rowType: response, image: message.responseImage, bgColor: colorScheme == .light ? .gray.opacity(0.1) : Color(red: 52/255, green: 53/255, blue: 65/255, opacity: 1), responseError: message.responseError, showDotLoading: message.isInteractingWithChatGPT)
+                messageRow(rowType: response, image: message.responseImage, bgColor: .gray.opacity(0.1), responseError: message.responseError, showDotLoading: message.isInteractingWithChatGPT)
                 Divider()
             }}}
     
