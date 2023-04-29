@@ -12,7 +12,7 @@
 		F24BFEAB296CBDF100B2E616 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F24BFEAA296CBDF100B2E616 /* GoogleService-Info.plist */; };
 		F25ED26E296FBBA900A6C8F0 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25ED26D296FBBA900A6C8F0 /* Assets.swift */; };
 		F26B3F0A296F8DF600E28DBD /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26B3F09296F8DF600E28DBD /* Update.swift */; };
-		F2A9437229F8E97600F87492 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A9437129F8E97600F87492 /* History.swift */; };
+		F2A9437229F8E97600F87492 /* Orders.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A9437129F8E97600F87492 /* Orders.swift */; };
 		F2B1A7B129DD59A600AB305B /* Assets2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B1A7B029DD59A600AB305B /* Assets2.swift */; };
 		F2B1A7B329DD5A4C00AB305B /* Profile2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B1A7B229DD5A4C00AB305B /* Profile2.swift */; };
 		F2C568B129F6F9490029F077 /* Markdown in Frameworks */ = {isa = PBXBuildFile; productRef = F2C568B029F6F9490029F077 /* Markdown */; };
@@ -51,7 +51,7 @@
 		F24BFEAA296CBDF100B2E616 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F25ED26D296FBBA900A6C8F0 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		F26B3F09296F8DF600E28DBD /* Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Update.swift; sourceTree = "<group>"; };
-		F2A9437129F8E97600F87492 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
+		F2A9437129F8E97600F87492 /* Orders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orders.swift; sourceTree = "<group>"; };
 		F2B1A7B029DD59A600AB305B /* Assets2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets2.swift; sourceTree = "<group>"; };
 		F2B1A7B229DD5A4C00AB305B /* Profile2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile2.swift; sourceTree = "<group>"; };
 		F2D26E3C29F6EE3F005E2488 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
@@ -134,7 +134,7 @@
 			children = (
 				F2F6D84C2961730000B8F4D7 /* Suggest.swift */,
 				F2D26E5629F6EE50005E2488 /* ChatGPT.swift */,
-				F2A9437129F8E97600F87492 /* History.swift */,
+				F2A9437129F8E97600F87492 /* Orders.swift */,
 			);
 			path = Orders;
 			sourceTree = "<group>";
@@ -330,7 +330,7 @@
 				F2F6D8662961730000B8F4D7 /* Maps.swift in Sources */,
 				F2B1A7B329DD5A4C00AB305B /* Profile2.swift in Sources */,
 				F2F6D86B2961730000B8F4D7 /* Profile.swift in Sources */,
-				F2A9437229F8E97600F87492 /* History.swift in Sources */,
+				F2A9437229F8E97600F87492 /* Orders.swift in Sources */,
 				F2D26E4F29F6EE40005E2488 /* ChatGPTAPI.swift in Sources */,
 				F2F6D8722961730000B8F4D7 /* AppInit.swift in Sources */,
 				F2D26E4C29F6EE40005E2488 /* MessageView.swift in Sources */,

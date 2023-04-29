@@ -107,6 +107,7 @@ struct Suggest: View {
                 Text("Formal")
                 Spacer()
                 Text("Personality")
+                    .font(.none)
                     .foregroundColor(.black)
                 Spacer()
                 Text("Casual")
@@ -135,7 +136,7 @@ struct Suggest: View {
 
         // I don't know wtf this does.
         } else {
-            Back()
+            Text("")
             .onAppear {
             withAnimation {
                 fuckery = true
@@ -155,10 +156,10 @@ struct Suggest: View {
     }
 
     func orderLogic() {
-        var text = "You are PlatterPal, an AI that finds nearby food and restaurants. "
+        var text = "You're PlatterPal, an AI that finds food and restaurants. "
 
         if !place.isEmpty {
-            text += "Search the menu of \(place). If not found, "
+            text += "Search the menu of \(place) in Berkeley CA. "
 
         } else if cuisine != "All" {
             text += "Search for \(cuisine) food in particular. "
@@ -175,7 +176,10 @@ struct Suggest: View {
                 text += "Suggest food that's similar to \(data[0]). "
             }
         }
-        text += "Search within \(miles) miles of UC Berkeley. Show only \(options) option."
+        if place.isEmpty {
+            text += "Search within \(miles) mi of UC Berkeley. "
+        }
+        text += "Show ONLY the best \(options) menu items. "
 
         var model = model
         switch model {
@@ -183,7 +187,8 @@ struct Suggest: View {
             case "gpt-3.5": model = "gpt-3.5-turbo"
             default: model = "gpt-3.5-turbo"
         }
-        VM.api.editSets(model: model, text: text, temp: temp)
+        VM.api = ChatGPTAPI(model: model, text: text, temp: temp)
+        // make a mutating func if this doesnt work
         withAnimation {
             showChatAI = true
         }

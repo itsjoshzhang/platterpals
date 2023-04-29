@@ -3,7 +3,7 @@ import SwiftUI
 class ChatGPTAPI: ObservableObject, @unchecked Sendable {
 
     // ## PARAMETERS ## \\
-    let apiKey: String
+    let apiKey = "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"
     var model: String
     var temperature: Double
     var systemMessage: GPTMessage
@@ -44,14 +44,10 @@ class ChatGPTAPI: ObservableObject, @unchecked Sendable {
 
     // ## PARAMETERS ## \\
 
-    init() {
-        apiKey = "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"
-        model = "gpt-3.5-turbo"
-        systemMessage = .init(role: "system", content: "")
-        temperature = 0.5
-    }
+    init(model: String = "gpt-3.5-turbo", text: String =
+         "You're PlatterPal, an AI that finds food and restaurants. ",
+         temp: Double = 0.5) {
 
-    func editSets(model: String, text: String, temp: Double) {
         self.model = model
         systemMessage = .init(role: "system", content: text)
         temperature = temp

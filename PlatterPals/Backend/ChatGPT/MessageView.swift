@@ -105,14 +105,10 @@ struct MessageRowView_Previews: PreviewProvider {
         }
     }
     static var responseMessageRowType: MessageRowType {
-        #if os(iOS)
         let document = Document(parsing: rawString)
         var parser = MarkdownAttributedStringParser()
         let results = parser.parserResults(from: document)
         return MessageRowType.attributed(.init(string: rawString, results: results))
-        #else
-        MessageRowType.rawText(rawString)
-        #endif
     }
     static var rawString = ""
 }

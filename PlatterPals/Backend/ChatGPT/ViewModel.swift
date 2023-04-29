@@ -22,11 +22,7 @@ class ViewModel: ObservableObject {
     func sendTapped() async {
         let text = inputMessage
         inputMessage = ""
-        #if os(iOS)
         await sendAttributed(text: text)
-        #else
-        await send(text: text)
-        #endif
     }
     
     @MainActor
@@ -44,14 +40,9 @@ class ViewModel: ObservableObject {
             return
         }
         self.messages.remove(at: index)
-        #if os(iOS)
         await sendAttributed(text: message.sendText)
-        #else
-        await send(text: message.sendText)
-        #endif
     }
-    
-    #if os(iOS)
+
     @MainActor
     private func sendAttributed(text: String) async {
         isInteractingWithChatGPT = true
@@ -119,7 +110,6 @@ class ViewModel: ObservableObject {
         isInteractingWithChatGPT = false
         speakLastResponse()
     }
-    #endif
     
     @MainActor
     private func send(text: String) async {

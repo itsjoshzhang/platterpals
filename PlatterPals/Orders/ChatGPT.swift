@@ -20,7 +20,7 @@ struct ChatGPT: View {
 
         let system = MessageRow(
             isInteractingWithChatGPT: true, sendImage: "openai",
-            send: .rawText("Hi! I'm PlatterPal, your AI that finds nearby food and restaurants. Tap Find My Food to get started!"),
+            send: .rawText("Hi! I'm your PlatterPal, an AI that finds food and restaurants. Tap Find My Food to get started!"),
             responseImage: "logo")
 
         if fuckery {
@@ -31,8 +31,11 @@ struct ChatGPT: View {
             ToolbarItem {
             Button("Restart") {
                 withAnimation {
+                    vm.clearMessages()
                     dismiss = true
-                }}}}
+                }}
+            .buttonStyle(.borderedProminent)
+            }}
 
         // I don't know wtf this does.
         } else {
@@ -46,6 +49,7 @@ struct ContentView: View {
 
     var system: MessageRow
     @FocusState var focus: Bool
+    @State var showOrders = false
     @ObservedObject var vm: ViewModel
 
     var body: some View {
@@ -59,16 +63,77 @@ struct ContentView: View {
                 Task { @MainActor in
                     await vm.retry(message: m)
                 }}}
+
         if vm.messages.isEmpty {
             Button("Find My Food!") {
                 Task { @MainActor in
-                    vm.inputMessage = "Find My Food!"
+                    vm.inputMessage = "Find my food!"
                     await vm.sendTapped()
                 }
             }
             .buttonStyle(.borderedProminent)
             .shadow(color: .pink, radius: 4)
-        }}}
+
+        }
+        if let last = vm.messages.last {
+            let done = !last.isInteractingWithChatGPT
+            let text = last.responseText?.lowercased()
+
+            if (text?.contains("item") ?? false) && done {
+                VStack {
+                    Button("Add to my orders") {
+                        Task { @MainActor in
+                            vm.inputMessage = "Perfect. Format your reply as ##menu item; restaurant name##"
+                            await vm.sendTapped()
+                            showOrders = true
+                        }
+                    }
+                    .buttonStyle(.bordered)
+                    .padding(.top, 16)
+                    .sheet(isPresented: $showOrders) {
+                        Orders(text: text ?? "")
+                    }
+
+                    HStack(spacing: 16) {
+                        Text("Or find another:")
+                            .foregroundColor(.secondary)
+
+                        Button("Menu item") {
+                            Task { @MainActor in
+                                vm.inputMessage = "Find another menu item at this restaurant."
+                                await vm.sendTapped()
+                            }
+                        }
+                        Text("•")
+                        Button("Restaurant") {
+                            Task { @MainActor in
+                                vm.inputMessage = "Find another restaurant."
+                                await vm.sendTapped()
+                            }}}
+                    .font(.subheadline)
+                }
+            } else if done {
+                VStack {
+                    Button("Find a menu item") {
+                        Task { @MainActor in
+                            vm.inputMessage = "Find a menu item at this restaurant."
+                            await vm.sendTapped()
+                        }
+                    }
+                    .buttonStyle(.bordered)
+                    .padding(.top, 16)
+
+                    HStack(spacing: 16) {
+                        Text("Or find another:")
+                            .foregroundColor(.secondary)
+
+                        Button("Restaurant") {
+                            Task { @MainActor in
+                                vm.inputMessage = "Find another restaurant."
+                                await vm.sendTapped()
+                            }}}
+                    .font(.subheadline)
+                }}}}}
         .onTapGesture {
             focus = false
         }
@@ -79,13 +144,9 @@ struct ContentView: View {
         bottomView(image: "logo", proxy: proxy)
         Spacer()
         }
-        .background(.gray.opacity(0.1))
-            // TODO: - Form gray color
         .onChange(of: vm.messages.last?.responseText) {_ in
             scrollToBottom(proxy: proxy)
-        }
-        }
-    }
+        }}}
 
     func bottomView(image: String, proxy: ScrollViewProxy) -> some View {
         HStack(alignment: .top, spacing: 8) {
