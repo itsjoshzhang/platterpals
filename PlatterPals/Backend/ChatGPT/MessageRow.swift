@@ -1,5 +1,40 @@
 import SwiftUI
 
+struct MessageRow: Identifiable {
+    let id = UUID()
+    var isInteractingWithChatGPT: Bool
+
+    let sendImage: String
+    let send: MessageRowType
+    var sendText: String {
+        send.text
+    }
+    let responseImage: String
+    var response: MessageRowType?
+    var responseText: String? {
+        response?.text
+    }
+    var responseError: String?
+    var show: Bool = true
+}
+
+enum MessageRowType {
+    case attributed(AttributedOutput)
+    case rawText(String)
+
+    var text: String {
+        switch self {
+        case .attributed(let attributedOutput):
+            return attributedOutput.string
+        case .rawText(let string):
+            return string
+        }}}
+
+struct AttributedOutput {
+    let string: String
+    let results: [ParserResult]
+}
+
 struct DotLoadingView: View {
     
     @State private var showCircle1 = false
@@ -40,37 +75,3 @@ struct DotLoadingView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
             self.performAnimation()
         }}}
-
-struct AttributedOutput {
-    let string: String
-    let results: [ParserResult]
-}
-
-enum MessageRowType {
-    case attributed(AttributedOutput)
-    case rawText(String)
-
-    var text: String {
-        switch self {
-        case .attributed(let attributedOutput):
-            return attributedOutput.string
-        case .rawText(let string):
-            return string
-        }}}
-
-struct MessageRow: Identifiable {
-    let id = UUID()
-    var isInteractingWithChatGPT: Bool
-
-    let sendImage: String
-    let send: MessageRowType
-    var sendText: String {
-        send.text
-    }
-    let responseImage: String
-    var response: MessageRowType?
-    var responseText: String? {
-        response?.text
-    }
-    var responseError: String?
-}

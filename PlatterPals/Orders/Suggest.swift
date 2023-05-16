@@ -20,7 +20,7 @@ struct Suggest: View {
     @StateObject var VM = ViewModel(api: ChatGPTAPI())
 
     // ## OTHER VIEWS ## \\
-
+    
     @State var fuckery = false
     var body: some View {
         if showChatAI {
@@ -56,10 +56,10 @@ struct Suggest: View {
 
         // ## FRIEND INFO ## \\
 
-        Section("Ask someone you know?") {
+        Section("Ask someone you follow?") {
 
-        Picker("Name of friend", selection: $friend) {
-            ForEach(friends(), id: \.self) { id in
+        Picker("Person's name: ", selection: $friend) {
+            ForEach(["None"] + DM.md().favUsers, id: \.self) { id in
                 if id == "None" {
                     Text("None")
                 } else {
@@ -71,9 +71,9 @@ struct Suggest: View {
                 .foregroundColor(.secondary)
         } else {
             VStack {
-                Text("\(DM.user(id: friend).name)'s favorite foods:")
+                Text("\(DM.user(id: friend).name)'s favorite foods: ")
                     .font(.headline)
-                Text("No favorites yet.")
+                Text("No favorites yet")
                     .foregroundColor(.secondary)
                 // TODO: use aiOrders and favFoods to list favorites
         }}}
@@ -92,14 +92,14 @@ struct Suggest: View {
         Stepper("Show: \(options) search result\(z)",
                 value: $options, in: 1...5)
         }
-        // ## AI SETTINGS ## \\
-
-        Section(header: Text("AI Parameters")
+        Section(header: Text("AI settings")
             .underline()
             .onTapGesture {
                 withAnimation {
                     showParams.toggle()
                 }}){
+
+        // ## AI SETTINGS ## \\
 
         if showParams {
             VStack {
@@ -126,15 +126,16 @@ struct Suggest: View {
                 }
                 .pickerStyle(.segmented)
         }}}}
-        .navigationTitle("Let's Order")
 
+        // ## MODIFIERS ## \\
+
+        .navigationTitle("Let's Order")
         Button("Let's Order") {
             orderLogic()
         }
         .padding(.bottom, 16)
         .buttonStyle(.borderedProminent)
 
-        // I don't know wtf this does.
         } else {
             Text("")
             .onAppear {
@@ -144,51 +145,38 @@ struct Suggest: View {
 
     // ## FUNCTIONS ## \\
 
-    func friends() -> [String] {
-        var data = ["None"] + DM.md().favUsers
-
-        for id in DM.md().chatting {
-            if !data.contains(id) {
-                data.append(id)
-            }
-        }
-        return data
-    }
-
     func orderLogic() {
         var text = "You're PlatterPal, an AI that finds food and restaurants. "
 
         if !place.isEmpty {
-            text += "Search the menu of \(place) in Berkeley CA. "
+            text += "Search the menu of \(place). "
 
         } else if cuisine != "All" {
-            text += "Search for \(cuisine) food in particular. "
+            text += "Search for \(cuisine) food. "
 
         } else if friend != "None" {
             let data = DM.data(id: friend).favFoods
             if !data.isEmpty {
-                text += "Suggest food that's similar to \(data[0]). "
+                text += "Find food similar to \(data[0]). "
             }
         // TODO: use aiOrders and favFoods to list favorites
         } else {
             let data = DM.md().favFoods
             if !data.isEmpty {
-                text += "Suggest food that's similar to \(data[0]). "
+                text += "Find food similar to \(data[0]). "
             }
         }
-        if place.isEmpty {
-            text += "Search within \(miles) mi of UC Berkeley. "
-        }
+        text += "Search within \(miles) mi of UC Berkeley. "
+        // TODO: replace city with user's coordinates
+
         text += "Show ONLY the best \(options) menu items. "
 
-        var model = model
         switch model {
             case "gpt-3": model = "text-davinci-003"
             case "gpt-3.5": model = "gpt-3.5-turbo"
             default: model = "gpt-3.5-turbo"
         }
         VM.api = ChatGPTAPI(model: model, text: text, temp: temp)
-        // make a mutating func if this doesnt work
         withAnimation {
             showChatAI = true
         }

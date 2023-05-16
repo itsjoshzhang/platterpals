@@ -177,8 +177,8 @@ struct Settings: View {
             }
         }
         ToolbarItem {
-            let signout = "rectangle.portrait.and.arrow.right"
-            Button("\(Image(systemName: signout))") {
+            let sn = "rectangle.portrait.and.arrow.right"
+            Button("\(Image(systemName: sn))") {
 
                 try? Auth.auth().signOut()
                 withAnimation {

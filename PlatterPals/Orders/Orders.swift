@@ -4,6 +4,19 @@ struct Orders: View {
     @State var text: String
 
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text(text)
+            if let range = text.range(of: "##.*##", options: .regularExpression) {
+
+                let trim = text[range].trimmingCharacters(in: CharacterSet(charactersIn: "#"))
+                let comp = trim.components(separatedBy: ";")
+
+                Text("Menu item: \(comp[0])")
+                Text("Restaurant: \(comp[1])")
+
+            } else {
+                Text("No matching section found")
+            }
+        }
     }
 }

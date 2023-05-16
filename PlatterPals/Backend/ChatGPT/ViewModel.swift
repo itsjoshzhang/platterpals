@@ -19,10 +19,10 @@ class ViewModel: ObservableObject {
     }
     
     @MainActor
-    func sendTapped() async {
+    func sendTapped(show: Bool = true) async {
         let text = inputMessage
         inputMessage = ""
-        await sendAttributed(text: text)
+        await sendAttributed(text: text, show: show)
     }
     
     @MainActor
@@ -44,7 +44,7 @@ class ViewModel: ObservableObject {
     }
 
     @MainActor
-    private func sendAttributed(text: String) async {
+    private func sendAttributed(text: String, show: Bool = true) async {
         isInteractingWithChatGPT = true
         
         let parsingTask = ResponseParsingTask()
@@ -56,7 +56,8 @@ class ViewModel: ObservableObject {
             sendImage: "logo",
             send: .attributed(attributedSend),
             responseImage: "openai",
-            responseError: nil)
+            responseError: nil,
+            show: show)
         
         self.messages.append(messageRow)
         
