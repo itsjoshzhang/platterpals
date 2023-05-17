@@ -71,7 +71,6 @@ struct MessageRowView: View {
             }
             if showDotLoading {
                 DotLoadingView()
-                    .frame(width: 60, height: 30)
             }}}
     
     func attributedView(results: [ParserResult]) -> some View {

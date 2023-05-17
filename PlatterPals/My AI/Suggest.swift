@@ -108,13 +108,13 @@ struct Suggest: View {
         Stepper("Number of people: \(people)",
                 value: $people, in: 1...10)
 
-        Stepper("Price range: ~ $\(price)",
+        let p = (price >= 50 ? price - 10: price - 5)
+        Stepper("Price range: $\(p)-\(price)",
                 value: $price, in: 10...100, step: 10)
 
         Picker("", selection: $style) {
-            ForEach(["Quick snack", "Casual", "Formal"],
-                id: \.self) { id in
-                Text(id)
+            ForEach(["Quick snack", "Casual", "Formal"], id: \.self) {
+                Text($0)
             }
         }
         .pickerStyle(.segmented)
@@ -136,8 +136,7 @@ struct Suggest: View {
     // ## FUNCTIONS ## \\
 
     func orderLogic() {
-        var text = "You're PlatterPal, an AI that finds food and restaurants. "
-
+        var text = ""
         if !place.isEmpty {
             text += "Search the menu of \(place). "
 
@@ -157,9 +156,11 @@ struct Suggest: View {
             }
         }
         if showOption {
-            text += "Locate a \(style) restaurant for "
-            text += (people == 1 ? "person. ": "people. ")
-            text += "Find menu items around $\(price). "
+            let n = (people == 1 ? "person": "people")
+            text += "Find a \(style) place for \(people) \(n). "
+
+            let p = (price >= 50 ? price - 10: price - 5)
+            text += "Find food from $\(p) - \(price). "
         }
         text += "Search within \(miles) mi of UC Berkeley. "
         // TODO: replace city with user's coordinates

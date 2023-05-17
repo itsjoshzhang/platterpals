@@ -50,6 +50,7 @@ struct DotLoadingView: View {
             Circle()
                 .opacity(showCircle3 ? 1 : 0)
         }
+        .frame(width: 40)
         .foregroundColor(.gray.opacity(0.5))
         .onAppear { performAnimation() }
     }

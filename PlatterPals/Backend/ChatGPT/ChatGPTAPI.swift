@@ -6,7 +6,8 @@ class ChatGPTAPI: ObservableObject, @unchecked Sendable {
     let apiKey = "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"
     let model = "gpt-3.5-turbo"
     let temperature = 0.5
-    var systemMessage: GPTMessage
+    let instructions: String
+    let systemMessage: GPTMessage
     var historyList = [GPTMessage]()
 
     // ## URL LOGIC ## \\
@@ -45,7 +46,9 @@ class ChatGPTAPI: ObservableObject, @unchecked Sendable {
     // ## INITIALIZE ## \\
 
     init(text: String = "") {
-        systemMessage = .init(role: "system", content: text)
+        instructions = text
+        systemMessage = .init(role: "system", content:
+        "You're PlatterPal, an AI that finds food and restaurants." + text)
     }
 
     private func jsonBody(text: String, stream: Bool = true) throws -> Data {
@@ -99,7 +102,7 @@ class ChatGPTAPI: ObservableObject, @unchecked Sendable {
             
             throw "Bad Response: \(httpResponse.statusCode), \(errorText)"
         }
-        // ## MSG STREAM ## \\
+        // ## CHAT STREAM ## \\
         
         return AsyncThrowingStream<String, Error> { continuation in
             Task(priority: .userInitiated) { [weak self] in

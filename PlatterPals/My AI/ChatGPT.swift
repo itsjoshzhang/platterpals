@@ -64,7 +64,7 @@ struct ContentView: View {
     // ## SETUP VIEW ## \\
     var body: some View {
         ScrollViewReader { proxy in
-        var rest = vm.messages.last?.responseText
+        let rest = vm.messages.last?.responseText
         VStack(spacing: 0) {
         ScrollView {
         LazyVStack(spacing: 0) {
@@ -89,27 +89,25 @@ struct ContentView: View {
             let done = !last.isInteractingWithChatGPT
             let item = last.responseText?.contains("item") ?? false
         if done {
-        Group {
-        if item {
-            Button("Add to Orders") {
-                Task { @MainActor in
-                    vm.inputMessage = "Format that as ##menu item; restaurant name##"
-                    await vm.sendTapped(show: false)
-                    showOrders = true
-        }}} else {
-            Button("Find a menu item") {
-                send(text: "Find a menu item at this restaurant.")
-            }}}
-        .buttonStyle(.bordered)
-        .padding(.top, 16)
 
-        // ## CONVO LOGI2 ## \\
+        Button("Add to Orders") {
+        if item {
+            Task { @MainActor in
+                vm.inputMessage = "Format your last reply as ##menu item; restaurant name##"
+                await vm.sendTapped(show: false)
+            }
+        }
+        showOrders = true
+        }
+        .foregroundColor(item ? .pink: .secondary)
+        .buttonStyle(.bordered)
+        .padding(16)
 
         HStack(spacing: 8) {
-        if item {
-            Text("Or find another:")
-                .foregroundColor(.secondary)
+        Text("Or find a:")
+            .foregroundColor(.secondary)
 
+        if item {
             Button("Menu item") {
                 send(text: "Find another menu item at this restaurant.")
             }
@@ -119,12 +117,14 @@ struct ContentView: View {
             send(text: "Find another restaurant.")
         }
         }
+        // ## MODIFIERS ## \\
+
         .font(.subheadline)
+        } else {
+            DotLoadingView()
         }}}}
         bottomView(proxy: proxy)
         }
-        // ## MODIFIERS ## \\
-
         .onTapGesture {
             focus = false
         }
@@ -148,10 +148,10 @@ struct ContentView: View {
         VStack {
         if showHelp {
 
-        Text("Your instructions: " + vm.api.systemMessage.content)
+        Text("Your instructions: " + vm.api.instructions)
             .foregroundColor(.secondary)
             .font(.subheadline)
-            .padding(16)
+            .padding(.horizontal, 16)
         }
         HStack {
         Image(systemName: "questionmark.circle")
@@ -173,7 +173,7 @@ struct ContentView: View {
                 focus = true
             }
         if vm.isInteractingWithChatGPT {
-            DotLoadingView().frame(width: 30, height: 30)
+            DotLoadingView()
         } else {
         Button {
             focus = false
