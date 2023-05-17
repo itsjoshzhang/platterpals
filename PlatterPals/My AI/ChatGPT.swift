@@ -62,9 +62,11 @@ struct ContentView: View {
     @ObservedObject var vm: ViewModel
 
     // ## SETUP VIEW ## \\
+
     var body: some View {
         ScrollViewReader { proxy in
-        let rest = vm.messages.last?.responseText
+            let rest = vm.messages.last?.responseText ?? ""
+
         VStack(spacing: 0) {
         ScrollView {
         LazyVStack(spacing: 0) {
@@ -85,23 +87,27 @@ struct ContentView: View {
         }
         // ## CONVO LOGIC ## \\
 
-        if let last = vm.messages.last {
-            let done = !last.isInteractingWithChatGPT
-            let item = last.responseText?.contains("item") ?? false
-        if done {
+        if !(vm.messages.last?.isInteractingWithChatGPT ?? false) {
+            let item = (rest.contains("item") && !rest.contains("orry"))
+        Group {
 
-        Button("Add to Orders") {
         if item {
-            Task { @MainActor in
-                vm.inputMessage = "Format your last reply as ##menu item; restaurant name##"
-                await vm.sendTapped(show: false)
+            Button("Add to Orders") {
+                Task { @MainActor in
+                    vm.inputMessage = "Format your last reply as ##menu item; restaurant name##"
+                    await vm.sendTapped(show: true)
+                    showOrders = true
+        }}} else {
+            Button("Add to Orders") {
+                showOrders = true
             }
+            .foregroundColor(.secondary)
         }
-        showOrders = true
         }
-        .foregroundColor(item ? .pink: .secondary)
         .buttonStyle(.bordered)
         .padding(16)
+
+        // ## CLICKABLES ## \\
 
         HStack(spacing: 8) {
         Text("Or find a:")
@@ -117,12 +123,13 @@ struct ContentView: View {
             send(text: "Find another restaurant.")
         }
         }
-        // ## MODIFIERS ## \\
-
         .font(.subheadline)
         } else {
             DotLoadingView()
-        }}}}
+        }}}
+
+        // ## MODIFIERS ## \\
+
         bottomView(proxy: proxy)
         }
         .onTapGesture {
@@ -132,7 +139,7 @@ struct ContentView: View {
             scrollToBottom(proxy: proxy)
         }
         .sheet(isPresented: $showOrders) {
-            NewOrder(text: rest ?? "")
+            NewOrder(text: rest)
                 .presentationDetents([.medium])
         }}}
 
@@ -153,7 +160,6 @@ struct ContentView: View {
             .font(.subheadline)
             .padding(.horizontal, 16)
         }
-        HStack {
         Image(systemName: "questionmark.circle")
             .resizable()
             .foregroundColor(.secondary)
@@ -163,6 +169,9 @@ struct ContentView: View {
                     showHelp.toggle()
                 }
             }
+        HStack {
+        HStack {
+
         // ## TEXTFIELD ## \\
 
         TextField("Send a message", text: $text, axis: .vertical)
@@ -179,7 +188,6 @@ struct ContentView: View {
             focus = false
             scrollToBottom(proxy: proxy)
             send(text: text)
-            // MARK: - add mainactor task back if this fucks up
         } label: {
             Image(systemName: "paperplane.circle.fill")
                 .padding(8)
@@ -195,8 +203,8 @@ struct ContentView: View {
         .cornerRadius(32)
         .padding(.horizontal, 16)
         .padding(.bottom, 8)
-    }
-    }
+    }}}
+    
     private func scrollToBottom(proxy: ScrollViewProxy) {
         guard let id = vm.messages.last?.id else { return }
         proxy.scrollTo(id, anchor: .bottomTrailing)
