@@ -11,14 +11,16 @@ struct MessageRowView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            messageRow(rowType: message.send, image: message.sendImage, bgColor: .white.opacity(0.1))
-            
-            if let response = message.response {
-                Divider()
-                messageRow(rowType: response, image: message.responseImage, bgColor: .gray.opacity(0.1), responseError: message.responseError, showDotLoading: message.isInteractingWithChatGPT)
-                Divider()
-            }}}
+        // MARK: - FIXME
+        if message.show {
+            VStack(spacing: 0) {
+                messageRow(rowType: message.send, image: message.sendImage, bgColor: .white.opacity(0.1))
+
+                if let response = message.response {
+                    Divider()
+                    messageRow(rowType: response, image: message.responseImage, bgColor: .gray.opacity(0.1), responseError: message.responseError, showDotLoading: message.isInteractingWithChatGPT)
+                    Divider()
+                }}}}
     
     func messageRow(rowType: MessageRowType, image: String, bgColor: Color, responseError: String? = nil, showDotLoading: Bool = false) -> some View {
         HStack(alignment: .top, spacing: 24) {

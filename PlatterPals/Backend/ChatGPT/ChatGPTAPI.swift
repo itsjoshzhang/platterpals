@@ -4,8 +4,8 @@ class ChatGPTAPI: ObservableObject, @unchecked Sendable {
 
     // ## PARAMETERS ## \\
     let apiKey = "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"
-    var model: String
-    var temperature: Double
+    let model = "gpt-3.5-turbo"
+    let temperature = 0.5
     var systemMessage: GPTMessage
     var historyList = [GPTMessage]()
 
@@ -42,15 +42,10 @@ class ChatGPTAPI: ObservableObject, @unchecked Sendable {
         "Authorization": "Bearer \(apiKey)"]
     }
 
-    // ## PARAMETERS ## \\
+    // ## INITIALIZE ## \\
 
-    init(model: String = "gpt-3.5-turbo", text: String =
-         "You're PlatterPal, an AI that finds food and restaurants. ",
-         temp: Double = 0.5) {
-
-        self.model = model
+    init(text: String = "") {
         systemMessage = .init(role: "system", content: text)
-        temperature = temp
     }
 
     private func jsonBody(text: String, stream: Bool = true) throws -> Data {

@@ -64,6 +64,7 @@ struct ContentView: View {
     // ## SETUP VIEW ## \\
     var body: some View {
         ScrollViewReader { proxy in
+        var rest = vm.messages.last?.responseText
         VStack(spacing: 0) {
         ScrollView {
         LazyVStack(spacing: 0) {
@@ -127,11 +128,11 @@ struct ContentView: View {
         .onTapGesture {
             focus = false
         }
-        .onChange(of: vm.messages.last?.responseText) {_ in
+        .onChange(of: rest) {_ in
             scrollToBottom(proxy: proxy)
         }
         .sheet(isPresented: $showOrders) {
-            NewOrder(text: vm.messages.last?.responseText ?? "")
+            NewOrder(text: rest ?? "")
                 .presentationDetents([.medium])
         }}}
 
@@ -141,58 +142,59 @@ struct ContentView: View {
             await vm.sendTapped(show: show)
         }
     }
-    // ## FUNCTIONS ## \\
+    // ## SHOW HELP ## \\
 
     func bottomView(proxy: ScrollViewProxy) -> some View {
         VStack {
         if showHelp {
 
-        Text(vm.api.systemMessage.content)
-            .font(.subheadline)
+        Text("Your instructions: " + vm.api.systemMessage.content)
             .foregroundColor(.secondary)
+            .font(.subheadline)
+            .padding(16)
         }
-            HStack {
-                Image(systemName: "questionmark.circle")
-                    .resizable()
-                    .foregroundColor(.secondary)
-                    .frame(width: 20, height: 20)
-                    .onTapGesture {
-                        withAnimation {
-                            showHelp.toggle()
-                        }
-                    }
-
-                TextField("Send a message", text: $text, axis: .vertical)
-                    .padding(.leading, 8)
-                    .focused($focus)
-                    .lineLimit(8)
-                    .onTapGesture {
-                        focus = true
-                    }
-                if vm.isInteractingWithChatGPT {
-                    DotLoadingView().frame(width: 60, height: 30)
-                } else {
-                Button {
-                    Task { @MainActor in
-                        focus = false
-                        scrollToBottom(proxy: proxy)
-                        await vm.sendTapped()
-                    }
-                } label: {
-                    Image(systemName: "paperplane.circle.fill")
-                        .padding(10)
-                        .cornerRadius(32)
-                        .foregroundColor(.white)
+        HStack {
+        Image(systemName: "questionmark.circle")
+            .resizable()
+            .foregroundColor(.secondary)
+            .frame(width: 20, height: 20)
+            .onTapGesture {
+                withAnimation {
+                    showHelp.toggle()
                 }
-                .disabled(text.isEmpty)
             }
+        // ## TEXTFIELD ## \\
+
+        TextField("Send a message", text: $text, axis: .vertical)
+            .padding(.leading, 8)
+            .focused($focus)
+            .lineLimit(8)
+            .onTapGesture {
+                focus = true
+            }
+        if vm.isInteractingWithChatGPT {
+            DotLoadingView().frame(width: 30, height: 30)
+        } else {
+        Button {
+            focus = false
+            scrollToBottom(proxy: proxy)
+            send(text: text)
+            // MARK: - add mainactor task back if this fucks up
+        } label: {
+            Image(systemName: "paperplane.circle.fill")
+                .padding(8)
+                .cornerRadius(16)
+        }
+        // ## MODIFIERS ## \\
+
+        .disabled(text.isEmpty)
+        }
         }
         .padding(8)
         .background(UIgray)
         .cornerRadius(32)
         .padding(.horizontal, 16)
         .padding(.bottom, 8)
-
     }
     }
     private func scrollToBottom(proxy: ScrollViewProxy) {

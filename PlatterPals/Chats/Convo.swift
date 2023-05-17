@@ -29,10 +29,10 @@ struct Convo: View {
             }
         }
         HStack {
-        TextField("Write a message", text: $text, axis: .vertical)
+        TextField("Send a message", text: $text, axis: .vertical)
             .padding(.leading, 8)
             .focused($focus)
-            .lineLimit(4)
+            .lineLimit(8)
             .onTapGesture {
                 focus = true
             }
@@ -44,12 +44,9 @@ struct Convo: View {
         // ## MODIFIERS ## \\
 
         } label: {
-            Image(systemName: "paperplane.fill")
-                .padding(10)
-                .background((text.isEmpty) ? Color.secondary:
-                    Color.pink)
-                .cornerRadius(32)
-                .foregroundColor(.white)
+            Image(systemName: "paperplane.circle.fill")
+                .padding(8)
+                .cornerRadius(16)
         }
         .disabled(text.isEmpty)
         }

@@ -6,15 +6,16 @@ struct Suggest: View {
     @State var place = ""
     @State var cuisine = "All"
     @State var friend = "None"
-    @State var showChatAI = false
+    @State var showOption = false
     @State var showParams = false
+    @State var showChatGPT = false
 
     // ## AI SETTINGS ## \\
     @State var miles = 0.5
     @State var options = 1
-    @State var temp = 0.5
-    @State var model = "GPT 3.5"
-    @State var models = ["GPT 3", "GPT 3.5", "GPT 4"]
+    @State var people = 1
+    @State var price = 10
+    @State var style = "Casual"
 
     @EnvironmentObject var DM: DataManager
     @StateObject var VM = ViewModel(api: ChatGPTAPI())
@@ -23,7 +24,7 @@ struct Suggest: View {
     
     @State var fuckery = false
     var body: some View {
-        if showChatAI {
+        if showChatGPT {
             ChatGPT()
                 .environmentObject(DM)
                 .environmentObject(VM)
@@ -33,10 +34,10 @@ struct Suggest: View {
     }
     var content: some View {
         NavigationStack {
-        VStack(spacing: 16) {
+        VStack(spacing: 1) {
         if fuckery {
 
-        // ## FOOD INFO ## \\
+        // ## ORDER INFO ## \\
 
         Form {
             let block1 = !(friend == "None")
@@ -67,11 +68,12 @@ struct Suggest: View {
                 }}}
 
         if friend == "None" {
-            Text("Currently using: Your order history")
+            Text("Currently using: your past orders")
                 .foregroundColor(.secondary)
+                .opacity(0.5)
         } else {
             VStack {
-                Text("\(DM.user(id: friend).name)'s favorite foods: ")
+                Text("\(DM.user(id: friend).name)'s favorite foods")
                     .font(.headline)
                 Text("No favorites yet")
                     .foregroundColor(.secondary)
@@ -85,50 +87,38 @@ struct Suggest: View {
         Section("Search settings") {
 
         let s = (miles == 1 ? "": "s")
-        Stepper("Search within: \(miles, specifier: "%.1f") mile\(s)",
+        Stepper("Range: \(miles, specifier: "%.1f") mile\(s)",
                 value: $miles, in: 0.5...5.0, step: 0.5)
 
         let z = (options == 1 ? "": "s")
-        Stepper("Show: \(options) search result\(z)",
+        Stepper("Show: \(options) result\(z)",
                 value: $options, in: 1...5)
         }
-        Section(header: Text("AI settings")
-            .underline()
+        Section(header: Text(showOption ?
+            "Back to default": "Optional items")
+            .bold().underline()
             .onTapGesture {
                 withAnimation {
-                    showParams.toggle()
+                    showOption.toggle()
                 }}){
 
-        // ## AI SETTINGS ## \\
+        // ## OPTIONALS ## \\
 
-        if showParams {
-            VStack {
-            HStack {
-                Text("Formal")
-                Spacer()
-                Text("Personality")
-                    .font(.none)
-                    .foregroundColor(.black)
-                Spacer()
-                Text("Casual")
+        if showOption {
+        Stepper("Number of people: \(people)",
+                value: $people, in: 1...10)
+
+        Stepper("Price range: ~ $\(price)",
+                value: $price, in: 10...100, step: 10)
+
+        Picker("", selection: $style) {
+            ForEach(["Quick snack", "Casual", "Formal"],
+                id: \.self) { id in
+                Text(id)
             }
-            .font(.subheadline)
-            .foregroundColor(.secondary)
-
-            Slider(value: $temp, in: 0.0...1.0, step: 0.25)
-            }
-            VStack {
-                Text("GPT Version")
-                Picker("", selection: $model) {
-                    ForEach(models, id: \.self) { id in
-                        Text(id)
-                    }
-                }
-                .pickerStyle(.segmented)
-        }}}}
-
-        // ## MODIFIERS ## \\
-
+        }
+        .pickerStyle(.segmented)
+        }}}
         .navigationTitle("Let's Order")
         Button("Let's Order") {
             orderLogic()
@@ -166,19 +156,19 @@ struct Suggest: View {
                 text += "Find food similar to \(data[0]). "
             }
         }
+        if showOption {
+            text += "Locate a \(style) restaurant for "
+            text += (people == 1 ? "person. ": "people. ")
+            text += "Find menu items around $\(price). "
+        }
         text += "Search within \(miles) mi of UC Berkeley. "
         // TODO: replace city with user's coordinates
 
-        text += "Show ONLY the best \(options) menu items. "
+        text += "Show ONLY \(options) menu items. "
 
-        switch model {
-            case "gpt-3": model = "text-davinci-003"
-            case "gpt-3.5": model = "gpt-3.5-turbo"
-            default: model = "gpt-3.5-turbo"
-        }
-        VM.api = ChatGPTAPI(model: model, text: text, temp: temp)
+        VM.api = ChatGPTAPI(text: text)
         withAnimation {
-            showChatAI = true
+            showChatGPT = true
         }
     }
 }

@@ -9,7 +9,7 @@ let UIgray = Color.secondary.opacity(0.25)
 let cityList = ["Berkeley", "Fremont", "Oakland", "Palo Alto",
                 "Pleasanton", "San Francisco", "San Jose"]
 
-let foodList = ["All", "American", "Brazilian", "Caribbean", "Chinese",
+let foodList = ["All", "American", "Boba Tea", "Caribbean", "Chinese",
                 "Ethiopian", "French", "Indian", "Italian", "Japanese",
                 "Korean", "Mexican", "Middle Eastern", "Thai", "Vietnamese"]
 
