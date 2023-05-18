@@ -7,7 +7,6 @@ struct Update: View {
     var show: Bool
     @State var scale = 0.9
     @State var swipe = 0.0
-    @State var views = 1
 
     // ## CONDITIONS ## \\
     @State var avatar: UIImage?

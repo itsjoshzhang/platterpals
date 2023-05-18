@@ -4,7 +4,6 @@ struct UserProf: View {
 
     // ## TRACK INFO ## \\
     var id: String
-    @State var views = 1
     @State var avatar: UIImage?
     @State var profile: UIImage?
 

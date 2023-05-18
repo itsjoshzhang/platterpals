@@ -6,7 +6,7 @@ struct ChatGPT: View {
     @State var dismiss = false
     @State var fuckery = false
     @EnvironmentObject var DM: DataManager
-    @EnvironmentObject var vm: ViewModel
+    @EnvironmentObject var VM: ViewModel
 
     // ## OTHER VIEWS ## \\
     var body: some View {
@@ -28,7 +28,9 @@ struct ChatGPT: View {
             send: .rawText("Hi! I'm your PlatterPal, an AI that finds food and restaurants. Tap Find My Food to get started!"),
             responseImage: "logo")
 
-        ContentView(system: system, vm: vm)
+        ContentView(system: system)
+            .environmentObject(DM)
+            .environmentObject(VM)
 
         // ## MODIFIERS ## \\
 
@@ -37,11 +39,12 @@ struct ChatGPT: View {
         ToolbarItem {
         Button("\(Image(systemName: "arrowshape.turn.up.left"))") {
             withAnimation {
-                vm.clearMessages()
+                VM.clearMessages()
                 dismiss = true
             }
         }
         .buttonStyle(.borderedProminent)
+        .disabled(VM.isInteractingWithChatGPT)
 
         }}} else {
             Text("")
@@ -59,13 +62,14 @@ struct ContentView: View {
     @State var showHelp = false
     @State var showOrders = false
 
-    @ObservedObject var vm: ViewModel
+    @EnvironmentObject var DM: DataManager
+    @EnvironmentObject var VM: ViewModel
 
     // ## SETUP VIEW ## \\
 
     var body: some View {
         ScrollViewReader { proxy in
-            let rest = vm.messages.last?.responseText ?? ""
+            let rest = (VM.messages.last?.responseText ?? "")
 
         VStack(spacing: 0) {
         ScrollView {
@@ -73,13 +77,13 @@ struct ContentView: View {
 
         // ## SHOW CHATS ## \\
 
-        ForEach([system] + vm.messages) { row in
+        ForEach([system] + VM.messages) { row in
             MessageRowView(message: row) { row in
                 Task { @MainActor in
-                    await vm.retry(message: row)
+                    await VM.retry(message: row)
                 }}}
 
-        if vm.messages.isEmpty {
+        if VM.messages.isEmpty {
             Button("Find My Food") {
                 send(text: "Find a menu item using what I told you.")
             }
@@ -87,16 +91,19 @@ struct ContentView: View {
         }
         // ## CONVO LOGIC ## \\
 
-        if !(vm.messages.last?.isInteractingWithChatGPT ?? false) {
-            let item = (rest.contains("item") && !rest.contains("orry"))
-        Group {
+        if let last = VM.messages.last {
+            if !(last.isInteractingWithChatGPT) {
+                let item = (rest.contains("item") ||
+                    rest.contains("##")) && !rest.contains("orry")
 
+        Group {
         if item {
             Button("Add to Orders") {
                 Task { @MainActor in
-                    vm.inputMessage = "Format your last reply as ##menu item; restaurant name##"
-                    await vm.sendTapped(show: true)
+                    VM.inputMessage = "Format your last reply as ##menu item; restaurant name##"
+                    await VM.sendTapped(show: true)
                     showOrders = true
+                    text = ""
         }}} else {
             Button("Add to Orders") {
                 showOrders = true
@@ -126,7 +133,7 @@ struct ContentView: View {
         .font(.subheadline)
         } else {
             DotLoadingView()
-        }}}
+        }}}}
 
         // ## MODIFIERS ## \\
 
@@ -140,13 +147,14 @@ struct ContentView: View {
         }
         .sheet(isPresented: $showOrders) {
             NewOrder(text: rest)
-                .presentationDetents([.medium])
+                .environmentObject(DM)
         }}}
 
     func send(show: Bool = true, text: String) {
         Task { @MainActor in
-            vm.inputMessage = text
-            await vm.sendTapped(show: show)
+            VM.inputMessage = text
+            await VM.sendTapped(show: show)
+            self.text = ""
         }
     }
     // ## SHOW HELP ## \\
@@ -155,21 +163,21 @@ struct ContentView: View {
         VStack {
         if showHelp {
 
-        Text("Your instructions: " + vm.api.instructions)
+        Text("Your instructions: " + VM.api.instructions)
             .foregroundColor(.secondary)
             .font(.subheadline)
             .padding(.horizontal, 16)
         }
+        HStack {
         Image(systemName: "questionmark.circle")
             .resizable()
             .foregroundColor(.secondary)
-            .frame(width: 20, height: 20)
+            .frame(width: 24, height: 24)
             .onTapGesture {
                 withAnimation {
                     showHelp.toggle()
                 }
             }
-        HStack {
         HStack {
 
         // ## TEXTFIELD ## \\
@@ -181,7 +189,7 @@ struct ContentView: View {
             .onTapGesture {
                 focus = true
             }
-        if vm.isInteractingWithChatGPT {
+        if VM.isInteractingWithChatGPT {
             DotLoadingView()
         } else {
         Button {
@@ -190,8 +198,8 @@ struct ContentView: View {
             send(text: text)
         } label: {
             Image(systemName: "paperplane.circle.fill")
-                .padding(8)
-                .cornerRadius(16)
+                .resizable()
+                .frame(width: 24, height: 24)
         }
         // ## MODIFIERS ## \\
 
@@ -206,7 +214,7 @@ struct ContentView: View {
     }}}
     
     private func scrollToBottom(proxy: ScrollViewProxy) {
-        guard let id = vm.messages.last?.id else { return }
+        guard let id = VM.messages.last?.id else { return }
         proxy.scrollTo(id, anchor: .bottomTrailing)
     }
 }

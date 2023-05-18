@@ -20,21 +20,21 @@ struct MyTabView: View {
     
     var body: some View {
         TabView(selection: $tag) {
-            Maps()
-                .tabItem {
-                    Image(systemName: "map")
-                }.tag(1)
             Chats()
                 .tabItem {
                     Image(systemName: "message")
+                }.tag(1)
+            Suggest()
+                .tabItem {
+                    Image(systemName: "fork.knife")
                 }.tag(2)
             Home()
                 .tabItem {
                     Image(systemName: "house")
                 }.tag(3)
-            Suggest()
+            Orders()
                 .tabItem {
-                    Image(systemName: "fork.knife")
+                    Image(systemName: "menucard")
                 }.tag(4)
             UserProf(id: DM.my().id)
                 .tabItem {

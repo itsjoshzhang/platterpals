@@ -45,8 +45,8 @@ struct Convo: View {
 
         } label: {
             Image(systemName: "paperplane.circle.fill")
-                .padding(8)
-                .cornerRadius(16)
+                .resizable()
+                .frame(width: 24, height: 24)
         }
         .disabled(text.isEmpty)
         }

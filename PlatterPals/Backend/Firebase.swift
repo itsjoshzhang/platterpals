@@ -58,10 +58,9 @@ class DataManager: ObservableObject {
                 let name  = data["name"]  as? String ?? ""
                 let text  = data["text"]  as? String ?? ""
                 let city  = data["city"]  as? String ?? ""
-                let views = data["views"] as? Int    ?? 1
                 
                 let user = User(id: id, name: name, text: text,
-                                city: city, views: views)
+                                city: city)
                 self.userList.append(user)
             }
         }
@@ -77,7 +76,7 @@ class DataManager: ObservableObject {
                 let blocked  = data["blocked"]  as? [String] ?? d
                 
                 let userData = UserData(id: id, favFoods: favFoods,
-                favUsers: favUsers, chatting: chatting, blocked: blocked)
+            favUsers: favUsers, chatting: chatting, blocked: blocked)
                 self.userData.append(userData)
             }
         }
@@ -107,8 +106,8 @@ class DataManager: ObservableObject {
         let id = id.replacingOccurrences(of: ".", with: "_")
 
         // create new user
-        let user = User(id: id, name: name, text: "", city: city, views: 1)
-        editUser(user: user, views: false)
+        let user = User(id: id, name: name, text: "", city: city)
+        editUser(user: user)
 
         // create new data
         let data = UserData(id: id, favFoods: [String](), favUsers:
@@ -116,27 +115,25 @@ class DataManager: ObservableObject {
         editData(data: data)
 
         // create new sets
-        let sets = Setting(id: id, notifs: true, suggest: true, privacy:
-                            true, location: true)
+        let sets = Setting(id: id, notifs: true, suggest: true,
+                           privacy: true, location: true)
         editSets(sets: sets)
     }
     
     // called at Profile
-    func editUser(user: User, views: Bool) {
+    func editUser(user: User) {
         let doc = FS.collection("userList").document(user.id)
 
-        doc.setData(["id": user.id, "name": user.name, "text": user.text,
-                     "city": user.city, "views": user.views])
-        if views == false {
-            userList[thisUser] = user
-        }
+        doc.setData(["id": user.id, "name": user.name, "text":
+            user.text, "city": user.city])
     }
     
     // called everywhere
     func editData(data: UserData) {
         let doc = FS.collection("userData").document(data.id)
         
-        doc.setData(["id": data.id, "favFoods": data.favFoods, "favUsers": data.favUsers, "chatting": data.chatting, "blocked": data.blocked])
+        doc.setData(["id": data.id, "favFoods": data.favFoods, "favUsers":
+            data.favUsers, "chatting": data.chatting, "blocked": data.blocked])
         userData[thisUser] = data
     }
     
@@ -144,8 +141,8 @@ class DataManager: ObservableObject {
     func editSets(sets: Setting) {
         let doc = FS.collection("settings").document(sets.id)
         
-        doc.setData(["id": sets.id, "notifs": sets.notifs, "suggest": sets.suggest,
-                     "privacy": sets.privacy, "location": sets.location])
+        doc.setData(["id": sets.id, "notifs": sets.notifs, "suggest":
+            sets.suggest, "privacy": sets.privacy, "location": sets.location])
         settings = sets
     }
 
@@ -154,17 +151,18 @@ class DataManager: ObservableObject {
         let id = UUID().uuidString
         let doc = FS.collection("messages").document(id)
         
-        doc.setData(["id": id, "text": text, "sender": sender, "getter":
-                    getter, "time": time])
+        doc.setData(["id": id, "text": text, "sender": sender,
+                     "getter": getter, "time": time])
     }
     
     // called at Order
-    func sendOrder(order: String, place: String, rating: Int, time: Date) {
+    func sendOrder(emoji: String, user: String, order: String, place:
+                   String, rating: Int, time: Date) {
         let id = UUID().uuidString
         let doc = FS.collection("aiOrders").document(id)
         
-        doc.setData(["id": id, "order": order, "place": place, "rating":
-                    rating, "time": time])
+        doc.setData(["id": emoji + id, "user": user, "order": order,
+                     "place": place, "rating": rating, "time": time])
     }
 
     // called at Upload
@@ -218,14 +216,16 @@ class DataManager: ObservableObject {
                     let docID  = data["id"]     as? String ?? ""
                 
                 if docID == id {
+                    let user   = data["user"]   as? String ?? ""
                     let order  = data["order"]  as? String ?? ""
                     let place  = data["place"]  as? String ?? ""
                     let rating = data["rating"] as? Int    ?? 0
                     let time   = data["time"]   as? Date   ?? Date()
                     
-                    aiOrders.append(AIOrder(id: id, order: order, place:
-                                    place, rating: rating, time: time))
-                    return }}}
+                    aiOrders.append(AIOrder(id: id, user: user, order:
+                    order, place: place, rating: rating, time: time))
+                    return
+                }}}
         return aiOrders
     }
 
@@ -243,7 +243,7 @@ class DataManager: ObservableObject {
                     let privacy  = data["privacy"]  as? Bool ?? true
                     let location = data["location"] as? Bool ?? true
                     
-            self.settings = Setting(id: docID, notifs: notifs, suggest:
-                            suggest, privacy: privacy, location: location)
+            self.settings = Setting(id: docID, notifs: notifs,
+            suggest: suggest, privacy: privacy, location: location)
             return
     }}}}}

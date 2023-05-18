@@ -13,10 +13,10 @@ let foodList = ["All", "American", "Boba Tea", "Caribbean", "Chinese",
                 "Ethiopian", "French", "Indian", "Italian", "Japanese",
                 "Korean", "Mexican", "Middle Eastern", "Thai", "Vietnamese"]
 
-let emojiList = ["🥐", "🥯", "🍞", "🥖", "🥨", "🧀", "🍳", "🥞", "🧇", "🥓", "🥩", "🍗", "🍖", "🌭", "🍔", "🍟", "🍕",
-                 "🫓", "🥪", "🥙", "🧆", "🌮", "🌯", "🫔", "🥗", "🥘", "🫕", "🍝", "🍜", "🍲", "🍛", "🍣", "🍱", "🥟",
-                 "🦪", "🍤", "🍙", "🍚", "🍘", "🥠", "🥮", "🍢", "🍡", "🍧", "🍨", "🍦", "🥧", "🧁", "🍰", "🎂", "🍮",
-                 "🍩", "🍪", "🫖", "☕️", "🍵", "🧃", "🥤", "🧋", "🥡"]
+let emojiList = ["🥡", "🧋", "🍵", "☕️", "🥐", "🥯", "🥞", "🧇",
+                 "🌭", "🍔", "🍟", "🍕", "🥩", "🍗", "🥪", "🧆",
+                 "🌯", "🥗", "🍝", "🍜", "🍲", "🍣", "🍱", "🥟",
+                 "🍅", "🥑", "🥬", "🌶", "🍦", "🍩", "🍪", "🍰"]
 
 struct RoundPic: View {
     var width: Int
@@ -63,7 +63,6 @@ struct User: Identifiable, Hashable {
     var name: String
     var text: String
     var city: String
-    var views: Int
 }
 
 struct UserData: Identifiable, Hashable {
@@ -84,6 +83,7 @@ struct Message: Identifiable, Hashable, Codable {
 
 struct AIOrder: Identifiable, Hashable {
     let id: String
+    let user: String
     let order: String
     let place: String
     let rating: Int

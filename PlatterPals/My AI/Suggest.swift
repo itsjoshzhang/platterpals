@@ -41,13 +41,13 @@ struct Suggest: View {
 
         Form {
             let block1 = !(friend == "None")
-            let block2 = !(place == "" && cuisine == "All")
+            let block2 = !(place.isEmpty && cuisine == "All")
 
         Section("Got something in mind?") {
 
         Picker("Type of cuisine", selection: $cuisine) {
-            ForEach(foodList, id: \.self) { id in
-                Text(id)
+            ForEach(foodList, id: \.self) { food in
+                Text(food)
             }
         }
         TextField("Restaurant name", text: $place)
@@ -95,7 +95,7 @@ struct Suggest: View {
                 value: $options, in: 1...5)
         }
         Section(header: Text(showOption ?
-            "Back to default": "Optional items")
+            "Clear options": "Optional items")
             .bold().underline()
             .onTapGesture {
                 withAnimation {
@@ -123,8 +123,8 @@ struct Suggest: View {
         Button("Let's Order") {
             orderLogic()
         }
-        .padding(.bottom, 16)
         .buttonStyle(.borderedProminent)
+        .padding(16)
 
         } else {
             Text("")
@@ -170,6 +170,4 @@ struct Suggest: View {
         VM.api = ChatGPTAPI(text: text)
         withAnimation {
             showChatGPT = true
-        }
-    }
-}
+        }}}
