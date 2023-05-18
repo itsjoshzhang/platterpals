@@ -56,11 +56,11 @@ struct ChatGPT: View {
 struct ContentView: View {
 
     // ## TRACK INFO ## \\
-    @State var text = ""
     var system: MessageRow
     @FocusState var focus: Bool
-    @State var showHelp = false
     @State var showOrders = false
+    @State var showHelp = false
+    @State var text = ""
 
     @EnvironmentObject var DM: DataManager
     @EnvironmentObject var VM: ViewModel
@@ -69,13 +69,11 @@ struct ContentView: View {
 
     var body: some View {
         ScrollViewReader { proxy in
-            let rest = (VM.messages.last?.responseText ?? "")
+            let rest = VM.messages.last?.responseText ?? ""
 
         VStack(spacing: 0) {
         ScrollView {
         LazyVStack(spacing: 0) {
-
-        // ## SHOW CHATS ## \\
 
         ForEach([system] + VM.messages) { row in
             MessageRowView(message: row) { row in
@@ -83,21 +81,20 @@ struct ContentView: View {
                     await VM.retry(message: row)
                 }}}
 
+        // ## CONVO LOGIC ## \\
+
         if VM.messages.isEmpty {
             Button("Find My Food") {
                 send(text: "Find a menu item using what I told you.")
             }
             .buttonStyle(.borderedProminent)
         }
-        // ## CONVO LOGIC ## \\
-
         if let last = VM.messages.last {
             if !(last.isInteractingWithChatGPT) {
-                let item = (rest.contains("item") ||
-                    rest.contains("##")) && !rest.contains("orry")
-
+                let valid = ["item", "##", "orry"]
+                    .contains(where: rest.contains)
         Group {
-        if item {
+        if valid {
             Button("Add to Orders") {
                 Task { @MainActor in
                     VM.inputMessage = "Format your last reply as ##menu item; restaurant name##"
@@ -120,7 +117,7 @@ struct ContentView: View {
         Text("Or find a:")
             .foregroundColor(.secondary)
 
-        if item {
+        if valid {
             Button("Menu item") {
                 send(text: "Find another menu item at this restaurant.")
             }
@@ -178,10 +175,9 @@ struct ContentView: View {
                     showHelp.toggle()
                 }
             }
+        // ## TEXTFIELDS ## \\
+
         HStack {
-
-        // ## TEXTFIELD ## \\
-
         TextField("Send a message", text: $text, axis: .vertical)
             .padding(.leading, 8)
             .focused($focus)

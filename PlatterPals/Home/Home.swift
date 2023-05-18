@@ -51,17 +51,17 @@ struct Home: View {
 
         ForEach(DM.userList) { user in
 
-            let data = DM.md()
-            let update = Update(id: user.id, show: true)
-                .environmentObject(DM)
+        let data = DM.md()
+        let update = Update(id: user.id, show: true)
+            .environmentObject(DM)
 
-            if (!data.blocked.contains(user.id) && user.city == city) {
-                if (following && data.favUsers.contains(user.id)) {
-                    update
-                } else if (DM.my().id != user.id) {
-                    update
-                }}}}
-            // FIXME: -
+        if (!data.blocked.contains(user.id) &&
+            DM.my().id != user.id &&
+            user.city == city) {
+
+            if following {
+                if data.favUsers.contains(user.id) { update }
+            } else { update }}}
         Spacer()
             .padding(36)
         }
@@ -81,6 +81,6 @@ struct Home: View {
                 .environmentObject(DM)
         }
         .sheet(isPresented: $showSearch) {
-            Search(showProf: true)
+            Search(forProfile: true)
                 .environmentObject(DM)
-        }}}}}
+        }}}}}}

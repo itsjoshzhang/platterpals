@@ -21,7 +21,6 @@ struct Suggest: View {
     @StateObject var VM = ViewModel(api: ChatGPTAPI())
 
     // ## OTHER VIEWS ## \\
-    
     @State var fuckery = false
     var body: some View {
         if showChatGPT {
@@ -32,13 +31,13 @@ struct Suggest: View {
             content
         }
     }
+    // ## ORDER INFO ## \\
+
     var content: some View {
         NavigationStack {
         VStack(spacing: 1) {
+
         if fuckery {
-
-        // ## ORDER INFO ## \\
-
         Form {
             let block1 = !(friend == "None")
             let block2 = !(place.isEmpty && cuisine == "All")

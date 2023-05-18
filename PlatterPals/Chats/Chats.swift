@@ -51,7 +51,7 @@ struct Chats: View {
         // ## OTHER VIEWS ## \\
 
         .sheet(isPresented: $showSearch) {
-            Search(showProf: false)
+            Search(forProfile: false)
                 .environmentObject(DM)
         }
         .sheet(isPresented: $showMaps) {

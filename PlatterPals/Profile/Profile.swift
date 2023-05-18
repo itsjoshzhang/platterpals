@@ -1,8 +1,37 @@
 import SwiftUI
 
-struct UserProf: View {
+struct MyProfile: View {
 
-    // ## TRACK INFO ## \\
+    // ## SETUP VIEW ## \\
+
+    var id: String
+    @State var showSets = false
+    @EnvironmentObject var DM: DataManager
+
+    var body: some View {
+        NavigationStack {
+            Profile(id: DM.my().id, avatar: DM.myAvatar, profile:
+                        DM.myProfile, showUpdate: true)
+                .environmentObject(DM)
+
+        // ## MODIFIERS ## \\
+
+        .navigationTitle(DM.my().name)
+        .toolbar {
+            ToolbarItem {
+                Button("\(Image(systemName: "gearshape"))") {
+                    showSets = true
+                }
+                .buttonStyle(.borderedProminent)
+            }
+        }
+        .fullScreenCover(isPresented: $showSets) {
+            Settings()
+                .environmentObject(DM)
+            }}}}
+
+struct Profile: View {
+
     var id: String
     @State var avatar: UIImage?
     @State var profile: UIImage?
@@ -10,7 +39,6 @@ struct UserProf: View {
     // ## CONDITIONS ## \\
     @State var showEdit = false
     @State var showChat = false
-    @State var showSets = false
     @State var showUpdate = false
 
     @EnvironmentObject var DM: DataManager
@@ -18,15 +46,13 @@ struct UserProf: View {
     // ## SETUP VIEW ## \\
 
     var body: some View {
-        NavigationStack {
+        ZStack {
             let myID = DM.my().id
             let user = DM.user(id: id)
-
-        ZStack {
         Back()
         ScrollView {
-        VStack(alignment: .leading, spacing: 16) {
 
+        VStack(alignment: .leading, spacing: 16) {
         Spacer()
             .padding(50)
         HStack(spacing: 16) {
@@ -40,52 +66,47 @@ struct UserProf: View {
                     showEdit = true
                 }
                 .buttonStyle(.bordered)
-
             } else {
         HStack {
             ProfHead(id: id)
                 .environmentObject(DM)
             Spacer()
-
             Button("\(Image(systemName: "message.fill"))") {
                 showChat = true
             }
             .buttonStyle(.borderedProminent)
-
             Block(id: id)
                 .environmentObject(DM)
-        }
+            }
         }
         // ## USER INFO ## \\
 
         HStack {
-            Text("\(user.city), CA")
+            Text("\(user.name), CA")
                 .font(.headline)
             Spacer()
             Text("♥ \(DM.findHearts(id: user.id))")
                 .foregroundColor(.pink)
                 .font(.title3)
         }}}
-
-        if showUpdate  == false {
+        if showUpdate == false {
             Text(user.text)
                 .foregroundColor(.secondary)
         }
         Text("\(user.name)'s favorite foods:")
             .font(.headline)
-
+        // TODO: use aiOrders and favFoods to list favorites
         Text("No favorites yet.")
             .foregroundColor(.secondary)
         }
         .padding(.horizontal, 16)
 
-        // ## SHOW IMAGE ## \\
+        // ## MODIFIERS ## \\
 
+        VStack {
         Button("\(Image(systemName: "photo"))") {
             withAnimation {
-                showUpdate.toggle()
-            }
-        }
+                showUpdate.toggle()}}
         .buttonStyle(.borderedProminent)
 
         if showUpdate {
@@ -94,32 +115,11 @@ struct UserProf: View {
             .environmentObject(DM)
         }
         Spacer()
-            .padding(36)
-        }
-        }
-        // ## MODIFIERS ## \\
-
-        .navigationTitle(user.name)
+            .padding(36)}}
         .onAppear {
-            if myID == id {
-                showUpdate = true
-                avatar = DM.myAvatar
-                profile = DM.myProfile
-            } else {
-                getImage(path: "avatars")
-                getImage(path: "profiles")
-            }
+            getImage(path: "avatars")
+            getImage(path: "profiles")
         }
-        // ## MODIFIERS ## \\
-
-        .toolbar {
-            if myID == id {
-                ToolbarItem {
-                    Button("\(Image(systemName: "gearshape"))") {
-                        showSets = true
-                    }
-                    .buttonStyle(.borderedProminent)
-                }}}
         .sheet(isPresented: $showEdit) {
             EditProf()
                 .environmentObject(DM)
@@ -127,10 +127,6 @@ struct UserProf: View {
         }
         .sheet(isPresented: $showChat) {
             Convo(id: id)
-                .environmentObject(DM)
-        }
-        .fullScreenCover(isPresented: $showSets) {
-            Settings()
                 .environmentObject(DM)
         }}}
 

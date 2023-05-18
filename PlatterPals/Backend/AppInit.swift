@@ -36,7 +36,7 @@ struct MyTabView: View {
                 .tabItem {
                     Image(systemName: "fork.knife")
                 }.tag(4)
-            UserProf(id: DM.my().id)
+            MyProfile(id: DM.my().id)
                 .tabItem {
                     Image(systemName: "person")
                 }.tag(5)

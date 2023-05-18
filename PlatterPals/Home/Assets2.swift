@@ -51,16 +51,14 @@ struct Search: View {
 
     // ## TRACK INFO ## \\
     @State var name = ""
-    @State var nextID = ""
+    @State var showNext = false
+    @State var following = false
     @State var city = "Berkeley"
     @State var userIDs = [String]()
 
-    // ## CONDITIONS ## \\
-    var showProf: Bool
-    @State var showNext = false
-    @State var following = false
+    // ## SETUP VIEW ## \\
+    var forProfile: Bool
     @FocusState var focus: Bool
-
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
@@ -102,36 +100,29 @@ struct Search: View {
 
         List {
         ForEach(userIDs, id: \.self) { id in
-        let favs = DM.md().favUsers
 
-        if showProf {
-            let row = Row(id: id)
+        let link = NavigationLink(value: id) {
+            Row(id: id)
                 .environmentObject(DM)
-                .onTapGesture {
-                    nextID = id
-                    showNext = true
-                }
-            if following { if favs.contains(id) { row }
-            } else { row }
-        } else {
-            let link = NavigationLink(value: id) {
-                Row(id: id)
-                    .environmentObject(DM)
-            }
-            if following { if favs.contains(id) { link }
-            } else { link
-        }}}}
-
-        // ## USER LOGIC ## \\
+        }
+        if following {
+            if DM.md().favUsers.contains(id) { link }
+        } else { link }}}
 
         .listStyle(.plain)
-        .opacity(userIDs.isEmpty ? 0 : 1)
+        .opacity(userIDs.isEmpty ? 0: 1)
 
         .navigationDestination(for: String.self) { id in
-            Convo(id: id)
-                .environmentObject(DM)
-            }
-        }
+            if forProfile {
+                Profile(id: id)
+                    .environmentObject(DM)
+            } else {
+                Convo(id: id)
+                    .environmentObject(DM)
+                }}}
+
+        // ## LIST LOGIC ## \\
+
         .navigationTitle("Search 🔍")
         .onAppear {
             focus = true
@@ -144,8 +135,4 @@ struct Search: View {
 
                 if user.name.lowercased().contains(name.lowercased()) {
                     userIDs.append(user.id)
-        }}}
-        .sheet(isPresented: $showNext) {
-            UserProf(id: nextID)
-                .environmentObject(DM)
-        }}}}}
+        }}}}}}}

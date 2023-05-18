@@ -10,8 +10,10 @@ struct NewOrder: View {
     @State var text: String
 
     // ## SETUP VIEW ## \\
+
     @State var error = false
     @FocusState var focus: Bool
+
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
@@ -26,8 +28,7 @@ struct NewOrder: View {
         if error {
             Text("AI reply error. Add order below.")
                 .foregroundColor(.secondary)
-                .font(.subheadline)
-        }
+                .font(.subheadline)}
         Group {
         HStack {
             Text("Menu item:")
@@ -35,13 +36,11 @@ struct NewOrder: View {
         }
         HStack {
             Text("Restaurant:")
-            TextField("Add a restaurant", text: $place)
-        }
-        }
+            TextField("Add a restaurant", text: $place)}}
         .textFieldStyle(.roundedBorder)
         .focused($focus)
 
-        // ## STAR RATING ## \\
+        // ## STARS/EMOJI ## \\
 
         HStack {
             ForEach(1...5, id: \.self) { i in
@@ -56,15 +55,13 @@ struct NewOrder: View {
             .foregroundColor(.secondary)
             .font(.footnote)
 
-        // ## EMOJI GRID ## \\
-
         ScrollView(.horizontal) {
         LazyHGrid(rows: [GridItem(), GridItem()], spacing: 8) {
         ForEach(emojiList, id: \.self) { em in
 
-        Button(em) {
-            emoji = em
-        }
+        // ## CLICKABLES ## \\
+
+        Button(em) { emoji = em }
         .background(emoji == em ? .pink: .white)
         .font(.system(size: 32))
         .cornerRadius(8)
@@ -76,8 +73,6 @@ struct NewOrder: View {
         Text("Scroll for emojis!")
             .foregroundColor(.secondary)
             .font(.footnote)
-
-        // ## ORDER LOGIC ## \\
 
         Button("Add to Orders") {
             DM.sendOrder(emoji: emoji, user: DM.my().id, order: order,

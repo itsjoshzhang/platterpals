@@ -61,7 +61,7 @@ struct TitleBar: View {
             getImage(id: id, path: "avatars")
         }
         .sheet(isPresented: $showProf) {
-            UserProf(id: id)
+            Profile(id: id)
                 .environmentObject(DM)
         }
     }
