@@ -81,7 +81,7 @@ struct Message: Identifiable, Hashable, Codable {
     let time: Date
 }
 
-struct AIOrder: Identifiable, Hashable {
+struct AIOrder: Identifiable, Hashable, Codable {
     let id: String
     let user: String
     let order: String

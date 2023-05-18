@@ -60,8 +60,7 @@ struct Update: View {
             Spacer()
 
             Text("♥ \(DM.findHearts(id: user.id))")
-                .foregroundColor(.pink)
-                .font(.title2)
+                .font(.title3)
 
             Button("\(Image(systemName: "flag"))") {
                 showAlert = true

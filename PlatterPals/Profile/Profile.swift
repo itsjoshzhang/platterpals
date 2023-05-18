@@ -64,7 +64,7 @@ struct UserProf: View {
             Spacer()
             Text("♥ \(DM.findHearts(id: user.id))")
                 .foregroundColor(.pink)
-                .font(.title2)
+                .font(.title3)
         }}}
 
         if showUpdate  == false {

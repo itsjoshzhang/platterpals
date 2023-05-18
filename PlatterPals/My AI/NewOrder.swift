@@ -92,7 +92,9 @@ struct NewOrder: View {
                 let list = trim.components(separatedBy: ";")
 
                 order = trimmed(list[0])
-                place = trimmed(list[1])
+                if list.count > 1 {
+                    place = trimmed(list[1])
+                }
             } else {
                 error = true
             }

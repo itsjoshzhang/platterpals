@@ -76,11 +76,9 @@ struct Convo: View {
         FS.collection("messages").addSnapshotListener { snap, error in
         messages = snap!.documents.compactMap { doc -> Message? in
 
-        if let msg = try? doc.data(as: Message.self) {
-            if (msg.sender == sender && msg.getter == getter) {
-                return msg
-            }
-        }
+        if let chat = try? doc.data(as: Message.self) {
+            if (chat.sender == sender && chat.getter == getter) {
+                return chat }}
         return nil
         }
         messages.sort {

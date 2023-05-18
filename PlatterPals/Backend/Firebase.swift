@@ -206,40 +206,17 @@ class DataManager: ObservableObject {
         SR.delete { _ in }
     }
 
-    // called at Order
-    func getOrder(id: String) -> [AIOrder] {
-        var aiOrders = [AIOrder]()
-        
-        FS.collection("aiOrders").getDocuments { col,_ in
-            for doc in col!.documents {
-                let data = doc.data()
-                    let docID  = data["id"]     as? String ?? ""
-                
-                if docID == id {
-                    let user   = data["user"]   as? String ?? ""
-                    let order  = data["order"]  as? String ?? ""
-                    let place  = data["place"]  as? String ?? ""
-                    let rating = data["rating"] as? Int    ?? 0
-                    let time   = data["time"]   as? Date   ?? Date()
-                    
-                    aiOrders.append(AIOrder(id: id, user: user, order:
-                    order, place: place, rating: rating, time: time))
-                    return
-                }}}
-        return aiOrders
-    }
-
     // called at init
     func getSetts() {
         FS.collection("settings").getDocuments { col,_ in
             for doc in col!.documents {
                 
                 let data = doc.data()
-                let docID = data["id"] as? String ?? ""
+                    let docID = data["id"] as? String ?? ""
                 if docID == self.my().id {
 
                     let notifs   = data["notifs"]   as? Bool ?? true
-                    let suggest  = data["suggest"]   as? Bool ?? true
+                    let suggest  = data["suggest"]  as? Bool ?? true
                     let privacy  = data["privacy"]  as? Bool ?? true
                     let location = data["location"] as? Bool ?? true
                     
