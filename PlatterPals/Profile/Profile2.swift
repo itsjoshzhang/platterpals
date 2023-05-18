@@ -10,8 +10,7 @@ struct ProfHead: View {
 
     var body: some View {
         HStack {
-            var user = DM.user(id: id)
-            var data = DM.md()
+        var data = DM.md()
         HStack {
 
         // ## UNFOLLOW ## \\
@@ -19,10 +18,7 @@ struct ProfHead: View {
         if showFollow {
         Button("Following") {
             if let i = data.favUsers.firstIndex(of: id) {
-
-                user.views -= 1
                 data.favUsers.remove(at: i)
-                DM.editUser(user: user, views: true)
                 DM.editData(data: data)
                 showFollow = false
             }
@@ -32,10 +28,7 @@ struct ProfHead: View {
         // ## REFOLLOW ## \\
 
         } else {
-            Button("Follow \(Image(systemName: "heart"))") {
-
-                user.views += 1
-                DM.editUser(user: user, views: true)
+            Button("Follow ♥") {
                 data.favUsers.append(id)
                 DM.editData(data: data)
                 showFollow = true
@@ -125,7 +118,7 @@ struct EditProf: View {
                 my.text = text
                 my.city = city
 
-                DM.editUser(user: my, views: false)
+                DM.editUser(user: my)
                 dismiss()
             }
             .disabled(name.isEmpty || text.isEmpty)

@@ -246,4 +246,16 @@ class DataManager: ObservableObject {
             self.settings = Setting(id: docID, notifs: notifs,
             suggest: suggest, privacy: privacy, location: location)
             return
-    }}}}}
+    }}}}
+
+    // called on profiles
+    func findHearts(id: String) -> Int {
+        var hearts = 0
+        for data in userData {
+            if data.favUsers.contains(id) {
+                hearts += 1
+            }
+        }
+        return hearts
+    }
+}

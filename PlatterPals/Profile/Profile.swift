@@ -62,8 +62,9 @@ struct UserProf: View {
             Text("\(user.city), CA")
                 .font(.headline)
             Spacer()
-
-            Text("\(Image(systemName: "heart")) \(user.views)")
+            Text("♥ \(DM.findHearts(id: user.id))")
+                .foregroundColor(.pink)
+                .font(.title2)
         }}}
 
         if showUpdate  == false {
@@ -109,7 +110,7 @@ struct UserProf: View {
                 getImage(path: "profiles")
             }
         }
-        // ## OTHER VIEWS ## \\
+        // ## MODIFIERS ## \\
 
         .toolbar {
             if myID == id {

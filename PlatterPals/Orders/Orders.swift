@@ -6,7 +6,7 @@ struct Orders: View {
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("♥")
             .sheet(isPresented: $binding) {
                 NewOrder(text: "## some good ass food ; a good ass restaurant ##")
                     .environmentObject(DM)

@@ -35,7 +35,6 @@ struct Update: View {
             let myID = DM.my().id
             let min = UIwidth * 0.5
             let user = DM.user(id: id)
-            let heart = Image(systemName: "heart.fill")
 
         ZStack {
             if let image = profile {
@@ -60,8 +59,9 @@ struct Update: View {
                 .font(.headline)
             Spacer()
 
-            Text("\(heart) \(user.views)")
-                .font(.headline)
+            Text("♥ \(DM.findHearts(id: user.id))")
+                .foregroundColor(.pink)
+                .font(.title2)
 
             Button("\(Image(systemName: "flag"))") {
                 showAlert = true
@@ -86,7 +86,7 @@ struct Update: View {
                 .tint(.pink)
         }
         Group {
-            heart
+            Image(systemName: "heart.fill")
                 .resizable()
                 .foregroundColor(.pink)
                 .opacity(swipe / min)
