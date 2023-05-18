@@ -6,7 +6,6 @@ class ViewModel: ObservableObject {
     @Published var isInteractingWithChatGPT = false
     @Published var messages: [MessageRow] = []
     @Published var inputMessage: String = ""
-
     private var synthesizer: AVSpeechSynthesizer?
     
     var api: ChatGPTAPI

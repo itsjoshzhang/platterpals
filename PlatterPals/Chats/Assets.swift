@@ -93,19 +93,18 @@ struct Block: View {
         // ## SHOW ALERT ## \\
 
         .confirmationDialog("", isPresented: $showAlert) {
-        var data = DM.md()
-
+            var data = DM.md()
             if data.blocked.contains(id) {
-            Button("UNBLOCK USER") {
 
+            Button("UNBLOCK USER") {
             if let i = data.blocked.firstIndex(of: id) {
                 data.blocked.remove(at: i)
                 DM.editData(data: data)
-            }}
-        } else {
-            Button("Block this user") {
-                data.blocked.append(id)
-                DM.editData(data: data)
+
+            }}} else {
+                Button("Block this user") {
+                    data.blocked.append(id)
+                    DM.editData(data: data)
             }}}}}
 
 struct Bubble: View {

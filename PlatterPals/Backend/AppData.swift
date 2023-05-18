@@ -1,7 +1,5 @@
 import SwiftUI
 
-// ## GLOBAL VARS ## \\
-
 let UIwidth = UIScreen.main.bounds.size.width
 let UIheight = UIScreen.main.bounds.size.height
 let UIgray = Color.secondary.opacity(0.25)
@@ -123,5 +121,18 @@ struct Box: View {
                    alignment: .leading)
             .overlay(RoundedRectangle(cornerRadius: 8)
                     .stroke(.secondary))
+    }
+}
+struct Img: View {
+    var image: String
+    var body: some View {
+        Image(systemName: image)
+            .resizable()
+            .padding(16)
+            .foregroundColor(.white)
+            .frame(width: 64, height: 64)
+            .background(.pink)
+            .cornerRadius(32)
+            .shadow(color: .pink, radius: 3)
     }
 }

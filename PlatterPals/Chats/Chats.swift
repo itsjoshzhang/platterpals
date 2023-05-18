@@ -3,6 +3,7 @@ import SwiftUI
 struct Chats: View {
 
     // ## SETUP VIEW ## \\
+    @State var showMaps = false
     @State var showSearch = false
     @State var chatting = [String]()
 
@@ -47,10 +48,25 @@ struct Chats: View {
         .onAppear {
             refresh()
         }
+        // ## OTHER VIEWS ## \\
+
         .sheet(isPresented: $showSearch) {
             Search(showProf: false)
                 .environmentObject(DM)
-        }}}}
+        }
+        .sheet(isPresented: $showMaps) {
+            Maps()
+                .environmentObject(DM)
+        }
+        VStack { Spacer(); HStack { Spacer()
+        Button {
+            showMaps = true
+        } label: {
+            Img(image: "map")
+        }
+        .padding(.bottom, 110)
+        .padding(16)
+        }}}}}
 
     // ## FUNCTIONS ## \\
 
@@ -58,8 +74,7 @@ struct Chats: View {
         let data = DM.md()
         for id in data.chatting {
 
-            if !(data.blocked.contains(id) ||
-                chatting.contains(id)) {
+            if !(data.blocked.contains(id) || chatting.contains(id)) {
                 chatting.append(id)
             }}}
 

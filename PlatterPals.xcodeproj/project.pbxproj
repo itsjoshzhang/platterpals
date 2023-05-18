@@ -131,14 +131,14 @@
 			path = ChatGPT;
 			sourceTree = "<group>";
 		};
-		F2D26E5129F6EE50005E2488 /* My AI */ = {
+		F2D26E5129F6EE50005E2488 /* Suggest */ = {
 			isa = PBXGroup;
 			children = (
 				F2F6D84C2961730000B8F4D7 /* Suggest.swift */,
 				F2D26E5629F6EE50005E2488 /* ChatGPT.swift */,
 				F2A9437129F8E97600F87492 /* NewOrder.swift */,
 			);
-			path = "My AI";
+			path = Suggest;
 			sourceTree = "<group>";
 		};
 		F2F6D82B296172B100B8F4D7 = {
@@ -169,7 +169,7 @@
 				F2F6D8492961730000B8F4D7 /* Orders */,
 				F2F6D85D2961730000B8F4D7 /* Chats */,
 				F2F6D84D2961730000B8F4D7 /* Home */,
-				F2D26E5129F6EE50005E2488 /* My AI */,
+				F2D26E5129F6EE50005E2488 /* Suggest */,
 				F2A0160029E34CA4005DFDAD /* Profile */,
 				F2F6D8512961730000B8F4D7 /* Assets.xcassets */,
 			);

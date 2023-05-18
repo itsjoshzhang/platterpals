@@ -56,10 +56,10 @@ struct Search: View {
     @State var userIDs = [String]()
 
     // ## CONDITIONS ## \\
-    @State var showProf: Bool
-    @FocusState var focus: Bool
+    var showProf: Bool
     @State var showNext = false
     @State var following = false
+    @FocusState var focus: Bool
 
     @EnvironmentObject var DM: DataManager
 
@@ -90,7 +90,6 @@ struct Search: View {
                 }
             }
             Spacer()
-
             Toggle("Following ✓", isOn: $following)
                 .toggleStyle(.button)
                 .onTapGesture {
@@ -112,14 +111,14 @@ struct Search: View {
                     nextID = id
                     showNext = true
                 }
-            if following && favs.contains(id) { row
+            if following { if favs.contains(id) { row }
             } else { row }
         } else {
             let link = NavigationLink(value: id) {
                 Row(id: id)
                     .environmentObject(DM)
             }
-            if following && favs.contains(id) { link
+            if following { if favs.contains(id) { link }
             } else { link
         }}}}
 
@@ -143,8 +142,7 @@ struct Search: View {
             for i in (0 ..< min(DM.userList.count, 4)) {
                 let user = DM.userList[i]
 
-                if user.name.lowercased().contains(
-                    name.lowercased()) {
+                if user.name.lowercased().contains(name.lowercased()) {
                     userIDs.append(user.id)
         }}}
         .sheet(isPresented: $showNext) {

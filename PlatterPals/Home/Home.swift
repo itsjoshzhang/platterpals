@@ -61,6 +61,7 @@ struct Home: View {
                 } else if (DM.my().id != user.id) {
                     update
                 }}}}
+            // FIXME: -
         Spacer()
             .padding(36)
         }

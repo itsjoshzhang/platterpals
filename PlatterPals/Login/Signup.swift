@@ -107,7 +107,7 @@ struct Signup: View {
                 signupAuth()
             }
             .disabled(name.isEmpty)
-            .padding(.bottom, 105)
+            .padding(.bottom, 110)
 
             .alert(alertText, isPresented: $showAlert) {
                 Button("OK", role: .cancel) {
