@@ -68,9 +68,9 @@ struct EditProf: View {
         } else {
             RoundPic(width: 120, image: nil)
         }
-        VStack(alignment: .leading, spacing: 8) {
-
         // ## USER INFO ## \\
+
+        VStack(alignment: .leading, spacing: 8) {
 
         TextField("Username", text: $name)
             .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -79,10 +79,12 @@ struct EditProf: View {
         HStack(spacing: 0) {
             Text("Location:")
                 .font(.headline)
+
             Picker("", selection: $city) {
                 ForEach(["Berkeley"], id: \.self) { city in
                     Text(city)
-                }}
+                }
+            }
             .frame(maxWidth: UIwidth, alignment: .leading)
         }
         // ## UPLOAD PIC ## \\

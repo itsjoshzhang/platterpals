@@ -58,7 +58,7 @@ struct Convo: View {
         .padding(.bottom, 8)
         }
         .onAppear {
-            getChats(sender: myID, getter: id)
+            getChats(sender: myID)
             var data = DM.md()
             focus = true
 
@@ -73,12 +73,12 @@ struct Convo: View {
     }
     // ## FUNCTIONS ## \\
 
-    func getChats(sender: String, getter: String) {
+    func getChats(sender: String) {
         FS.collection("messages").addSnapshotListener { snap, error in
         messages = snap!.documents.compactMap { doc -> Message? in
 
         if let msg = try? doc.data(as: Message.self) {
-            if (msg.sender == sender && msg.getter == getter) {
+            if (msg.sender == sender && msg.getter == id) {
                 return msg }}
         return nil
         }

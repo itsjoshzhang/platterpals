@@ -7,7 +7,7 @@ struct Settings: View {
     @State var notifs = true
     @State var suggest = true
     @State var privacy = true
-    @State var location = true
+    @State var locate = true
 
     // ## FALSE BOOLS ## \\
     @State var loggedOut = false
@@ -69,7 +69,7 @@ struct Settings: View {
         HStack {
             Text("Allow location sharing")
             Spacer()
-            Toggle("", isOn: $location)
+            Toggle("", isOn: $locate)
                 .frame(width: 50)
         }
         }
@@ -149,7 +149,7 @@ struct Settings: View {
             notifs = sets.notifs
             suggest = sets.suggest
             privacy = sets.privacy
-            location = sets.location
+            locate = sets.locate
         }
         .sheet(isPresented: $showReset) {
             Reset()
@@ -170,7 +170,7 @@ struct Settings: View {
                 sets.notifs = notifs
                 sets.suggest = suggest
                 sets.privacy = privacy
-                sets.location = location
+                sets.locate = locate
 
                 DM.editSets(sets: sets)
                 dismiss()

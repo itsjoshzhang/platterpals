@@ -63,7 +63,7 @@ struct Stars: View {
 
     var body: some View {
         HStack {
-        Text("Rating:")
+        Text("Stars:")
         ForEach(1...5, id: \.self) { i in
 
         Image(systemName: (i <= ord.stars ? "star.fill": "star"))
