@@ -62,7 +62,7 @@ struct Chats: View {
         Button {
             showMaps = true
         } label: {
-            Img(image: "map")
+            Glow(image: "map")
         }
         .padding(.bottom, 110)
         .padding(16)

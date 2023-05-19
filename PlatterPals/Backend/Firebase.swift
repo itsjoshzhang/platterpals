@@ -195,7 +195,7 @@ class DataManager: ObservableObject {
     // called at init
     func getSetts(id: String) {
         FS.collection("settings").addSnapshotListener { snap, error in
-        var setsList = snap!.documents.compactMap { doc -> Setting? in
+        let setsList = snap!.documents.compactMap { doc -> Setting? in
 
         if let sets = try? doc.data(as: Setting.self) {
             if (sets.id == id) {

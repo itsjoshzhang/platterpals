@@ -32,7 +32,7 @@ struct Row: View {
         .frame(maxWidth: UIwidth - 32, alignment: .leading)
         }
         .onAppear {
-            getImage(id: id, path: "avatars")
+            getImage(path: "avatars")
         }
     }
     // ## FUNCTIONS ## \\
