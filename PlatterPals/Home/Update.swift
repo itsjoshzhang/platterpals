@@ -133,7 +133,8 @@ struct Update: View {
             }
         }
         .sheet(isPresented: $showProf) {
-            Profile(id: id, avatar: avatar, profile: profile)
+            Profile(id: id, title: true,
+                avatar: avatar, profile: profile)
                 .environmentObject(DM)
         }
         // ## EDIT PROFILE ## \\

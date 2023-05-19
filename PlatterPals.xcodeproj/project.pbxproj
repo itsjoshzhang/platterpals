@@ -166,7 +166,7 @@
 				F24BFEAA296CBDF100B2E616 /* GoogleService-Info.plist */,
 				F2F6D8522961730000B8F4D7 /* Backend */,
 				F2F6D8612961730000B8F4D7 /* Login */,
-				F2F6D8492961730000B8F4D7 /* Orders */,
+				F2F6D8492961730000B8F4D7 /* Misc */,
 				F2F6D85D2961730000B8F4D7 /* Chats */,
 				F2F6D84D2961730000B8F4D7 /* Home */,
 				F2D26E5129F6EE50005E2488 /* Suggest */,
@@ -176,14 +176,14 @@
 			path = PlatterPals;
 			sourceTree = "<group>";
 		};
-		F2F6D8492961730000B8F4D7 /* Orders */ = {
+		F2F6D8492961730000B8F4D7 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
 				F242CB592A149DFE00B5D969 /* Orders.swift */,
 				F2F6D8472961730000B8F4D7 /* Maps.swift */,
 				F2F494B8298313E3000E35BB /* Settings.swift */,
 			);
-			path = Orders;
+			path = Misc;
 			sourceTree = "<group>";
 		};
 		F2F6D84D2961730000B8F4D7 /* Home */ = {

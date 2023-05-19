@@ -133,6 +133,13 @@ struct Search: View {
             for i in (0 ..< min(DM.userList.count, 4)) {
                 let user = DM.userList[i]
 
-                if user.name.lowercased().contains(name.lowercased()) {
+                if (compare(name, user.name) && !name.isEmpty) {
                     userIDs.append(user.id)
-        }}}}}}}
+        }}}}}}
+
+    func compare(_ name1: String, _ name2: String) -> Bool {
+        let l1 = name1.lowercased()
+        let l2 = name2.lowercased()
+        return (l1.hasPrefix(l2) || l2.hasPrefix(l1))
+    }
+}

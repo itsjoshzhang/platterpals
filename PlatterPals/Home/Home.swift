@@ -29,21 +29,21 @@ struct Home: View {
                 showSearch = true
             }
         HStack(spacing: 0) {
-            Text("Location:")
-                .foregroundColor(.secondary)
+        Text("Location:")
+            .foregroundColor(.secondary)
 
-            Picker("", selection: $city) {
-                ForEach(["Berkeley"], id: \.self) { city in
-                    Text(city)
-                }
+        Picker("", selection: $city) {
+            ForEach(["Berkeley"], id: \.self) { city in
+                Text(city)
             }
-            Spacer()
+        }
+        Spacer()
 
-            Toggle("Following ✓", isOn: $following)
-                .toggleStyle(.button)
-                .onTapGesture {
-                    following.toggle()
-                }
+        Toggle("Following ✓", isOn: $following)
+            .toggleStyle(.button)
+            .onTapGesture {
+                following.toggle()
+            }
         }
         .padding(.horizontal, 16)
 
@@ -63,7 +63,7 @@ struct Home: View {
                 if data.favUsers.contains(user.id) { update }
             } else { update }}}
         Spacer()
-            .padding(36)
+            .padding(40)
         }
         // ## MODIFIERS ## \\
 

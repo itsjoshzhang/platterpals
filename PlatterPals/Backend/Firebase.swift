@@ -156,13 +156,12 @@ class DataManager: ObservableObject {
     }
     
     // called at Order
-    func sendOrder(emoji: String, user: String, order: String, place:
+    func sendOrder(id: String, user: String, order: String, place:
                    String, rating: Int, time: Date) {
-        let id = UUID().uuidString
         let doc = FS.collection("aiOrders").document(id)
         
-        doc.setData(["id": emoji + id, "user": user, "order": order,
-                     "place": place, "rating": rating, "time": time])
+        doc.setData(["id": id, "user": user, "order": order, "place":
+                    place, "rating": rating, "time": time])
     }
 
     // called at Upload

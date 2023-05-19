@@ -75,8 +75,8 @@ struct NewOrder: View {
             .font(.footnote)
 
         Button("Add to Orders") {
-            DM.sendOrder(emoji: emoji, user: DM.my().id, order: order,
-                         place: place, rating: rating, time: Date())
+            DM.sendOrder(id: emoji + UUID().uuidString, user: DM.my().id,
+                order: order, place: place, rating: rating, time: Date())
             dismiss()
         }
         .buttonStyle(.borderedProminent)

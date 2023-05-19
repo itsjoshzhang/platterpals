@@ -33,6 +33,7 @@ struct MyProfile: View {
 struct Profile: View {
 
     var id: String
+    var title = false
     @State var avatar: UIImage?
     @State var profile: UIImage?
 
@@ -46,15 +47,21 @@ struct Profile: View {
     // ## SETUP VIEW ## \\
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             let myID = DM.my().id
             let user = DM.user(id: id)
-        Back()
-        ScrollView {
 
+        Image("back")
+            .resizable()
+            .opacity(0.05)
+        ScrollView {
         VStack(alignment: .leading, spacing: 16) {
-        Spacer()
-            .padding(50)
+
+        if title {
+            Text(user.name)
+                .font(.largeTitle).bold()
+                .padding(.top, 64)
+        }
         HStack(spacing: 16) {
             RoundPic(width: 80, image: avatar)
 
@@ -82,7 +89,7 @@ struct Profile: View {
         // ## USER INFO ## \\
 
         HStack {
-            Text("\(user.name), CA")
+            Text("\(user.city), CA")
                 .font(.headline)
             Spacer()
             Text("♥ \(DM.findHearts(id: user.id))")
@@ -95,7 +102,9 @@ struct Profile: View {
         }
         Text("\(user.name)'s favorite foods:")
             .font(.headline)
+
         // TODO: use aiOrders and favFoods to list favorites
+
         Text("No favorites yet.")
             .foregroundColor(.secondary)
         }
@@ -106,16 +115,18 @@ struct Profile: View {
         VStack {
         Button("\(Image(systemName: "photo"))") {
             withAnimation {
-                showUpdate.toggle()}}
+                showUpdate.toggle()
+            }
+        }
         .buttonStyle(.borderedProminent)
+        .shadow(color: .pink, radius: 3)
 
         if showUpdate {
             Update(id: id, show: false, avatar: avatar,
                    profile: profile)
             .environmentObject(DM)
-        }
-        Spacer()
-            .padding(36)}}
+        }}}
+        .navigationTitle(user.name)
         .onAppear {
             getImage(path: "avatars")
             getImage(path: "profiles")

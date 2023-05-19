@@ -84,7 +84,7 @@ struct AIOrder: Identifiable, Hashable, Codable {
     let user: String
     let order: String
     let place: String
-    let rating: Int
+    var rating: Int
     let time: Date
 }
 
