@@ -58,7 +58,7 @@ struct TitleBar: View {
         Div()
         }
         .onAppear {
-            getImage(id: id, path: "avatars")
+            getImage(path: "avatars")
         }
         .sheet(isPresented: $showProf) {
             Profile(id: id)
@@ -67,7 +67,7 @@ struct TitleBar: View {
     }
     // ## FUNCTIONS ## \\
 
-    func getImage(id: String, path: String) {
+    func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
 
         SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in

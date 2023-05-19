@@ -5,7 +5,7 @@ struct NewOrder: View {
     // ## TRACK INFO ## \\
     @State var order = ""
     @State var place = ""
-    @State var rating = 0
+    @State var stars = 0
     @State var emoji = "🥡"
     @State var text: String
 
@@ -44,12 +44,12 @@ struct NewOrder: View {
 
         HStack {
             ForEach(1...5, id: \.self) { i in
-                Image(systemName: (i <= rating ? "star.fill": "star"))
+                Image(systemName: (i <= stars ? "star.fill": "star"))
                     .resizable()
                     .foregroundColor(.pink)
                     .frame(width: 24, height: 24)
                     .onTapGesture {
-                        rating = (rating == i ? 0: i)
+                        stars = (stars == i ? 0: i)
                     }}}
         Text("Add ★ anytime.")
             .foregroundColor(.secondary)
@@ -75,8 +75,10 @@ struct NewOrder: View {
             .font(.footnote)
 
         Button("Add to Orders") {
-            DM.sendOrder(id: emoji + UUID().uuidString, user: DM.my().id,
-                order: order, place: place, rating: rating, time: Date())
+            let ord = AIOrder(id: emoji + UUID().uuidString, user:
+                DM.my().id, order: order, place: place, stars: stars,
+                time: Date())
+            DM.sendOrder(ord: ord)
             dismiss()
         }
         .buttonStyle(.borderedProminent)

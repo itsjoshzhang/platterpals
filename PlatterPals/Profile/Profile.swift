@@ -10,8 +10,8 @@ struct MyProfile: View {
 
     var body: some View {
         NavigationStack {
-            Profile(id: DM.my().id, avatar: DM.myAvatar, profile:
-                        DM.myProfile, showUpdate: true)
+            Profile(id: DM.my().id, image: DM.myAvatar,
+                showUpdate: true)
                 .environmentObject(DM)
 
         // ## MODIFIERS ## \\
@@ -32,12 +32,10 @@ struct MyProfile: View {
 
 struct Profile: View {
 
+    // ## TRACK INFO ## \\
     var id: String
     var title = false
-    @State var avatar: UIImage?
-    @State var profile: UIImage?
-
-    // ## CONDITIONS ## \\
+    @State var image: UIImage?
     @State var showEdit = false
     @State var showChat = false
     @State var showUpdate = false
@@ -63,7 +61,7 @@ struct Profile: View {
                 .padding(.top, 64)
         }
         HStack(spacing: 16) {
-            RoundPic(width: 80, image: avatar)
+            RoundPic(width: 80, image: image)
 
         // ## CLICKABLES ## \\
 
@@ -122,14 +120,12 @@ struct Profile: View {
         .shadow(color: .pink, radius: 3)
 
         if showUpdate {
-            Update(id: id, show: false, avatar: avatar,
-                   profile: profile)
+            Update(id: id, showNext: false)
             .environmentObject(DM)
         }}}
         .navigationTitle(user.name)
         .onAppear {
             getImage(path: "avatars")
-            getImage(path: "profiles")
         }
         .sheet(isPresented: $showEdit) {
             EditProf()
@@ -150,8 +146,5 @@ struct Profile: View {
             if let data = data {
 
                 DispatchQueue.main.async {
-                    if path == "avatars" {
-                        avatar = UIImage(data: data)
-                    } else {
-                        profile = UIImage(data: data)
-                    }}}}}}
+                    image = UIImage(data: data)
+                }}}}}

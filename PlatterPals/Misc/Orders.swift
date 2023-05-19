@@ -12,15 +12,15 @@ struct Orders: View {
         ZStack {
         Back()
         List {
-        ForEach(orderList) { od in
+        ForEach(orderList) { ord in
 
         VStack(alignment: .leading, spacing: 16) {
-        Text(String(od.id.first ?? "🥡") + od.order)
-        Text("Restaurant: \(od.place)")
+        Text(String(ord.id.first ?? "🥡") + ord.order)
+        Text("Restaurant: \(ord.place)")
 
-        Rating(od: od)
+        Stars(ord: ord)
             .environmentObject(DM)
-            Text(od.time.formatted(.dateTime.day().month()))
+            Text(ord.time.formatted(.dateTime.day().month()))
         }}}
         .listStyle(.plain)
         .padding(.top, 110)
@@ -46,18 +46,18 @@ struct Orders: View {
         FS.collection("aiOrders").addSnapshotListener { snap, error in
         orderList = snap!.documents.compactMap { doc -> AIOrder? in
 
-        if let order = try? doc.data(as: AIOrder.self) {
-            if (order.user == user) {
-                return order }}
+        if let ord = try? doc.data(as: AIOrder.self) {
+            if (ord.user == user) {
+                return ord }}
         return nil
         }
         orderList.sort {
             $0.time < $1.time
         }}}}
 
-struct Rating: View {
+struct Stars: View {
 
-    @State var od: AIOrder
+    @State var ord: AIOrder
     @State var editing = false
     @EnvironmentObject var DM: DataManager
 
@@ -66,17 +66,19 @@ struct Rating: View {
         Text("Rating:")
         ForEach(1...5, id: \.self) { i in
 
-        Image(systemName: (i <= od.rating ? "star.fill": "star"))
+        Image(systemName: (i <= ord.stars ? "star.fill": "star"))
             .foregroundColor(.pink)
             .onTapGesture {
-                od.rating = (od.rating == i ? 0: i)
+                ord.stars = (ord.stars == i ? 0: i)
                 editing = true
             }
         }
         Spacer()
         if editing {
             Button("Save Edits") {
-                DM.sendOrder(id: od.id, user: od.user, order: od.order,
-                    place: od.place, rating: od.rating, time: od.time)
+                let ord = AIOrder(id: ord.id, user: ord.user, order:
+                    ord.order, place: ord.place, stars: ord.stars,
+                    time: ord.time)
+                DM.sendOrder(ord: ord)
                 editing = false
             }}}}}

@@ -37,8 +37,9 @@ struct Convo: View {
                 focus = true
             }
         Button {
-            DM.sendChat(text: text, sender: myID, getter: id,
-                        time: Date())
+            let msg = Message(text: text, sender: myID, getter: id,
+                              time: Date())
+            DM.sendChat(msg: msg)
             text = ""
 
         // ## MODIFIERS ## \\
@@ -76,9 +77,9 @@ struct Convo: View {
         FS.collection("messages").addSnapshotListener { snap, error in
         messages = snap!.documents.compactMap { doc -> Message? in
 
-        if let chat = try? doc.data(as: Message.self) {
-            if (chat.sender == sender && chat.getter == getter) {
-                return chat }}
+        if let msg = try? doc.data(as: Message.self) {
+            if (msg.sender == sender && msg.getter == getter) {
+                return msg }}
         return nil
         }
         messages.sort {

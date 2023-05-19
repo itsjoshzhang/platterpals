@@ -4,13 +4,12 @@ struct Update: View {
 
     // ## TRACK INFO ## \\
     var id: String
-    var show: Bool
+    var showNext: Bool
     @State var scale = 0.9
     @State var swipe = 0.0
 
     // ## CONDITIONS ## \\
-    @State var avatar: UIImage?
-    @State var profile: UIImage?
+    @State var image: UIImage?
     @State var showProf = false
     @State var hideProf = false
     @State var showAlert = false
@@ -37,15 +36,15 @@ struct Update: View {
             let user = DM.user(id: id)
 
         ZStack {
-            if let image = profile {
-            let height = UIwidth * 16.0 / 9.0
+        if let image = image {
+        let height = UIwidth * 16.0 / 9.0
 
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFill()
-                .frame(maxHeight: height)
-                .cornerRadius(16)
-                .clipped()
+        Image(uiImage: image)
+            .resizable()
+            .scaledToFill()
+            .frame(maxHeight: height)
+            .cornerRadius(16)
+            .clipped()
 
         // ## USER INFO ## \\
 
@@ -112,7 +111,7 @@ struct Update: View {
         }
         .onEnded {_ in
             withAnimation {
-                if (swipe > min && show) {
+                if (swipe > min && showNext) {
                     showProf = true
 
                 } else if swipe < -min {
@@ -121,24 +120,16 @@ struct Update: View {
                 scale = 0.9
                 swipe = 0.0
             }})
-        // ## GET IMAGES ## \\
+
+        // ## MODIFIERS ## \\
 
         .onAppear {
-            if myID == id {
-                avatar = DM.myAvatar
-                profile = DM.myProfile
-            } else {
-                getImage(path: "avatars")
-                getImage(path: "profiles")
-            }
+            getImage(path: "profiles")
         }
         .sheet(isPresented: $showProf) {
-            Profile(id: id, title: true,
-                avatar: avatar, profile: profile)
+            Profile(id: id, title: true)
                 .environmentObject(DM)
         }
-        // ## EDIT PROFILE ## \\
-
         .confirmationDialog("", isPresented: $showAlert) {
             if myID == id {
                 Button("DELETE PROFILE") {
@@ -161,8 +152,5 @@ struct Update: View {
             if let data = data {
 
                 DispatchQueue.main.async {
-                    if path == "avatars" {
-                        avatar = UIImage(data: data)
-                    } else {
-                        profile = UIImage(data: data)
-                    }}}}}}
+                    image = UIImage(data: data)
+                }}}}}

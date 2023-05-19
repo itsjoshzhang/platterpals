@@ -18,15 +18,15 @@ struct Row: View {
         RoundPic(width: 64, image: image)
 
         VStack(alignment: .leading, spacing: 8) {
-            let user = DM.user(id: id)
+        let user = DM.user(id: id)
 
-            Text(user.name)
-                .foregroundColor(.pink)
-                .font(.headline)
+        Text(user.name)
+            .foregroundColor(.pink)
+            .font(.headline)
 
-            Text("\(user.city), CA")
-                .foregroundColor(.secondary)
-                .font(.subheadline)
+        Text("\(user.city), CA")
+            .foregroundColor(.secondary)
+            .font(.subheadline)
         }
         }
         .frame(maxWidth: UIwidth - 32, alignment: .leading)
@@ -37,7 +37,7 @@ struct Row: View {
     }
     // ## FUNCTIONS ## \\
 
-    func getImage(id: String, path: String) {
+    func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
 
         SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in

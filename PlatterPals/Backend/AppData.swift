@@ -72,7 +72,7 @@ struct UserData: Identifiable, Hashable {
 }
 
 struct Message: Identifiable, Hashable, Codable {
-    let id: String
+    var id = UUID().uuidString
     let text: String
     let sender: String
     let getter: String
@@ -84,16 +84,16 @@ struct AIOrder: Identifiable, Hashable, Codable {
     let user: String
     let order: String
     let place: String
-    var rating: Int
+    var stars: Int
     let time: Date
 }
 
-struct Setting: Identifiable, Hashable {
+struct Setting: Identifiable, Hashable, Codable {
     var id = ""
     var notifs = true
     var suggest = true
     var privacy = true
-    var location = true
+    var locate = true
 }
 
 struct Div: View {
@@ -123,9 +123,10 @@ struct Box: View {
                     .stroke(.secondary))
     }
 }
-struct Img: View {
+struct Glow: View {
     var image: String
     var body: some View {
+
         Image(systemName: image)
             .resizable()
             .padding(16)
