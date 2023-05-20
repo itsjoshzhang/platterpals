@@ -8,9 +8,6 @@ struct Row: View {
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
-        ZStack {
-        Rectangle()
-            .fill(.white)
         HStack(spacing: 16) {
 
         // ## SHOW IMAGE ## \\
@@ -28,8 +25,6 @@ struct Row: View {
             .foregroundColor(.secondary)
             .font(.subheadline)
         }
-        }
-        .frame(width: UIwidth-32, alignment: .leading)
         }
         .onAppear {
             getImage(path: "avatars")
@@ -72,8 +67,7 @@ struct Search: View {
         TextField("Type in a username", text: $name)
             .padding(4)
             .overlay(RoundedRectangle(cornerRadius: 8)
-                    .stroke(.secondary))
-
+            .stroke(.secondary))
             .padding(.horizontal, 16)
             .padding(.top, 256)
             .focused($focus)

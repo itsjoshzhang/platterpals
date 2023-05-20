@@ -46,14 +46,14 @@ struct EditProf: View {
     @State var name = ""
     @State var text = ""
     @State var city = "Berkeley"
-    @State var image: UIImage?
-
-    // ## CONDITIONS ## \\
     @State var showSets = false
-    @State var imageData: Data?
-    @State var imageItem: PhotosPickerItem?
-    @Environment(\.dismiss) var dismiss
+    @State var showCrop = false
 
+    // ## IMAGE VARS ## \\
+    @State var image: UIImage?
+    @State var imageItem: PhotosPickerItem?
+    
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
     // ## SHOW IMAGE ## \\
@@ -63,7 +63,7 @@ struct EditProf: View {
         var my = DM.my()
         HStack(spacing: 16) {
 
-        if let d = imageData, let image = UIImage(data: d) {
+        if let image = image {
             RoundPic(width: 120, image: image)
         } else {
             RoundPic(width: 120, image: nil)
@@ -89,8 +89,14 @@ struct EditProf: View {
         }
         // ## UPLOAD PIC ## \\
 
-        PhotosPicker("Upload Picture", selection: $imageItem,
-                     matching: .images)
+        HStack {
+            PhotosPicker("Upload Picture", selection: $imageItem,
+                         matching: .images)
+
+            if image != nil {
+                Button("\(Image(systemName: "crop"))") {
+                    showCrop = true
+        }}}
         .buttonStyle(.bordered)
 
         .onChange(of: imageItem) { _ in
@@ -98,7 +104,7 @@ struct EditProf: View {
 
                 switch result {
                 case .success(let data):
-                    imageData = data
+                    image = UIImage(data: data ?? Data())
                 case .failure(_):
                     return
                 }}}}}
@@ -113,7 +119,7 @@ struct EditProf: View {
                 .foregroundColor(.secondary)
         } else {
             Button("Save Edits") {
-                if let d = imageData, let image = UIImage(data: d) {
+                if let image = image {
                     DM.putImage(image: image, path: "avatars")
                 }
                 my.name = name
@@ -131,5 +137,8 @@ struct EditProf: View {
                 text = my.text
             }}}
         .padding(16)
+        .fullScreenCover(isPresented: $showCrop) {
+            ImageEditor(theimage: $image, isShowing: $showCrop)
+        }
     }
 }

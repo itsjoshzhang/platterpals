@@ -10,9 +10,8 @@ struct AppInit: App {
     var body: some Scene {
         WindowGroup {
             Splash()
-        }
-    }
-}
+        }}}
+
 struct MyTabView: View {
 
     @State var tag = 3

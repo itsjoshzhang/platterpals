@@ -51,7 +51,7 @@ extension UIImage {
         let render = UIGraphicsImageRenderer(size: size)
 
         // return new image
-        return render.image { _ in
+        return render.image {_ in
             self.draw(in: CGRect(origin: .zero, size: size))
         }
     }
@@ -61,6 +61,7 @@ struct User: Identifiable, Hashable {
     var name: String
     var text: String
     var city: String
+    var prof: Bool
 }
 
 struct UserData: Identifiable, Hashable {
@@ -118,20 +119,18 @@ struct Box: View {
             .padding(.leading, 8)
             .foregroundColor(.secondary)
             .frame(width: UIwidth-32, height: 32, alignment: .leading)
-            .overlay(RoundedRectangle(cornerRadius: 8).stroke(UIgray))
+            .overlay(RoundedRectangle(cornerRadius: 8).stroke(.secondary))
     }
 }
-struct Glow: View {
-    var image: String
-    var body: some View {
+struct CardItem: Identifiable {
+    let id: String
+    let title: String
+    let text: String
+}
 
-        Image(systemName: image)
-            .resizable()
-            .padding(16)
-            .background(.pink)
-            .foregroundColor(.white)
-            .frame(width: 64, height: 64)
-            .shadow(color: .pink, radius: 3)
-            .cornerRadius(32)
-    }
+extension CardItem {
+    static let data = [
+        CardItem(id: "🥡", title: "Lorem ipsum dolor", text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"),
+        CardItem(id: "🥡", title: "Ut enim ad minim veniam", text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat"),
+        CardItem(id: "🥡", title: "Duis aute irure dolor", text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur")]
 }

@@ -89,3 +89,16 @@ struct Chats: View {
         chatting.move(fromOffsets: start, toOffset: end)
     }
 }
+struct Glow: View {
+    var image: String
+    var body: some View {
+        Image(systemName: image)
+            .resizable()
+            .padding(16)
+            .background(.pink)
+            .clipShape(Circle())
+            .foregroundColor(.white)
+            .frame(width: 64, height: 64)
+            .shadow(color: .pink, radius: 3)
+    }
+}

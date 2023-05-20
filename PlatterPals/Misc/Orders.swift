@@ -11,6 +11,7 @@ struct Orders: View {
         NavigationStack {
         ZStack {
         Back()
+        VStack{
         List {
         ForEach(orderList) { ord in
 
@@ -23,6 +24,7 @@ struct Orders: View {
             Text(ord.time.formatted(.dateTime.day().month()))
         }}}
         .listStyle(.plain)
+        }
         .padding(.top, 110)
         }
         .navigationTitle("My Orders")
@@ -54,6 +56,49 @@ struct Orders: View {
         orderList.sort {
             $0.time < $1.time
         }}}}
+
+struct Cards: View {
+    @State var items = CardItem.data
+
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(alignment: .center, spacing: 16.0) {
+                ForEach(items) { item in
+                    Card(emoji: item.id, title: item.title, text: item.text)
+                        .frame(width: UIwidth - 48.0)
+                }
+            }
+            .padding(.horizontal, 20.0)
+        }
+        .frame(height: 160.0)
+    }
+}
+struct Card: View {
+    let emoji: String
+    let title: String
+    let text: String
+
+    var body: some View {
+        ZStack(alignment: Alignment(horizontal: .leading, vertical: .top)) {
+            VStack(alignment: .leading, spacing: 8.0) {
+                HStack(spacing: 16.0) {
+                    Text(emoji)
+                        .padding(16.0)
+                        .background(.pink)
+                        .clipShape(Circle())
+                        .font(.system(size: 32))
+                    Text(title)
+                        .font(.headline)
+                }
+                Text(text)
+                    .font(.caption)
+            }
+            .padding(16.0)
+            Color(.secondarySystemFill)
+                .cornerRadius(10.0)
+        }
+    }
+}
 
 struct Stars: View {
 

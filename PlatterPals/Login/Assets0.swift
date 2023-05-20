@@ -47,11 +47,8 @@ struct Guide2: View {
                     dismiss()
                 }
                 .buttonStyle(.borderedProminent)
-            }
-        }
-        .padding(16)
-    }
-}
+            }}.padding(16)}}
+
 struct Terms: View {
     var body: some View {
         NavigationStack {
@@ -81,17 +78,14 @@ struct ImageEditor: UIViewControllerRepresentable {
     func makeCoordinator() -> ImageEditorCoordinator {
         return ImageEditorCoordinator(image: $theimage, isShowing: $isShowing)
     }
-
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
     }
-
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImageEditor>) -> CropViewController {
         let Editor = cropViewController(image: theimage!)
         Editor.delegate = context.coordinator
         return Editor
     }
 }
-
 class ImageEditorCoordinator: NSObject, CropViewControllerDelegate {
     @Binding var theimage: UIImage?
     @Binding var isShowing: Bool

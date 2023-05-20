@@ -12,15 +12,16 @@ struct Convo: View {
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
-        ZStack(alignment: .top) {
+        ZStack {
             let myID = DM.my().id
+            Back()
         VStack {
 
         // ## CHATS LOGIC ## \\
 
         TitleBar(id: id)
             .environmentObject(DM)
-            .padding(.top, -20)
+            .padding(.top, -32)
 
         ScrollView {
             ForEach(messages) { message in
@@ -47,16 +48,17 @@ struct Convo: View {
         } label: {
             Image(systemName: "paperplane.circle.fill")
                 .resizable()
-                .frame(width: 24, height: 24)
+                .frame(width: 32, height: 32)
         }
         .disabled(text.isEmpty)
         }
         .padding(8)
         .background(UIgray)
         .cornerRadius(32)
-        .padding(.horizontal, 16)
-        .padding(.bottom, 8)
+        .padding(16)
         }
+        .padding(.vertical, 110)
+
         .onAppear {
             getChats(sender: myID)
             var data = DM.md()

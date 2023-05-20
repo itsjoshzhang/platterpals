@@ -12,19 +12,20 @@ struct Signup: View {
     @State var city = "Berkeley"
 
     // ## CONDITIONS ## \\
+    @FocusState var focus: Bool
+    @State var showCrop = false
     @State var showAlert = false
     @State var showTerms = false
     @State var showGuide = false
-    @State var imageData: Data?
-    @FocusState var focus: Bool
 
+    // ## IMAGE VARS ## \\
+    @State var image: UIImage?
     @State var imageItem: PhotosPickerItem?
-    @Environment(\.dismiss) var dismiss
 
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
     // ## SETUP VIEW ## \\
-
     var body: some View {
         NavigationStack {
         ZStack {
@@ -36,7 +37,7 @@ struct Signup: View {
 
         // ## SHOW IMAGE ## \\
 
-        if let d = imageData, let image = UIImage(data: d) {
+        if let image = image {
             RoundPic(width: 160, image: image)
         } else {
             RoundPic(width: 160, image: nil)
@@ -45,8 +46,14 @@ struct Signup: View {
                 .foregroundColor(.secondary)
                 .font(.subheadline)
         }
-        PhotosPicker("Upload Picture", selection: $imageItem,
-                     matching: .images)
+        HStack {
+            PhotosPicker("Upload Picture", selection: $imageItem,
+                         matching: .images)
+
+            if image != nil {
+                Button("\(Image(systemName: "crop"))") {
+                    showCrop = true
+        }}}
         .buttonStyle(.bordered)
 
         .onChange(of: imageItem) { _ in
@@ -54,7 +61,7 @@ struct Signup: View {
 
                 switch result {
                 case .success(let data):
-                    imageData = data
+                    image = UIImage(data: data ?? Data())
                 case .failure(_):
                     return
                 }}}
@@ -98,34 +105,39 @@ struct Signup: View {
                 showTerms = true
             }
         }
-        Group {
-            Button("How to use PlatterPals") {
-                showGuide = true
-            }
+        Button("How to use PlatterPals") {
+            showGuide = true
+        }
+        .buttonStyle(.bordered)
+
         // ## CREATE USER ## \\
 
         Button("Sign Up") {
             signupAuth()
         }
         .disabled(name.isEmpty)
+        .buttonStyle(.borderedProminent)
+
         .alert(alertText, isPresented: $showAlert) {
             Button("OK", role: .cancel) {
         }}}
-        .buttonStyle(.borderedProminent)
-        }
         .padding(16)
-        Spacer().padding(85)
-
         .navigationTitle("Sign Up")
         .onTapGesture {
             focus = false
+        }
+        .fullScreenCover(isPresented: $showCrop) {
+            ImageEditor(theimage: $image, isShowing: $showCrop)
         }
         .sheet(isPresented: $showGuide) {
             Guide()
         }
         .sheet(isPresented: $showTerms) {
             Terms()
-        }}}}}
+        }
+        Spacer()
+            .padding(85)
+        }}}}
 
     // ## FUNCTIONS ## \\
 
@@ -140,7 +152,7 @@ struct Signup: View {
                 DM.makeUser(id: email, name: name, city: city)
                 DM.initUser(id: email)
 
-                if let d = imageData, let image = UIImage(data: d) {
+                if let image = image {
                     DM.putImage(image: image, path: "avatars")
                 }
                 dismiss()

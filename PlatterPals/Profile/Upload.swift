@@ -3,15 +3,17 @@ import PhotosUI
 
 struct Upload: View {
 
-    // ## SETUP VIEW ## \\
+    // ## IMAGE VARS ## \\
     @State var text = ""
+    @State var image: UIImage?
+    @State var showCrop = false
     @FocusState var focus: Bool
-    @State var imageData: Data?
     @State var imageItem: PhotosPickerItem?
+
     @Environment(\.dismiss) var dismiss
-    
     @EnvironmentObject var DM: DataManager
-    
+
+    // ## SETUP VIEW ## \\
     var body: some View {
         NavigationStack {
         ZStack {
@@ -23,7 +25,7 @@ struct Upload: View {
 
         // ## SHOW IMAGE ## \\
 
-        if let d = imageData, let image = UIImage(data: d) {
+        if let image = image {
             Image(uiImage: image)
                 .resizable()
                 .scaledToFit()
@@ -44,9 +46,16 @@ struct Upload: View {
 
         Text("Use template for best result")
             .foregroundColor(.secondary)
+            .font(.subheadline)
 
-        PhotosPicker("Upload Picture", selection: $imageItem,
-                     matching: .images)
+        HStack {
+            PhotosPicker("Upload Picture", selection: $imageItem,
+                         matching: .images)
+
+            if image != nil {
+                Button("\(Image(systemName: "crop"))") {
+                    showCrop = true
+        }}}
         .buttonStyle(.bordered)
 
         .onChange(of: imageItem) { _ in
@@ -54,7 +63,7 @@ struct Upload: View {
 
                 switch result {
                 case .success(let data):
-                    imageData = data
+                    image = UIImage(data: data ?? Data())
                 case .failure(_):
                     return
                 }}}
@@ -74,7 +83,7 @@ struct Upload: View {
                 .foregroundColor(.secondary)
         } else {
             Button("Save Edits") {
-                if let d = imageData, let image = UIImage(data: d) {
+                if let image = image {
                     DM.putImage(image: image, path: "profiles")
                 }
                 dismiss()
@@ -85,15 +94,16 @@ struct Upload: View {
         // ## OTHER STUFF ## \\
 
         Spacer()
-            .padding(100)
+            .padding(90)
         }
         .padding(16)
-        }
         .navigationTitle("Profile 📸")
         .onAppear {
             text = DM.my().text
         }
-        }
+        .fullScreenCover(isPresented: $showCrop) {
+            ImageEditor(theimage: $image, isShowing: $showCrop)
+        }}}
         .onTapGesture {
             focus = false
         }}}}

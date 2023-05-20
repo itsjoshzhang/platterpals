@@ -12,24 +12,12 @@ struct TitleBar: View {
 
     // ## SETUP VIEW ## \\
     var body: some View {
-        if hideBar {
-            Button("\(Image(systemName: "chevron.down"))") {
-                withAnimation {
-                    hideBar = false }}
-            .buttonStyle(.bordered)
-        } else {
-            content
-        }
-    }
-    var content: some View {
         VStack {
         HStack {
         Button {
             showProf = true
         } label: {
         HStack(spacing: 16) {
-
-        // ## USER INFO ## \\
 
         RoundPic(width: 80, image: image)
 
@@ -43,13 +31,6 @@ struct TitleBar: View {
                 .font(.subheadline)
         }}}
         Spacer()
-
-        Button("\(Image(systemName: "chevron.up"))") {
-            withAnimation {
-                hideBar = true
-            }
-        }
-        .buttonStyle(.bordered)
 
         // ## MODIFIERS ## \\
 
@@ -65,7 +46,7 @@ struct TitleBar: View {
             getImage(path: "avatars")
         }
         .sheet(isPresented: $showProf) {
-            Profile(id: id)
+            Profile(id: id, title: true)
                 .environmentObject(DM)
         }
     }
@@ -129,17 +110,13 @@ struct Bubble: View {
             .background(sender ? .pink.opacity(0.25): .secondary)
             .cornerRadius(16)
 
-            .frame(width: UIwidth, alignment: sender ?
+            .frame(maxWidth: UIwidth, alignment: sender ?
                 .trailing: .leading)
             .padding(.horizontal, 16)
-            .gesture(
-                DragGesture(minimumDistance: 50)
-                .onEnded { _ in
-                    showTime.toggle()
-                }
-            )
-        // ## SHOW TIME ## \\
 
+            .onLongPressGesture(minimumDuration: 0.5) {
+                showTime.toggle()
+            }
         if showTime {
             Text("\(message.time.formatted(.dateTime.hour().minute()))")
                 .foregroundColor(.secondary)

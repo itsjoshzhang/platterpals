@@ -55,9 +55,9 @@ struct Home: View {
         let update = Update(id: user.id, showNext: true)
             .environmentObject(DM)
 
-        if (!data.blocked.contains(user.id) &&
-            DM.my().id != user.id &&
-            user.city == city) {
+        if (DM.my().id != user.id &&
+            !data.blocked.contains(user.id) &&
+            user.city == city && user.prof) {
 
             if following {
                 if data.favUsers.contains(user.id) { update }

@@ -48,10 +48,7 @@ struct Profile: View {
         ZStack(alignment: .top) {
             let myID = DM.my().id
             let user = DM.user(id: id)
-
-        Image("back")
-            .resizable()
-            .opacity(0.05)
+            
         ScrollView {
         VStack(alignment: .leading, spacing: 16) {
 
@@ -94,7 +91,7 @@ struct Profile: View {
                 .foregroundColor(.pink)
                 .font(.title3)
         }}}
-        if showUpdate == false {
+        if !showUpdate {
             Text(user.text)
                 .foregroundColor(.secondary)
         }
@@ -108,20 +105,25 @@ struct Profile: View {
         }
         .padding(.horizontal, 16)
 
-        // ## MODIFIERS ## \\
+        // ## SHOW UPDATE ## \\
 
         VStack {
-        Button("\(Image(systemName: "photo"))") {
-            withAnimation {
-                showUpdate.toggle()
+        if user.prof {
+            Button("\(Image(systemName: "photo"))") {
+                withAnimation {
+                    showUpdate.toggle()
+                }
             }
-        }
-        .buttonStyle(.borderedProminent)
-        .shadow(color: .pink, radius: 3)
+            .buttonStyle(.borderedProminent)
+            .shadow(color: .pink, radius: 3)
 
-        if showUpdate {
-            Update(id: id, showNext: false)
-            .environmentObject(DM)
+            if showUpdate {
+                Update(id: id, showNext: false)
+                    .environmentObject(DM)
+            }
+        } else {
+            Text("No profile yet.")
+                .foregroundColor(.secondary)
         }}}
         .navigationTitle(user.name)
         .onAppear {
@@ -135,6 +137,9 @@ struct Profile: View {
         .sheet(isPresented: $showChat) {
             Convo(id: id)
                 .environmentObject(DM)
+        }
+        .background() {
+            Back()
         }}}
 
     // ## FUNCTIONS ## \\

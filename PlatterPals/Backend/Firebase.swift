@@ -48,13 +48,14 @@ class DataManager: ObservableObject {
         for doc in col!.documents {
         let data = doc.data()
 
-        let id    = data["id"]    as? String ?? ""
-        let name  = data["name"]  as? String ?? ""
-        let text  = data["text"]  as? String ?? ""
-        let city  = data["city"]  as? String ?? ""
+        let id   = data["id"]   as? String ?? ""
+        let name = data["name"] as? String ?? ""
+        let text = data["text"] as? String ?? ""
+        let city = data["city"] as? String ?? ""
+        let prof = data["prof"] as? Bool ?? false
 
-        let user = User(id: id, name: name, text: text,
-                        city: city)
+        let user = User(id: id, name: name, text: text, city: city,
+                        prof: prof)
         self.userList.append(user)
         }
         }
@@ -75,10 +76,14 @@ class DataManager: ObservableObject {
 
     // called at Login
     func initUser(id: String) {
+        let myID = id.replacingOccurrences(of: ".", with: "_")
+        // TODO: - FIXME
+
         for i in 0 ..< userList.count {
-            if userList[i].id == id {
+            if userList[i].id == myID {
                 myIndex = i
-                break }}
+                break
+            }}
         getImage(path: "avatars")
         getImage(path: "profiles")
         getSetts(id: id)
@@ -87,7 +92,8 @@ class DataManager: ObservableObject {
     // called at Signup
     func makeUser(id: String, name: String, city: String) {
 
-        let user = User(id: id, name: name, text: "", city: city)
+        let user = User(id: id, name: name, text: "", city: city,
+                        prof: false)
         editUser(user: user)
 
         let data = UserData(id: id, favFoods: [String](), favUsers:
@@ -170,8 +176,10 @@ class DataManager: ObservableObject {
         if let jpeg = jpeg {
             SR.putData(jpeg, metadata: meta)
         }
+        if !pfp {
+            userList[myIndex].prof = true
+        }
     }
-
     // called at init
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(my().id).jpg")
@@ -190,8 +198,11 @@ class DataManager: ObservableObject {
     func delImage(path: String) {
         let SR = SR.child("\(path)/\(my().id).jpg")
         SR.delete {_ in}
-    }
 
+        if path != "avatars" {
+            userList[myIndex].prof = false
+        }
+    }
     // called at init
     func getSetts(id: String) {
         FS.collection("settings").addSnapshotListener { snap, error in
