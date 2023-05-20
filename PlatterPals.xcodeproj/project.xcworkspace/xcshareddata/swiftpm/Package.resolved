@@ -55,15 +55,6 @@
       }
     },
     {
-      "identity" : "gptencoder",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/alfianlosari/GPTEncoder.git",
-      "state" : {
-        "revision" : "a86968867ab4380e36b904a14c42215f71efe8b4",
-        "version" : "1.0.4"
-      }
-    },
-    {
       "identity" : "grpc-ios",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/grpc/grpc-ios.git",
@@ -82,21 +73,21 @@
       }
     },
     {
-      "identity" : "highlighterswift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/alfianlosari/HighlighterSwift",
-      "state" : {
-        "branch" : "main",
-        "revision" : "c15eea4e5e8f18b0a2d2173830fcaa250f742bc0"
-      }
-    },
-    {
       "identity" : "leveldb",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/leveldb.git",
       "state" : {
         "revision" : "0706abcc6b0bd9cedfbb015ba840e4a780b5159b",
         "version" : "1.22.2"
+      }
+    },
+    {
+      "identity" : "mantis",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/guoyingtao/Mantis.git",
+      "state" : {
+        "revision" : "d59214e37c1333730892b68f84884b7edaa984f6",
+        "version" : "2.9.1"
       }
     },
     {

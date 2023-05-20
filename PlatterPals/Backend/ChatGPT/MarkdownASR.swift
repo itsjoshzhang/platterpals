@@ -1,15 +1,9 @@
 import UIKit
 import Markdown
 import Foundation
-import Highlighter
 
 public struct MarkdownAttributedStringParser: MarkupVisitor {
     let baseFontSize: CGFloat = UIFont.preferredFont(forTextStyle: .body).pointSize
-    let highlighter: Highlighter = {
-        let highlighter = Highlighter()!
-        highlighter.setTheme("stackoverflow-dark")
-        return highlighter
-    }()
 
     let newLineFontSize: CGFloat = 12
 
@@ -133,13 +127,7 @@ public struct MarkdownAttributedStringParser: MarkupVisitor {
     }
 
     public func visitCodeBlock(_ codeBlock: CodeBlock) -> NSAttributedString {
-        let result = NSMutableAttributedString(attributedString: highlighter.highlight(codeBlock.code, as: codeBlock.language) ?? NSAttributedString(string: codeBlock.code))
-
-        if codeBlock.hasSuccessor {
-            result.append(.singleNewline(withFontSize: newLineFontSize))
-        }
-
-        return result
+        return NSAttributedString(string: codeBlock.code)
     }
 
     mutating public func visitStrikethrough(_ strikethrough: Strikethrough) -> NSAttributedString {

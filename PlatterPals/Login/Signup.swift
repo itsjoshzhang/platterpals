@@ -31,7 +31,7 @@ struct Signup: View {
         Back()
         ScrollView {
         Spacer()
-            .padding(45)
+            .padding(40)
         VStack(spacing: 16) {
 
         // ## SHOW IMAGE ## \\
@@ -43,6 +43,7 @@ struct Signup: View {
 
             Text("Crop to square for best result")
                 .foregroundColor(.secondary)
+                .font(.subheadline)
         }
         PhotosPicker("Upload Picture", selection: $imageItem,
                      matching: .images)
