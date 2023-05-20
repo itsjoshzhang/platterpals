@@ -1,4 +1,5 @@
 import SwiftUI
+import Mantis
 
 struct Guide: View {
     var body: some View {
@@ -71,3 +72,39 @@ struct Terms: View {
         .padding(.top, -180)
         .padding(16)
         }}}}
+
+struct ImageEditor: UIViewControllerRepresentable {
+    typealias Coordinator = ImageEditorCoordinator
+    @Binding var theimage: UIImage?
+    @Binding var isShowing: Bool
+
+    func makeCoordinator() -> ImageEditorCoordinator {
+        return ImageEditorCoordinator(image: $theimage, isShowing: $isShowing)
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
+    }
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ImageEditor>) -> CropViewController {
+        let Editor = cropViewController(image: theimage!)
+        Editor.delegate = context.coordinator
+        return Editor
+    }
+}
+
+class ImageEditorCoordinator: NSObject, CropViewControllerDelegate {
+    @Binding var theimage: UIImage?
+    @Binding var isShowing: Bool
+
+    init(image: Binding<UIImage?>, isShowing: Binding<Bool>) {
+        _theimage = image
+        _isShowing = isShowing
+    }
+    func cropViewControllerDidCrop (_ cropViewController: CropViewController, cropped: UIImage, transformation: Transformation, cropInfo: CropInfo) {
+        theimage = cropped
+        isShowing = false
+    }
+    func cropViewControllerDidCancel(_ cropViewController: CropViewController, original: UIImage) {
+        isShowing = false
+    }
+}

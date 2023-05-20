@@ -32,8 +32,9 @@ struct RoundPic: View {
             }
         }
         .scaledToFit()
-        .clipShape(Circle())
         .frame(width: CGFloat(width))
+        .clipShape(Circle())
+        .clipped()
     }
 }
 extension UIImage {
