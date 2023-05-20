@@ -68,5 +68,6 @@ struct Terms: View {
         }
         .navigationTitle("Terms and EULA")
         .foregroundColor(.secondary)
+        .padding(.top, -180)
         .padding(16)
         }}}}

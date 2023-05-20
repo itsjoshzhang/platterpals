@@ -75,9 +75,7 @@ struct Login: View {
         .disabled(email.isEmpty || password.isEmpty)
 
         .alert(alertText, isPresented: $showAlert) {
-            Button("OK", role: .cancel) {}
-        }
-        }
+            Button("OK", role: .cancel) {}}}
         .opacity(internet ? 1: 0)
         }
         .padding(16)

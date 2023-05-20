@@ -29,7 +29,7 @@ struct Row: View {
             .font(.subheadline)
         }
         }
-        .frame(maxWidth: UIwidth - 32, alignment: .leading)
+        .frame(width: UIwidth-32, alignment: .leading)
         }
         .onAppear {
             getImage(path: "avatars")

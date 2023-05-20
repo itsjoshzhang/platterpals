@@ -30,23 +30,23 @@ struct Signup: View {
         ZStack {
         Back()
         ScrollView {
+        Spacer()
+            .padding(45)
         VStack(spacing: 16) {
 
         // ## SHOW IMAGE ## \\
 
         if let d = imageData, let image = UIImage(data: d) {
             RoundPic(width: 160, image: image)
+        } else {
+            RoundPic(width: 160, image: nil)
 
             Text("Crop to square for best result")
                 .foregroundColor(.secondary)
-        } else {
-            RoundPic(width: 160, image: nil)
         }
         PhotosPicker("Upload Picture", selection: $imageItem,
                      matching: .images)
         .buttonStyle(.bordered)
-
-        // ## UPLOAD PIC ## \\
 
         .onChange(of: imageItem) { _ in
             imageItem?.loadTransferable(type: Data.self) { result in
@@ -89,7 +89,7 @@ struct Signup: View {
             }
             .buttonStyle(.bordered)
         }
-        HStack {
+        HStack(spacing: 4) {
             Text("I agree to the")
                 .foregroundColor(.secondary)
 
@@ -98,27 +98,23 @@ struct Signup: View {
             }
         }
         Group {
-            Button("PlatterPals How-To") {
+            Button("How to use PlatterPals") {
                 showGuide = true
             }
         // ## CREATE USER ## \\
 
-            Button("Sign Up") {
-                signupAuth()
-            }
-            .disabled(name.isEmpty)
-            .padding(.bottom, 110)
-
-            .alert(alertText, isPresented: $showAlert) {
-                Button("OK", role: .cancel) {
-                }}}
-
+        Button("Sign Up") {
+            signupAuth()
+        }
+        .disabled(name.isEmpty)
+        .alert(alertText, isPresented: $showAlert) {
+            Button("OK", role: .cancel) {
+        }}}
         .buttonStyle(.borderedProminent)
         }
-        .padding(.vertical, 80)
         .padding(16)
-        }
-        }
+        Spacer().padding(85)
+
         .navigationTitle("Sign Up")
         .onTapGesture {
             focus = false
@@ -128,7 +124,7 @@ struct Signup: View {
         }
         .sheet(isPresented: $showTerms) {
             Terms()
-        }}}
+        }}}}}
 
     // ## FUNCTIONS ## \\
 

@@ -52,7 +52,7 @@ struct Home: View {
         ForEach(DM.userList) { user in
 
         let data = DM.md()
-        let update = Update(id: user.id, show: true)
+        let update = Update(id: user.id, showNext: true)
             .environmentObject(DM)
 
         if (!data.blocked.contains(user.id) &&

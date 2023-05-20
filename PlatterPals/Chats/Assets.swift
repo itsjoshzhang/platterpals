@@ -14,11 +14,13 @@ struct TitleBar: View {
     var body: some View {
         if hideBar {
             Button("\(Image(systemName: "chevron.down"))") {
-            withAnimation {
-            hideBar = false }}
+                withAnimation {
+                    hideBar = false }}
             .buttonStyle(.bordered)
         } else {
-            content }}
+            content
+        }
+    }
     var content: some View {
         VStack {
         HStack {
@@ -51,8 +53,10 @@ struct TitleBar: View {
 
         // ## MODIFIERS ## \\
 
-        Block(id: id)
-            .environmentObject(DM)
+        if (DM.my().id != id) {
+            Block(id: id)
+                .environmentObject(DM)
+            }
         }
         .padding(.horizontal, 16)
         Div()
@@ -125,7 +129,7 @@ struct Bubble: View {
             .background(sender ? .pink.opacity(0.25): .secondary)
             .cornerRadius(16)
 
-            .frame(maxWidth: UIwidth, alignment: sender ?
+            .frame(width: UIwidth, alignment: sender ?
                 .trailing: .leading)
             .padding(.horizontal, 16)
             .gesture(

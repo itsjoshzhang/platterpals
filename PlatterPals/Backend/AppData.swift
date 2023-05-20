@@ -28,8 +28,7 @@ struct RoundPic: View {
             } else {
                 Image(systemName: "person.circle")
                     .resizable()
-                    .opacity(0.25)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(UIgray)
             }
         }
         .scaledToFit()
@@ -42,15 +41,15 @@ extension UIImage {
     // called at putImage
     func resize(width: CGFloat, pfp: Bool) -> UIImage {
 
-        // compute new scale and height
+        // compute new scale
         var height = width * 16.0 / 9.0
         if pfp { height = width }
 
-        // compute new size and renderer
+        // render new size
         let size = CGSize(width: width, height: height)
         let render = UIGraphicsImageRenderer(size: size)
 
-        // return rendered resized image
+        // return new image
         return render.image { _ in
             self.draw(in: CGRect(origin: .zero, size: size))
         }
@@ -99,7 +98,7 @@ struct Setting: Identifiable, Hashable, Codable {
 struct Div: View {
     var body: some View {
         Divider()
-            .frame(width: UIwidth - 32, height: 2)
+            .frame(maxWidth: UIwidth, minHeight: 3)
             .overlay(.pink)
     }
 }
@@ -117,10 +116,8 @@ struct Box: View {
         Text("Search for a user:")
             .padding(.leading, 8)
             .foregroundColor(.secondary)
-            .frame(width: UIwidth - 32, height: 32,
-                   alignment: .leading)
-            .overlay(RoundedRectangle(cornerRadius: 8)
-                    .stroke(.secondary))
+            .frame(width: UIwidth-32, height: 32, alignment: .leading)
+            .overlay(RoundedRectangle(cornerRadius: 8).stroke(UIgray))
     }
 }
 struct Glow: View {
@@ -130,10 +127,10 @@ struct Glow: View {
         Image(systemName: image)
             .resizable()
             .padding(16)
+            .background(.pink)
             .foregroundColor(.white)
             .frame(width: 64, height: 64)
-            .background(.pink)
-            .cornerRadius(32)
             .shadow(color: .pink, radius: 3)
+            .cornerRadius(32)
     }
 }

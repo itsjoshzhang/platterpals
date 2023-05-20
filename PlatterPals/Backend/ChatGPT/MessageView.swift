@@ -27,7 +27,7 @@ struct MessageRowView: View {
             messageRowContent(rowType: rowType, image: image, responseError: responseError, showDotLoading: showDotLoading)
         }
         .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: UIwidth, alignment: .leading)
         .background(bgColor)
     }
     
