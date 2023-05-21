@@ -11,7 +11,7 @@ struct Orders: View {
         NavigationStack {
         ZStack {
         Back()
-        VStack{
+        VStack {
         List {
         ForEach(orderList) { ord in
 
@@ -24,6 +24,9 @@ struct Orders: View {
             Text(ord.time.formatted(.dateTime.day().month()))
         }}}
         .listStyle(.plain)
+        // ## CARDS ## \\
+              Cards()
+        // ## CARDS ## \\
         }
         .padding(.top, 110)
         }

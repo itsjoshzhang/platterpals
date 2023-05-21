@@ -81,7 +81,7 @@ struct Message: Identifiable, Hashable, Codable {
 }
 
 struct AIOrder: Identifiable, Hashable, Codable {
-    let id: String
+    var id = UUID().uuidString
     let user: String
     let order: String
     let place: String

@@ -75,9 +75,10 @@ struct NewOrder: View {
             .font(.footnote)
 
         Button("Add to Orders") {
-            let ord = AIOrder(id: emoji + UUID().uuidString, user:
-                DM.my().id, order: order, place: place, stars: stars,
-                time: Date())
+            var ord = AIOrder(user: DM.my().id, order: order, place:
+                              place, stars: stars, time: Date())
+
+            ord.id = emoji + ord.id
             DM.sendOrder(ord: ord)
             dismiss()
         }

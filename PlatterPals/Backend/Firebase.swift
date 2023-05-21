@@ -45,42 +45,56 @@ class DataManager: ObservableObject {
     // called at init
     private func initInfo() {
         FS.collection("userList").getDocuments { col,_ in
-        for doc in col!.documents {
-        let data = doc.data()
+            for doc in col!.documents {
+                let data = doc.data()
 
-        let id   = data["id"]   as? String ?? ""
-        let name = data["name"] as? String ?? ""
-        let text = data["text"] as? String ?? ""
-        let city = data["city"] as? String ?? ""
-        let prof = data["prof"] as? Bool ?? false
+                let id   = data["id"]   as? String ?? ""
+                let name = data["name"] as? String ?? ""
+                let text = data["text"] as? String ?? ""
+                let city = data["city"] as? String ?? ""
+                let prof = data["prof"] as? Bool ?? false
 
-        let user = User(id: id, name: name, text: text, city: city,
-                        prof: prof)
-        self.userList.append(user)
-        }
+                let user = User(id: id, name: name, text: text, city:
+                                city, prof: prof)
+                self.userList.append(user)
+            }
         }
         FS.collection("userData").getDocuments { col,_ in
-        for doc in col!.documents {
-        let data = doc.data()
+            for doc in col!.documents {
+                let data = doc.data()
 
-        let id       = data["id"]       as? String   ?? ""
-        let favFoods = data["favFoods"] as? [String] ?? [String]()
-        let favUsers = data["favUsers"] as? [String] ?? [String]()
-        let chatting = data["chatting"] as? [String] ?? [String]()
-        let blocked  = data["blocked"]  as? [String] ?? [String]()
+            let id       = data["id"]       as? String   ?? ""
+            let favFoods = data["favFoods"] as? [String] ?? [String]()
+            let favUsers = data["favUsers"] as? [String] ?? [String]()
+            let chatting = data["chatting"] as? [String] ?? [String]()
+            let blocked  = data["blocked"]  as? [String] ?? [String]()
 
-        let userData = UserData(id: id, favFoods: favFoods, favUsers:
-                       favUsers, chatting: chatting, blocked: blocked)
-        self.userData.append(userData)
+            let userData = UserData(id: id, favFoods: favFoods,
+            favUsers: favUsers, chatting: chatting, blocked: blocked)
+
+            self.userData.append(userData)
         }}}
+
+    // called at init
+    private func getSetts(id: String) {
+        FS.collection("settings").getDocuments { col,_ in
+            for doc in col!.documents {
+                let data = doc.data()
+
+                let id      = data["id"]      as? String ?? ""
+                let notifs  = data["notifs"]  as? Bool ?? true
+                let suggest = data["suggest"] as? Bool ?? true
+                let privacy = data["privacy"] as? Bool ?? true
+                let locate  = data["locate"]  as? Bool ?? true
+
+                self.settings = Setting(id: id, notifs: notifs,
+                suggest: suggest, privacy: privacy, locate: locate)
+    }}}
 
     // called at Login
     func initUser(id: String) {
-        let myID = id.replacingOccurrences(of: ".", with: "_")
-        // TODO: - FIXME
-
         for i in 0 ..< userList.count {
-            if userList[i].id == myID {
+            if userList[i].id == id {
                 myIndex = i
                 break
             }}
@@ -201,17 +215,4 @@ class DataManager: ObservableObject {
 
         if path != "avatars" {
             userList[myIndex].prof = false
-        }
-    }
-    // called at init
-    func getSetts(id: String) {
-        FS.collection("settings").addSnapshotListener { snap, error in
-        let setsList = snap!.documents.compactMap { doc -> Setting? in
-
-        if let sets = try? doc.data(as: Setting.self) {
-            if (sets.id == id) {
-                return sets }}
-        return nil
-        }
-        self.settings = setsList.first ?? Setting()
-    }}}
+        }}}

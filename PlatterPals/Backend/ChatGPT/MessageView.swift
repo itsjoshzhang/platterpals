@@ -11,7 +11,6 @@ struct MessageRowView: View {
     }
     
     var body: some View {
-        // MARK: - FIXME
         if message.show {
             VStack(spacing: 0) {
                 messageRow(rowType: message.send, image: message.sendImage, bgColor: .white.opacity(0.1))

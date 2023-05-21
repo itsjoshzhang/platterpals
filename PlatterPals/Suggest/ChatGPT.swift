@@ -91,8 +91,8 @@ struct ContentView: View {
         }
         if let last = VM.messages.last {
             if !(last.isInteractingWithChatGPT) {
-                let valid = ["item", "##", "orry"]
-                    .contains(where: rest.contains)
+                let valid = (rest.contains("item") && rest.contains("##"))
+
         Group {
         if valid {
             Button("Add to Orders") {
