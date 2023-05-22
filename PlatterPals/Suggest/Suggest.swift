@@ -138,17 +138,21 @@ struct Suggest: View {
         } else if cuisine != "All" {
             text += "Search for \(cuisine) food. "
 
+        // ## FRIEND INFO ## \\
+
         } else if friend != "None" {
-            let data = DM.data(id: friend).favFoods
-            if !data.isEmpty {
-                text += "Find food similar to \(String(describing: data.first?.first)). "
+            let favs = DM.data(id: friend).favFoods
+            if !favs.isEmpty {
+                text += getOrder(friend, favs) + ". "
             }
         } else {
-            let data = DM.md().favFoods
-            if !data.isEmpty {
-                text += "Find food similar to \(String(describing: data.first?.first)). "
+            let favs = DM.md().favFoods
+            if !favs.isEmpty {
+                text += getOrder(DM.my().id, favs) + ". "
             }
         }
+        // ## OPTIONALS ## \\
+
         if showOption {
             let n = (people == 1 ? "person": "people")
             text += "Find a \(style) place for \(people) \(n). "
@@ -164,4 +168,31 @@ struct Suggest: View {
         VM.api = ChatGPTAPI(text: text)
         withAnimation {
             showChatGPT = true
+        }
+    }
+
+    // MARK: - I give up. Fixme later.
+
+    func getOrder(_ user: String, _ favs: [String]) -> String {
+        var orders = [AIOrder]()
+
+        FS.collection("aiOrders").addSnapshotListener { snap,_ in
+        if let snap = snap {
+        orders = snap.documents.compactMap { doc -> AIOrder? in
+
+        if let ord = try? doc.data(as: AIOrder.self) {
+            if (ord.user == user) {
+                return ord }}
+        return nil
         }}}
+
+        var text = "Find food similar to "
+        for ord in orders {
+            if favs.contains(ord.id) {
+                text += ord.order + " from " + ord.place + ", and "
+            }
+        }
+        return text.trimmingCharacters(in:
+            CharacterSet(charactersIn: ", and "))
+    }
+}
