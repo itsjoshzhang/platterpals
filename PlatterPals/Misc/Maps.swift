@@ -31,8 +31,8 @@ struct Maps: View {
 class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     @Published var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 37.872, longitude: -122.259),
-        span: MKCoordinateSpan(latitudeDelta: 0.016, longitudeDelta: 0.016))
+    center: CLLocationCoordinate2D(latitude: 37.872, longitude: -122.259),
+    span: MKCoordinateSpan(latitudeDelta: 0.016, longitudeDelta: 0.016))
     
     var LM = CLLocationManager()
     
@@ -49,8 +49,9 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
         let location = locations.first
         
         DispatchQueue.main.async {
-            self.region = MKCoordinateRegion(center: location!.coordinate,
-            span: MKCoordinateSpan(latitudeDelta: 0.016, longitudeDelta: 0.016))
+            self.region = MKCoordinateRegion(center: location?.coordinate
+                ?? CLLocationCoordinate2D(), span: MKCoordinateSpan(
+                latitudeDelta: 0.016, longitudeDelta: 0.016))
         }
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError

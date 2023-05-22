@@ -72,33 +72,36 @@ struct Terms: View {
 
 struct ImageEditor: UIViewControllerRepresentable {
     typealias Coordinator = ImageEditorCoordinator
-    @Binding var theimage: UIImage?
-    @Binding var isShowing: Bool
+    @Binding var image: UIImage?
+    @Binding var show: Bool
 
     func makeCoordinator() -> ImageEditorCoordinator {
-        return ImageEditorCoordinator(image: $theimage, isShowing: $isShowing)
+        return ImageEditorCoordinator(image: $image, show: $show)
     }
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
     }
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImageEditor>) -> CropViewController {
-        let Editor = cropViewController(image: theimage!)
+        let Editor = cropViewController(image: image ?? UIImage())
         Editor.delegate = context.coordinator
         return Editor
     }
 }
 class ImageEditorCoordinator: NSObject, CropViewControllerDelegate {
-    @Binding var theimage: UIImage?
-    @Binding var isShowing: Bool
+    @Binding var image: UIImage?
+    @Binding var show: Bool
 
-    init(image: Binding<UIImage?>, isShowing: Binding<Bool>) {
-        _theimage = image
-        _isShowing = isShowing
+    init(image: Binding<UIImage?>, show: Binding<Bool>) {
+        _image = image
+        _show = show
     }
-    func cropViewControllerDidCrop (_ cropViewController: CropViewController, cropped: UIImage, transformation: Transformation, cropInfo: CropInfo) {
-        theimage = cropped
-        isShowing = false
+    func cropViewControllerDidCrop (_ cropViewController:
+        CropViewController, cropped: UIImage, transformation:
+        Transformation, cropInfo: CropInfo) {
+        image = cropped
+        show = false
     }
-    func cropViewControllerDidCancel(_ cropViewController: CropViewController, original: UIImage) {
-        isShowing = false
+    func cropViewControllerDidCancel(_ cropViewController:
+        CropViewController, original: UIImage) {
+        show = false
     }
 }

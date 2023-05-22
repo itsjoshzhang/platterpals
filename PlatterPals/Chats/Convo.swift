@@ -77,13 +77,14 @@ struct Convo: View {
 
     func getChats(sender: String) {
         FS.collection("messages").addSnapshotListener { snap, error in
-        messages = snap!.documents.compactMap { doc -> Message? in
+        if let snap = snap {
+            messages = snap.documents.compactMap { doc -> Message? in
 
-        if let msg = try? doc.data(as: Message.self) {
-            if (msg.sender == sender && msg.getter == id) {
-                return msg }}
-        return nil
-        }
-        messages.sort {
-            $0.time < $1.time
-        }}}}
+            if let msg = try? doc.data(as: Message.self) {
+                if (msg.sender == sender && msg.getter == id) {
+                    return msg }}
+            return nil
+            }
+            messages.sort {
+                $0.time < $1.time
+            }}}}}

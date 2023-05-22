@@ -45,23 +45,25 @@ class DataManager: ObservableObject {
     // called at init
     private func initInfo() {
         FS.collection("userList").getDocuments { col,_ in
-            for doc in col!.documents {
-                let data = doc.data()
 
-                let id   = data["id"]   as? String ?? ""
-                let name = data["name"] as? String ?? ""
-                let text = data["text"] as? String ?? ""
-                let city = data["city"] as? String ?? ""
-                let prof = data["prof"] as? Bool ?? false
+            if let col = col {
+            for doc in col.documents {
+            let data = doc.data()
 
-                let user = User(id: id, name: name, text: text, city:
+            let id   = data["id"]   as? String ?? ""
+            let name = data["name"] as? String ?? ""
+            let text = data["text"] as? String ?? ""
+            let city = data["city"] as? String ?? ""
+            let prof = data["prof"] as? Bool ?? false
+
+            let user = User(id: id, name: name, text: text, city:
                                 city, prof: prof)
-                self.userList.append(user)
-            }
-        }
+            self.userList.append(user)
+        }}}
         FS.collection("userData").getDocuments { col,_ in
-            for doc in col!.documents {
-                let data = doc.data()
+            if let col = col {
+            for doc in col.documents {
+            let data = doc.data()
 
             let id       = data["id"]       as? String   ?? ""
             let favFoods = data["favFoods"] as? [String] ?? [String]()
@@ -71,33 +73,33 @@ class DataManager: ObservableObject {
 
             let userData = UserData(id: id, favFoods: favFoods,
             favUsers: favUsers, chatting: chatting, blocked: blocked)
-
             self.userData.append(userData)
-        }}}
+        }}}}
 
     // called at init
     private func getSetts(id: String) {
         FS.collection("settings").getDocuments { col,_ in
-            for doc in col!.documents {
-                let data = doc.data()
 
-                let id      = data["id"]      as? String ?? ""
-                let notifs  = data["notifs"]  as? Bool ?? true
-                let suggest = data["suggest"] as? Bool ?? true
-                let privacy = data["privacy"] as? Bool ?? true
-                let locate  = data["locate"]  as? Bool ?? true
+            if let col = col {
+            for doc in col.documents {
+            let data = doc.data()
 
-                self.settings = Setting(id: id, notifs: notifs,
-                suggest: suggest, privacy: privacy, locate: locate)
-    }}}
+            let id      = data["id"]      as? String ?? ""
+            let notifs  = data["notifs"]  as? Bool ?? true
+            let suggest = data["suggest"] as? Bool ?? true
+            let privacy = data["privacy"] as? Bool ?? true
+            let locate  = data["locate"]  as? Bool ?? true
+
+            self.settings = Setting(id: id, notifs: notifs, suggest:
+                            suggest, privacy: privacy, locate: locate)
+            }}}}
 
     // called at Login
     func initUser(id: String) {
         for i in 0 ..< userList.count {
             if userList[i].id == id {
                 myIndex = i
-                break
-            }}
+                break }}
         getImage(path: "avatars")
         getImage(path: "profiles")
         getSetts(id: id)

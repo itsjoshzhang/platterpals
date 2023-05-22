@@ -95,17 +95,9 @@ struct Profile: View {
             Text(user.text)
                 .foregroundColor(.secondary)
         }
-        Text("\(user.name)'s favorite foods:")
-            .font(.headline)
-
-        // TODO: use aiOrders and favFoods to list favorites
-
-        Text("No favorites yet.")
-            .foregroundColor(.secondary)
+        Cards(id: user.id)
         }
         .padding(.horizontal, 16)
-
-        // ## SHOW UPDATE ## \\
 
         VStack {
         if user.prof {
@@ -121,6 +113,8 @@ struct Profile: View {
                 Update(id: id, showNext: false)
                     .environmentObject(DM)
             }
+        // ## MODIFIERS ## \\
+
         } else {
             Text("No profile yet.")
                 .foregroundColor(.secondary)

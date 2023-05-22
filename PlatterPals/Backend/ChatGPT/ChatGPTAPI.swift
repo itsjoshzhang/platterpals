@@ -14,8 +14,8 @@ class ChatGPTAPI: ObservableObject, @unchecked Sendable {
     private let urlSession = URLSession.shared
 
     private var urlRequest: URLRequest {
-        let url = URL(string: "https://api.openai.com/v1/chat/completions")!
-        var urlRequest = URLRequest(url: url)
+        let url = URL(string: "https://api.openai.com/v1/chat/completions")
+        var urlRequest = URLRequest(url: url!)
 
         urlRequest.httpMethod = "POST"
         headers.forEach {

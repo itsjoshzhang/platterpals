@@ -188,15 +188,15 @@ struct ContentView: View {
         if VM.isInteractingWithChatGPT {
             DotLoadingView()
         } else {
-        Button {
-            focus = false
-            scrollToBottom(proxy: proxy)
-            send(text: text)
-        } label: {
-            Image(systemName: "paperplane.circle.fill")
-                .resizable()
-                .frame(width: 24, height: 24)
-        }
+            Button {
+                focus = false
+                scrollToBottom(proxy: proxy)
+                send(text: text)
+            } label: {
+                Image(systemName: "paperplane.circle.fill")
+                    .resizable()
+                    .frame(width: 32, height: 32)
+            }
         // ## MODIFIERS ## \\
 
         .disabled(text.isEmpty)
@@ -205,8 +205,7 @@ struct ContentView: View {
         .padding(8)
         .background(UIgray)
         .cornerRadius(32)
-        .padding(.horizontal, 16)
-        .padding(.bottom, 8)
+        .padding(16)
     }}}
     
     private func scrollToBottom(proxy: ScrollViewProxy) {

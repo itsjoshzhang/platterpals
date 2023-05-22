@@ -25,11 +25,10 @@ struct Row: View {
             .foregroundColor(.secondary)
             .font(.subheadline)
         }
-        }
         .onAppear {
             getImage(path: "avatars")
-        }
-    }
+        }}}
+
     // ## FUNCTIONS ## \\
 
     func getImage(path: String) {

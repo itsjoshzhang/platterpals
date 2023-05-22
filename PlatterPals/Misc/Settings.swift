@@ -8,6 +8,7 @@ struct Settings: View {
     @State var suggest = true
     @State var privacy = true
     @State var locate = true
+    @State var showGuide = false
 
     // ## FALSE BOOLS ## \\
     @State var loggedOut = false
@@ -20,7 +21,6 @@ struct Settings: View {
     @EnvironmentObject var DM: DataManager
 
     // ## SETUP VIEW ## \\
-
     var body: some View {
         if loggedOut {
             Splash()
@@ -28,14 +28,13 @@ struct Settings: View {
             content
         }
     }
+    // ## CHATS INFO ## \\
+
     var content: some View {
         NavigationStack {
         ZStack {
         Back()
-        ScrollView {
         VStack(alignment: .leading, spacing: 16) {
-
-        // ## CHATS INFO ## \\
 
         Group {
         HStack {
@@ -73,16 +72,6 @@ struct Settings: View {
                 .frame(width: 50)
         }
         }
-        // ## ORDER INFO ## \\
-
-        Group {
-        Text("Orders")
-            .font(.headline)
-            .foregroundColor(.black)
-        Div()
-        Text("Order history: None")
-        Text("Favorite foods: None")
-        }
         // ## SECURITY ## \\
 
         Group {
@@ -107,15 +96,22 @@ struct Settings: View {
                 .frame(width: 50)
         }
         }
-        // ## ACCOUNT? ## \\
+        // ## ACCOUNT INFO ## \\
 
         Group {
         Text("Account")
             .font(.headline)
             .foregroundColor(.black)
         Div()
-        Button("Terms and EULA") {
-            showTerms = true
+        HStack {
+            Button("How to use PlatterPals") {
+                showGuide = true
+            }
+            .buttonStyle(.bordered)
+            Spacer()
+            Button("Terms and EULA") {
+                showTerms = true
+            }
         }
         if showDelete {
             HStack {
@@ -125,7 +121,6 @@ struct Settings: View {
             .buttonStyle(.bordered)
             Spacer()
             Text("Deletion processing")
-                .font(.subheadline)
                 .foregroundColor(.secondary)
             }
         } else {
@@ -134,16 +129,15 @@ struct Settings: View {
                 showDelete = true
             }
             .buttonStyle(.bordered)
-        }
-        }
-        .foregroundColor(.pink)
-        }
+
         // ## MODIFIERS ## \\
 
+        }}.foregroundColor(.pink)}
+        .padding(.top, -80)
         .padding(16)
-        .padding(.top, 50)
-        .foregroundColor(.secondary)
 
+        .foregroundColor(.secondary)
+        .navigationTitle("Settings")
         .onAppear {
             let sets = DM.settings
             notifs = sets.notifs
@@ -151,13 +145,16 @@ struct Settings: View {
             privacy = sets.privacy
             locate = sets.locate
         }
+        .sheet(isPresented: $showGuide) {
+            Guide()
+        }
         .sheet(isPresented: $showReset) {
             Reset()
         }
         .sheet(isPresented: $showTerms) {
             Terms()
         }
-        .alert("Deletion may take ~24 hours.", isPresented: $showAlert) {
+        .alert("Deletion may take up to 24 hours.", isPresented: $showAlert) {
             Button("OK", role: .cancel) {}
         }
         // ## SAVE/SIGNOUT ## \\
@@ -186,4 +183,4 @@ struct Settings: View {
                 }
             }
             .buttonStyle(.borderedProminent)
-        }}}}}}}
+        }}}}}}

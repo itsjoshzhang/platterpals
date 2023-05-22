@@ -127,7 +127,7 @@ struct Signup: View {
             focus = false
         }
         .fullScreenCover(isPresented: $showCrop) {
-            ImageEditor(theimage: $image, isShowing: $showCrop)
+            ImageEditor(image: $image, show: $showCrop)
         }
         .sheet(isPresented: $showGuide) {
             Guide()

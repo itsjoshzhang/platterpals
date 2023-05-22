@@ -138,7 +138,7 @@ struct EditProf: View {
             }}}
         .padding(16)
         .fullScreenCover(isPresented: $showCrop) {
-            ImageEditor(theimage: $image, isShowing: $showCrop)
+            ImageEditor(image: $image, show: $showCrop)
         }
     }
 }

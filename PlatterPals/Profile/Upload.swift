@@ -102,7 +102,7 @@ struct Upload: View {
             text = DM.my().text
         }
         .fullScreenCover(isPresented: $showCrop) {
-            ImageEditor(theimage: $image, isShowing: $showCrop)
+            ImageEditor(image: $image, show: $showCrop)
         }}}
         .onTapGesture {
             focus = false

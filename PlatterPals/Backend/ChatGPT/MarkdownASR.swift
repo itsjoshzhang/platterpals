@@ -115,7 +115,7 @@ public struct MarkdownAttributedStringParser: MarkupVisitor {
             result.append(visit(child))
         }
 
-        let url = link.destination != nil ? URL(string: link.destination!) : nil
+        let url = link.destination != nil ? URL(string: link.destination ?? "") : nil
 
         result.applyLink(withURL: url)
 
