@@ -20,7 +20,7 @@ struct Convo: View {
 
         TitleBar(id: id)
             .environmentObject(DM)
-            .padding(.top, -32)
+            .padding(.top, -40)
 
         ScrollView {
             ForEach(messages) { message in
@@ -56,21 +56,18 @@ struct Convo: View {
         .cornerRadius(32)
         .padding(16)
         }
-        .padding(.vertical, 110)
-
-        .onAppear {
-            getChats(sender: myID)
-            var data = DM.md()
-            focus = true
-
-            if !(data.chatting.contains(id) || id.isEmpty) {
-                data.chatting.insert(id, at: 0)
-
-                DM.editData(data: data)
-            }}}
         .onTapGesture {
             focus = false
         }
+        .onAppear {
+            focus = true
+            var data = DM.md()
+            getChats(sender: myID)
+
+            if !(data.chatting.contains(id) || id.isEmpty) {
+                data.chatting.insert(id, at: 0)
+                DM.editData(data: data)
+            }}}
         .background {
             Back()
         }
@@ -80,13 +77,13 @@ struct Convo: View {
     func getChats(sender: String) {
         FS.collection("messages").addSnapshotListener { snap, error in
         if let snap = snap {
-            messages = snap.documents.compactMap { doc -> Message? in
+        messages = snap.documents.compactMap { doc -> Message? in
 
-            if let msg = try? doc.data(as: Message.self) {
-                if (msg.sender == sender && msg.getter == id) {
-                    return msg }}
-            return nil
-            }
-            messages.sort {
-                $0.time < $1.time
-            }}}}}
+        if let msg = try? doc.data(as: Message.self) {
+            if (msg.sender == sender && msg.getter == id) {
+                return msg }}
+        return nil
+        }
+        messages.sort {
+            $0.time < $1.time
+        }}}}}

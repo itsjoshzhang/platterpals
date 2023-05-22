@@ -60,7 +60,8 @@ struct Chats: View {
                 .environmentObject(MD)
                 .environmentObject(DM)
         }
-        VStack { Spacer(); HStack { Spacer()
+        VStack { Spacer()
+        HStack { Spacer()
         Button {
             showMaps = true
         } label: {

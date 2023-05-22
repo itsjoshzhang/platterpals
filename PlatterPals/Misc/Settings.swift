@@ -35,6 +35,7 @@ struct Settings: View {
         ZStack {
             Back()
             var data = DM.md()
+            var myID = DM.my().id
         VStack(alignment: .leading, spacing: 16) {
 
         // ## CHATS INFO ## \\
@@ -98,7 +99,7 @@ struct Settings: View {
             .foregroundColor(.black)
         Div()
         HStack {
-            Text(DM.my().id)
+            Text(myID)
                 .font(.subheadline)
             Spacer()
             Button("Reset Login") {
@@ -143,6 +144,7 @@ struct Settings: View {
             }
         } else {
             Button("Delete Account") {
+                DM.sendFlag(id: myID, type: "delete")
                 showAlert = true
                 showDelete = true
             }

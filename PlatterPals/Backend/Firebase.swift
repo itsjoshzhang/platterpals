@@ -217,4 +217,14 @@ class DataManager: ObservableObject {
 
         if path != "avatars" {
             userList[myIndex].prof = false
-        }}}
+        }
+    }
+
+    // called at Update
+    func sendFlag(id: String, type: String) {
+        let doc = FS.collection("accFlags").document(id)
+
+        doc.setData(["id": id, "type": type, "user": my().id,
+                     "time": Date()])
+    }
+}

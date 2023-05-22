@@ -85,9 +85,12 @@ struct Home: View {
                 .environmentObject(DM)
         }}}}}
 
-    func shuffle(_ array: [String]) -> [String] {
+    func shuffle(_ array: [User]) -> [User] {
         var ans = array
-        ans.shuffle()
-        return ans
+            for i in 0..<(ans.count - 1) {
+                let r = Int.random(in: i..<ans.count)
+                if i != r {
+                    ans.swapAt(i, r)}}
+            return ans
     }
 }

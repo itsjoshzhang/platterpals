@@ -85,6 +85,9 @@ struct Upload: View {
             Button("Save Edits") {
                 if let image = image {
                     DM.putImage(image: image, path: "profiles")
+                    var me = DM.my()
+                    me.prof = true
+                    DM.editUser(user: me)
                 }
                 dismiss()
             }

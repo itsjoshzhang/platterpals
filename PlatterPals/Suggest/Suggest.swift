@@ -71,13 +71,9 @@ struct Suggest: View {
                 .foregroundColor(.secondary)
                 .opacity(0.5)
         } else {
-            VStack {
-                Text("\(DM.user(id: friend).name)'s favorite foods")
-                    .font(.headline)
-                Text("No favorites yet")
-                    .foregroundColor(.secondary)
-                // TODO: use aiOrders and favFoods to list favorites
-        }}}
+            Cards(id: friend)
+        }
+        }
         .disabled(block2)
         .opacity(block2 ? 0.5: 1)
 
@@ -145,13 +141,12 @@ struct Suggest: View {
         } else if friend != "None" {
             let data = DM.data(id: friend).favFoods
             if !data.isEmpty {
-                text += "Find food similar to \(data[0]). "
+                text += "Find food similar to \(String(describing: data.first?.first)). "
             }
-        // TODO: use aiOrders and favFoods to list favorites
         } else {
             let data = DM.md().favFoods
             if !data.isEmpty {
-                text += "Find food similar to \(data[0]). "
+                text += "Find food similar to \(String(describing: data.first?.first)). "
             }
         }
         if showOption {

@@ -133,9 +133,13 @@ struct Update: View {
             if myID == id {
                 Button("DELETE PROFILE") {
                     DM.delImage(path: "profiles")
+                    var me = DM.my()
+                    me.prof = false
+                    DM.editUser(user: me)
                 }
             } else {
                 Button("Report Profile") {
+                    DM.sendFlag(id: user.id, type: "report")
                     withAnimation {
                         hideProf = true
                     }}}
