@@ -12,21 +12,20 @@ struct Orders: View {
         NavigationStack {
         ZStack {
         Back()
-        VStack {
+        VStack(spacing: 8) {
             Cards(id: DM.my().id)
                 .environmentObject(DM)
         List {
         ForEach(orders) { ord in
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(spacing: 8) {
         HStack {
-        VStack {
 
-        Text("\(String(ord.id.first ?? "🥡")) \(ord.order)")
-            .font(.headline)
-        Text(ord.place)
-            .foregroundColor(.secondary)
-            .font(.headline)
+        VStack(alignment: .leading, spacing: 8) {
+            Text("\(String(ord.id.first ?? "🥡")) \(ord.order)")
+            Text(ord.place)
+                .foregroundColor(.secondary)
         }
+        .font(.headline)
         Spacer()
 
         Group {
@@ -49,8 +48,8 @@ struct Orders: View {
         .foregroundColor(.yellow)
         .font(.system(size: 24))
         }
-        HStack(spacing: 4) {
-            Stars(ord: ord)
+        HStack {
+            Stars(button: true, ord: ord)
                 .environmentObject(DM)
             Spacer()
             Text(ord.time.formatted(.dateTime.day().month()))
@@ -83,16 +82,16 @@ struct Orders: View {
     func getOrder(user: String) {
         FS.collection("aiOrders").addSnapshotListener { snap,_ in
         if let snap = snap {
-            orders = snap.documents.compactMap { doc -> AIOrder? in
+        orders = snap.documents.compactMap { doc -> AIOrder? in
 
-            if let ord = try? doc.data(as: AIOrder.self) {
-                if (ord.user == user) {
-                    return ord }}
-            return nil
-            }
-            orders.sort {
-                $0.time > $1.time
-            }}}}}
+        if let ord = try? doc.data(as: AIOrder.self) {
+            if (ord.user == user) {
+                return ord }}
+        return nil
+        }
+        orders.sort {
+            $0.time > $1.time
+        }}}}}
 
 struct Cards: View {
 
@@ -102,7 +101,7 @@ struct Cards: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            var data = DM.data(id: id)
+            let data = DM.data(id: id)
 
         Text("My favorite foods: ")
             .font(.headline)
@@ -119,10 +118,10 @@ struct Cards: View {
             if let ord = orders.first { $0.id == id } {
                 Card(ord: ord)
                     .environmentObject(DM)
+
             }}}
             .indexViewStyle(.page(backgroundDisplayMode: .always))
             .tabViewStyle(.page(indexDisplayMode: .always))
-
             .frame(width: UIwidth-32, height: 120)
             .onAppear {
                 getOrder(user: id)
@@ -131,16 +130,16 @@ struct Cards: View {
     func getOrder(user: String) {
         FS.collection("aiOrders").addSnapshotListener { snap,_ in
         if let snap = snap {
-            orders = snap.documents.compactMap { doc -> AIOrder? in
+        orders = snap.documents.compactMap { doc -> AIOrder? in
 
-            if let ord = try? doc.data(as: AIOrder.self) {
-                if (ord.user == user) {
-                    return ord }}
-            return nil
-            }
-            orders.sort {
-                $0.time < $1.time
-            }}}}}
+        if let ord = try? doc.data(as: AIOrder.self) {
+            if (ord.user == user) {
+                return ord }}
+        return nil
+        }
+        orders.sort {
+            $0.time < $1.time
+        }}}}}
 
 struct Card: View {
 
@@ -148,9 +147,8 @@ struct Card: View {
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-        HStack(spacing: 16) {
-
+        VStack(spacing: 8) {
+        HStack {
         Text(String(ord.id.first ?? "🥡"))
             .padding(8)
             .background(.pink)
@@ -163,9 +161,10 @@ struct Card: View {
                 .foregroundColor(.secondary)
         }
         .font(.headline)
+        Spacer()
         }
         HStack(spacing: 4) {
-            Stars(ord: ord)
+            Stars(button: false, ord: ord)
                 .environmentObject(DM)
             Spacer()
             Text(ord.time.formatted(.dateTime.day().month()))
@@ -179,15 +178,18 @@ struct Card: View {
 }
 struct Stars: View {
 
+    var button: Bool
     @State var ord: AIOrder
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
+        HStack(spacing: 4) {
         ForEach(1...5, id: \.self) { i in
 
         Image(systemName: (i <= ord.stars ? "star.fill": "star"))
             .foregroundColor(.pink)
             .onTapGesture {
+            if button {
                 ord.stars = (ord.stars == i ? 0: i)
                 DM.sendOrder(ord: ord)
-            }}}}
+            }}}}}}

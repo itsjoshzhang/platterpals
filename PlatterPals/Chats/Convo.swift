@@ -14,7 +14,6 @@ struct Convo: View {
     var body: some View {
         ZStack {
             let myID = DM.my().id
-            Back()
         VStack {
 
         // ## CHATS LOGIC ## \\
@@ -65,12 +64,15 @@ struct Convo: View {
             focus = true
 
             if !(data.chatting.contains(id) || id.isEmpty) {
-                data.chatting.append(id)
+                data.chatting.insert(id, at: 0)
 
                 DM.editData(data: data)
             }}}
         .onTapGesture {
             focus = false
+        }
+        .background {
+            Back()
         }
     }
     // ## FUNCTIONS ## \\

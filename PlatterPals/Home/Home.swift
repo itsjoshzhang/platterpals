@@ -49,7 +49,7 @@ struct Home: View {
 
         // ## PROFILES ## \\
 
-        ForEach(DM.userList) { user in
+        ForEach(shuffle(DM.userList)) { user in
 
         let data = DM.md()
         let update = Update(id: user.id, showNext: true)
@@ -83,4 +83,11 @@ struct Home: View {
         .sheet(isPresented: $showSearch) {
             Search(forProfile: true)
                 .environmentObject(DM)
-        }}}}}}
+        }}}}}
+
+    func shuffle(_ array: [String]) -> [String] {
+        var ans = array
+        ans.shuffle()
+        return ans
+    }
+}

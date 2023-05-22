@@ -15,6 +15,7 @@ struct AppInit: App {
 struct MyTabView: View {
 
     @State var tag = 3
+    @StateObject var MD = MapsData()
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
@@ -24,6 +25,7 @@ struct MyTabView: View {
                     Image(systemName: "menucard")
                 }.tag(1)
             Chats()
+                .environmentObject(MD)
                 .tabItem {
                     Image(systemName: "message")
                 }.tag(2)
@@ -41,5 +43,6 @@ struct MyTabView: View {
                 }.tag(5)
         }
         .environmentObject(DM)
-    }
-}
+        .onAppear {
+            MD.requestLocation()
+        }}}

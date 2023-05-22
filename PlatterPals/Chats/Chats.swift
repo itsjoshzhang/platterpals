@@ -7,6 +7,7 @@ struct Chats: View {
     @State var showSearch = false
     @State var chatting = [String]()
 
+    @EnvironmentObject var MD: MapsData
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
@@ -56,6 +57,7 @@ struct Chats: View {
         }
         .sheet(isPresented: $showMaps) {
             Maps()
+                .environmentObject(MD)
                 .environmentObject(DM)
         }
         VStack { Spacer(); HStack { Spacer()

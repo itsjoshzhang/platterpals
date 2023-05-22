@@ -17,10 +17,12 @@ struct Settings: View {
     @State var showAlert = false
     @State var showDelete = false
 
+    // ## SETUP VIEW ## \\
+
+    @State var blockID = "Expand"
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
-    // ## SETUP VIEW ## \\
     var body: some View {
         if loggedOut {
             Splash()
@@ -28,21 +30,19 @@ struct Settings: View {
             content
         }
     }
-    // ## CHATS INFO ## \\
-
     var content: some View {
         NavigationStack {
         ZStack {
-        Back()
+            Back()
+            var data = DM.md()
         VStack(alignment: .leading, spacing: 16) {
 
+        // ## CHATS INFO ## \\
+
         Group {
-        HStack {
-            Text("Chats")
-                .font(.headline)
-                .foregroundColor(.black)
-            Spacer()
-        }
+        Text("Chats")
+            .font(.headline)
+            .foregroundColor(.black)
         Div()
         HStack {
             Text("Allow chat notifications")
@@ -50,12 +50,30 @@ struct Settings: View {
             Toggle("", isOn: $notifs)
                 .frame(width: 50)
         }
-        Text("Blocked users: None")
+        HStack(spacing: 0) {
+            Text("Blocked users:")
+            Picker("", selection: $blockID) {
+                ForEach(["Expand"] + data.blocked, id: \.self) { id in
+                    Text(id == "Expand" ? id: DM.user(id: id).name)
+                }
+            }
+            Spacer()
+            Button("Unblock") {
+                if let i = data.blocked.firstIndex(of: blockID) {
+                    data.blocked.remove(at: i)
+                    DM.editData(data: data)
+                    blockID = "Expand"
+                }
+            }
+            .disabled(blockID == "Expand")
+            .buttonStyle(.bordered)
+            .foregroundColor(.none)
         }
-        // ## HOME SCREEN ## \\
+        }
+        // ## PROFILE INFO ## \\
 
         Group {
-        Text("Home")
+        Text("Profiles")
             .font(.headline)
             .foregroundColor(.black)
         Div()
@@ -133,7 +151,7 @@ struct Settings: View {
         // ## MODIFIERS ## \\
 
         }}.foregroundColor(.pink)}
-        .padding(.top, -80)
+        .padding(.top, -64)
         .padding(16)
 
         .foregroundColor(.secondary)
@@ -154,7 +172,8 @@ struct Settings: View {
         .sheet(isPresented: $showTerms) {
             Terms()
         }
-        .alert("Deletion may take up to 24 hours.", isPresented: $showAlert) {
+        .alert("Deletion may take up to 24 hours.", isPresented:
+            $showAlert) {
             Button("OK", role: .cancel) {}
         }
         // ## SAVE/SIGNOUT ## \\

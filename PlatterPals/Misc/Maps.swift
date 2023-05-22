@@ -4,7 +4,7 @@ import CoreLocationUI
 
 struct Maps: View {
 
-    @StateObject var mapsData = MapsData()
+    @EnvironmentObject var MD: MapsData
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
@@ -14,11 +14,11 @@ struct Maps: View {
                 .foregroundColor(.secondary)
 
         ZStack(alignment: .bottom) {
-            Map(coordinateRegion: $mapsData.region,
+            Map(coordinateRegion: $MD.region,
                 showsUserLocation: true)
 
             LocationButton(.currentLocation) {
-                mapsData.requestLocation()
+                MD.requestLocation()
             }
             .foregroundColor(.white)
             .cornerRadius(8)
