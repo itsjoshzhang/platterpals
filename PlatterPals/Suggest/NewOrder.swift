@@ -74,7 +74,7 @@ struct NewOrder: View {
             .foregroundColor(.secondary)
             .font(.footnote)
 
-        Button("Add to Orders") {
+        Button("Add Order") {
             var ord = AIOrder(user: DM.my().id, order: order, place:
                               place, stars: stars)
 
@@ -86,7 +86,7 @@ struct NewOrder: View {
         .disabled(order.isEmpty || place.isEmpty)
         }
         .padding(.horizontal, 16)
-        .navigationTitle("Add to Orders")
+        .navigationTitle("Add Order")
 
         // ## STRING LOGIC ## \\
 

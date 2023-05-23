@@ -3,19 +3,29 @@ import FirebaseFirestoreSwift
 
 struct Orders: View {
 
+    // TRACK INFO
     @State var showOrder = false
     @State var showAlert = false
     @State var orders = [AIOrder]()
     @EnvironmentObject var DM: DataManager
 
+    // ## OTHER VIEWS ## \\
     var body: some View {
+        if orders.isEmpty {
+            NewOrder(text: "##;##")
+        } else {
+            content
+        }
+    }
+    var content: some View {
         NavigationStack {
         ZStack {
         Back()
         VStack(spacing: 8) {
-            Cards(id: DM.my().id)
-                .environmentObject(DM)
-                .padding(.top, 16)
+
+        Cards(id: DM.my().id)
+            .environmentObject(DM)
+            .padding(.top, 16)
         List {
         ForEach(orders) { ord in
         VStack(spacing: 8) {
@@ -57,6 +67,7 @@ struct Orders: View {
                 .foregroundColor(.secondary)
         }}}}
         .listStyle(.plain)
+
         }
         .padding(.top, 110)
         }

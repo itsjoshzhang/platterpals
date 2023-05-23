@@ -2,7 +2,7 @@ import SwiftUI
 
 struct Chats: View {
 
-    // ## SETUP VIEW ## \\
+    // ## TRACK INFO ## \\
     @State var showMaps = false
     @State var showSearch = false
     @State var chatting = [String]()
@@ -10,7 +10,17 @@ struct Chats: View {
     @EnvironmentObject var MD: MapsData
     @EnvironmentObject var DM: DataManager
 
+    // ## OTHER VIEWS ## \\
     var body: some View {
+        if chatting.isEmpty {
+            Maps()
+                .environmentObject(MD)
+                .environmentObject(DM)
+        } else {
+            content
+        }
+    }
+    var content: some View {
         NavigationStack {
         ZStack {
         Back()
@@ -19,7 +29,7 @@ struct Chats: View {
         // ## SHOW CONVOS ## \\
 
         Box()
-            .padding(.top, 124)
+            .padding(.top, 125)
             .onTapGesture {
                 showSearch = true
             }
@@ -30,11 +40,12 @@ struct Chats: View {
                 .environmentObject(DM)
             }
         }
+        // ## CONVOS LOGIC ## \\
+
         .onDelete(perform: delete(atOffsets:))
         .onMove(perform: move(fromOffsets:toOffset:))
         }
-        // ## CONVOS LOGIC ## \\
-
+        .listStyle(.plain)
         .navigationDestination(for: String.self) { id in
             Convo(id: id)
                 .environmentObject(DM)
@@ -42,8 +53,6 @@ struct Chats: View {
         .onChange(of: DM.md().chatting) {_ in
             refresh()
         }
-        .opacity(chatting.isEmpty ? 0: 1)
-        .listStyle(.plain)
         }
         .navigationTitle("My Chats")
         .onAppear {
@@ -60,16 +69,15 @@ struct Chats: View {
                 .environmentObject(MD)
                 .environmentObject(DM)
         }
-        VStack { Spacer()
-        HStack { Spacer()
+        VStack {
+        Spacer()
         Button {
             showMaps = true
         } label: {
-            Glow(image: "map")
+            Glow(text: "View users nearby!")
         }
-        .padding(.bottom, 110)
-        .padding(16)
-        }}}}}
+        .padding(.bottom, 125)
+        }}}}
 
     // ## FUNCTIONS ## \\
 

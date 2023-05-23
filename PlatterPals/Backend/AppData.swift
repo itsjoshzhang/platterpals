@@ -122,17 +122,17 @@ struct Box: View {
             .overlay(RoundedRectangle(cornerRadius: 8).stroke(.secondary))
     }
 }
-
 struct Glow: View {
-    var image: String
+    var text: String
     var body: some View {
-        Image(systemName: image)
-            .resizable()
-            .padding(16)
-            .background(.pink)
-            .clipShape(Circle())
-            .foregroundColor(.white)
-            .frame(width: 64, height: 64)
-            .shadow(color: .pink, radius: 3)
+        let spark = Image(systemName: "sparkles")
+
+        Text("\(spark) \(text) \(spark)")
+            .font(.headline)
+            .foregroundColor(.pink)
+            .frame(width: UIwidth-32, height: 50)
+            .overlay(Capsule().stroke(.pink, lineWidth: 3))
+            .shadow(color: .pink, radius: 8)
+            .padding(.bottom, 16)
     }
 }

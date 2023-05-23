@@ -3,26 +3,31 @@ import FirebaseFirestoreSwift
 
 struct Suggest: View {
 
-    // ## TRACK INFO ## \\
-    @State var place = ""
-    @State var cuisine = "All"
-    @State var friend = "None"
-    @State var showOption = false
-    @State var showParams = false
-    @State var showChatGPT = false
-
-    // ## AI SETTINGS ## \\
+    // ## NUMBERS ## \\
     @State var miles = 0.5
     @State var options = 1
     @State var people = 1
     @State var price = 10
-    @State var style = "Casual"
 
+    // ## STRINGS ## \\
+    @State var place = ""
+    @State var cuisine = "All"
+    @State var friend = "None"
+    @State var style = "Casual"
+    @State var location = "My Location"
+
+    // ## BOOLEANS ## \\
+    @State var fuckery = false
+    @State var showOption = false
+    @State var showParams = false
+    @State var showChatGPT = false
+
+    // ## OBJECTS ## \\
+    @EnvironmentObject var MD: MapsData
     @EnvironmentObject var DM: DataManager
     @StateObject var VM = ViewModel(api: ChatGPTAPI())
 
     // ## OTHER VIEWS ## \\
-    @State var fuckery = false
     var body: some View {
         if showChatGPT {
             ChatGPT()
@@ -82,6 +87,15 @@ struct Suggest: View {
 
         Section("Search settings") {
 
+        Picker("", selection: $location) {
+            ForEach(["My Location", "UC Berkeley"], id: \.self) {
+                Text($0)
+            }
+        }
+        .tint(.pink)
+        .foregroundColor(.pink)
+        .pickerStyle(.segmented)
+
         let s = (miles == 1 ? "": "s")
         Stepper("Range: \(miles, specifier: "%.1f") mile\(s)",
                 value: $miles, in: 0.5...5.0, step: 0.5)
@@ -129,10 +143,18 @@ struct Suggest: View {
                 fuckery = true
             }}}}}}
 
-    // ## FUNCTIONS ## \\
+    // ## POSITIONING ## \\
 
     func orderLogic() {
         var text = ""
+        let c = MD.region.center
+        text += "Search within \(miles) miles of "
+
+        if location == "My Location" {
+            text += "My location (coordinates \(c.latitude), \(c.longitude)). "
+        } else {
+            text += "UC Berkeley. "
+        }
         if !place.isEmpty {
             text += "Search the menu of \(place). "
 
@@ -161,18 +183,14 @@ struct Suggest: View {
             let p = (price >= 50 ? price - 10: price - 5)
             text += "Find food from $\(p) - \(price). "
         }
-        text += "Search within \(miles) mi of UC Berkeley. "
-        // TODO: replace city with user's coordinates
-
-        text += "Show ONLY \(options) menu items. "
+        text += "Show ONLY \(options) menu items / restaurants. "
 
         VM.api = ChatGPTAPI(text: text)
         withAnimation {
             showChatGPT = true
         }
     }
-
-    // MARK: - orders.count stays at 0
+    // ## GET ORDERS ## //
 
     @State var orders = [AIOrder]()
 
@@ -186,6 +204,8 @@ struct Suggest: View {
         }
         return nil
         }}}
+
+        // MARK: - I give up. TODO: - FIXME later.
 
         var text = "Find food similar to "
         for ord in orders {

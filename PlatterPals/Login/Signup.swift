@@ -97,8 +97,8 @@ struct Signup: View {
             }
             .buttonStyle(.bordered)
         }
-        HStack(spacing: 4) {
-            Text("I agree to the")
+        HStack(spacing: 0) {
+            Text("I agree to the ")
                 .foregroundColor(.secondary)
 
             Button("terms and EULA") {

@@ -9,11 +9,11 @@
 /* Begin PBXBuildFile section */
 		F229820D296BFBCB00804296 /* Lobster.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F229820C296BFBCB00804296 /* Lobster.ttf */; };
 		F234713A2A1C4F4700D2ED4F /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F23471392A1C4F4700D2ED4F /* FirebaseFirestoreSwift */; };
+		F234713C2A1C847400D2ED4F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F234713B2A1C847400D2ED4F /* GoogleService-Info.plist */; };
 		F242CB5A2A149DFE00B5D969 /* Orders.swift in Sources */ = {isa = PBXBuildFile; fileRef = F242CB592A149DFE00B5D969 /* Orders.swift */; };
 		F25ED26E296FBBA900A6C8F0 /* Assets1.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25ED26D296FBBA900A6C8F0 /* Assets1.swift */; };
 		F26B3F0A296F8DF600E28DBD /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26B3F09296F8DF600E28DBD /* Update.swift */; };
 		F299A3C52A187CC400F47B0A /* Mantis in Frameworks */ = {isa = PBXBuildFile; productRef = F299A3C42A187CC400F47B0A /* Mantis */; };
-		F299A3C92A1947A400F47B0A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F299A3C82A1947A400F47B0A /* GoogleService-Info.plist */; };
 		F2A9437229F8E97600F87492 /* NewOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A9437129F8E97600F87492 /* NewOrder.swift */; };
 		F2B1A7B129DD59A600AB305B /* Assets2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B1A7B029DD59A600AB305B /* Assets2.swift */; };
 		F2B1A7B329DD5A4C00AB305B /* Profile2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B1A7B229DD5A4C00AB305B /* Profile2.swift */; };
@@ -48,10 +48,10 @@
 
 /* Begin PBXFileReference section */
 		F229820C296BFBCB00804296 /* Lobster.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lobster.ttf; sourceTree = "<group>"; };
+		F234713B2A1C847400D2ED4F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F242CB592A149DFE00B5D969 /* Orders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orders.swift; sourceTree = "<group>"; };
 		F25ED26D296FBBA900A6C8F0 /* Assets1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets1.swift; sourceTree = "<group>"; };
 		F26B3F09296F8DF600E28DBD /* Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Update.swift; sourceTree = "<group>"; };
-		F299A3C82A1947A400F47B0A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F2A9437129F8E97600F87492 /* NewOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewOrder.swift; sourceTree = "<group>"; };
 		F2B1A7B029DD59A600AB305B /* Assets2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets2.swift; sourceTree = "<group>"; };
 		F2B1A7B229DD5A4C00AB305B /* Profile2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile2.swift; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 			children = (
 				F229820C296BFBCB00804296 /* Lobster.ttf */,
 				F2F6D87E296173F300B8F4D7 /* Info.plist */,
-				F299A3C82A1947A400F47B0A /* GoogleService-Info.plist */,
+				F234713B2A1C847400D2ED4F /* GoogleService-Info.plist */,
 				F2F6D8522961730000B8F4D7 /* Backend */,
 				F2F6D8612961730000B8F4D7 /* Login */,
 				F2F6D8492961730000B8F4D7 /* Misc */,
@@ -299,7 +299,7 @@
 			files = (
 				F229820D296BFBCB00804296 /* Lobster.ttf in Resources */,
 				F2F6D86E2961730000B8F4D7 /* Assets.xcassets in Resources */,
-				F299A3C92A1947A400F47B0A /* GoogleService-Info.plist in Resources */,
+				F234713C2A1C847400D2ED4F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

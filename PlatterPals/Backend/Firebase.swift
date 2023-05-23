@@ -13,12 +13,16 @@ class DataManager: ObservableObject {
     @Published var userData = [UserData]()
     @Published var settings = Setting()
 
-    @Published var myIndex = 0
+    // keep user data
+    var version = -1
+    var myIndex = 0
     @Published var myAvatar: UIImage?
     @Published var myProfile: UIImage?
 
-    init() { initInfo() }
-
+    init() {
+        initInfo()
+        updateMe()
+    }
     // returns myself
     func my() -> User {
         return userList[myIndex]
@@ -127,7 +131,7 @@ class DataManager: ObservableObject {
         userList[myIndex] = user
 
         doc.setData(["id": user.id, "name": user.name, "text":
-            user.text, "city": user.city])
+            user.text, "city": user.city, "prof": user.prof])
     }
     
     // called everywhere
@@ -219,6 +223,13 @@ class DataManager: ObservableObject {
             userList[myIndex].prof = false
         }
     }
+    // called at Maps
+    func sendPin(pin: Location) {
+        let doc = FS.collection("mapPins").document(pin.id)
+
+        doc.setData(["id": pin.id, "lat": pin.lat, "lon": pin.lon,
+                     "time": pin.time])
+    }
 
     // called at Update
     func sendFlag(id: String, type: String) {
@@ -227,12 +238,9 @@ class DataManager: ObservableObject {
         doc.setData(["id": id, "type": type, "user": my().id,
                      "time": Date()])
     }
-
-    // called at Maps
-    func sendPin(pin: Location) {
-        let doc = FS.collection("mapPins").document(pin.id)
-
-        doc.setData(["id": pin.id, "lat": pin.lat, "lon": pin.lon,
-                     "time": pin.time])
-    }
-}
+    // called at init
+    func updateMe() {
+        let doc = FS.collection("accFlags").document("APP_UPDATE")
+        doc.getDocument { doc,_ in
+            self.version = doc?.data()?["version"] as! Int
+        }}}

@@ -5,19 +5,20 @@ import FirebaseFirestoreSwift
 
 struct Maps: View {
 
+    @State var locations = [Location]()
     @EnvironmentObject var MD: MapsData
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
         VStack(spacing: 16) {
-            Text("\(MD.locations.count)      Tap a pin to view a profile!")
+            Text("Tap a pin to view a profile!")
                 .foregroundColor(.secondary)
                 .font(.headline)
 
         ZStack(alignment: .bottom) {
             Map(coordinateRegion: $MD.region, showsUserLocation: true,
-                annotationItems: MD.locations) { pin in
+                annotationItems: locations) { pin in
 
                 MapAnnotation(coordinate: CLLocationCoordinate2D(
                     latitude: pin.lat, longitude: pin.lon)) {
@@ -39,8 +40,22 @@ struct Maps: View {
             .padding(16)
         }
         .navigationTitle("Near Me")
+        .onAppear {
+            getPins()
+        }
         .alert(MD.alertText, isPresented: $MD.showAlert) {
             Button("OK", role: .cancel) {}
+        }}}}
+
+    func getPins() {
+        FS.collection("mapPins").addSnapshotListener { snap,_ in
+        if let snap = snap {
+
+        locations = snap.documents.compactMap { doc -> Location? in
+        if let pin = try? doc.data(as: Location.self) {
+            return pin
+        }
+        return nil
         }}}}}
 
 struct Location: Identifiable, Hashable, Codable {
@@ -61,7 +76,7 @@ struct MapPin: View {
 
             Text(getTime(pin.time))
                 .font(.headline)
-            RoundPic(width: 48, image: image)
+            RoundPic(width: 50, image: image)
 
             Image(systemName: "pin.fill")
                 .resizable()
@@ -110,8 +125,6 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
         center: CLLocationCoordinate2D(latitude: 37.8715, longitude: -122.260),
         span: MKCoordinateSpan(latitudeDelta: 0.016, longitudeDelta: 0.016))
 
-    @Published var locations = [Location]()
-
     override init() {
         super.init()
         LM?.delegate = self
@@ -139,16 +152,6 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
             return
         }
     }
-    func getPins() {
-        FS.collection("mapPins").addSnapshotListener { snap,_ in
-        if let snap = snap {
-
-        self.locations = snap.documents.compactMap { doc -> Location? in
-        if let pin = try? doc.data(as: Location.self) {
-            return pin
-        }
-        return nil
-        }}}}
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         checkAuthorization()

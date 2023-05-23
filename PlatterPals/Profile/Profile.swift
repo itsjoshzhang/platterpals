@@ -35,10 +35,12 @@ struct Profile: View {
     // ## TRACK INFO ## \\
     var id: String
     var title: Bool
+
     @State var image: UIImage?
     @State var showEdit = false
     @State var showChat = false
     @State var showUpdate = false
+    @State var showUpload = false
 
     @EnvironmentObject var DM: DataManager
 
@@ -115,6 +117,13 @@ struct Profile: View {
             }
         // ## MODIFIERS ## \\
 
+        } else if user.id == myID {
+            Button {
+                showUpload = true // MARK: - FIXME
+            } label: {
+                Spacer()
+                Glow(text: "No profile yet? Add one now!")
+            }
         } else {
             Text("No profile yet.")
                 .foregroundColor(.secondary)
@@ -130,6 +139,10 @@ struct Profile: View {
         }
         .sheet(isPresented: $showChat) {
             Convo(id: id)
+                .environmentObject(DM)
+        }
+        .sheet(isPresented: $showUpload) {
+            Upload()
                 .environmentObject(DM)
         }
         .background() {

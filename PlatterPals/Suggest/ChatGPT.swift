@@ -158,18 +158,29 @@ struct ContentView: View {
 
     func bottomView(proxy: ScrollViewProxy) -> some View {
         VStack {
+        Group {
         if showHelp {
+        if VM.messages.isEmpty {
+            Text("Your instructions: " + VM.api.instructions)
+        } else {
+            Text(
+                """
+                Ask your PlatterPal about restaurant hours, contact info, or directions!
+                You can alkso ask for suggestions more complex than our form can take.
+                PlatterPal is an AI language model, and not all replies may be accurate.
+                """
+        )}}}
+        .font(.subheadline)
+        .foregroundColor(.secondary)
+        .frame(width: UIwidth-32, alignment: .leading)
 
-        Text("Your instructions: " + VM.api.instructions)
-            .foregroundColor(.secondary)
-            .font(.subheadline)
-            .padding(.horizontal, 16)
-        }
-        HStack {
+        HStack(spacing: 0) {
         Image(systemName: "questionmark.circle")
             .resizable()
             .foregroundColor(.secondary)
             .frame(width: 24, height: 24)
+
+            .padding(.leading, 8)
             .onTapGesture {
                 withAnimation {
                     showHelp.toggle()
@@ -178,7 +189,8 @@ struct ContentView: View {
         // ## TEXTFIELDS ## \\
 
         HStack {
-        TextField("Send a message", text: $text, axis: .vertical)
+        TextField("Ask your PlatterPal anything!", text: $text, axis:
+            .vertical)
             .padding(.leading, 8)
             .focused($focus)
             .lineLimit(8)
@@ -192,6 +204,7 @@ struct ContentView: View {
                 focus = false
                 scrollToBottom(proxy: proxy)
                 send(text: text)
+                text = ""
             } label: {
                 Image(systemName: "paperplane.circle.fill")
                     .resizable()
@@ -205,7 +218,7 @@ struct ContentView: View {
         .padding(8)
         .background(UIgray)
         .cornerRadius(32)
-        .padding(16)
+        .padding(8)
     }}}
     
     private func scrollToBottom(proxy: ScrollViewProxy) {
