@@ -56,19 +56,19 @@ extension UIImage {
         }
     }
 }
-struct User: Identifiable, Hashable {
+struct User: Identifiable, Hashable, Codable {
     let id: String
     var name: String
-    var text: String
     var city: String
+    var text: String
     var prof: Bool
 }
 
-struct UserData: Identifiable, Hashable {
+struct UserData: Identifiable, Hashable, Codable {
     let id: String
     var favFoods: [String]
-    var favUsers: [String]
     var chatting: [String]
+    var favUsers: [String]
     var blocked: [String]
 }
 
@@ -77,7 +77,7 @@ struct Message: Identifiable, Hashable, Codable {
     let text: String
     let sender: String
     let getter: String
-    let time: Date
+    var time = Date()
 }
 
 struct AIOrder: Identifiable, Hashable, Codable {
@@ -86,7 +86,7 @@ struct AIOrder: Identifiable, Hashable, Codable {
     let order: String
     let place: String
     var stars: Int
-    let time: Date
+    var time = Date()
 }
 
 struct Setting: Identifiable, Hashable, Codable {
@@ -120,5 +120,19 @@ struct Box: View {
             .foregroundColor(.secondary)
             .frame(width: UIwidth-32, height: 32, alignment: .leading)
             .overlay(RoundedRectangle(cornerRadius: 8).stroke(.secondary))
+    }
+}
+
+struct Glow: View {
+    var image: String
+    var body: some View {
+        Image(systemName: image)
+            .resizable()
+            .padding(16)
+            .background(.pink)
+            .clipShape(Circle())
+            .foregroundColor(.white)
+            .frame(width: 64, height: 64)
+            .shadow(color: .pink, radius: 3)
     }
 }

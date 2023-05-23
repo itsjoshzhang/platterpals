@@ -76,7 +76,7 @@ struct NewOrder: View {
 
         Button("Add to Orders") {
             var ord = AIOrder(user: DM.my().id, order: order, place:
-                              place, stars: stars, time: Date())
+                              place, stars: stars)
 
             ord.id = emoji + ord.id
             DM.sendOrder(ord: ord)

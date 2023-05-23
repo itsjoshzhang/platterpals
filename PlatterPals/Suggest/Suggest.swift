@@ -1,4 +1,5 @@
 import SwiftUI
+import FirebaseFirestoreSwift
 
 struct Suggest: View {
 
@@ -143,12 +144,12 @@ struct Suggest: View {
         } else if friend != "None" {
             let favs = DM.data(id: friend).favFoods
             if !favs.isEmpty {
-                text += getOrder(friend, favs) + ". "
+                text += getOrder(favs: favs) + ". "
             }
         } else {
             let favs = DM.md().favFoods
             if !favs.isEmpty {
-                text += getOrder(DM.my().id, favs) + ". "
+                text += getOrder(favs: favs) + ". "
             }
         }
         // ## OPTIONALS ## \\
@@ -171,18 +172,18 @@ struct Suggest: View {
         }
     }
 
-    // MARK: - I give up. Fixme later.
+    // MARK: - orders.count stays at 0
 
-    func getOrder(_ user: String, _ favs: [String]) -> String {
-        var orders = [AIOrder]()
+    @State var orders = [AIOrder]()
 
+    func getOrder(favs: [String]) -> String {
         FS.collection("aiOrders").addSnapshotListener { snap,_ in
         if let snap = snap {
-        orders = snap.documents.compactMap { doc -> AIOrder? in
 
+        orders = snap.documents.compactMap { doc -> AIOrder? in
         if let ord = try? doc.data(as: AIOrder.self) {
-            if (ord.user == user) {
-                return ord }}
+            return ord
+        }
         return nil
         }}}
 

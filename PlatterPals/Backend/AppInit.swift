@@ -43,6 +43,5 @@ struct MyTabView: View {
                 }.tag(5)
         }
         .environmentObject(DM)
-        .onAppear {
-            MD.requestLocation()
-        }}}
+    }
+}

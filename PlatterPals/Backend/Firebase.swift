@@ -52,12 +52,12 @@ class DataManager: ObservableObject {
 
             let id   = data["id"]   as? String ?? ""
             let name = data["name"] as? String ?? ""
-            let text = data["text"] as? String ?? ""
             let city = data["city"] as? String ?? ""
+            let text = data["text"] as? String ?? ""
             let prof = data["prof"] as? Bool ?? false
 
-            let user = User(id: id, name: name, text: text, city:
-                                city, prof: prof)
+            let user = User(id: id, name: name, city: city, text:
+                            text, prof: prof)
             self.userList.append(user)
         }}}
         FS.collection("userData").getDocuments { col,_ in
@@ -67,12 +67,12 @@ class DataManager: ObservableObject {
 
             let id       = data["id"]       as? String   ?? ""
             let favFoods = data["favFoods"] as? [String] ?? [String]()
-            let favUsers = data["favUsers"] as? [String] ?? [String]()
             let chatting = data["chatting"] as? [String] ?? [String]()
+            let favUsers = data["favUsers"] as? [String] ?? [String]()
             let blocked  = data["blocked"]  as? [String] ?? [String]()
 
             let userData = UserData(id: id, favFoods: favFoods,
-            favUsers: favUsers, chatting: chatting, blocked: blocked)
+            chatting: chatting, favUsers: favUsers, blocked: blocked)
             self.userData.append(userData)
         }}}}
 
@@ -108,12 +108,12 @@ class DataManager: ObservableObject {
     // called at Signup
     func makeUser(id: String, name: String, city: String) {
 
-        let user = User(id: id, name: name, text: "", city: city,
+        let user = User(id: id, name: name, city: city, text: "",
                         prof: false)
         editUser(user: user)
 
-        let data = UserData(id: id, favFoods: [String](), favUsers:
-            [String](), chatting: [String](), blocked: [String]())
+        let data = UserData(id: id, favFoods: [String](), chatting:
+            [String](), favUsers: [String](), blocked: [String]())
         editData(data: data)
 
         let sets = Setting(id: id, notifs: true, suggest: true,
@@ -165,7 +165,7 @@ class DataManager: ObservableObject {
     }
 
     // called at Update
-    func findHearts(id: String) -> Int {
+    func sumHeart(id: String) -> Int {
         var hearts = 0
         for data in userData {
             if data.favUsers.contains(id) {
@@ -226,5 +226,13 @@ class DataManager: ObservableObject {
 
         doc.setData(["id": id, "type": type, "user": my().id,
                      "time": Date()])
+    }
+
+    // called at Maps
+    func sendPin(pin: Location) {
+        let doc = FS.collection("mapPins").document(pin.id)
+
+        doc.setData(["id": pin.id, "lat": pin.lat, "lon": pin.lon,
+                     "time": pin.time])
     }
 }

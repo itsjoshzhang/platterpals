@@ -35,7 +35,7 @@ struct Settings: View {
         ZStack {
             Back()
             var data = DM.md()
-            var myID = DM.my().id
+            let myID = DM.my().id
         VStack(alignment: .leading, spacing: 16) {
 
         // ## CHATS INFO ## \\

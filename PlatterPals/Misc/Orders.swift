@@ -15,6 +15,7 @@ struct Orders: View {
         VStack(spacing: 8) {
             Cards(id: DM.my().id)
                 .environmentObject(DM)
+                .padding(.top, 16)
         List {
         ForEach(orders) { ord in
         VStack(spacing: 8) {
@@ -105,12 +106,11 @@ struct Cards: View {
 
         Text("My favorite foods: ")
             .font(.headline)
-            .padding(.top, 16)
 
         if data.favFoods.isEmpty {
             Text("No favorites yet")
                 .foregroundColor(.secondary)
-                .frame(width: UIwidth-32)
+                .frame(maxWidth: UIwidth-32)
         } else {
             TabView {
             ForEach(data.favFoods, id: \.self) { id in
@@ -118,11 +118,11 @@ struct Cards: View {
             if let ord = orders.first { $0.id == id } {
                 Card(ord: ord)
                     .environmentObject(DM)
-
             }}}
-            .indexViewStyle(.page(backgroundDisplayMode: .always))
             .tabViewStyle(.page(indexDisplayMode: .always))
-            .frame(width: UIwidth-32, height: 120)
+            .indexViewStyle(.page(backgroundDisplayMode: .always))
+
+            .frame(maxWidth: UIwidth-32, minHeight: 120, maxHeight: 120)
             .onAppear {
                 getOrder(user: id)
             }}}}

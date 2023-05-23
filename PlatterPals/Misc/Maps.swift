@@ -1,6 +1,7 @@
 import SwiftUI
 import MapKit
 import CoreLocationUI
+import FirebaseFirestoreSwift
 
 struct Maps: View {
 
@@ -10,17 +11,29 @@ struct Maps: View {
     var body: some View {
         NavigationStack {
         VStack(spacing: 16) {
-            Text("Tap a pin to view a profile!")
+            Text("\(MD.locations.count)      Tap a pin to view a profile!")
                 .foregroundColor(.secondary)
+                .font(.headline)
 
         ZStack(alignment: .bottom) {
-            Map(coordinateRegion: $MD.region, showsUserLocation: true)
-                .onAppear {
-                    MD.checkLocation()
-                }
-            LocationButton(.currentLocation) {
-                MD.requestLocation()
+            Map(coordinateRegion: $MD.region, showsUserLocation: true,
+                annotationItems: MD.locations) { pin in
+
+                MapAnnotation(coordinate: CLLocationCoordinate2D(
+                    latitude: pin.lat, longitude: pin.lon)) {
+
+                    NavigationLink(value: pin.id) {
+                        MapPin(pin: pin)
+                            .environmentObject(DM)
+                    }}}
+            .navigationDestination(for: String.self) { id in
+                Profile(id: id, title: false)
+                    .environmentObject(DM)
             }
+            LocationButton(.currentLocation) {
+                MD.checkLocation()
+            }
+            .foregroundColor(.white)
             .cornerRadius(8)
             .tint(.pink)
             .padding(16)
@@ -30,6 +43,63 @@ struct Maps: View {
             Button("OK", role: .cancel) {}
         }}}}}
 
+struct Location: Identifiable, Hashable, Codable {
+    let id: String
+    let lat: Double
+    let lon: Double
+    var time = Date()
+}
+
+struct MapPin: View {
+
+    var pin: Location
+    @State var image: UIImage?
+    @EnvironmentObject var DM: DataManager
+
+    var body: some View {
+        VStack(spacing: 0) {
+
+            Text(getTime(pin.time))
+                .font(.headline)
+            RoundPic(width: 48, image: image)
+
+            Image(systemName: "pin.fill")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 32, height: 32)
+        }
+        .padding(.bottom, 64)
+        .foregroundColor(.pink)
+        .onAppear {
+            getImage(path: "avatars")
+        }
+    }
+    func getImage(path: String) {
+        let SR = SR.child("\(path)/\(pin.id).jpg")
+        SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
+
+            if let data = data {
+                DispatchQueue.main.async {
+                    image = UIImage(data: data)
+                }}}}
+
+    func getTime(_ date: Date) -> String {
+        let cal = Calendar.current.dateComponents(
+            [.day, .hour, .minute], from: date, to: Date())
+
+        let day = cal.day ?? 0
+        if day > 31 {
+            return ""
+        } else if day > 0 {
+            return "\(day) day"
+        } else if let hrs = cal.hour, hrs > 0 {
+            return "\(hrs) hr"
+        } else if let min = cal.minute, min > 0 {
+            return "\(min) min"
+        } else {
+            return "Just now"
+        }}}
+
 class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
 
     var LM: CLLocationManager?
@@ -37,25 +107,22 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var showAlert = false
 
     @Published var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 37.872, longitude: -122.259),
+        center: CLLocationCoordinate2D(latitude: 37.8715, longitude: -122.260),
         span: MKCoordinateSpan(latitudeDelta: 0.016, longitudeDelta: 0.016))
+
+    @Published var locations = [Location]()
 
     override init() {
         super.init()
         LM?.delegate = self
+        checkLocation()
     }
     func checkLocation() {
         if CLLocationManager.locationServicesEnabled() {
             LM = CLLocationManager()
             LM?.delegate = self
-        } else {
-            showAlert = true
         }
     }
-    func requestLocation() {
-        LM?.requestLocation()
-    }
-
     func checkAuthorization() {
         guard let LM = LM else { return }
         switch LM.authorizationStatus {
@@ -63,14 +130,26 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
         case .notDetermined:
             LM.requestWhenInUseAuthorization()
         case .restricted, .denied:
+            alertText = "Location is restricted or denied in settings."
             showAlert = true
         case .authorizedAlways, .authorizedWhenInUse:
             region = MKCoordinateRegion(center:
                 LM.location!.coordinate, span: region.span)
         @unknown default:
-            break
+            return
         }
     }
+    func getPins() {
+        FS.collection("mapPins").addSnapshotListener { snap,_ in
+        if let snap = snap {
+
+        self.locations = snap.documents.compactMap { doc -> Location? in
+        if let pin = try? doc.data(as: Location.self) {
+            return pin
+        }
+        return nil
+        }}}}
+
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         checkAuthorization()
     }

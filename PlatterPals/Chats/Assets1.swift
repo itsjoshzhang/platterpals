@@ -54,10 +54,9 @@ struct TitleBar: View {
 
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
-
         SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
-            if let data = data {
 
+            if let data = data {
                 DispatchQueue.main.async {
                     image = UIImage(data: data)
                 }}}}}
@@ -118,7 +117,7 @@ struct Bubble: View {
                 showTime.toggle()
             }
         if showTime {
-            Text("\(message.time.formatted(.dateTime.hour().minute()))")
+            Text(message.time.formatted(.dateTime.hour().minute()))
                 .foregroundColor(.secondary)
                 .padding(.horizontal, 16)
                 .font(.caption)

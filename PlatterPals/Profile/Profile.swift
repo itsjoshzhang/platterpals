@@ -10,8 +10,8 @@ struct MyProfile: View {
 
     var body: some View {
         NavigationStack {
-            Profile(id: DM.my().id, image: DM.myAvatar,
-                showUpdate: true)
+            Profile(id: DM.my().id, title: false,
+                image: DM.myAvatar, showUpdate: true)
                 .environmentObject(DM)
 
         // ## MODIFIERS ## \\
@@ -34,7 +34,7 @@ struct Profile: View {
 
     // ## TRACK INFO ## \\
     var id: String
-    var title = false
+    var title: Bool
     @State var image: UIImage?
     @State var showEdit = false
     @State var showChat = false
@@ -87,7 +87,7 @@ struct Profile: View {
             Text("\(user.city), CA")
                 .font(.headline)
             Spacer()
-            Text("♥ \(DM.findHearts(id: user.id))")
+            Text("♥ \(DM.sumHeart(id: user.id))")
                 .foregroundColor(.pink)
                 .font(.title3)
         }}}
@@ -140,10 +140,9 @@ struct Profile: View {
 
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
-
         SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
-            if let data = data {
 
+            if let data = data {
                 DispatchQueue.main.async {
                     image = UIImage(data: data)
                 }}}}}

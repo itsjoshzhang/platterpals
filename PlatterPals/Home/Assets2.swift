@@ -33,10 +33,9 @@ struct Row: View {
 
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
-
         SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
-            if let data = data {
 
+            if let data = data {
                 DispatchQueue.main.async {
                     image = UIImage(data: data)
                 }}}}}
@@ -107,7 +106,7 @@ struct Search: View {
 
         .navigationDestination(for: String.self) { id in
             if forProfile {
-                Profile(id: id)
+                Profile(id: id, title: false)
                     .environmentObject(DM)
             } else {
                 Convo(id: id)

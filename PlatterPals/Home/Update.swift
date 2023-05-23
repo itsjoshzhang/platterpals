@@ -58,7 +58,7 @@ struct Update: View {
                 .font(.headline)
             Spacer()
 
-            Text("♥ \(DM.findHearts(id: user.id))")
+            Text("♥ \(DM.sumHeart(id: user.id))")
                 .font(.title3)
 
             Button("\(Image(systemName: "flag"))") {
@@ -150,10 +150,9 @@ struct Update: View {
 
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
-
         SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
-            if let data = data {
 
+            if let data = data {
                 DispatchQueue.main.async {
                     image = UIImage(data: data)
                 }}}}}

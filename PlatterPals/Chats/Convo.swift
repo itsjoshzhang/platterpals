@@ -37,8 +37,7 @@ struct Convo: View {
                 focus = true
             }
         Button {
-            let msg = Message(text: text, sender: myID, getter: id,
-                              time: Date())
+            let msg = Message(text: text, sender: myID, getter: id)
             DM.sendChat(msg: msg)
             text = ""
 
