@@ -3,7 +3,7 @@ import SwiftUI
 struct Home: View {
 
     // ## TRACK INFO ## \\
-    @State var city = "Berkeley"
+    @State var city = "All"
     @State var following = false
     @State var showSearch = false
     @State var showUpload = false
@@ -16,7 +16,6 @@ struct Home: View {
         NavigationStack {
         ZStack {
         Back()
-
         ScrollView {
         VStack(spacing: 16) {
         Spacer()
@@ -33,8 +32,8 @@ struct Home: View {
             .foregroundColor(.secondary)
 
         Picker("", selection: $city) {
-            ForEach(["Berkeley"], id: \.self) { city in
-                Text(city)
+            ForEach(["All"] + cityList, id: \.self) {
+                Text($0)
             }
         }
         Spacer()
@@ -47,21 +46,29 @@ struct Home: View {
         }
         .padding(.horizontal, 16)
 
-        // ## PROFILES ## \\
+        // ## HACKY SHIT ## \\
 
-        ForEach(shuffle(DM.userList)) { user in
-
+        ForEach(DM.userList.shuffled()) { user in
+        // return shuffled copy of userList
         let data = DM.md()
-        let update = Update(id: user.id, showNext: true)
-            .environmentObject(DM)
 
-        if (DM.my().id != user.id &&
-            !data.blocked.contains(user.id) &&
-            user.city == city && user.prof) {
+        if DM.my().id != user.id, user.prof,
+        // dont show my own prof, user must have a prof
 
-            if following {
-                if data.favUsers.contains(user.id) { update }
-            } else { update }}}
+            !data.blocked.contains(user.id),
+            // don't show blocked users
+
+            (following && data.favUsers.contains(user.id))
+            // if following checked, show from favUsers only
+
+            || !following, (city == "All" || user.city == city) {
+            // if not & (if no city: pass, else: check city)
+
+                Update(id: user.id, showNext: true)
+                // show update with link to profile
+                    .environmentObject(DM)
+            }
+        }
         Spacer()
             .padding(40)
         }
@@ -70,9 +77,9 @@ struct Home: View {
         .navigationTitle("PlatterPals")
         .toolbar {
             ToolbarItem {
-            Button("\(Image(systemName: "square.and.arrow.up"))") {
-            showUpload = true
-            }
+                Button("\(Image(systemName: "square.and.arrow.up"))"){
+                    showUpload = true
+                }
             .buttonStyle(.borderedProminent)
             }
         }
@@ -83,14 +90,4 @@ struct Home: View {
         .sheet(isPresented: $showSearch) {
             Search(forProfile: true)
                 .environmentObject(DM)
-        }}}}}
-
-    func shuffle(_ array: [User]) -> [User] {
-        var ans = array
-            for i in 0..<(ans.count - 1) {
-                let r = Int.random(in: i..<ans.count)
-                if i != r {
-                    ans.swapAt(i, r)}}
-            return ans
-    }
-}
+        }}}}}}

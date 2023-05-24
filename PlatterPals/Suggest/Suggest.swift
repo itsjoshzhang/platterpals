@@ -8,6 +8,7 @@ struct Suggest: View {
     @State var options = 1
     @State var people = 1
     @State var price = 10
+    @State var addText = ""
 
     // ## STRINGS ## \\
     @State var place = ""
@@ -153,7 +154,7 @@ struct Suggest: View {
         if location == "My Location" {
             text += "My location (coordinates \(c.latitude), \(c.longitude)). "
         } else {
-            text += "UC Berkeley. "
+            text += "\(location). "
         }
         if !place.isEmpty {
             text += "Search the menu of \(place). "
@@ -166,12 +167,12 @@ struct Suggest: View {
         } else if friend != "None" {
             let favs = DM.data(id: friend).favFoods
             if !favs.isEmpty {
-                text += getOrder(favs: favs) + ". "
+                text += "\(addText). "
             }
         } else {
             let favs = DM.md().favFoods
             if !favs.isEmpty {
-                text += getOrder(favs: favs) + ". "
+                text += "\(addText). "
             }
         }
         // ## OPTIONALS ## \\
@@ -194,7 +195,7 @@ struct Suggest: View {
 
     @State var orders = [AIOrder]()
 
-    func getOrder(favs: [String]) -> String {
+    func getOrder(favs: [String]) {
         FS.collection("aiOrders").addSnapshotListener { snap,_ in
         if let snap = snap {
 
@@ -205,15 +206,15 @@ struct Suggest: View {
         return nil
         }}}
 
-        // MARK: - I give up. TODO: - FIXME later.
+        // MARK: - TODO: - FIXME LATER
 
-        var text = "Find food similar to "
+        addText = "Find food similar to "
         for ord in orders {
             if favs.contains(ord.id) {
-                text += ord.order + " from " + ord.place + ", and "
+                addText += ord.order + " from " + ord.place + ", and "
             }
         }
-        return text.trimmingCharacters(in:
+        addText = addText.trimmingCharacters(in:
             CharacterSet(charactersIn: ", and "))
     }
 }

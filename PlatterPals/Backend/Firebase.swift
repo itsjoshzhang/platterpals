@@ -2,18 +2,18 @@ import SwiftUI
 import Firebase
 import FirebaseStorage
 
-// start firebase
+// start Firebase
 let FS = Firestore.firestore()
 let SR = Storage.storage().reference()
 
 class DataManager: ObservableObject {
 
-    // track user data
+    // track user info
     @Published var userList = [User]()
     @Published var userData = [UserData]()
     @Published var settings = Setting()
 
-    // keep user data
+    // keep user info
     var version = -1
     var myIndex = 0
     @Published var myAvatar: UIImage?
@@ -21,7 +21,6 @@ class DataManager: ObservableObject {
 
     init() {
         initInfo()
-        updateMe()
     }
     // returns myself
     func my() -> User {
@@ -48,6 +47,8 @@ class DataManager: ObservableObject {
 
     // called at init
     private func initInfo() {
+
+        // access userList
         FS.collection("userList").getDocuments { col,_ in
 
             if let col = col {
@@ -64,6 +65,7 @@ class DataManager: ObservableObject {
                             text, prof: prof)
             self.userList.append(user)
         }}}
+        // access userData
         FS.collection("userData").getDocuments { col,_ in
             if let col = col {
             for doc in col.documents {
@@ -78,17 +80,23 @@ class DataManager: ObservableObject {
             let userData = UserData(id: id, favFoods: favFoods,
             chatting: chatting, favUsers: favUsers, blocked: blocked)
             self.userData.append(userData)
-        }}}}
-
+        }}}
+        // update version
+        let doc = FS.collection("accFlags").document("APP_UPDATE")
+        doc.getDocument { doc,_ in
+            self.version = doc?.data()?["version"] as? Int ?? -1
+        }
+    }
     // called at init
-    private func getSetts(id: String) {
+    private func getSetts() {
         FS.collection("settings").getDocuments { col,_ in
 
-            if let col = col {
-            for doc in col.documents {
-            let data = doc.data()
-
+        if let col = col {
+        for doc in col.documents {
+        let data = doc.data()
             let id      = data["id"]      as? String ?? ""
+
+        if self.my().id == id {
             let notifs  = data["notifs"]  as? Bool ?? true
             let suggest = data["suggest"] as? Bool ?? true
             let privacy = data["privacy"] as? Bool ?? true
@@ -96,7 +104,7 @@ class DataManager: ObservableObject {
 
             self.settings = Setting(id: id, notifs: notifs, suggest:
                             suggest, privacy: privacy, locate: locate)
-            }}}}
+            }}}}}
 
     // called at Login
     func initUser(id: String) {
@@ -106,7 +114,7 @@ class DataManager: ObservableObject {
                 break }}
         getImage(path: "avatars")
         getImage(path: "profiles")
-        getSetts(id: id)
+        getSetts()
     }
     
     // called at Signup
@@ -230,7 +238,6 @@ class DataManager: ObservableObject {
         doc.setData(["id": pin.id, "lat": pin.lat, "lon": pin.lon,
                      "time": pin.time])
     }
-
     // called at Update
     func sendFlag(id: String, type: String) {
         let doc = FS.collection("accFlags").document(id)
@@ -238,9 +245,4 @@ class DataManager: ObservableObject {
         doc.setData(["id": id, "type": type, "user": my().id,
                      "time": Date()])
     }
-    // called at init
-    func updateMe() {
-        let doc = FS.collection("accFlags").document("APP_UPDATE")
-        doc.getDocument { doc,_ in
-            self.version = doc?.data()?["version"] as! Int
-        }}}
+}

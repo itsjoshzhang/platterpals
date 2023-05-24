@@ -81,8 +81,8 @@ struct EditProf: View {
                 .font(.headline)
 
             Picker("", selection: $city) {
-                ForEach(["Berkeley"], id: \.self) { city in
-                    Text(city)
+                ForEach(cityList, id: \.self) {
+                    Text($0)
                 }
             }
             .frame(maxWidth: UIwidth, alignment: .leading)

@@ -91,8 +91,8 @@ struct Signup: View {
                 .font(.headline)
 
             Picker("", selection: $city) {
-                ForEach(["Berkeley"], id: \.self) { city in
-                    Text(city)
+                ForEach(cityList, id: \.self) {
+                    Text($0)
                 }
             }
             .buttonStyle(.bordered)

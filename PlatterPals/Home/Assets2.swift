@@ -44,9 +44,9 @@ struct Search: View {
 
     // ## TRACK INFO ## \\
     @State var name = ""
+    @State var city = "All"
     @State var showNext = false
     @State var following = false
-    @State var city = "Berkeley"
     @State var userIDs = [String]()
 
     // ## SETUP VIEW ## \\
@@ -75,15 +75,15 @@ struct Search: View {
                 .foregroundColor(.secondary)
 
             Picker("", selection: $city) {
-                ForEach(["Berkeley"], id: \.self) { city in
-                    Text(city)
+                ForEach(["All"] + cityList, id: \.self) {
+                    Text($0)
                 }
             }
             Spacer()
             Toggle("Following ✓", isOn: $following)
                 .toggleStyle(.button)
                 .onTapGesture {
-                following.toggle()
+                    following.toggle()
                 }
         }
         .padding(.horizontal, 16)
@@ -92,19 +92,27 @@ struct Search: View {
 
         List {
         ForEach(userIDs, id: \.self) { id in
+        // loop through userIDs & find user
+        let user = DM.user(id: id)
 
-        let link = NavigationLink(value: id) {
-            Row(id: id)
-                .environmentObject(DM)
-        }
-        if following {
-            if DM.md().favUsers.contains(id) { link }
-        } else { link }}}
+        if (following && DM.md().favUsers.contains(user.id))
+        // if following checked, show from favUsers only
 
+            || !following, (city == "All" || user.city == city) {
+            // if not & (if no city: pass, else: check city)
+
+                NavigationLink(value: id) {
+                    // show row with link to destination
+                    Row(id: id)
+                        .environmentObject(DM)
+        }}}}
         .listStyle(.plain)
         .opacity(userIDs.isEmpty ? 0: 1)
+        // hide list if empty (bug fixing)
 
         .navigationDestination(for: String.self) { id in
+            // receive the link to destination
+
             if forProfile {
                 Profile(id: id, title: false)
                     .environmentObject(DM)
@@ -119,13 +127,12 @@ struct Search: View {
         .onAppear {
             focus = true
         }
-        .onChange(of: name) { _ in
+        .onChange(of: name) {_ in
             userIDs.removeAll()
-
             for i in (0 ..< min(DM.userList.count, 4)) {
-                let user = DM.userList[i]
 
-                if (compare(name, user.name) && !name.isEmpty) {
+                let user = DM.userList[i]
+                if (!name.isEmpty && compare(name, user.name)) {
                     userIDs.append(user.id)
         }}}}}}
 

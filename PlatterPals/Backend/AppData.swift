@@ -38,7 +38,6 @@ struct RoundPic: View {
     }
 }
 extension UIImage {
-
     // called at putImage
     func resize(width: CGFloat, pfp: Bool) -> UIImage {
 
@@ -53,9 +52,8 @@ extension UIImage {
         // return new image
         return render.image {_ in
             self.draw(in: CGRect(origin: .zero, size: size))
-        }
-    }
-}
+        }}}
+
 struct User: Identifiable, Hashable, Codable {
     let id: String
     var name: String

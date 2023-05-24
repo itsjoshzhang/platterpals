@@ -5,14 +5,16 @@ import FirebaseFirestoreSwift
 
 struct Maps: View {
 
+    var text: String
     @State var locations = [Location]()
+
     @EnvironmentObject var MD: MapsData
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
         NavigationStack {
         VStack(spacing: 16) {
-            Text("Tap a pin to view a profile!")
+            Text(text)
                 .foregroundColor(.secondary)
                 .font(.headline)
 
@@ -33,6 +35,11 @@ struct Maps: View {
             }
             LocationButton(.currentLocation) {
                 MD.checkLocation()
+                if let c = MD.LM?.location?.coordinate {
+
+                    DM.sendPin(pin: Location(id: DM.my().id,
+                        lat: c.latitude, lon: c.longitude))
+                }
             }
             .foregroundColor(.white)
             .cornerRadius(8)
@@ -127,7 +134,6 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
 
     override init() {
         super.init()
-        LM?.delegate = self
         checkLocation()
     }
     func checkLocation() {
@@ -136,7 +142,7 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
             LM?.delegate = self
         }
     }
-    func checkAuthorization() {
+    private func checkAuthorization() {
         guard let LM = LM else { return }
         switch LM.authorizationStatus {
 
@@ -152,7 +158,6 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
             return
         }
     }
-
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         checkAuthorization()
     }

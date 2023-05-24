@@ -10,7 +10,7 @@ struct Login: View {
     @FocusState var focus: Bool
 
     // ## CONDITIONS ## \\
-    @State var internet = false
+    @State var loading = false
     @State var loggedIn = false
     @State var showAlert = false
     @State var showReset = false
@@ -76,7 +76,7 @@ struct Login: View {
 
         .alert(alertText, isPresented: $showAlert) {
             Button("OK", role: .cancel) {}}}
-        .opacity(internet ? 1: 0)
+        .opacity(loading ? 1: 0)
         }
         .padding(16)
         }
@@ -91,7 +91,7 @@ struct Login: View {
                     loggedIn = true
                 }}}
             withAnimation {
-                internet = true
+                loading = true
             }
         }
         .sheet(isPresented: $showReset) {

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct Chats: View {
 
-    // ## TRACK INFO ## \\
+    // ## SETUP VIEW ## \\
     @State var showMaps = false
     @State var showSearch = false
     @State var chatting = [String]()
@@ -10,37 +10,29 @@ struct Chats: View {
     @EnvironmentObject var MD: MapsData
     @EnvironmentObject var DM: DataManager
 
-    // ## OTHER VIEWS ## \\
     var body: some View {
-        if chatting.isEmpty {
-            Maps()
-                .environmentObject(MD)
-                .environmentObject(DM)
-        } else {
-            content
-        }
-    }
-    var content: some View {
         NavigationStack {
-        ZStack {
-        Back()
         VStack(spacing: 16) {
 
-        // ## SHOW CONVOS ## \\
-
+        // ## SHOW CHATS ## \\
         Box()
-            .padding(.top, 125)
             .onTapGesture {
                 showSearch = true
             }
+        if chatting.isEmpty {
+            Maps(text: "No chats yet? Explore below!")
+                .environmentObject(MD)
+                .environmentObject(DM)
+        } else {
         List {
+
         ForEach(chatting, id: \.self) { id in
         NavigationLink(value: id) {
             Row(id: id)
                 .environmentObject(DM)
             }
         }
-        // ## CONVOS LOGIC ## \\
+        // ## MODIFIERS ## \\
 
         .onDelete(perform: delete(atOffsets:))
         .onMove(perform: move(fromOffsets:toOffset:))
@@ -52,11 +44,13 @@ struct Chats: View {
         }
         .onChange(of: DM.md().chatting) {_ in
             refresh()
-        }
-        }
+        }}}
         .navigationTitle("My Chats")
         .onAppear {
             refresh()
+        }
+        .background {
+            Back()
         }
         // ## OTHER VIEWS ## \\
 
@@ -65,19 +59,18 @@ struct Chats: View {
                 .environmentObject(DM)
         }
         .sheet(isPresented: $showMaps) {
-            Maps()
+            Maps(text: "Tap a pin to view a profile!")
                 .environmentObject(MD)
                 .environmentObject(DM)
         }
-        VStack {
-        Spacer()
-        Button {
-            showMaps = true
-        } label: {
-            Glow(text: "View users nearby!")
-        }
-        .padding(.bottom, 125)
-        }}}}
+        if !chatting.isEmpty {
+            VStack {
+                Spacer()
+            Button {
+                showMaps = true
+            } label: {
+                Glow(text: "View users nearby!")
+            }}}}}
 
     // ## FUNCTIONS ## \\
 

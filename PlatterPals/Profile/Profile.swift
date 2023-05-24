@@ -2,9 +2,6 @@ import SwiftUI
 
 struct MyProfile: View {
 
-    // ## SETUP VIEW ## \\
-
-    var id: String
     @State var showSets = false
     @EnvironmentObject var DM: DataManager
 
@@ -13,8 +10,6 @@ struct MyProfile: View {
             Profile(id: DM.my().id, title: false,
                 image: DM.myAvatar, showUpdate: true)
                 .environmentObject(DM)
-
-        // ## MODIFIERS ## \\
 
         .navigationTitle(DM.my().name)
         .toolbar {

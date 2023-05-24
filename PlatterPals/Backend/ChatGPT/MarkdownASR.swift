@@ -285,8 +285,6 @@ public struct MarkdownAttributedStringParser: MarkupVisitor {
     }
 }
 
-// MARK: - Extensions Land
-
 extension NSMutableAttributedString {
     func applyEmphasis() {
         enumerateAttribute(.font, in: NSRange(location: 0, length: length), options: []) { value, range, stop in

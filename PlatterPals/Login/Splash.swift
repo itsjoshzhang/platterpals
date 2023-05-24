@@ -35,7 +35,7 @@ struct Splash: View {
             .font(.custom("Lobster", size: 50))
 
         if internet {
-            Text("Poor internet. Refresh App.")
+            Text("Poor internet. Please refresh app.")
                 .font(.headline)
         }
         ProgressView()
@@ -55,10 +55,11 @@ struct Splash: View {
                 scale = 1.0
                 opacity = 1.0
             }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            let list = DM.userList.count
+        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+            print(DM.userData.count)
 
-            if (list > 0 && list == DM.userData.count) {
+            // MARK: - TODO: - FIXME LATER
+            if (DM.userData.count > 0) {
                 withAnimation {
                     showNext = true
                 }
