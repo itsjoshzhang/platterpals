@@ -90,8 +90,9 @@ struct MapPin: View {
                 .scaledToFit()
                 .frame(width: 32, height: 32)
         }
-        .padding(.bottom, 64)
+        .padding(.bottom, 70)
         .foregroundColor(.pink)
+        .opacity(DM.my().id == pin.id ? 0.5: 1)
         .onAppear {
             getImage(path: "avatars")
         }
@@ -119,7 +120,7 @@ struct MapPin: View {
         } else if let min = cal.minute, min > 0 {
             return "\(min) min"
         } else {
-            return "Just now"
+            return "Now"
         }}}
 
 class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
