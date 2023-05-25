@@ -16,12 +16,8 @@ struct Upload: View {
     // ## SETUP VIEW ## \\
     var body: some View {
         NavigationStack {
-        ZStack {
-        Back()
         ScrollView {
         VStack(spacing: 16) {
-        Spacer()
-            .padding(32)
 
         // ## SHOW IMAGE ## \\
 
@@ -77,7 +73,6 @@ struct Upload: View {
             .onTapGesture {
                 focus = true
             }
-
         if text.count > 200 {
             Text("200 chars max")
                 .foregroundColor(.secondary)
@@ -85,6 +80,7 @@ struct Upload: View {
             Button("Save Edits") {
                 if let image = image {
                     DM.putImage(image: image, path: "profiles")
+
                     var me = DM.my()
                     me.prof = true
                     DM.editUser(user: me)
@@ -94,19 +90,20 @@ struct Upload: View {
             .buttonStyle(.borderedProminent)
             .disabled(text.isEmpty)
         }
-        // ## OTHER STUFF ## \\
-
-        Spacer()
-            .padding(90)
         }
+        // ## MODIFIERS ## \\
+
         .padding(16)
         .navigationTitle("Profile 📸")
+        .background {
+            Back()
+        }
         .onAppear {
             text = DM.my().text
         }
-        .fullScreenCover(isPresented: $showCrop) {
-            ImageEditor(image: $image, show: $showCrop)
-        }}}
         .onTapGesture {
             focus = false
-        }}}}
+        }
+        .fullScreenCover(isPresented: $showCrop) {
+            ImageEditor(image: $image, show: $showCrop)
+        }}}}}

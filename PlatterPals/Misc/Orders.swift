@@ -3,29 +3,21 @@ import FirebaseFirestoreSwift
 
 struct Orders: View {
 
-    // TRACK INFO
     @State var showOrder = false
     @State var showAlert = false
     @State var orders = [AIOrder]()
     @EnvironmentObject var DM: DataManager
 
-    // ## OTHER VIEWS ## \\
     var body: some View {
+        NavigationStack {
         if orders.isEmpty {
             NewOrder(text: "##;##")
         } else {
-            content
-        }
-    }
-    var content: some View {
-        NavigationStack {
-        ZStack {
-        Back()
-        VStack(spacing: 8) {
 
-        Cards(id: DM.my().id)
-            .environmentObject(DM)
-            .padding(.top, 16)
+        VStack(spacing: 8) {
+            Cards(id: DM.my().id)
+                .environmentObject(DM)
+                .padding(.top, 16)
         List {
         ForEach(orders) { ord in
         VStack(spacing: 8) {
@@ -49,15 +41,15 @@ struct Orders: View {
                 DM.editData(data: data)
 
         }}} else {
-            Button("♡") {
-                if data.favFoods.count < 3 {
-                    data.favFoods.append(ord.id)
-                    DM.editData(data: data)
-                } else {
-                    showAlert = true
-        }}}}
-        .foregroundColor(.yellow)
-        .font(.system(size: 24))
+        Button("♡") {
+            if data.favFoods.count < 3 {
+                data.favFoods.append(ord.id)
+                DM.editData(data: data)
+            } else {
+                showAlert = true
+            }}}}
+            .foregroundColor(.yellow)
+            .font(.system(size: 24))
         }
         HStack {
             Stars(button: true, ord: ord)
@@ -67,13 +59,10 @@ struct Orders: View {
                 .foregroundColor(.secondary)
         }}}}
         .listStyle(.plain)
-
-        }
-        .padding(.top, 110)
         }
         .navigationTitle("My Orders")
-        .onAppear {
-            getOrder(user: DM.my().id)
+        .background {
+            Back()
         }
         .alert("3 favorite foods max.", isPresented: $showAlert) {
             Button("OK", role: .cancel) {}
@@ -90,7 +79,10 @@ struct Orders: View {
             NewOrder(text: "##;##")
                 .environmentObject(DM)
         }}}
-
+        .onAppear {
+            getOrder(user: DM.my().id)
+        }
+    }
     func getOrder(user: String) {
         FS.collection("aiOrders").addSnapshotListener { snap,_ in
         if let snap = snap {

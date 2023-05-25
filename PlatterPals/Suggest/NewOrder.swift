@@ -10,7 +10,6 @@ struct NewOrder: View {
     @State var text: String
 
     // ## SETUP VIEW ## \\
-
     @State var error = false
     @FocusState var focus: Bool
 
@@ -19,8 +18,6 @@ struct NewOrder: View {
 
     var body: some View {
         NavigationStack {
-        ZStack {
-        Back()
         VStack() {
 
         // ## TEXTFIELDS ## \\
@@ -28,51 +25,59 @@ struct NewOrder: View {
         if error {
             Text("AI reply error. Add order below.")
                 .foregroundColor(.secondary)
-                .font(.subheadline)}
-        Group {
-        HStack {
-            Text("Menu item:")
-            TextField("Add a menu item", text: $order)
+                .font(.subheadline)
         }
-        HStack {
-            Text("Restaurant:")
-            TextField("Add a restaurant", text: $place)}}
+        Group {
+            HStack {
+                Text("Menu item:")
+                TextField("Add a menu item", text: $order)
+            }
+            HStack {
+                Text("Restaurant:")
+                TextField("Add a restaurant", text: $place)
+            }
+        }
         .textFieldStyle(.roundedBorder)
         .focused($focus)
-
+        .onTapGesture {
+            focus = true
+        }
         // ## STARS/EMOJI ## \\
 
         HStack {
-            ForEach(1...5, id: \.self) { i in
-                Image(systemName: (i <= stars ? "star.fill": "star"))
-                    .resizable()
-                    .foregroundColor(.pink)
-                    .frame(width: 24, height: 24)
-                    .onTapGesture {
-                        stars = (stars == i ? 0: i)
-                    }}}
+        ForEach(1...5, id: \.self) { i in
+            Image(systemName: (i <= stars ? "star.fill": "star"))
+                .resizable()
+                .foregroundColor(.pink)
+                .frame(width: 24, height: 24)
+                .onTapGesture {
+                    stars = (stars == i ? 0: i)
+                }}}
         Text("Add ★ anytime.")
             .foregroundColor(.secondary)
-            .font(.footnote)
+            .font(.subheadline)
 
         ScrollView(.horizontal) {
         LazyHGrid(rows: [GridItem(), GridItem()], spacing: 8) {
         ForEach(emojiList, id: \.self) { em in
 
-        // ## CLICKABLES ## \\
-
-        Button(em) { emoji = em }
+        Button(em) {
+            emoji = em
+        }
         .background(emoji == em ? .pink: .white)
         .font(.system(size: 32))
         .cornerRadius(8)
         }}}
+
+        // ## MODIFIERS ## \\
+
         .padding(8)
         .frame(height: 100)
         .border(.pink, width: 3)
 
         Text("Scroll for emojis!")
             .foregroundColor(.secondary)
-            .font(.footnote)
+            .font(.subheadline)
 
         Button("Add Order") {
             var ord = AIOrder(user: DM.my().id, order: order, place:
@@ -85,9 +90,14 @@ struct NewOrder: View {
         .buttonStyle(.borderedProminent)
         .disabled(order.isEmpty || place.isEmpty)
         }
-        .padding(.horizontal, 16)
+        .padding(16)
         .navigationTitle("Add Order")
-
+        .background {
+            Back()
+        }
+        .onTapGesture {
+            focus = false
+        }
         // ## STRING LOGIC ## \\
 
         .onAppear {
@@ -104,7 +114,7 @@ struct NewOrder: View {
                 }
             } else {
                 error = true
-            }}}}}
+            }}}}
 
     func trimmed(_ text: String) -> String {
         return text.trimmingCharacters(in:

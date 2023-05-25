@@ -64,8 +64,6 @@ struct MyTabView: View {
 
         // ## NEED UPDATE ## \\
 
-        ZStack {
-        Back()
         VStack(spacing: 16) {
 
         Image("logo")
@@ -76,7 +74,7 @@ struct MyTabView: View {
             .font(.headline)
 
         HStack(spacing: 0) {
-        Text("Download it from the ")
+        Text("Download now from the ")
             .foregroundColor(.secondary)
 
         Link(destination: URL(string:
@@ -84,4 +82,6 @@ struct MyTabView: View {
             Text("App Store.")
         }}}
         .foregroundColor(.pink)
+        .background {
+            Back()
         }}}}}

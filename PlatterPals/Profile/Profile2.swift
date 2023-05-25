@@ -60,7 +60,7 @@ struct EditProf: View {
 
     var body: some View {
         VStack(spacing: 16) {
-        var my = DM.my()
+            var my = DM.my()
         HStack(spacing: 16) {
 
         if let image = image {
@@ -118,27 +118,28 @@ struct EditProf: View {
             Text("200 chars max")
                 .foregroundColor(.secondary)
         } else {
-            Button("Save Edits") {
-                if let image = image {
-                    DM.putImage(image: image, path: "avatars")
-                }
-                my.name = name
-                my.text = text
-                my.city = city
 
-                DM.editUser(user: my)
-                dismiss()
+        Button("Save Edits") {
+            if let image = image {
+                DM.putImage(image: image, path: "avatars")
             }
-            .disabled(name.isEmpty || text.isEmpty)
-            .buttonStyle(.borderedProminent)
+            my.name = name
+            my.text = text
+            my.city = city
 
-            .onAppear {
-                name = my.name
-                text = my.text
-            }}}
+            DM.editUser(user: my)
+            dismiss()
+        }
+        .disabled(name.isEmpty || text.isEmpty)
+        .buttonStyle(.borderedProminent)
+        .onAppear {
+            name = my.name
+            text = my.text
+        }}}
         .padding(16)
+        .background {
+            Back()
+        }
         .fullScreenCover(isPresented: $showCrop) {
             ImageEditor(image: $image, show: $showCrop)
-        }
-    }
-}
+        }}}

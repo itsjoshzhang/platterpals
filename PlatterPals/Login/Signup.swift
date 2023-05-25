@@ -18,21 +18,16 @@ struct Signup: View {
     @State var showTerms = false
     @State var showGuide = false
 
-    // ## IMAGE VARS ## \\
+    // ## SETUP VIEW ## \\
     @State var image: UIImage?
     @State var imageItem: PhotosPickerItem?
 
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
-    // ## SETUP VIEW ## \\
     var body: some View {
         NavigationStack {
-        ZStack {
-        Back()
         ScrollView {
-        Spacer()
-            .padding(40)
         VStack(spacing: 16) {
 
         // ## SHOW IMAGE ## \\
@@ -49,7 +44,6 @@ struct Signup: View {
         HStack {
             PhotosPicker("Upload Picture", selection: $imageItem,
                          matching: .images)
-
             if image != nil {
                 Button("\(Image(systemName: "crop"))") {
                     showCrop = true
@@ -71,10 +65,8 @@ struct Signup: View {
         Group {
             TextField("Email", text: $email)
             Div()
-
             SecureField("Password", text: $password)
             Div()
-
             TextField("Username", text: $name)
             Div()
         }
@@ -105,24 +97,22 @@ struct Signup: View {
                 showTerms = true
             }
         }
-        Button("How to use PlatterPals") {
-            showGuide = true
-        }
-        .buttonStyle(.bordered)
-
-        // ## CREATE USER ## \\
-
         Button("Sign Up") {
             signupAuth()
         }
         .disabled(name.isEmpty)
         .buttonStyle(.borderedProminent)
 
+        // ## MODIFIERS ## \\
+
         .alert(alertText, isPresented: $showAlert) {
             Button("OK", role: .cancel) {
         }}}
         .padding(16)
         .navigationTitle("Sign Up")
+        .background {
+            Back()
+        }
         .onTapGesture {
             focus = false
         }
@@ -134,9 +124,6 @@ struct Signup: View {
         }
         .sheet(isPresented: $showTerms) {
             Terms()
-        }
-        Spacer()
-            .padding(85)
         }}}}
 
     // ## FUNCTIONS ## \\

@@ -50,14 +50,12 @@ struct Search: View {
     @State var userIDs = [String]()
 
     // ## SETUP VIEW ## \\
-    var forProfile: Bool
+    var profile: Bool
     @FocusState var focus: Bool
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
         NavigationStack {
-        ZStack{
-        Back()
         VStack(spacing: 16) {
 
         // ## TEXTFIELDS ## \\
@@ -67,7 +65,6 @@ struct Search: View {
             .overlay(RoundedRectangle(cornerRadius: 8)
             .stroke(.secondary))
             .padding(.horizontal, 16)
-            .padding(.top, 256)
             .focused($focus)
 
         HStack(spacing: 0) {
@@ -100,17 +97,20 @@ struct Search: View {
         .opacity(userIDs.isEmpty ? 0: 1)
 
         .navigationDestination(for: String.self) { id in
-            if forProfile {
+            if profile {
                 Profile(id: id, title: false)
                     .environmentObject(DM)
             } else {
-                Convo(id: id)
+                Convo(id: id, padding: true)
                     .environmentObject(DM)
                 }}}
 
         // ## LIST LOGIC ## \\
 
         .navigationTitle("Search 🔍")
+        .background {
+            Back()
+        }
         .onAppear {
             focus = true
         }
@@ -129,9 +129,8 @@ struct Search: View {
 
                 || !following, (city == "All" || user.city == city) {
                 // if not & (if no city: pass, else: check city)
-
                     userIDs.append(user.id)
-        }}}}}}
+        }}}}}
 
     func compare(_ name1: String, _ name2: String) -> Bool {
         let l1 = name1.lowercased()

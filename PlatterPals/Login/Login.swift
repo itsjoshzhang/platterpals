@@ -19,7 +19,6 @@ struct Login: View {
     @EnvironmentObject var DM: DataManager
 
     // ## OTHER VIEWS ## \\
-
     var body: some View {
         if loggedIn {
             MyTabView()
@@ -28,12 +27,10 @@ struct Login: View {
             content
         }
     }
-    var content: some View {
-        ZStack {
-        Back()
-        VStack(spacing: 16) {
+    // ## NAME & LOGO ## \\
 
-        // ## NAME & LOGO ## \\
+    var content: some View {
+        VStack(spacing: 16) {
 
         Text("PlatterPals")
             .font(.custom("Lobster", size: 50))
@@ -53,11 +50,9 @@ struct Login: View {
             .autocorrectionDisabled(true)
             .focused($focus)
         Div()
-
         SecureField("Password", text: $password)
             .focused($focus)
         Div()
-
         Button("Forgot your login?") {
             showReset = true
         }
@@ -73,26 +68,28 @@ struct Login: View {
         }
         .buttonStyle(.borderedProminent)
         .disabled(email.isEmpty || password.isEmpty)
-
-        .alert(alertText, isPresented: $showAlert) {
-            Button("OK", role: .cancel) {}}}
+        }
         .opacity(loading ? 1: 0)
-        }
-        .padding(16)
-        }
+        .onAppear {
+        Auth.auth().addStateDidChangeListener {_,user in
+        if let user = user {
+
+            DM.initUser(id: user.email ?? email)
+            withAnimation {
+                loggedIn = true
+            }}}
+        withAnimation(.easeIn(duration: 1)) {
+            loading = true
+        }}}
+
         // ## MODIFIERS ## \\
 
-        .onAppear {
-            Auth.auth().addStateDidChangeListener {_,user in
-            if let user = user {
-
-                DM.initUser(id: user.email ?? email)
-                withAnimation {
-                    loggedIn = true
-                }}}
-            withAnimation {
-                loading = true
-            }
+        .padding(16)
+        .background {
+            Back()
+        }
+        .alert(alertText, isPresented: $showAlert) {
+            Button("OK", role: .cancel) {}
         }
         .sheet(isPresented: $showReset) {
             Reset()

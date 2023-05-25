@@ -8,7 +8,7 @@ struct Settings: View {
     @State var suggest = true
     @State var privacy = true
     @State var locate = true
-    @State var showGuide = false
+    @State var guide = false
 
     // ## FALSE BOOLS ## \\
     @State var loggedOut = false
@@ -32,8 +32,6 @@ struct Settings: View {
     }
     var content: some View {
         NavigationStack {
-        ZStack {
-            Back()
             var data = DM.md()
             let myID = DM.my().id
         VStack(alignment: .leading, spacing: 16) {
@@ -123,8 +121,8 @@ struct Settings: View {
             .foregroundColor(.black)
         Div()
         HStack {
-            Button("How to use PlatterPals") {
-                showGuide = true
+            Button("PlatterPals Guide") {
+                guide = true
             }
             .buttonStyle(.bordered)
             Spacer()
@@ -153,11 +151,12 @@ struct Settings: View {
         // ## MODIFIERS ## \\
 
         }}.foregroundColor(.pink)}
-        .padding(.top, -64)
         .padding(16)
-
         .foregroundColor(.secondary)
         .navigationTitle("Settings")
+        .background {
+            Back()
+        }
         .onAppear {
             let sets = DM.settings
             notifs = sets.notifs
@@ -165,7 +164,7 @@ struct Settings: View {
             privacy = sets.privacy
             locate = sets.locate
         }
-        .sheet(isPresented: $showGuide) {
+        .sheet(isPresented: $guide) {
             Guide()
         }
         .sheet(isPresented: $showReset) {
@@ -204,4 +203,4 @@ struct Settings: View {
                 }
             }
             .buttonStyle(.borderedProminent)
-        }}}}}}
+        }}}}}

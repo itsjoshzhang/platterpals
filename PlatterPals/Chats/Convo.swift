@@ -5,6 +5,7 @@ struct Convo: View {
 
     // ## SETUP VIEW ## \\
     var id: String
+    var padding: Bool
     @State var text = ""
     @FocusState var focus: Bool
     @State var messages = [Message]()
@@ -12,15 +13,15 @@ struct Convo: View {
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
-        ZStack {
-            let myID = DM.my().id
+        Group {
+        let myID = DM.my().id
         VStack {
 
         // ## CHATS LOGIC ## \\
 
         TitleBar(id: id)
             .environmentObject(DM)
-            .padding(.top, -40)
+            .padding(.top, padding ? -40: 0)
 
         ScrollView {
             ForEach(messages) { message in
@@ -55,6 +56,9 @@ struct Convo: View {
         .cornerRadius(32)
         .padding(16)
         }
+        .background {
+            Back()
+        }
         .onTapGesture {
             focus = false
         }
@@ -66,11 +70,8 @@ struct Convo: View {
             if !(data.chatting.contains(id) || id.isEmpty) {
                 data.chatting.insert(id, at: 0)
                 DM.editData(data: data)
-            }}}
-        .background {
-            Back()
-        }
-    }
+            }}}}
+
     // ## FUNCTIONS ## \\
 
     func getChats(sender: String) {

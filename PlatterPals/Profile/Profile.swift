@@ -37,12 +37,11 @@ struct Profile: View {
     @State var showUpdate = false
     @State var showUpload = false
 
+    // ## SETUP VIEW ## \\
     @EnvironmentObject var DM: DataManager
 
-    // ## SETUP VIEW ## \\
-
     var body: some View {
-        ZStack(alignment: .top) {
+        Group {
             let myID = DM.my().id
             let user = DM.user(id: id)
             
@@ -96,6 +95,8 @@ struct Profile: View {
         }
         .padding(.horizontal, 16)
 
+        // ## SHOW UPDATE ## \\
+
         VStack {
         if user.prof {
             Button("\(Image(systemName: "photo"))") {
@@ -110,11 +111,9 @@ struct Profile: View {
                 Update(id: id, showNext: false)
                     .environmentObject(DM)
             }
-        // ## MODIFIERS ## \\
-
         } else if user.id == myID {
             Button {
-                showUpload = true // MARK: - FIXME
+                showUpload = true
             } label: {
                 Spacer()
                 Glow(text: "No profile yet? Add one now!")
@@ -123,25 +122,27 @@ struct Profile: View {
             Text("No profile yet.")
                 .foregroundColor(.secondary)
         }}}
+
+        // ## MODIFIERS ## \\
+
         .navigationTitle(user.name)
+        .background() {
+            Back()
+        }
         .onAppear {
             getImage(path: "avatars")
         }
         .sheet(isPresented: $showEdit) {
             EditProf()
                 .environmentObject(DM)
-                .presentationDetents([.medium])
         }
         .sheet(isPresented: $showChat) {
-            Convo(id: id)
+            Convo(id: id, padding: false)
                 .environmentObject(DM)
         }
         .sheet(isPresented: $showUpload) {
             Upload()
                 .environmentObject(DM)
-        }
-        .background() {
-            Back()
         }}}
 
     // ## FUNCTIONS ## \\

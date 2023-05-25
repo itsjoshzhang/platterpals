@@ -23,8 +23,6 @@ struct Splash: View {
         }
     }
     var content: some View {
-        ZStack {
-        Back()
 
         // ## LOGO & TEXT ## \\
 
@@ -44,10 +42,11 @@ struct Splash: View {
             .padding(16)
         }
         .foregroundColor(.pink)
-        }
         .scaleEffect(scale)
         .opacity(opacity)
-
+        .background {
+            Back()
+        }
         // ## MODIFIERS ## \\
 
         .onAppear {
@@ -56,7 +55,6 @@ struct Splash: View {
                 opacity = 1.0
             }
         DispatchQueue.main.asyncAfter(deadline: .now()+2) {
-            print(DM.userData.count)
 
             // MARK: - TODO: - FIXME LATER
             if (DM.userData.count > 0) {
@@ -79,8 +77,6 @@ struct Reset: View {
 
     var body: some View {
         NavigationStack {
-        ZStack {
-        Back()
         VStack(spacing: 16) {
 
         // ## TEXTFIELDS ## \\
@@ -106,11 +102,14 @@ struct Reset: View {
 
         // ## FUNCTIONS ## \\
 
-        .navigationTitle("Reset Login")
         .padding(16)
+        .navigationTitle("Reset Login")
+        .background {
+            Back()
+        }
         .onAppear {
             focus = true
-        }}}}
+        }}}
 
     func resetLogin() {
         Auth.auth().sendPasswordReset(withEmail: email) { error in

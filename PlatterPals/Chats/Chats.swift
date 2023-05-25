@@ -39,23 +39,23 @@ struct Chats: View {
         }
         .listStyle(.plain)
         .navigationDestination(for: String.self) { id in
-            Convo(id: id)
+            Convo(id: id, padding: true)
                 .environmentObject(DM)
         }
         .onChange(of: DM.md().chatting) {_ in
             refresh()
         }}}
         .navigationTitle("My Chats")
-        .onAppear {
-            refresh()
-        }
         .background {
             Back()
+        }
+        .onAppear {
+            refresh()
         }
         // ## OTHER VIEWS ## \\
 
         .sheet(isPresented: $showSearch) {
-            Search(forProfile: false)
+            Search(profile: false)
                 .environmentObject(DM)
         }
         .sheet(isPresented: $showMaps) {

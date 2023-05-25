@@ -1,6 +1,8 @@
 import SwiftUI
 import Mantis
 
+// MARK: - implement a numerical page tracking system where the number of tasks completed are saved to the user's firebase
+
 struct Guide: View {
     var body: some View {
         TabView {
@@ -52,8 +54,6 @@ struct Guide2: View {
 struct Terms: View {
     var body: some View {
         NavigationStack {
-        ZStack {
-        Back()
         VStack(spacing: 16) {
 
         Text("PlatterPals displays user-generated content. This includes other users and yourself. We take specific steps to moderate content and prevent abusive behavior.")
@@ -64,10 +64,11 @@ struct Terms: View {
 
         Text("PlatterPals will act on such content within 24 hours by removing it and banning the flagged user. For support or inquiries, please visit www.platterpals.com.")
         }
+        .padding(16)
         .navigationTitle("Terms and EULA")
         .foregroundColor(.secondary)
-        .padding(.top, -180)
-        .padding(16)
+        .background {
+            Back()
         }}}}
 
 struct ImageEditor: UIViewControllerRepresentable {

@@ -8,18 +8,13 @@ struct Home: View {
     @State var showSearch = false
     @State var showUpload = false
 
-    @EnvironmentObject var DM: DataManager
-
     // ## SETUP VIEW ## \\
+    @EnvironmentObject var DM: DataManager
 
     var body: some View {
         NavigationStack {
-        ZStack {
-        Back()
         ScrollView {
         VStack(spacing: 16) {
-        Spacer()
-            .padding(50)
 
         // ## USER SEARCH ## \\
 
@@ -67,14 +62,14 @@ struct Home: View {
                 Update(id: user.id, showNext: true)
                 // show update with link to profile
                     .environmentObject(DM)
-            }
-        }
-        Spacer()
-            .padding(40)
-        }
+            }}}
+
         // ## MODIFIERS ## \\
 
         .navigationTitle("PlatterPals")
+        .background {
+            Back()
+        }
         .toolbar {
             ToolbarItem {
                 Button("\(Image(systemName: "square.and.arrow.up"))"){
@@ -88,6 +83,6 @@ struct Home: View {
                 .environmentObject(DM)
         }
         .sheet(isPresented: $showSearch) {
-            Search(forProfile: true)
+            Search(profile: true)
                 .environmentObject(DM)
-        }}}}}}
+        }}}}}
