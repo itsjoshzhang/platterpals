@@ -46,14 +46,12 @@ struct EditProf: View {
     @State var name = ""
     @State var text = ""
     @State var city = "Berkeley"
-    @State var showSets = false
     @State var showCrop = false
-
-    // ## IMAGE VARS ## \\
     @State var image: UIImage?
+
     @State var imageItem: PhotosPickerItem?
-    
     @Environment(\.dismiss) var dismiss
+
     @EnvironmentObject var DM: DataManager
 
     // ## SHOW IMAGE ## \\
@@ -77,15 +75,11 @@ struct EditProf: View {
             .font(.headline)
 
         HStack(spacing: 0) {
-            Text("Location:")
+            Text("City:")
                 .font(.headline)
 
-            Picker("", selection: $city) {
-                ForEach(cityList, id: \.self) {
-                    Text($0)
-                }
-            }
-            .frame(maxWidth: UIwidth, alignment: .leading)
+            Cities(addAll: false, city: $city)
+                .frame(maxWidth: UIwidth, alignment: .leading)
         }
         // ## UPLOAD PIC ## \\
 
@@ -130,7 +124,7 @@ struct EditProf: View {
             DM.editUser(user: my)
             dismiss()
         }
-        .disabled(name.isEmpty || text.isEmpty)
+        .disabled(name.isEmpty || city.isEmpty)
         .buttonStyle(.borderedProminent)
         .onAppear {
             name = my.name

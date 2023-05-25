@@ -26,13 +26,8 @@ struct Home: View {
         Text("Location:")
             .foregroundColor(.secondary)
 
-        Picker("", selection: $city) {
-            ForEach(["All"] + cityList, id: \.self) {
-                Text($0)
-            }
-        }
+        Cities(addAll: true, city: $city)
         Spacer()
-
         Toggle("Following ✓", isOn: $following)
             .toggleStyle(.button)
             .onTapGesture {
@@ -47,7 +42,7 @@ struct Home: View {
         // return shuffled copy of userList
         let data = DM.md()
 
-        if DM.my().id != user.id, user.prof,
+        if DM.my().id != user.id, user.prof < 0,
         // dont show my own prof, user must have a prof
 
             !data.blocked.contains(user.id),
@@ -56,7 +51,7 @@ struct Home: View {
             (following && data.favUsers.contains(user.id))
             // if following checked, show from favUsers only
 
-            || !following, (city == "All" || user.city == city) {
+            || !following, (city.isEmpty || city == "All" || user.city == city) {
             // if not & (if no city: pass, else: check city)
 
                 Update(id: user.id, showNext: true)

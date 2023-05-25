@@ -59,7 +59,7 @@ class DataManager: ObservableObject {
             let name = data["name"] as? String ?? ""
             let city = data["city"] as? String ?? ""
             let text = data["text"] as? String ?? ""
-            let prof = data["prof"] as? Bool ?? false
+            let prof = data["prof"] as? Int ?? 0
 
             let user = User(id: id, name: name, city: city, text:
                             text, prof: prof)
@@ -121,7 +121,7 @@ class DataManager: ObservableObject {
     func makeUser(id: String, name: String, city: String) {
 
         let user = User(id: id, name: name, city: city, text: "",
-                        prof: false)
+                        prof: 0)
         editUser(user: user)
 
         let data = UserData(id: id, favFoods: [String](), chatting:
@@ -204,8 +204,10 @@ class DataManager: ObservableObject {
         if let jpeg = jpeg {
             SR.putData(jpeg, metadata: meta)
         }
+        // update prof value
         if !pfp {
-            userList[myIndex].prof = true
+            userList[myIndex].prof = -99
+            editUser(user: my())
         }
     }
     // called at init
@@ -227,10 +229,10 @@ class DataManager: ObservableObject {
         let SR = SR.child("\(path)/\(my().id).jpg")
         SR.delete {_ in}
 
-        if path != "avatars" {
-            userList[myIndex].prof = false
-        }
+        userList[myIndex].prof = 4
+        editUser(user: my())
     }
+
     // called at Maps
     func sendPin(pin: Location) {
         let doc = FS.collection("mapPins").document(pin.id)
@@ -238,6 +240,7 @@ class DataManager: ObservableObject {
         doc.setData(["id": pin.id, "lat": pin.lat, "lon": pin.lon,
                      "time": pin.time])
     }
+
     // called at Update
     func sendFlag(id: String, type: String) {
         let doc = FS.collection("accFlags").document(id)

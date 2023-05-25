@@ -4,11 +4,14 @@ let UIwidth = UIScreen.main.bounds.size.width
 let UIheight = UIScreen.main.bounds.size.height
 let UIgray = Color.secondary.opacity(0.25)
 
-let cityList = ["Berkeley", "Fremont", "Oakland", "Palo Alto",
-                "Pleasanton", "San Francisco", "San Jose"]
+let cityList = ["Berkeley", "Fremont", "Palo Alto", "San Fran.", "San Jose", "More..."]
 
-let foodList = ["All", "American", "Boba Tea", "Caribbean", "Chinese",
-                "Ethiopian", "French", "Indian", "Italian", "Japanese",
+let allCities = ["Berkeley", "Fremont", "Irvine", "Los Angeles", "Oakland", "Palo Alto",
+                 "Pleasanton", "Riverside", "Sacramento", "San Diego", "San Francisco",
+                 "San Jose", "San Mateo", "Santa Barbara", "Santa Cruz", "More..."]
+
+let foodList = ["All", "American", "Boba Tea", "Brazilian", "Caribbean", "Chinese",
+                "Ethiopian", "Hawaiian", "French", "Indian", "Italian", "Japanese",
                 "Korean", "Mexican", "Middle Eastern", "Thai", "Vietnamese"]
 
 let emojiList = ["🥡", "🧋", "🍵", "☕️", "🥐", "🥯", "🥞", "🧇",
@@ -59,7 +62,7 @@ struct User: Identifiable, Hashable, Codable {
     var name: String
     var city: String
     var text: String
-    var prof: Bool
+    var prof: Int
 }
 
 struct UserData: Identifiable, Hashable, Codable {

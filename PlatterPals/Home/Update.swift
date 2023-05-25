@@ -31,6 +31,7 @@ struct Update: View {
 
     var content: some View {
         Group {
+            var data = DM.md()
             let myID = DM.my().id
             let min = UIwidth * 0.5
             let user = DM.user(id: id)
@@ -74,9 +75,6 @@ struct Update: View {
 
         // ## OTHER VIEWS ## \\
 
-        } else if (myID == id && !DM.my().prof) {
-            Text("No profile yet? Create one!")
-                .foregroundColor(.secondary)
         } else {
             ProgressView()
                 .scaleEffect(2)
@@ -102,7 +100,6 @@ struct Update: View {
         .gesture(DragGesture()
         .onChanged { drag in
             withAnimation {
-
                 swipe = -(drag.startLocation.x -
                           drag.predictedEndLocation.x)
                 scale = 1.0
@@ -112,6 +109,8 @@ struct Update: View {
             withAnimation {
                 if (swipe > min && showNext) {
                     showProf = true
+                    data.favUsers.append(user.id)
+                    DM.editData(data: data)
 
                 } else if swipe < -min {
                     hideProf = true
@@ -133,9 +132,6 @@ struct Update: View {
             if myID == id {
                 Button("DELETE PROFILE") {
                     DM.delImage(path: "profiles")
-                    var me = DM.my()
-                    me.prof = false
-                    DM.editUser(user: me)
                 }
             } else {
                 Button("Report Profile") {

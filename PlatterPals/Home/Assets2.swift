@@ -68,20 +68,16 @@ struct Search: View {
             .focused($focus)
 
         HStack(spacing: 0) {
-            Text("Location:")
-                .foregroundColor(.secondary)
+        Text("Location:")
+            .foregroundColor(.secondary)
 
-            Picker("", selection: $city) {
-                ForEach(["All"] + cityList, id: \.self) {
-                    Text($0)
-                }
+        Cities(addAll: true, city: $city)
+        Spacer()
+        Toggle("Following ✓", isOn: $following)
+            .toggleStyle(.button)
+            .onTapGesture {
+                following.toggle()
             }
-            Spacer()
-            Toggle("Following ✓", isOn: $following)
-                .toggleStyle(.button)
-                .onTapGesture {
-                    following.toggle()
-                }
         }
         .padding(.horizontal, 16)
 
@@ -127,7 +123,7 @@ struct Search: View {
                 (following && DM.md().favUsers.contains(user.id))
                 // if following checked, show from favUsers only
 
-                || !following, (city == "All" || user.city == city) {
+                || !following, (city.isEmpty || city == "All" || user.city == city) {
                 // if not & (if no city: pass, else: check city)
                     userIDs.append(user.id)
         }}}}}

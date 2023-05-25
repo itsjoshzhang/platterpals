@@ -2,28 +2,43 @@ import SwiftUI
 
 struct MyProfile: View {
 
-    @State var showSets = false
+    @State var showSetts = false
+    @State var showUpload = false
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
         NavigationStack {
-            Profile(id: DM.my().id, title: false,
-                image: DM.myAvatar, showUpdate: true)
-                .environmentObject(DM)
+        ZStack {
+            let my = DM.my()
+        VStack {
+        Profile(id: my.id, title: false,
+            image: DM.myAvatar, showUpdate: true)
+            .environmentObject(DM)
 
-        .navigationTitle(DM.my().name)
+        if my.prof >= 0 {
+            Button {
+                showUpload = true
+            } label: {
+                Spacer()
+                Glow(text: "No profile yet? Add one now!")
+            }}}
+        .navigationTitle(my.name)
         .toolbar {
             ToolbarItem {
                 Button("\(Image(systemName: "gearshape"))") {
-                    showSets = true
+                    showSetts = true
                 }
                 .buttonStyle(.borderedProminent)
             }
         }
-        .fullScreenCover(isPresented: $showSets) {
+        .sheet(isPresented: $showUpload) {
+            Upload()
+                .environmentObject(DM)
+        }
+        .fullScreenCover(isPresented: $showSetts) {
             Settings()
                 .environmentObject(DM)
-            }}}}
+            }}}}}
 
 struct Profile: View {
 
@@ -35,7 +50,6 @@ struct Profile: View {
     @State var showEdit = false
     @State var showChat = false
     @State var showUpdate = false
-    @State var showUpload = false
 
     // ## SETUP VIEW ## \\
     @EnvironmentObject var DM: DataManager
@@ -98,7 +112,7 @@ struct Profile: View {
         // ## SHOW UPDATE ## \\
 
         VStack {
-        if user.prof {
+        if user.prof < 0 {
             Button("\(Image(systemName: "photo"))") {
                 withAnimation {
                     showUpdate.toggle()
@@ -110,13 +124,6 @@ struct Profile: View {
             if showUpdate {
                 Update(id: id, showNext: false)
                     .environmentObject(DM)
-            }
-        } else if user.id == myID {
-            Button {
-                showUpload = true
-            } label: {
-                Spacer()
-                Glow(text: "No profile yet? Add one now!")
             }
         } else {
             Text("No profile yet.")
@@ -138,10 +145,6 @@ struct Profile: View {
         }
         .sheet(isPresented: $showChat) {
             Convo(id: id, padding: false)
-                .environmentObject(DM)
-        }
-        .sheet(isPresented: $showUpload) {
-            Upload()
                 .environmentObject(DM)
         }}}
 

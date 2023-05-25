@@ -18,7 +18,7 @@ struct AppInit: App {
             Splash()
         }}}
 
-// ## BOTTOM ICONS ## \\
+// ## PAGE TABS ## \\
 struct MyTabView: View {
 
     @State var tag = 3
@@ -85,3 +85,43 @@ struct MyTabView: View {
         .background {
             Back()
         }}}}}
+
+// ## CITIES MENU ## \\
+struct Cities: View {
+
+    var addAll: Bool
+    @Binding var city: String
+    @State var page = 0
+
+    var body: some View {
+        let all = addAll ? ["All"]: []
+
+        // ## DROPDOWNS ## \\
+
+        Group {
+        if page == 0 {
+            Picker("", selection: $city) {
+                ForEach(all + cityList, id: \.self) {
+                    Text($0)
+
+        }}} else if page == 1 {
+            Picker("", selection: $city) {
+                ForEach(all + allCities, id: \.self) {
+                    Text($0)
+
+        // ## TEXTFIELDS ## \\
+
+        }}} else {
+            TextField("Location", text: $city)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .submitLabel(.done)
+            }
+        }
+        .onChange(of: city) { name in
+            if name == "More..." {
+                page += 1
+                if page == 1 {
+                    city = addAll ? "All": "Berkeley"
+                } else {
+                    city = ""
+                }}}}}

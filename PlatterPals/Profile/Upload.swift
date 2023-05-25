@@ -16,6 +16,7 @@ struct Upload: View {
     // ## SETUP VIEW ## \\
     var body: some View {
         NavigationStack {
+            var my = DM.my()
         ScrollView {
         VStack(spacing: 16) {
 
@@ -64,7 +65,7 @@ struct Upload: View {
                     return
                 }}}
             
-        // ## TEXTFIELDS ## \\
+        // ## CLICKABLES ## \\
 
         TextEditor(text: $text)
             .frame(minHeight: UIwidth * 0.25)
@@ -80,10 +81,6 @@ struct Upload: View {
             Button("Save Edits") {
                 if let image = image {
                     DM.putImage(image: image, path: "profiles")
-
-                    var me = DM.my()
-                    me.prof = true
-                    DM.editUser(user: me)
                 }
                 dismiss()
             }
@@ -99,7 +96,7 @@ struct Upload: View {
             Back()
         }
         .onAppear {
-            text = DM.my().text
+            text = my.text
         }
         .onTapGesture {
             focus = false

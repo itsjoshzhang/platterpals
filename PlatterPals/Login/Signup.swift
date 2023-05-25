@@ -82,11 +82,7 @@ struct Signup: View {
             Text("Location:")
                 .font(.headline)
 
-            Picker("", selection: $city) {
-                ForEach(cityList, id: \.self) {
-                    Text($0)
-                }
-            }
+            Cities(addAll: false, city: $city)
             .buttonStyle(.bordered)
         }
         HStack(spacing: 0) {
@@ -100,7 +96,7 @@ struct Signup: View {
         Button("Sign Up") {
             signupAuth()
         }
-        .disabled(name.isEmpty)
+        .disabled(name.isEmpty || city.isEmpty)
         .buttonStyle(.borderedProminent)
 
         // ## MODIFIERS ## \\
