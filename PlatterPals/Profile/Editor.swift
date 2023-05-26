@@ -57,6 +57,8 @@ struct EditProf: View {
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
+        NavigationStack {
+
         VStack(spacing: 16) {
             var my = DM.my()
         HStack(spacing: 16) {
@@ -104,7 +106,7 @@ struct EditProf: View {
                     return
                 }}}}}
 
-        // ## TEXTFIELDS ## \\
+        // ## CLICKABLES ## \\
 
         TextField("Add a bio", text: $text, axis: .vertical)
             .textFieldStyle(.roundedBorder)
@@ -137,13 +139,14 @@ struct EditProf: View {
         Spacer()
         }
         .padding(16)
+        .navigationTitle("Edit Profile")
         .background {
             Back()
         }
         .fullScreenCover(isPresented: $showCrop) {
             ImageEditor(image: $image, show: $showCrop)
-        }
-    }
+        }}}
+    
     func count(_ text: String) -> Bool {
         return (text.isEmpty || text.count > 32)
     }

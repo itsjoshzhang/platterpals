@@ -70,9 +70,12 @@ struct Search: View {
 
         HStack(spacing: 0) {
 
-        Text("City: ")
+        Text("Location: ")
             .foregroundColor(.secondary)
         Cities(addAll: true, city: $city)
+            .onChange(of: city) {_ in
+                name = ""
+            }
         Spacer()
 
         Toggle("Following ✓", isOn: $following)

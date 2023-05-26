@@ -78,7 +78,7 @@ struct Signup: View {
         // ## USER INFO ## \\
 
         HStack {
-            Text("City:")
+            Text("Location:")
                 .font(.headline)
             Cities(addAll: false, city: $city)
                 .buttonStyle(.bordered)

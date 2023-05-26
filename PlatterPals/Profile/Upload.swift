@@ -74,7 +74,7 @@ struct Upload: View {
             .onTapGesture {
                 focus = true
             }
-        Max(count: 32, text: $text)
+        Max(count: 200, text: $text)
 
         Button("Save Edits") {
             if let image = image {

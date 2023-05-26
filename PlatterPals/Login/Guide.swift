@@ -92,7 +92,7 @@ struct Cities: View {
                     Text($0)
 
         }}} else {
-            TextField("Enter a city", text: $city)
+            TextField("Enter a location", text: $city)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .submitLabel(.done)
 

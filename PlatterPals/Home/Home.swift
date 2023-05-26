@@ -24,7 +24,7 @@ struct Home: View {
             }
         HStack(spacing: 0) {
 
-        Text("City: ")
+        Text("Location: ")
             .foregroundColor(.secondary)
         Cities(addAll: true, city: $city)
         Spacer()
