@@ -86,47 +86,56 @@ struct MyTabView: View {
             Back()
         }}}}}
 
-// ## CITIES MENU ## \\
-struct Cities: View {
+struct Glow: View {
+    var text: String
+    var body: some View {
+        let spark = Image(systemName: "sparkles")
 
-    var addAll: Bool
-    @Binding var city: String
-    @State var page = 0
+        Text("\(spark) \(text) \(spark)")
+            .font(.headline)
+            .foregroundColor(.pink)
+            .frame(width: UIwidth-32, height: 50)
+            .overlay(Capsule().stroke(.pink, lineWidth: 3))
+            .shadow(color: .pink, radius: 8)
+            .padding(.bottom, 16)
+    }
+}
+struct Blank: View {
+
+    var label: String
+    var secure = false
+    @Binding var text: String
 
     var body: some View {
-        let all = addAll ? ["All"]: []
-
-        // ## DROPDOWNS ## \\
-
         VStack {
-        if page == 0 {
-            Picker("", selection: $city) {
-                ForEach(all + cityList, id: \.self) {
-                    Text($0)
+            if secure {
+                SecureField(label, text: $text)
+            } else {
+                TextField(label, text: $text)
+            }
+            if label == "Username" {
+                Max(count: 32, text: $text)
+            }
+        }
+        .textInputAutocapitalization(.never)
+        .autocorrectionDisabled(true)
+        .submitLabel(.done)
+    }
+}
+struct Max: View {
 
-        }}} else if page == 1 {
-            Picker("", selection: $city) {
-                ForEach(all + allCities, id: \.self) {
-                    Text($0)
+    var count: Int
+    @Binding var text: String
+    var text2 = ""
 
-        // ## TEXTFIELDS ## \\
-
-        }}} else {
-            let count = city.count > 32
-
-            TextField("Enter a city", text: $city)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .submitLabel(.done)
-                .disabled(count)
-            if count {
-                Text("32 chars max")
-                    .foregroundColor(.secondary)
+    var body: some View {
+        if text.count > 32 {
+            Text("32 chars max")
+                .foregroundColor(.secondary)
+                .onChange(of: text) {_ in
+                    text = String(text.dropLast())
+                }
+        } else if text2.count > 32 {
+            Text("32 chars max")
+                .foregroundColor(.secondary)
         }}}
-        .onChange(of: city) { name in
-            if name == "More..." {
-                page += 1
-                if page == 1 {
-                    city = addAll ? "All": "Berkeley"
-                } else {
-                    city = ""
-                }}}}}

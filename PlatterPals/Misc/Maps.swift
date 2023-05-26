@@ -90,7 +90,7 @@ struct MapPin: View {
                 .scaledToFit()
                 .frame(width: 32, height: 32)
         }
-        .padding(.bottom, 70)
+        .padding(.bottom, 75)
         .foregroundColor(.pink)
         .opacity(DM.my().id == pin.id ? 0.5: 1)
         .onAppear {

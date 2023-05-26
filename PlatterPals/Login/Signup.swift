@@ -53,7 +53,7 @@ struct Signup: View {
 
         // ## OTHER LOGIC ## \\
 
-        .onChange(of: imageItem) { _ in
+        .onChange(of: imageItem) {_ in
             imageItem?.loadTransferable(type: Data.self) { result in
 
                 switch result {
@@ -68,7 +68,7 @@ struct Signup: View {
         Div()
             Blank(label: "Password", secure: true, text: $pass)
         Div()
-            Blank(label: "Username", count: true, text: $name)
+            Blank(label: "Username", text: $name)
         Div()
         }
         .focused($focus)
@@ -80,14 +80,12 @@ struct Signup: View {
         HStack {
             Text("City:")
                 .font(.headline)
-
             Cities(addAll: false, city: $city)
-            .buttonStyle(.bordered)
+                .buttonStyle(.bordered)
         }
         HStack(spacing: 0) {
             Text("I agree to the ")
                 .foregroundColor(.secondary)
-
             Button("terms and EULA") {
                 showTerms = true
             }

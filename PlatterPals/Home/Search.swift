@@ -69,11 +69,11 @@ struct Search: View {
             .focused($focus)
 
         HStack(spacing: 0) {
-        Text("City:")
+        Text("City: ")
             .foregroundColor(.secondary)
-
         Cities(addAll: true, city: $city)
         Spacer()
+
         Toggle("Following ✓", isOn: $following)
             .toggleStyle(.button)
             .onTapGesture {
@@ -100,9 +100,6 @@ struct Search: View {
                 Convo(id: id, padding: true)
                     .environmentObject(DM)
                 }}}
-
-        // ## LIST LOGIC ## \\
-
         .navigationTitle("Search 🔍")
         .background {
             Back()
@@ -110,6 +107,8 @@ struct Search: View {
         .onAppear {
             focus = true
         }
+        // ## HACKY SHIT ## \\
+
         .onChange(of: name) {_ in
             userIDs.removeAll()
 

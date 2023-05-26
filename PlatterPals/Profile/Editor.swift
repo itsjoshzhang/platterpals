@@ -70,19 +70,17 @@ struct EditProf: View {
         }
         VStack(alignment: .leading, spacing: 8) {
 
-        Blank(label: "Username", count: true, text: $name)
-            .border(.secondary)
+        Blank(label: "Username", text: $name)
+            .textFieldStyle(.roundedBorder)
             .focused($focus)
             .onTapGesture {
                 focus = true
             }
         HStack(spacing: 0) {
-            Text("City:")
+            Text("City: ")
                 .font(.headline)
-
             Cities(addAll: false, city: $city)
-                .frame(maxWidth: UIwidth)
-            Spacer()
+                .buttonStyle(.bordered)
         }
         // ## UPLOAD PIC ## \\
 
@@ -96,10 +94,10 @@ struct EditProf: View {
         }}}
         .buttonStyle(.bordered)
 
-        .onChange(of: imageItem) { _ in
-            imageItem?.loadTransferable(type: Data.self) { result in
+        .onChange(of: imageItem) {_ in
+            imageItem?.loadTransferable(type: Data.self) { res in
 
-                switch result {
+                switch res {
                 case .success(let data):
                     image = UIImage(data: data ?? Data())
                 case .failure(_):
@@ -108,17 +106,14 @@ struct EditProf: View {
 
         // ## TEXTFIELDS ## \\
 
-        TextEditor(text: $text)
-            .border(.secondary)
+        TextField("Add a bio", text: $text, axis: .vertical)
+            .textFieldStyle(.roundedBorder)
             .focused($focus)
             .lineLimit(8)
             .onTapGesture {
                 focus = true
             }
-        if (text.count > 200) {
-            Text("200 chars max")
-                .foregroundColor(.secondary)
-        } else {
+        Max(count: 200, text: $text)
 
         Button("Save Edits") {
             if let image = image {
@@ -138,14 +133,16 @@ struct EditProf: View {
         .onAppear {
             name = my.name
             text = my.text
-        }}}
+        }
+        }
         .padding(16)
         .background {
             Back()
         }
         .fullScreenCover(isPresented: $showCrop) {
             ImageEditor(image: $image, show: $showCrop)
-        }}
+        }
+    }
     func count(_ text: String) -> Bool {
         return (text.isEmpty || text.count > 32)
     }

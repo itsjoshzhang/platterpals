@@ -18,7 +18,6 @@ struct NewOrder: View {
 
     var body: some View {
         NavigationStack {
-            let count = order.count > 32 || place.count > 32
         VStack {
 
         // ## TEXTFIELDS ## \\
@@ -37,10 +36,7 @@ struct NewOrder: View {
                 Text("Restaurant:")
                 TextField("Add a restaurant", text: $place)
             }
-            if count {
-                Text("32 chars max")
-                    .foregroundColor(.secondary)
-            }
+            Max(count: 32, text: $order, text2: place)
         }
         .textFieldStyle(.roundedBorder)
         .submitLabel(.done)
@@ -92,7 +88,7 @@ struct NewOrder: View {
             dismiss()
         }
         .buttonStyle(.borderedProminent)
-        .disabled(order.isEmpty || place.isEmpty || count)
+        .disabled(count(order) || count(place))
         }
         .padding(16)
         .navigationTitle("Add Order")
@@ -119,5 +115,8 @@ struct NewOrder: View {
     func trimmed(_ text: String) -> String {
         return text.trimmingCharacters(in:
             CharacterSet(charactersIn: "# "))
+    }
+    func count(_ text: String) -> Bool {
+        return (text.isEmpty || text.count > 32)
     }
 }

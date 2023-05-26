@@ -56,7 +56,11 @@ struct Suggest: View {
                 Text(food)
             }
         }
-        TextField("Restaurant name", text: $place)
+        VStack {
+            TextField("Restaurant name", text: $place)
+                .submitLabel(.done)
+            Max(count: 32, text: $place)
+        }
         }
         .disabled(block1)
         .opacity(block1 ? 0.5: 1)

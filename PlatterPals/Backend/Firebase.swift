@@ -94,7 +94,7 @@ class DataManager: ObservableObject {
         if let col = col {
         for doc in col.documents {
         let data = doc.data()
-            let id      = data["id"]      as? String ?? ""
+            let id      = data["id"]      as? String ?? " "
 
         if self.my().id == id {
             let notifs  = data["notifs"]  as? Bool ?? true
@@ -154,6 +154,7 @@ class DataManager: ObservableObject {
     // called at Settings
     func editSets(sets: Setting) {
         let doc = FS.collection("settings").document(sets.id)
+        // MARK: - TODO: - FIXME
         settings = sets
         
         doc.setData(["id": sets.id, "notifs": sets.notifs, "suggest":

@@ -50,10 +50,10 @@ struct Settings: View {
                 .frame(width: 50)
         }
         HStack(spacing: 0) {
-            Text("Blocked:")
+            Text("Blocked: ")
             Picker("", selection: $blockID) {
                 ForEach(data.blocked, id: \.self) { id in
-                    Text(blockID == "..." ? id: DM.user(id: id).name)
+                    Text(blockID == "..." ? "...": DM.user(id: id).name)
                 }
             }
             Spacer()

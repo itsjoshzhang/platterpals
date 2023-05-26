@@ -1,7 +1,4 @@
 import SwiftUI
-import Mantis
-
-// MARK: - implement a numerical page tracking system where the number of tasks completed are saved to the user's firebase
 
 struct Guide: View {
     var body: some View {
@@ -71,38 +68,47 @@ struct Terms: View {
             Back()
         }}}}
 
-struct ImageEditor: UIViewControllerRepresentable {
-    typealias Coordinator = ImageEditorCoordinator
-    @Binding var image: UIImage?
-    @Binding var show: Bool
 
-    func makeCoordinator() -> ImageEditorCoordinator {
-        return ImageEditorCoordinator(image: $image, show: $show)
-    }
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-    }
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ImageEditor>) -> CropViewController {
-        let Editor = cropViewController(image: image ?? UIImage())
-        Editor.delegate = context.coordinator
-        return Editor
-    }
-}
-class ImageEditorCoordinator: NSObject, CropViewControllerDelegate {
-    @Binding var image: UIImage?
-    @Binding var show: Bool
+// ## CITIES MENU ## \\
+struct Cities: View {
 
-    init(image: Binding<UIImage?>, show: Binding<Bool>) {
-        _image = image
-        _show = show
-    }
-    func cropViewControllerDidCrop (_ cropViewController:
-        CropViewController, cropped: UIImage, transformation:
-        Transformation, cropInfo: CropInfo) {
-        image = cropped
-        show = false
-    }
-    func cropViewControllerDidCancel(_ cropViewController:
-        CropViewController, original: UIImage) {
-        show = false
-    }
-}
+    var addAll: Bool
+    @Binding var city: String
+    @State var page = 0
+
+    var body: some View {
+        let all = addAll ? ["All"]: []
+
+        // ## DROPDOWNS ## \\
+
+        VStack {
+        if page == 0 {
+            Picker("", selection: $city) {
+                ForEach(all + cityList, id: \.self) {
+                    Text($0)
+
+        }}} else if page == 1 {
+            Picker("", selection: $city) {
+                ForEach(all + allCities, id: \.self) {
+                    Text($0)
+
+        // ## TEXTFIELDS ## \\
+
+        }}} else {
+            TextField("Enter a city", text: $city)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .submitLabel(.done)
+
+            Max(count: 32, text: $city)
+        }
+        }
+        .frame(maxWidth: UIwidth, alignment: .leading)
+        .onChange(of: city) {_ in
+
+            if city == "More..." {
+                page += 1
+                if page == 1 {
+                    city = addAll ? "All": "Berkeley"
+                } else {
+                    city = ""
+                }}}}}

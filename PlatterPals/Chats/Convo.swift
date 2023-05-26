@@ -21,7 +21,7 @@ struct Convo: View {
 
         TitleBar(id: id)
             .environmentObject(DM)
-            .padding(.top, padding ? -40: 0)
+            .padding(.top, padding ? -32: 0)
 
         ScrollView {
             ForEach(messages) { msg in

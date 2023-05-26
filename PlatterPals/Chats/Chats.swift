@@ -46,7 +46,6 @@ struct Chats: View {
         .onChange(of: DM.md().chatting) {_ in
             refresh()
         }}}
-        .navigationTitle("My Chats")
         .background {
             Back()
         }

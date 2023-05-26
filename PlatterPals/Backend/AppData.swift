@@ -1,4 +1,5 @@
 import SwiftUI
+import Mantis
 
 let UIwidth = UIScreen.main.bounds.size.width
 let UIheight = UIScreen.main.bounds.size.height
@@ -93,7 +94,7 @@ struct AIOrder: Identifiable, Hashable, Codable {
 }
 
 struct Setting: Identifiable, Hashable, Codable {
-    var id = ""
+    var id = " "
     var notifs = true
     var suggest = true
     var privacy = true
@@ -125,41 +126,38 @@ struct Box: View {
             .overlay(RoundedRectangle(cornerRadius: 8).stroke(.secondary))
     }
 }
-struct Glow: View {
-    var text: String
-    var body: some View {
-        let spark = Image(systemName: "sparkles")
+struct ImageEditor: UIViewControllerRepresentable {
+    typealias Coordinator = ImageEditorCoordinator
+    @Binding var image: UIImage?
+    @Binding var show: Bool
 
-        Text("\(spark) \(text) \(spark)")
-            .font(.headline)
-            .foregroundColor(.pink)
-            .frame(width: UIwidth-32, height: 50)
-            .overlay(Capsule().stroke(.pink, lineWidth: 3))
-            .shadow(color: .pink, radius: 8)
-            .padding(.bottom, 16)
+    func makeCoordinator() -> ImageEditorCoordinator {
+        return ImageEditorCoordinator(image: $image, show: $show)
+    }
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
+    }
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ImageEditor>) -> CropViewController {
+        let Editor = cropViewController(image: image ?? UIImage())
+        Editor.delegate = context.coordinator
+        return Editor
     }
 }
-struct Blank: View {
+class ImageEditorCoordinator: NSObject, CropViewControllerDelegate {
+    @Binding var image: UIImage?
+    @Binding var show: Bool
 
-    var label: String
-    var count = false
-    var secure = false
-    @Binding var text: String
-
-    var body: some View {
-        VStack {
-            if secure {
-                SecureField(label, text: $text)
-            } else {
-                TextField(label, text: $text)
-            }
-            if count && text.count > 32 {
-                Text("32 chars max")
-                    .foregroundColor(.secondary)
-            }
-        }
-        .textInputAutocapitalization(.never)
-        .autocorrectionDisabled(true)
-        .submitLabel(.done)
+    init(image: Binding<UIImage?>, show: Binding<Bool>) {
+        _image = image
+        _show = show
+    }
+    func cropViewControllerDidCrop (_ cropViewController:
+        CropViewController, cropped: UIImage, transformation:
+        Transformation, cropInfo: CropInfo) {
+        image = cropped
+        show = false
+    }
+    func cropViewControllerDidCancel(_ cropViewController:
+        CropViewController, original: UIImage) {
+        show = false
     }
 }

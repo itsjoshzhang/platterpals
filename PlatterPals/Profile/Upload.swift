@@ -55,10 +55,10 @@ struct Upload: View {
         }}}
         .buttonStyle(.bordered)
 
-        .onChange(of: imageItem) { _ in
-            imageItem?.loadTransferable(type: Data.self) { result in
+        .onChange(of: imageItem) {_ in
+            imageItem?.loadTransferable(type: Data.self) { res in
 
-                switch result {
+                switch res {
                 case .success(let data):
                     image = UIImage(data: data ?? Data())
                 case .failure(_):
@@ -67,27 +67,23 @@ struct Upload: View {
             
         // ## CLICKABLES ## \\
 
-        TextEditor(text: $text)
-            .border(.secondary)
+        TextField("Add a bio", text: $text, axis: .vertical)
+            .textFieldStyle(.roundedBorder)
             .focused($focus)
             .lineLimit(8)
             .onTapGesture {
                 focus = true
             }
-        if text.count > 200 {
-            Text("200 chars max")
-                .foregroundColor(.secondary)
+        Max(count: 32, text: $text)
 
-        } else {
-            Button("Save Edits") {
-                if let image = image {
-                    DM.putImage(image: image, path: "profiles")
-                }
-                dismiss()
+        Button("Save Edits") {
+            if let image = image {
+                DM.putImage(image: image, path: "profiles")
             }
-            .buttonStyle(.borderedProminent)
-            .disabled(text.isEmpty)
+            dismiss()
         }
+        .buttonStyle(.borderedProminent)
+        .disabled(text.isEmpty)
         }
         // ## MODIFIERS ## \\
 

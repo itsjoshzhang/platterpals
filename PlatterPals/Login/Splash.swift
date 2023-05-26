@@ -56,7 +56,7 @@ struct Splash: View {
             }
         DispatchQueue.main.asyncAfter(deadline: .now()+2) {
 
-            // MARK: - TODO: - FIXME LATER
+            // MARK: - TODO: - FIXME
             if (DM.userData.count > 0) {
                 withAnimation {
                     showNext = true
