@@ -201,7 +201,7 @@ struct Suggest: View {
             }
         }
         if !ans.isEmpty {
-            ans += "Find food similar to: "
+            ans = "Find food similar to: " + ans
         }
         return ans.trimmingCharacters(in:
             CharacterSet(charactersIn: ", and "))

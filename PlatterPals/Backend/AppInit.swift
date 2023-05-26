@@ -137,13 +137,13 @@ struct Max: View {
     var text2 = ""
 
     var body: some View {
-        if text.count > 32 {
+        if text.count > count {
             Text("32 chars max")
                 .foregroundColor(.secondary)
                 .onChange(of: text) {_ in
                     text = String(text.dropLast())
                 }
-        } else if text2.count > 32 {
+        } else if text2.count > count {
             Text("32 chars max")
                 .foregroundColor(.secondary)
         }}}

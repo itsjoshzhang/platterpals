@@ -130,7 +130,7 @@ struct EditProf: View {
         }
         // ## MODIFIERS ## \\
 
-        .disabled(name.isEmpty || city.isEmpty)
+        .disabled(count(name) || count(city))
         .buttonStyle(.borderedProminent)
         .onAppear {
             name = my.name
@@ -148,6 +148,6 @@ struct EditProf: View {
         }}}
     
     func count(_ text: String) -> Bool {
-        return (text.isEmpty || text.count > 32)
+        return (text.isEmpty || text.count > 200)
     }
 }

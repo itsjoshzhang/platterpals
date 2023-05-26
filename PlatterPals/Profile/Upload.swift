@@ -83,7 +83,7 @@ struct Upload: View {
             dismiss()
         }
         .buttonStyle(.borderedProminent)
-        .disabled(text.isEmpty)
+        .disabled(text.isEmpty || text.count > 200)
         }
         // ## MODIFIERS ## \\
 

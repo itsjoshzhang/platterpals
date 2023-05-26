@@ -6,7 +6,7 @@ struct Login: View {
     // ## TEXTFIELDS ## \\
     @State var email = ""
     @State var pass = ""
-    @State var alertText = ""
+    @State var text = ""
     @FocusState var focus: Bool
 
     // ## CONDITIONS ## \\
@@ -86,7 +86,7 @@ struct Login: View {
         .background {
             Back()
         }
-        .alert(alertText, isPresented: $showAlert) {
+        .alert(text, isPresented: $showAlert) {
             Button("OK", role: .cancel) {}
         }
         .sheet(isPresented: $showReset) {
@@ -102,6 +102,12 @@ struct Login: View {
     func loginAuth() {
         Auth.auth().signIn(withEmail: email, password: pass) {_,e in
             if let e = e {
-                alertText = e.localizedDescription
+                text = e.localizedDescription
+
+                if text.hasPrefix("There ") {
+                    text = "The email address is invalid."
+                } else if text.hasPrefix("The "){
+                    text = "The password is invalid."
+                }
                 showAlert = true
             }}}}
