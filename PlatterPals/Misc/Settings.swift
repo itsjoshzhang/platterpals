@@ -52,8 +52,8 @@ struct Settings: View {
         HStack(spacing: 0) {
             Text("Blocked: ")
             Picker("", selection: $blockID) {
-                ForEach(data.blocked, id: \.self) { id in
-                    Text(blockID == "..." ? "...": DM.user(id: id).name)
+                ForEach(["..."] + data.blocked, id: \.self) { id in
+                    Text(id == "..." ? id: DM.user(id: id).name)
                 }
             }
             Spacer()
@@ -120,16 +120,6 @@ struct Settings: View {
             .font(.headline)
             .foregroundColor(.black)
         Div()
-        HStack {
-            Button("PlatterPals Guide") {
-                guide = true
-            }
-            .buttonStyle(.bordered)
-            Spacer()
-            Button("Terms and EULA") {
-                showTerms = true
-            }
-        }
         if showDelete {
             HStack {
             Button("Cancel Deletion") {
@@ -147,10 +137,15 @@ struct Settings: View {
                 showDelete = true
             }
             .buttonStyle(.bordered)
-
+        }
+        Button("Terms and EULA") {
+            showTerms = true
+        }
+        }
         // ## MODIFIERS ## \\
 
-        }}.foregroundColor(.pink)}
+        .foregroundColor(.pink)
+        }
         .padding(16)
         .foregroundColor(.secondary)
         .navigationTitle("Settings")
@@ -163,9 +158,6 @@ struct Settings: View {
             suggest = sets.suggest
             privacy = sets.privacy
             locate = sets.locate
-        }
-        .sheet(isPresented: $guide) {
-            Guide()
         }
         .sheet(isPresented: $showReset) {
             Reset()

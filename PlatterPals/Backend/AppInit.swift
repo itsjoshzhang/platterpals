@@ -86,10 +86,13 @@ struct MyTabView: View {
             Back()
         }}}}}
 
+// ## PILL BUTTON ## \\
 struct Glow: View {
     var text: String
     var body: some View {
         let spark = Image(systemName: "sparkles")
+
+        // ## SHOW TEXT ## \\
 
         Text("\(spark) \(text) \(spark)")
             .font(.headline)
@@ -100,6 +103,7 @@ struct Glow: View {
             .padding(.bottom, 16)
     }
 }
+// ## MARKDOWNS ## \\
 struct Blank: View {
 
     var label: String
@@ -108,6 +112,9 @@ struct Blank: View {
 
     var body: some View {
         VStack {
+
+            // ## TEXT LOGIC ## \\
+
             if secure {
                 SecureField(label, text: $text)
             } else {
@@ -122,6 +129,7 @@ struct Blank: View {
         .submitLabel(.done)
     }
 }
+// ## MAX CHARS ## \\
 struct Max: View {
 
     var count: Int

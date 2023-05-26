@@ -8,7 +8,6 @@ struct Suggest: View {
     @State var options = 1
     @State var people = 1
     @State var price = 10
-    @State var addText = ""
 
     // ## STRINGS ## \\
     @State var place = ""
@@ -26,6 +25,8 @@ struct Suggest: View {
     // ## OBJECTS ## \\
     @EnvironmentObject var MD: MapsData
     @EnvironmentObject var DM: DataManager
+
+    @StateObject var OM = OrderManager()
     @StateObject var VM = ViewModel(api: ChatGPTAPI())
 
     // ## OTHER VIEWS ## \\
@@ -38,11 +39,11 @@ struct Suggest: View {
             content
         }
     }
-    // ## ORDER INFO ## \\
-
     var content: some View {
         NavigationStack {
         VStack(spacing: 1) {
+
+        // ## ORDER INFO ## \\
 
         if fuckery {
         Form {
@@ -69,21 +70,20 @@ struct Suggest: View {
 
         Section("Ask someone you follow?") {
 
-        Picker("Person's name: ", selection: $friend) {
+        Picker("User's name: ", selection: $friend) {
             ForEach(["None"] + DM.md().favUsers, id: \.self) { id in
-                if id == "None" {
-                    Text("None")
-                } else {
-                    Text(DM.user(id: id).name)
-                }}}
-
+                Text(id == "None" ? id: DM.user(id: id).name)
+            }
+        }
         if friend == "None" {
-            Text("Currently using: your past orders")
+            Text("Currently using: Your favorites")
                 .foregroundColor(.secondary)
                 .opacity(0.5)
         } else {
             Cards(id: friend)
-        }
+                .environmentObject(OM)
+                .environmentObject(DM)
+            }
         }
         .disabled(block2)
         .opacity(block2 ? 0.5: 1)
@@ -93,12 +93,10 @@ struct Suggest: View {
         Section("Search settings") {
 
         Picker("", selection: $location) {
-            ForEach(["My Location", "UC Berkeley"], id: \.self) {
+            ForEach(["My Location", DM.my().city], id: \.self) {
                 Text($0)
             }
         }
-        .tint(.pink)
-        .foregroundColor(.pink)
         .pickerStyle(.segmented)
 
         let s = (miles == 1 ? "": "s")
@@ -109,16 +107,15 @@ struct Suggest: View {
         Stepper("Show: \(options) result\(z)",
                 value: $options, in: 1...5)
         }
-        Section(header: Text(showOption ?
-            "Clear options": "Optional items")
+        // ## OPTIONALS ## \\
+
+        Section(header: Text(showOption ? "Clear options":
+            "Optional items")
             .bold().underline()
             .onTapGesture {
                 withAnimation {
                     showOption.toggle()
                 }}){
-
-        // ## OPTIONALS ## \\
-
         if showOption {
         Stepper("Number of people: \(people)",
                 value: $people, in: 1...10)
@@ -134,6 +131,9 @@ struct Suggest: View {
         }
         .pickerStyle(.segmented)
         }}}
+
+        // ## MODIFIERS ## \\
+
         .navigationTitle("Let's Order")
         Button("Let's Order") {
             orderLogic()
@@ -156,28 +156,21 @@ struct Suggest: View {
         text += "Search within \(miles) miles of "
 
         if location == "My Location" {
-            text += "My location (coordinates \(c.latitude), \(c.longitude)). "
+            text += "My location (\(c.latitude), \(c.longitude)). "
         } else {
             text += "\(location). "
         }
+        // ## FOOD INFO ## \\
+
         if !place.isEmpty {
             text += "Search the menu of \(place). "
-
         } else if cuisine != "All" {
             text += "Search for \(cuisine) food. "
 
-        // ## FRIEND INFO ## \\
-
         } else if friend != "None" {
-            let favs = DM.data(id: friend).favFoods
-            if !favs.isEmpty {
-                text += "\(addText). "
-            }
+            text += "\(addFavs(id: friend)). "
         } else {
-            let favs = DM.md().favFoods
-            if !favs.isEmpty {
-                text += "\(addText). "
-            }
+            text += "\(addFavs(id: DM.my().id)). "
         }
         // ## OPTIONALS ## \\
 
@@ -195,30 +188,20 @@ struct Suggest: View {
             showChatGPT = true
         }
     }
-    // ## GET ORDERS ## //
+    // ## TEXT LOGIC ## //
 
-    @State var orders = [AIOrder]()
+    func addFavs(id: String) -> String {
+        if !OM.orders.isEmpty {
+            var ans = "Find food similar to "
 
-    func getOrder(favs: [String]) {
-        FS.collection("aiOrders").addSnapshotListener { snap,_ in
-        if let snap = snap {
-
-        orders = snap.documents.compactMap { doc -> AIOrder? in
-        if let ord = try? doc.data(as: AIOrder.self) {
-            return ord
-        }
-        return nil
-        }}}
-
-        // MARK: - TODO: - FIXME LATER
-
-        addText = "Find food similar to "
-        for ord in orders {
-            if favs.contains(ord.id) {
-                addText += ord.order + " from " + ord.place + ", and "
+            for ord in OM.orders {
+                if (DM.data(id: id).favFoods).contains(ord.id) {
+                    ans += ord.order + " from " + ord.place + ", and "
+                }
             }
+            return ans.trimmingCharacters(in:
+                CharacterSet(charactersIn: ", and "))
         }
-        addText = addText.trimmingCharacters(in:
-            CharacterSet(charactersIn: ", and "))
+        return ""
     }
 }

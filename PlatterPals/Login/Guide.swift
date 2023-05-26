@@ -60,6 +60,7 @@ struct Terms: View {
         Text("Users may filter such content and hide specific profiles, flag users on any of their pages / posts, and block abusive accounts in the profile and chat pages.")
 
         Text("PlatterPals will act on such content within 24 hours by removing it and banning the flagged user. For support or inquiries, please visit www.platterpals.com.")
+        Spacer()
         }
         .padding(16)
         .navigationTitle("Terms and EULA")
@@ -77,11 +78,9 @@ struct Cities: View {
     @State var page = 0
 
     var body: some View {
-        let all = addAll ? ["All"]: []
-
-        // ## DROPDOWNS ## \\
-
         VStack {
+            let all = addAll ? ["All"]: []
+
         if page == 0 {
             Picker("", selection: $city) {
                 ForEach(all + cityList, id: \.self) {
@@ -91,8 +90,6 @@ struct Cities: View {
             Picker("", selection: $city) {
                 ForEach(all + allCities, id: \.self) {
                     Text($0)
-
-        // ## TEXTFIELDS ## \\
 
         }}} else {
             TextField("Enter a city", text: $city)

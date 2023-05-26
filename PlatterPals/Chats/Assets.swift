@@ -26,9 +26,10 @@ struct TitleBar: View {
             Text(user.name)
                 .font(.title).bold()
 
-            Text("\(user.city), CA")
+            Text("View Profile")
                 .foregroundColor(.secondary)
                 .font(.subheadline)
+                .underline()
         }}}
         Spacer()
 
@@ -37,6 +38,7 @@ struct TitleBar: View {
         if (DM.my().id != id) {
             Block(id: id)
                 .environmentObject(DM)
+                .padding(.bottom, -16)
             }
         }
         .padding(.horizontal, 16)

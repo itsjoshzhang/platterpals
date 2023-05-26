@@ -40,12 +40,13 @@ struct Chats: View {
         }
         .listStyle(.plain)
         .navigationDestination(for: String.self) { id in
-            Convo(id: id, padding: true)
+            Convo(id: id, pad: true)
                 .environmentObject(DM)
         }
         .onChange(of: DM.md().chatting) {_ in
             refresh()
         }}}
+        .navigationTitle("My Chats")
         .background {
             Back()
         }

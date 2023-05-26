@@ -1,31 +1,54 @@
 import SwiftUI
 import FirebaseFirestoreSwift
 
+class OrderManager: ObservableObject {
+    @Published var orders = [AIOrder]()
+
+    func getOrders(id: String) {
+        FS.collection("aiOrders").addSnapshotListener { snap,_ in
+        if let snap = snap {
+        self.orders = snap.documents.compactMap { doc -> AIOrder? in
+
+        if let ord = try? doc.data(as: AIOrder.self) {
+            if (ord.user == id) {
+                return ord }}
+        return nil
+        }
+        self.orders.sort {
+            $0.time > $1.time
+        }}}}
+}
+
 struct Orders: View {
 
     @State var loading = true
     @State var showOrder = false
     @State var showAlert = false
-    @State var orders = [AIOrder]()
+
+    @StateObject var OM = OrderManager()
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
         NavigationStack {
-        if orders.isEmpty {
+            var data = DM.md()
+
+        if OM.orders.isEmpty {
             if loading {
                 Text("")
                 .onAppear {
-                withAnimation(.easeIn(duration: 1)) {
-                    loading = false
-                }}} else { NewOrder(text: "##;##") }
-        } else {
+                    withAnimation(.easeIn(duration: 1)) {
+                        loading = false
+            }}} else { NewOrder(text: "##;##") }
 
+        } else {
         VStack(spacing: 8) {
             Cards(id: DM.my().id)
+                .environmentObject(OM)
                 .environmentObject(DM)
                 .padding(.top, 16)
+
         List {
-        ForEach(orders) { ord in
+        ForEach(OM.orders) { ord in
         VStack(spacing: 8) {
         HStack {
 
@@ -38,21 +61,19 @@ struct Orders: View {
         Spacer()
 
         Group {
-            var data = DM.md()
-            if data.favFoods.contains(ord.id) {
-
-        Button("♥") {
-            if let i = data.favFoods.firstIndex(of: ord.id) {
-                data.favFoods.remove(at: i)
-                DM.editData(data: data)
+        if data.favFoods.contains(ord.id) {
+            Button("♥") {
+                if let i = data.favFoods.firstIndex(of: ord.id) {
+                    data.favFoods.remove(at: i)
+                    DM.editData(data: data)
 
         }}} else {
-        Button("♡") {
-            if data.favFoods.count < 3 {
-                data.favFoods.append(ord.id)
-                DM.editData(data: data)
-            } else {
-                showAlert = true
+            Button("♡") {
+                if data.favFoods.count < 3 {
+                    data.favFoods.append(ord.id)
+                    DM.editData(data: data)
+                } else {
+                    showAlert = true
             }}}}
             .foregroundColor(.yellow)
             .font(.system(size: 24))
@@ -86,27 +107,13 @@ struct Orders: View {
                 .environmentObject(DM)
         }}}
         .onAppear {
-            getOrder(user: DM.my().id)
-        }
-    }
-    func getOrder(user: String) {
-        FS.collection("aiOrders").addSnapshotListener { snap,_ in
-        if let snap = snap {
-        orders = snap.documents.compactMap { doc -> AIOrder? in
-
-        if let ord = try? doc.data(as: AIOrder.self) {
-            if (ord.user == user) {
-                return ord }}
-        return nil
-        }
-        orders.sort {
-            $0.time > $1.time
-        }}}}}
+            OM.getOrders(id: DM.my().id)
+        }}}
 
 struct Cards: View {
 
     var id: String
-    @State var orders = [AIOrder]()
+    @EnvironmentObject var OM: OrderManager
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
@@ -124,31 +131,18 @@ struct Cards: View {
             TabView {
             ForEach(data.favFoods, id: \.self) { id in
 
-            if let ord = orders.first { $0.id == id } {
+            if let ord = OM.orders.first { $0.id == id } {
                 Card(ord: ord)
                     .environmentObject(DM)
             }}}
-            .tabViewStyle(.page(indexDisplayMode: .always))
-            .indexViewStyle(.page(backgroundDisplayMode: .always))
-
-            .frame(maxWidth: UIwidth-32, minHeight: 120, maxHeight: 120)
-            .onAppear {
-                getOrder(user: id)
-            }}}}
-
-    func getOrder(user: String) {
-        FS.collection("aiOrders").addSnapshotListener { snap,_ in
-        if let snap = snap {
-        orders = snap.documents.compactMap { doc -> AIOrder? in
-
-        if let ord = try? doc.data(as: AIOrder.self) {
-            if (ord.user == user) {
-                return ord }}
-        return nil
+        .tabViewStyle(.page(indexDisplayMode: .always))
+        .indexViewStyle(.page(backgroundDisplayMode: .always))
+        .frame(maxWidth: UIwidth-32, minHeight: 120, maxHeight: 120)
         }
-        orders.sort {
-            $0.time < $1.time
-        }}}}}
+        }
+        .onAppear {
+            OM.getOrders(id: id)
+        }}}
 
 struct Card: View {
 

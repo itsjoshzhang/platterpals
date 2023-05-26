@@ -154,7 +154,6 @@ class DataManager: ObservableObject {
     // called at Settings
     func editSets(sets: Setting) {
         let doc = FS.collection("settings").document(sets.id)
-        // MARK: - TODO: - FIXME
         settings = sets
         
         doc.setData(["id": sets.id, "notifs": sets.notifs, "suggest":

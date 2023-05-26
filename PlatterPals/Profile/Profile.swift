@@ -51,12 +51,15 @@ struct Profile: View {
     // ## TRACK INFO ## \\
     var id: String
     var title: Bool
+    var pad = false
+
     @State var image: UIImage?
     @State var showEdit = false
     @State var showChat = false
     @State var showUpdate = false
 
     // ## SETUP VIEW ## \\
+    @StateObject var OM = OrderManager()
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
@@ -70,7 +73,7 @@ struct Profile: View {
         if title {
             Text(user.name)
                 .font(.largeTitle).bold()
-                .padding(.top, 64)
+                .padding(.top, pad ? -48: 64)
         }
         HStack(spacing: 16) {
             RoundPic(width: 80, image: image)
@@ -111,6 +114,8 @@ struct Profile: View {
                 .foregroundColor(.secondary)
         }
         Cards(id: user.id)
+            .environmentObject(DM)
+            .environmentObject(OM)
         }
         .padding(.horizontal, 16)
 
@@ -137,7 +142,6 @@ struct Profile: View {
 
         // ## MODIFIERS ## \\
 
-        .navigationTitle(user.name)
         .background() {
             Back()
         }
@@ -149,7 +153,7 @@ struct Profile: View {
                 .environmentObject(DM)
         }
         .sheet(isPresented: $showChat) {
-            Convo(id: id, padding: false)
+            Convo(id: id, pad: false)
                 .environmentObject(DM)
         }}}
 

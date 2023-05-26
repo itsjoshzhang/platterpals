@@ -69,6 +69,7 @@ struct Search: View {
             .focused($focus)
 
         HStack(spacing: 0) {
+
         Text("City: ")
             .foregroundColor(.secondary)
         Cities(addAll: true, city: $city)
@@ -94,10 +95,10 @@ struct Search: View {
 
         .navigationDestination(for: String.self) { id in
             if profile {
-                Profile(id: id, title: false)
+                Profile(id: id, title: true, pad: true)
                     .environmentObject(DM)
             } else {
-                Convo(id: id, padding: true)
+                Convo(id: id, pad: true)
                     .environmentObject(DM)
                 }}}
         .navigationTitle("Search 🔍")

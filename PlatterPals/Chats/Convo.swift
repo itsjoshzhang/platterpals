@@ -5,7 +5,7 @@ struct Convo: View {
 
     // ## SETUP VIEW ## \\
     var id: String
-    var padding: Bool
+    var pad: Bool
     @State var text = ""
     @FocusState var focus: Bool
     @State var messages = [Message]()
@@ -21,7 +21,7 @@ struct Convo: View {
 
         TitleBar(id: id)
             .environmentObject(DM)
-            .padding(.top, padding ? -32: 0)
+            .padding(.top, pad ? -48: 16)
 
         ScrollView {
             ForEach(messages) { msg in

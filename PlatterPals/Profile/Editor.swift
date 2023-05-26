@@ -134,6 +134,7 @@ struct EditProf: View {
             name = my.name
             text = my.text
         }
+        Spacer()
         }
         .padding(16)
         .background {

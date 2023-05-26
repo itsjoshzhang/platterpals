@@ -109,9 +109,11 @@ struct Update: View {
             withAnimation {
                 if (swipe > min && showNext) {
                     showProf = true
-                    data.favUsers.append(user.id)
-                    DM.editData(data: data)
 
+                    if !data.favUsers.contains(user.id) {
+                        data.favUsers.append(user.id)
+                        DM.editData(data: data)
+                    }
                 } else if swipe < -min {
                     hideProf = true
                 }
