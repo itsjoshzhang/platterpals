@@ -141,6 +141,7 @@ struct Settings: View {
         Button("Terms and EULA") {
             showTerms = true
         }
+        .padding(.bottom, 80)
         }
         // ## MODIFIERS ## \\
 

@@ -35,7 +35,7 @@ struct TitleBar: View {
 
         // ## MODIFIERS ## \\
 
-        if (DM.my().id != id) {
+        if DM.my().id != id {
             Block(id: id)
                 .environmentObject(DM)
                 .padding(.bottom, -16)

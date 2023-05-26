@@ -10,7 +10,7 @@ class OrderManager: ObservableObject {
         self.orders = snap.documents.compactMap { doc -> AIOrder? in
 
         if let ord = try? doc.data(as: AIOrder.self) {
-            if (ord.user == id) {
+            if ord.user == id {
                 return ord }}
         return nil
         }

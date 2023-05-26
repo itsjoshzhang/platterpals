@@ -79,6 +79,9 @@ struct Suggest: View {
             Text("Currently using: Your favorites")
                 .foregroundColor(.secondary)
                 .opacity(0.5)
+                .onAppear {
+                    OM.getOrders(id: DM.my().id)
+                }
         } else {
             Cards(id: friend)
                 .environmentObject(OM)
@@ -191,17 +194,16 @@ struct Suggest: View {
     // ## TEXT LOGIC ## //
 
     func addFavs(id: String) -> String {
-        if !OM.orders.isEmpty {
-            var ans = "Find food similar to "
-
-            for ord in OM.orders {
-                if (DM.data(id: id).favFoods).contains(ord.id) {
-                    ans += ord.order + " from " + ord.place + ", and "
-                }
+        var ans = ""
+        for ord in OM.orders {
+            if (DM.data(id: id).favFoods).contains(ord.id) {
+                ans += ord.order + " from " + ord.place + ", and "
             }
-            return ans.trimmingCharacters(in:
-                CharacterSet(charactersIn: ", and "))
         }
-        return ""
+        if !ans.isEmpty {
+            ans += "Find food similar to: "
+        }
+        return ans.trimmingCharacters(in:
+            CharacterSet(charactersIn: ", and "))
     }
 }
