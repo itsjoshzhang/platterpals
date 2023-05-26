@@ -77,8 +77,8 @@ struct Signup: View {
         }
         // ## USER INFO ## \\
 
-        HStack {
-            Text("Location:")
+        HStack(spacing: 0) {
+            Text("Nearest City: ")
                 .font(.headline)
             Cities(addAll: false, city: $city)
                 .buttonStyle(.bordered)

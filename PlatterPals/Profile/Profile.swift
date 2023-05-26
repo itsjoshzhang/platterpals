@@ -14,8 +14,8 @@ struct MyProfile: View {
 
         // ## SHOW PROFILE ## \\
 
-        Profile(id: my.id, title: false,
-            image: DM.myAvatar, showUpdate: true)
+        Profile(id: my.id, title: false, pad: false, avatar:
+            DM.myAvatar, profile: DM.myProfile, showUpdate: true)
             .environmentObject(DM)
             .navigationTitle(my.name)
 
@@ -51,9 +51,10 @@ struct Profile: View {
     // ## TRACK INFO ## \\
     var id: String
     var title: Bool
-    var pad = false
+    var pad: Bool
 
-    @State var image: UIImage?
+    @State var avatar: UIImage?
+    @State var profile: UIImage?
     @State var showEdit = false
     @State var showChat = false
     @State var showUpdate = false
@@ -76,7 +77,7 @@ struct Profile: View {
                 .padding(.top, pad ? -48: 64)
         }
         HStack(spacing: 16) {
-            RoundPic(width: 80, image: image)
+            RoundPic(width: 80, image: avatar)
 
         // ## CLICKABLES ## \\
 
@@ -132,7 +133,7 @@ struct Profile: View {
             .shadow(color: .pink, radius: 3)
 
             if showUpdate {
-                Update(id: id, showNext: false)
+                Update(id: id, showNext: false, profile: profile)
                     .environmentObject(DM)
             }
         } else {
@@ -146,7 +147,12 @@ struct Profile: View {
             Back()
         }
         .onAppear {
-            getImage(path: "avatars")
+            if avatar == nil {
+                getImage(path: "avatars")
+            }
+            if profile == nil {
+                getImage(path: "profiles")
+            }
         }
         .sheet(isPresented: $showEdit) {
             EditProf()
@@ -161,9 +167,10 @@ struct Profile: View {
 
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
-        SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
-
+        SR.getData(maxSize: 4 * 1024 * 1024) { data,_ in
             if let data = data {
-                DispatchQueue.main.async {
-                    image = UIImage(data: data)
+                if path == "avatars" {
+                    avatar = UIImage(data: data)
+                } else {
+                    profile = UIImage(data: data)
                 }}}}}

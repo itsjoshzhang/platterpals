@@ -30,7 +30,7 @@ struct Maps: View {
                             .environmentObject(DM)
                     }}}
             .navigationDestination(for: String.self) { id in
-                Profile(id: id, title: true)
+                Profile(id: id, title: true, pad: true)
                     .environmentObject(DM)
             }
             LocationButton(.currentLocation) {
@@ -99,12 +99,10 @@ struct MapPin: View {
     }
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(pin.id).jpg")
-        SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
-
+        SR.getData(maxSize: 4 * 1024 * 1024) { data,_ in
             if let data = data {
-                DispatchQueue.main.async {
-                    image = UIImage(data: data)
-                }}}}
+                image = UIImage(data: data)
+            }}}
 
     func getTime(_ date: Date) -> String {
         let cal = Calendar.current.dateComponents(

@@ -33,12 +33,10 @@ struct Row: View {
 
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
-        SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
-
+        SR.getData(maxSize: 4 * 1024 * 1024) { data,_ in
             if let data = data {
-                DispatchQueue.main.async {
-                    image = UIImage(data: data)
-                }}}}}
+                image = UIImage(data: data)
+            }}}}
 
 struct Search: View {
 

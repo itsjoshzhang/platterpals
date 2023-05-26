@@ -9,7 +9,8 @@ struct Update: View {
     @State var swipe = 0.0
 
     // ## CONDITIONS ## \\
-    @State var image: UIImage?
+    @State var avatar: UIImage?
+    @State var profile: UIImage?
     @State var showProf = false
     @State var hideProf = false
     @State var showAlert = false
@@ -37,13 +38,13 @@ struct Update: View {
             let user = DM.user(id: id)
 
         ZStack {
-        if let image = image {
-        let height = UIwidth * 16.0 / 9.0
+        if let profile = profile {
 
-        Image(uiImage: image)
+        Image(uiImage: profile)
             .resizable()
             .scaledToFill()
-            .frame(maxHeight: height)
+            .frame(maxHeight:
+            UIwidth * 16.0 / 9.0)
             .cornerRadius(16)
             .clipped()
 
@@ -114,7 +115,7 @@ struct Update: View {
                         data.favUsers.append(user.id)
                         DM.editData(data: data)
                     }
-                } else if swipe < -min {
+                } else if (swipe < -min && showNext) {
                     hideProf = true
                 }
                 scale = 0.9
@@ -124,10 +125,15 @@ struct Update: View {
         // ## MODIFIERS ## \\
 
         .onAppear {
-            getImage(path: "profiles")
+            if avatar == nil {
+                getImage(path: "avatars")
+            }
+            if profile == nil {
+                getImage(path: "profiles")
+            }
         }
         .sheet(isPresented: $showProf) {
-            Profile(id: id, title: true)
+            Profile(id: id, title: true, pad: false, avatar: avatar)
                 .environmentObject(DM)
         }
         .confirmationDialog("", isPresented: $showAlert) {
@@ -148,9 +154,11 @@ struct Update: View {
 
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
-        SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
+        SR.getData(maxSize: 4 * 1024 * 1024) { data,_ in
 
             if let data = data {
-                DispatchQueue.main.async {
-                    image = UIImage(data: data)
+                if path == "avatars" {
+                    avatar = UIImage(data: data)
+                } else {
+                    profile = UIImage(data: data)
                 }}}}}

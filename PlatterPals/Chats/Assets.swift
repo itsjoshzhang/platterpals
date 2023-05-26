@@ -38,7 +38,7 @@ struct TitleBar: View {
         if DM.my().id != id {
             Block(id: id)
                 .environmentObject(DM)
-                .padding(.bottom, -16)
+                .padding(.bottom, -32)
             }
         }
         .padding(.horizontal, 16)
@@ -48,7 +48,7 @@ struct TitleBar: View {
             getImage(path: "avatars")
         }
         .sheet(isPresented: $showProf) {
-            Profile(id: id, title: true)
+            Profile(id: id, title: true, pad: false, avatar: image)
                 .environmentObject(DM)
         }
     }
@@ -56,12 +56,10 @@ struct TitleBar: View {
 
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
-        SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
-
+        SR.getData(maxSize: 4 * 1024 * 1024) { data,_ in
             if let data = data {
-                DispatchQueue.main.async {
-                    image = UIImage(data: data)
-                }}}}}
+                image = UIImage(data: data)
+            }}}}
 
 struct Block: View {
 
@@ -120,8 +118,6 @@ struct Bubble: View {
 
             .frame(maxWidth: UIwidth, alignment: sender ?
                 .trailing: .leading)
-            .padding(.horizontal, 16)
-
             .onLongPressGesture(minimumDuration: 0.5) {
                 showTime.toggle()
             }

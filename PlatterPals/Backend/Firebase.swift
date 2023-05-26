@@ -213,16 +213,14 @@ class DataManager: ObservableObject {
     // called at init
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(my().id).jpg")
-
-        SR.getData(maxSize: 8 * 1024 * 1024) { data,_ in
+        SR.getData(maxSize: 4 * 1024 * 1024) { data,_ in
         if let data = data {
-        DispatchQueue.main.async {
 
         if path == "avatars" {
             self.myAvatar = UIImage(data: data)
         } else {
             self.myProfile = UIImage(data: data)
-        }}}}}
+        }}}}
 
     // called at Profile
     func delImage(path: String) {

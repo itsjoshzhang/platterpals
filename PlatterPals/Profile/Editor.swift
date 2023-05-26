@@ -52,24 +52,21 @@ struct EditProf: View {
     // ## SETUP VIEW ## \\
     @State var image: UIImage?
     @State var imageItem: PhotosPickerItem?
-    @Environment(\.dismiss) var dismiss
 
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
         NavigationStack {
 
+        // ## USER INFO ## \\
+
         VStack(spacing: 16) {
             var my = DM.my()
         HStack(spacing: 16) {
 
-        // ## USER INFO ## \\
+        RoundPic(width: 120, image: image)
 
-        if let image = image {
-            RoundPic(width: 120, image: image)
-        } else {
-            RoundPic(width: 120, image: nil)
-        }
         VStack(alignment: .leading, spacing: 8) {
 
         Blank(label: "Username", text: $name)
@@ -135,6 +132,7 @@ struct EditProf: View {
         .onAppear {
             name = my.name
             text = my.text
+            image = DM.myAvatar
         }
         Spacer()
         }
