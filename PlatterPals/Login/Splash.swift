@@ -81,9 +81,7 @@ struct Reset: View {
 
         // ## TEXTFIELDS ## \\
             
-        TextField("Email", text: $email)
-            .textInputAutocapitalization(.never)
-            .autocorrectionDisabled(true)
+        Blank(label: "Email", text: $email)
             .focused($focus)
         Div()
 

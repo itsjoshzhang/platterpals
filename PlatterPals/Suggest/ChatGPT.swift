@@ -189,8 +189,7 @@ struct ContentView: View {
         // ## TEXTFIELDS ## \\
 
         HStack {
-        TextField("Ask your PlatterPal anything!", text: $text, axis:
-            .vertical)
+        TextField("Ask me anything!", text: $text, axis: .vertical)
             .padding(.leading, 8)
             .focused($focus)
             .lineLimit(8)
@@ -201,16 +200,16 @@ struct ContentView: View {
             DotLoadingView()
         } else {
             Button {
-                focus = false
                 scrollToBottom(proxy: proxy)
                 send(text: text)
+                focus = false
                 text = ""
             } label: {
                 Image(systemName: "paperplane.circle.fill")
                     .resizable()
                     .frame(width: 32, height: 32)
             }
-        // ## MODIFIERS ## \\
+        // ## FUNCTIONS ## \\
 
         .disabled(text.isEmpty)
         }

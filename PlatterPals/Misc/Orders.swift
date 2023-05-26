@@ -3,6 +3,7 @@ import FirebaseFirestoreSwift
 
 struct Orders: View {
 
+    @State var loading = true
     @State var showOrder = false
     @State var showAlert = false
     @State var orders = [AIOrder]()
@@ -11,7 +12,12 @@ struct Orders: View {
     var body: some View {
         NavigationStack {
         if orders.isEmpty {
-            NewOrder(text: "##;##")
+            if loading {
+                Text("")
+                .onAppear {
+                withAnimation(.easeIn(duration: 1)) {
+                    loading = false
+                }}} else { NewOrder(text: "##;##") }
         } else {
 
         VStack(spacing: 8) {

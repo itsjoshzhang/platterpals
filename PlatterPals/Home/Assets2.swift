@@ -60,15 +60,16 @@ struct Search: View {
 
         // ## TEXTFIELDS ## \\
 
-        TextField("Type in a username", text: $name)
+        Group {
+        TextField("Enter a username", text: $name)
             .padding(4)
             .overlay(RoundedRectangle(cornerRadius: 8)
-            .stroke(.secondary))
-            .padding(.horizontal, 16)
+                .stroke(.secondary))
+            .submitLabel(.done)
             .focused($focus)
 
         HStack(spacing: 0) {
-        Text("Location:")
+        Text("City:")
             .foregroundColor(.secondary)
 
         Cities(addAll: true, city: $city)
@@ -77,8 +78,7 @@ struct Search: View {
             .toggleStyle(.button)
             .onTapGesture {
                 following.toggle()
-            }
-        }
+            }}}
         .padding(.horizontal, 16)
 
         // ## SHOW USERS ## \\
@@ -117,15 +117,15 @@ struct Search: View {
             // loop through userList & show maximum 4 items
             let user = DM.userList[i]
 
-            if !name.isEmpty, compare(name, user.name),
+            if !name.isEmpty, compare(user.name, name),
             // if name is valid and is a prefix of user.name
 
-                (following && DM.md().favUsers.contains(user.id))
-                // if following checked, show from favUsers only
+            (following && DM.md().favUsers.contains(user.id))
+            // if following checked, show from favUsers only
 
-                || !following, (city.isEmpty || city == "All" || user.city == city) {
-                // if not & (if no city: pass, else: check city)
-                    userIDs.append(user.id)
+            || !following, (city == "All" || compare(user.city, city)) {
+            // if not & (if no city: pass, else: check city)
+                userIDs.append(user.id)
         }}}}}
 
     func compare(_ name1: String, _ name2: String) -> Bool {

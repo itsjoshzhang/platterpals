@@ -5,12 +5,12 @@ struct Login: View {
 
     // ## TEXTFIELDS ## \\
     @State var email = ""
-    @State var password = ""
+    @State var pass = ""
     @State var alertText = ""
     @FocusState var focus: Bool
 
     // ## CONDITIONS ## \\
-    @State var loading = false
+    @State var loading = true
     @State var loggedIn = false
     @State var showAlert = false
     @State var showReset = false
@@ -32,6 +32,8 @@ struct Login: View {
     var content: some View {
         VStack(spacing: 16) {
 
+        // ## SHOW CONTENT ## \\
+
         Text("PlatterPals")
             .font(.custom("Lobster", size: 50))
             .foregroundColor(.pink)
@@ -42,17 +44,14 @@ struct Login: View {
                 focus = false
             }
         Group {
+        Group {
+            Blank(label: "Email", text: $email)
+            Div()
+            Blank(label: "Password", secure: true, text: $pass)
+            Div()
+        }
+        .focused($focus)
 
-        // ## TEXTFIELDS ## \\
-
-        TextField("Email", text: $email)
-            .textInputAutocapitalization(.never)
-            .autocorrectionDisabled(true)
-            .focused($focus)
-        Div()
-        SecureField("Password", text: $password)
-            .focused($focus)
-        Div()
         Button("Forgot your login?") {
             showReset = true
         }
@@ -67,20 +66,19 @@ struct Login: View {
             loginAuth()
         }
         .buttonStyle(.borderedProminent)
-        .disabled(email.isEmpty || password.isEmpty)
+        .disabled(email.isEmpty || pass.isEmpty)
         }
-        .opacity(loading ? 1: 0)
+        .opacity(loading ? 0: 1)
         .onAppear {
-        Auth.auth().addStateDidChangeListener {_,user in
-        if let user = user {
-
-            DM.initUser(id: user.email ?? email)
-            withAnimation {
-                loggedIn = true
+            Auth.auth().addStateDidChangeListener {_,user in
+                if let user = user {
+                    DM.initUser(id: user.email ?? email)
+                    withAnimation {
+                        loggedIn = true
+                    }}}
+            withAnimation(.easeIn(duration: 1)) {
+                loading = false
             }}}
-        withAnimation(.easeIn(duration: 1)) {
-            loading = true
-        }}}
 
         // ## MODIFIERS ## \\
 
@@ -102,10 +100,8 @@ struct Login: View {
     // ## FUNCTIONS ## \\
 
     func loginAuth() {
-        Auth.auth().signIn(withEmail: email, password: password) {
-            _,error in
-
-            if let error = error {
-                alertText = error.localizedDescription
+        Auth.auth().signIn(withEmail: email, password: pass) {_,e in
+            if let e = e {
+                alertText = e.localizedDescription
                 showAlert = true
             }}}}

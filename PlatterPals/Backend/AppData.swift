@@ -25,6 +25,8 @@ struct RoundPic: View {
 
     var body: some View {
         Group {
+            let w = CGFloat(width)
+        Group {
             if let image = image {
                 Image(uiImage: image)
                     .resizable()
@@ -35,11 +37,11 @@ struct RoundPic: View {
             }
         }
         .scaledToFit()
-        .frame(width: CGFloat(width))
+        .frame(width: w, height: w)
         .clipShape(Circle())
         .clipped()
-    }
-}
+    }}}
+
 extension UIImage {
     // called at putImage
     func resize(width: CGFloat, pfp: Bool) -> UIImage {
@@ -135,5 +137,29 @@ struct Glow: View {
             .overlay(Capsule().stroke(.pink, lineWidth: 3))
             .shadow(color: .pink, radius: 8)
             .padding(.bottom, 16)
+    }
+}
+struct Blank: View {
+
+    var label: String
+    var count = false
+    var secure = false
+    @Binding var text: String
+
+    var body: some View {
+        VStack {
+            if secure {
+                SecureField(label, text: $text)
+            } else {
+                TextField(label, text: $text)
+            }
+            if count && text.count > 32 {
+                Text("32 chars max")
+                    .foregroundColor(.secondary)
+            }
+        }
+        .textInputAutocapitalization(.never)
+        .autocorrectionDisabled(true)
+        .submitLabel(.done)
     }
 }

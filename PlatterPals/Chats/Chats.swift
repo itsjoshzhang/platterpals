@@ -12,6 +12,7 @@ struct Chats: View {
 
     var body: some View {
         NavigationStack {
+        ZStack {
         VStack(spacing: 16) {
 
         // ## SHOW CHATS ## \\
@@ -70,7 +71,7 @@ struct Chats: View {
                 showMaps = true
             } label: {
                 Glow(text: "View users nearby!")
-            }}}}}
+            }}}}}}
 
     // ## FUNCTIONS ## \\
 

@@ -16,7 +16,7 @@ struct Upload: View {
     // ## SETUP VIEW ## \\
     var body: some View {
         NavigationStack {
-            var my = DM.my()
+            let my = DM.my()
         ScrollView {
         VStack(spacing: 16) {
 
@@ -46,7 +46,7 @@ struct Upload: View {
             .font(.subheadline)
 
         HStack {
-            PhotosPicker("Upload Picture", selection: $imageItem,
+            PhotosPicker("Pick Photo", selection: $imageItem,
                          matching: .images)
 
             if image != nil {
@@ -68,15 +68,16 @@ struct Upload: View {
         // ## CLICKABLES ## \\
 
         TextEditor(text: $text)
-            .frame(minHeight: UIwidth * 0.25)
+            .border(.secondary)
             .focused($focus)
-            .border(UIgray)
+            .lineLimit(8)
             .onTapGesture {
                 focus = true
             }
         if text.count > 200 {
             Text("200 chars max")
                 .foregroundColor(.secondary)
+
         } else {
             Button("Save Edits") {
                 if let image = image {

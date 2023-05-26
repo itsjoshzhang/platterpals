@@ -18,7 +18,8 @@ struct NewOrder: View {
 
     var body: some View {
         NavigationStack {
-        VStack() {
+            let count = order.count > 32 || place.count > 32
+        VStack {
 
         // ## TEXTFIELDS ## \\
 
@@ -36,12 +37,15 @@ struct NewOrder: View {
                 Text("Restaurant:")
                 TextField("Add a restaurant", text: $place)
             }
+            if count {
+                Text("32 chars max")
+                    .foregroundColor(.secondary)
+            }
         }
         .textFieldStyle(.roundedBorder)
+        .submitLabel(.done)
         .focused($focus)
-        .onTapGesture {
-            focus = true
-        }
+
         // ## STARS/EMOJI ## \\
 
         HStack {
@@ -88,20 +92,16 @@ struct NewOrder: View {
             dismiss()
         }
         .buttonStyle(.borderedProminent)
-        .disabled(order.isEmpty || place.isEmpty)
+        .disabled(order.isEmpty || place.isEmpty || count)
         }
         .padding(16)
         .navigationTitle("Add Order")
         .background {
             Back()
         }
-        .onTapGesture {
-            focus = false
-        }
         // ## STRING LOGIC ## \\
 
         .onAppear {
-            focus = true
             if let range = text.range(of: "##.*##",
                 options: .regularExpression) {
 

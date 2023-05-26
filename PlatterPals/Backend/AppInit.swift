@@ -98,7 +98,7 @@ struct Cities: View {
 
         // ## DROPDOWNS ## \\
 
-        Group {
+        VStack {
         if page == 0 {
             Picker("", selection: $city) {
                 ForEach(all + cityList, id: \.self) {
@@ -112,11 +112,16 @@ struct Cities: View {
         // ## TEXTFIELDS ## \\
 
         }}} else {
-            TextField("Location", text: $city)
+            let count = city.count > 32
+
+            TextField("Enter a city", text: $city)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .submitLabel(.done)
-            }
-        }
+                .disabled(count)
+            if count {
+                Text("32 chars max")
+                    .foregroundColor(.secondary)
+        }}}
         .onChange(of: city) { name in
             if name == "More..." {
                 page += 1

@@ -19,7 +19,7 @@ struct Settings: View {
 
     // ## SETUP VIEW ## \\
 
-    @State var blockID = "Expand"
+    @State var blockID = "..."
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
@@ -50,10 +50,10 @@ struct Settings: View {
                 .frame(width: 50)
         }
         HStack(spacing: 0) {
-            Text("Blocked users:")
+            Text("Blocked:")
             Picker("", selection: $blockID) {
-                ForEach(["Expand"] + data.blocked, id: \.self) { id in
-                    Text(id == "Expand" ? id: DM.user(id: id).name)
+                ForEach(data.blocked, id: \.self) { id in
+                    Text(blockID == "..." ? id: DM.user(id: id).name)
                 }
             }
             Spacer()
@@ -61,10 +61,10 @@ struct Settings: View {
                 if let i = data.blocked.firstIndex(of: blockID) {
                     data.blocked.remove(at: i)
                     DM.editData(data: data)
-                    blockID = "Expand"
+                    blockID = "..."
                 }
             }
-            .disabled(blockID == "Expand")
+            .disabled(blockID == "...")
             .buttonStyle(.bordered)
             .foregroundColor(.none)
         }

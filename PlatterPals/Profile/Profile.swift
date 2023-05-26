@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MyProfile: View {
 
+    // ## TRACK INFO ## \\
     @State var showSetts = false
     @State var showUpload = false
     @EnvironmentObject var DM: DataManager
@@ -10,19 +11,14 @@ struct MyProfile: View {
         NavigationStack {
         ZStack {
             let my = DM.my()
-        VStack {
+
+        // ## SHOW PROFILE ## \\
+
         Profile(id: my.id, title: false,
             image: DM.myAvatar, showUpdate: true)
             .environmentObject(DM)
+            .navigationTitle(my.name)
 
-        if my.prof >= 0 {
-            Button {
-                showUpload = true
-            } label: {
-                Spacer()
-                Glow(text: "No profile yet? Add one now!")
-            }}}
-        .navigationTitle(my.name)
         .toolbar {
             ToolbarItem {
                 Button("\(Image(systemName: "gearshape"))") {
@@ -38,14 +34,23 @@ struct MyProfile: View {
         .fullScreenCover(isPresented: $showSetts) {
             Settings()
                 .environmentObject(DM)
-            }}}}}
+        }
+        // ## SHOW BUTTON ## \\
+
+        if my.prof >= 0 {
+            VStack {
+                Spacer()
+            Button {
+                showUpload = true
+            } label: {
+                Glow(text: "No profile yet? Add one now!")
+            }}}}}}}
 
 struct Profile: View {
 
     // ## TRACK INFO ## \\
     var id: String
     var title: Bool
-
     @State var image: UIImage?
     @State var showEdit = false
     @State var showChat = false

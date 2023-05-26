@@ -47,44 +47,47 @@ struct EditProf: View {
     @State var text = ""
     @State var city = "Berkeley"
     @State var showCrop = false
-    @State var image: UIImage?
+    @FocusState var focus: Bool
 
+    // ## SETUP VIEW ## \\
+    @State var image: UIImage?
     @State var imageItem: PhotosPickerItem?
     @Environment(\.dismiss) var dismiss
 
     @EnvironmentObject var DM: DataManager
-
-    // ## SHOW IMAGE ## \\
 
     var body: some View {
         VStack(spacing: 16) {
             var my = DM.my()
         HStack(spacing: 16) {
 
+        // ## USER INFO ## \\
+
         if let image = image {
             RoundPic(width: 120, image: image)
         } else {
             RoundPic(width: 120, image: nil)
         }
-        // ## USER INFO ## \\
-
         VStack(alignment: .leading, spacing: 8) {
 
-        TextField("Username", text: $name)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .font(.headline)
-
+        Blank(label: "Username", count: true, text: $name)
+            .border(.secondary)
+            .focused($focus)
+            .onTapGesture {
+                focus = true
+            }
         HStack(spacing: 0) {
             Text("City:")
                 .font(.headline)
 
             Cities(addAll: false, city: $city)
-                .frame(maxWidth: UIwidth, alignment: .leading)
+                .frame(maxWidth: UIwidth)
+            Spacer()
         }
         // ## UPLOAD PIC ## \\
 
         HStack {
-            PhotosPicker("Upload Picture", selection: $imageItem,
+            PhotosPicker("Pick Photo", selection: $imageItem,
                          matching: .images)
 
             if image != nil {
@@ -103,11 +106,15 @@ struct EditProf: View {
                     return
                 }}}}}
 
+        // ## TEXTFIELDS ## \\
+
         TextEditor(text: $text)
-            .border(UIgray)
-
-        // ## SAVE LOGIC ## \\
-
+            .border(.secondary)
+            .focused($focus)
+            .lineLimit(8)
+            .onTapGesture {
+                focus = true
+            }
         if (text.count > 200) {
             Text("200 chars max")
                 .foregroundColor(.secondary)
@@ -124,6 +131,8 @@ struct EditProf: View {
             DM.editUser(user: my)
             dismiss()
         }
+        // ## MODIFIERS ## \\
+
         .disabled(name.isEmpty || city.isEmpty)
         .buttonStyle(.borderedProminent)
         .onAppear {
@@ -136,4 +145,8 @@ struct EditProf: View {
         }
         .fullScreenCover(isPresented: $showCrop) {
             ImageEditor(image: $image, show: $showCrop)
-        }}}
+        }}
+    func count(_ text: String) -> Bool {
+        return (text.isEmpty || text.count > 32)
+    }
+}

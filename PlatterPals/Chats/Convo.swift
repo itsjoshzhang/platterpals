@@ -24,8 +24,10 @@ struct Convo: View {
             .padding(.top, padding ? -40: 0)
 
         ScrollView {
-            ForEach(messages) { message in
-                Bubble(message: message)
+            ForEach(messages) { msg in
+                let date = (msg == messages.first)
+                let time = (msg == messages.last)
+                Bubble(message: msg, showDate: date, showTime: time)
                     .environmentObject(DM)
             }
         }

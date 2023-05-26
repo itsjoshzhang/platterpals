@@ -23,11 +23,12 @@ struct Home: View {
                 showSearch = true
             }
         HStack(spacing: 0) {
-        Text("Location:")
-            .foregroundColor(.secondary)
 
+        Text("City: ")
+            .foregroundColor(.secondary)
         Cities(addAll: true, city: $city)
         Spacer()
+
         Toggle("Following ✓", isOn: $following)
             .toggleStyle(.button)
             .onTapGesture {
@@ -45,26 +46,23 @@ struct Home: View {
         if DM.my().id != user.id, user.prof < 0,
         // dont show my own prof, user must have a prof
 
-            !data.blocked.contains(user.id),
-            // don't show blocked users
+        !data.blocked.contains(user.id),
+        // don't show blocked users
 
-            (following && data.favUsers.contains(user.id))
-            // if following checked, show from favUsers only
+        (following && data.favUsers.contains(user.id))
+        // if following checked, show from favUsers only
 
-            || !following, (city.isEmpty || city == "All" || user.city == city) {
-            // if not & (if no city: pass, else: check city)
+        || !following, (city == "All" || compare(user.city, city)) {
+        // if not & (if no city: pass, else: check city)
 
-                Update(id: user.id, showNext: true)
-                // show update with link to profile
-                    .environmentObject(DM)
-            }}}
+            Update(id: user.id, showNext: true)
+            // show update with link to profile
+                .environmentObject(DM)
+        }}}
 
         // ## MODIFIERS ## \\
 
         .navigationTitle("PlatterPals")
-        .background {
-            Back()
-        }
         .toolbar {
             ToolbarItem {
                 Button("\(Image(systemName: "square.and.arrow.up"))"){
@@ -80,4 +78,14 @@ struct Home: View {
         .sheet(isPresented: $showSearch) {
             Search(profile: true)
                 .environmentObject(DM)
-        }}}}}
+        }}
+        .background {
+            Back()
+        }}}
+    
+    func compare(_ name1: String, _ name2: String) -> Bool {
+        let l1 = name1.lowercased()
+        let l2 = name2.lowercased()
+        return (l1.hasPrefix(l2) || l2.hasPrefix(l1))
+    }
+}

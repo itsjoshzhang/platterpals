@@ -95,7 +95,9 @@ struct Bubble: View {
 
     // ## SETUP VIEW ## \\
     var message: Message
-    @State var showTime = false
+    var showDate: Bool
+    @State var showTime: Bool
+
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
@@ -104,6 +106,11 @@ struct Bubble: View {
 
         // ## SHOW TEXT ## \\
 
+        if showDate {
+            Text(message.time.formatted(.dateTime.day().month()))
+                .foregroundColor(.secondary)
+                .frame(maxWidth: UIwidth)
+        }
         Text(message.text)
             .padding(16)
             .background(sender ? .pink.opacity(0.25): .secondary)
@@ -119,6 +126,7 @@ struct Bubble: View {
         if showTime {
             Text(message.time.formatted(.dateTime.hour().minute()))
                 .foregroundColor(.secondary)
-                .padding(.horizontal, 16)
                 .font(.caption)
-            }}}}
+            }}
+        .padding(.horizontal, 16)
+    }}

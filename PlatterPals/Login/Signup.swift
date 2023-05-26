@@ -5,9 +5,9 @@ import Firebase
 struct Signup: View {
 
     // ## TEXTFIELDS ## \\
-    @State var name = ""
     @State var email = ""
-    @State var password = ""
+    @State var pass = ""
+    @State var name = ""
     @State var alertText = ""
     @State var city = "Berkeley"
 
@@ -42,13 +42,16 @@ struct Signup: View {
                 .font(.subheadline)
         }
         HStack {
-            PhotosPicker("Upload Picture", selection: $imageItem,
+            PhotosPicker("Pick Photo", selection: $imageItem,
                          matching: .images)
+
             if image != nil {
                 Button("\(Image(systemName: "crop"))") {
                     showCrop = true
         }}}
         .buttonStyle(.bordered)
+
+        // ## OTHER LOGIC ## \\
 
         .onChange(of: imageItem) { _ in
             imageItem?.loadTransferable(type: Data.self) { result in
@@ -60,18 +63,14 @@ struct Signup: View {
                     return
                 }}}
 
-        // ## TEXTFIELDS ## \\
-
         Group {
-            TextField("Email", text: $email)
-            Div()
-            SecureField("Password", text: $password)
-            Div()
-            TextField("Username", text: $name)
-            Div()
+            Blank(label: "Email", text: $email)
+        Div()
+            Blank(label: "Password", secure: true, text: $pass)
+        Div()
+            Blank(label: "Username", count: true, text: $name)
+        Div()
         }
-        .textInputAutocapitalization(.never)
-        .autocorrectionDisabled(true)
         .focused($focus)
         .onTapGesture {
             focus = true
@@ -79,7 +78,7 @@ struct Signup: View {
         // ## USER INFO ## \\
 
         HStack {
-            Text("Location:")
+            Text("City:")
                 .font(.headline)
 
             Cities(addAll: false, city: $city)
@@ -96,7 +95,7 @@ struct Signup: View {
         Button("Sign Up") {
             signupAuth()
         }
-        .disabled(name.isEmpty || city.isEmpty)
+        .disabled(count(name) || count(city))
         .buttonStyle(.borderedProminent)
 
         // ## MODIFIERS ## \\
@@ -125,18 +124,22 @@ struct Signup: View {
     // ## FUNCTIONS ## \\
 
     func signupAuth() {
-        Auth.auth().createUser(withEmail: email, password: password) {
-            _,error in
+    Auth.auth().createUser(withEmail: email, password: pass) {_,e in
 
-            if let error = error {
-                alertText = error.localizedDescription
-                showAlert = true
-            } else {
-                DM.makeUser(id: email, name: name, city: city)
-                DM.initUser(id: email)
+        if let e = e {
+            alertText = e.localizedDescription
+            showAlert = true
+        } else {
+            DM.makeUser(id: email, name: name, city: city)
+            DM.initUser(id: email)
 
-                if let image = image {
-                    DM.putImage(image: image, path: "avatars")
-                }
-                dismiss()
-            }}}}
+            if let image = image {
+                DM.putImage(image: image, path: "avatars")
+            }
+            dismiss()
+        }}}
+
+    func count(_ text: String) -> Bool {
+        return (text.isEmpty || text.count > 32)
+    }
+}
