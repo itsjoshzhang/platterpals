@@ -127,6 +127,61 @@ struct Box: View {
             .overlay(RoundedRectangle(cornerRadius: 8).stroke(.secondary))
     }
 }
+struct Glow: View {
+
+    var text: String
+    var body: some View {
+        let spark = Image(systemName: "sparkles")
+
+        Text("\(spark) \(text) \(spark)")
+            .font(.headline)
+            .foregroundColor(.pink)
+            .frame(width: UIwidth-32, height: 50)
+            .overlay(Capsule().stroke(.pink, lineWidth: 3))
+            .shadow(color: .pink, radius: 8)
+            .padding(.bottom, 16)
+    }
+}
+struct Blank: View {
+
+    var label: String
+    var secure = false
+    @Binding var text: String
+
+    var body: some View {
+        VStack {
+            if secure {
+                SecureField(label, text: $text)
+            } else {
+                TextField(label, text: $text)
+            }
+            if label == "Username" {
+                Max(count: 32, text: $text)
+            }
+        }
+        .textInputAutocapitalization(.never)
+        .autocorrectionDisabled(true)
+        .submitLabel(.done)
+    }
+}
+struct Max: View {
+
+    var count: Int
+    @Binding var text: String
+    var text2 = ""
+
+    var body: some View {
+        if text.count > count {
+            Text("32 chars max")
+                .foregroundColor(.secondary)
+                .onChange(of: text) {_ in
+                    text = String(text.dropLast())
+                }
+        } else if text2.count > count {
+            Text("32 chars max")
+                .foregroundColor(.secondary)
+        }}}
+
 struct ImageEditor: UIViewControllerRepresentable {
     typealias Coordinator = ImageEditorCoordinator
     @Binding var image: UIImage?
