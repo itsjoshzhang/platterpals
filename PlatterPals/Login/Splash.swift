@@ -54,7 +54,7 @@ struct Splash: View {
                 scale = 1.0
                 opacity = 1.0
             }
-        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
 
             // MARK: - TODO: - FIXME
             if DM.userData.count > 0 {

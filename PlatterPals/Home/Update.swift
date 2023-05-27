@@ -133,7 +133,7 @@ struct Update: View {
             }
         }
         .sheet(isPresented: $showProf) {
-            Profile(id: id, title: true, pad: false, avatar: avatar)
+            Profile(id: id, pad: 64, avatar: avatar)
                 .environmentObject(DM)
         }
         .confirmationDialog("", isPresented: $showAlert) {

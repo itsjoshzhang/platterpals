@@ -13,6 +13,7 @@ struct TitleBar: View {
     // ## SETUP VIEW ## \\
     var body: some View {
         VStack {
+            let user = DM.user(id: id)
         HStack {
         Button {
             showProf = true
@@ -21,8 +22,7 @@ struct TitleBar: View {
 
         RoundPic(width: 80, image: image)
 
-        VStack(alignment: .leading) {
-            let user = DM.user(id: id)
+        VStack(alignment: .leading, spacing: 8) {
             Text(user.name)
                 .font(.title).bold()
 
@@ -38,7 +38,7 @@ struct TitleBar: View {
         if DM.my().id != id {
             Block(id: id)
                 .environmentObject(DM)
-                .padding(.bottom, -32)
+                .padding(.bottom, -40)
             }
         }
         .padding(.horizontal, 16)
@@ -48,7 +48,7 @@ struct TitleBar: View {
             getImage(path: "avatars")
         }
         .sheet(isPresented: $showProf) {
-            Profile(id: id, title: true, pad: false, avatar: image)
+            Profile(id: id, pad: 64, avatar: image)
                 .environmentObject(DM)
         }
     }
@@ -78,14 +78,13 @@ struct Block: View {
 
         .confirmationDialog("", isPresented: $showAlert) {
             var data = DM.md()
-            if data.blocked.contains(id) {
 
-            Button("UNBLOCK USER") {
             if let i = data.blocked.firstIndex(of: id) {
-                data.blocked.remove(at: i)
-                DM.editData(data: data)
-
-            }}} else {
+                Button("UNBLOCK USER") {
+                    data.blocked.remove(at: i)
+                    DM.editData(data: data)
+                }
+            } else {
                 Button("Block this user") {
                     data.blocked.append(id)
                     DM.editData(data: data)

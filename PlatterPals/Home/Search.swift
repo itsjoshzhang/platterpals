@@ -96,7 +96,7 @@ struct Search: View {
 
         .navigationDestination(for: String.self) { id in
             if profile {
-                Profile(id: id, title: true, pad: true)
+                Profile(id: id, pad: -50)
                     .environmentObject(DM)
             } else {
                 Convo(id: id, pad: true)

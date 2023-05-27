@@ -11,6 +11,7 @@ class ChatGPTAPI: ObservableObject, @unchecked Sendable {
     var historyList = [GPTMessage]()
 
     // ## URL LOGIC ## \\
+
     private let urlSession = URLSession.shared
 
     private var urlRequest: URLRequest {

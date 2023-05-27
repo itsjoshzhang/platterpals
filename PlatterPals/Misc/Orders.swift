@@ -45,7 +45,7 @@ struct Orders: View {
             Cards(id: DM.my().id)
                 .environmentObject(OM)
                 .environmentObject(DM)
-                .padding(.top, 16)
+                .padding(.top, 8)
 
         List {
         ForEach(OM.orders) { ord in
@@ -61,13 +61,12 @@ struct Orders: View {
         Spacer()
 
         Group {
-        if data.favFoods.contains(ord.id) {
+        if let i = data.favFoods.firstIndex(of: ord.id) {
             Button("♥") {
-                if let i = data.favFoods.firstIndex(of: ord.id) {
-                    data.favFoods.remove(at: i)
-                    DM.editData(data: data)
-
-        }}} else {
+                data.favFoods.remove(at: i)
+                DM.editData(data: data)
+            }
+        } else {
             Button("♡") {
                 if data.favFoods.count < 3 {
                     data.favFoods.append(ord.id)

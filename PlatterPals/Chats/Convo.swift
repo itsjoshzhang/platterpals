@@ -21,7 +21,7 @@ struct Convo: View {
 
         TitleBar(id: id)
             .environmentObject(DM)
-            .padding(.top, pad ? -48: 16)
+            .padding(.top, pad ? -50: 16)
 
         ScrollView {
             ForEach(messages) { msg in
@@ -69,7 +69,7 @@ struct Convo: View {
             var data = DM.md()
             getChats(sender: myID)
 
-            if !(data.chatting.contains(id) || id.isEmpty) {
+            if !data.chatting.contains(id) {
                 data.chatting.insert(id, at: 0)
                 DM.editData(data: data)
             }}}}

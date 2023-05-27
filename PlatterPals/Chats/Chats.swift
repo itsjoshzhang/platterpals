@@ -2,11 +2,13 @@ import SwiftUI
 
 struct Chats: View {
 
-    // ## SETUP VIEW ## \\
+    // ## TRACK INFO ## \\
+    @State var isEmpty = false
     @State var showMaps = false
     @State var showSearch = false
     @State var chatting = [String]()
 
+    // ## SETUP VIEW ## \\
     @EnvironmentObject var MD: MapsData
     @EnvironmentObject var DM: DataManager
 
@@ -20,7 +22,7 @@ struct Chats: View {
             .onTapGesture {
                 showSearch = true
             }
-        if chatting.isEmpty {
+        if isEmpty {
             Maps(text: "No chats yet? Explore below!")
                 .environmentObject(MD)
                 .environmentObject(DM)
@@ -42,16 +44,13 @@ struct Chats: View {
         .navigationDestination(for: String.self) { id in
             Convo(id: id, pad: true)
                 .environmentObject(DM)
-        }
-        .onChange(of: DM.md().chatting) {_ in
-            refresh()
         }}}
         .navigationTitle("My Chats")
         .background {
             Back()
         }
         .onAppear {
-            refresh()
+            getChats()
         }
         // ## OTHER VIEWS ## \\
 
@@ -64,7 +63,7 @@ struct Chats: View {
                 .environmentObject(MD)
                 .environmentObject(DM)
         }
-        if !chatting.isEmpty {
+        if !isEmpty {
             VStack {
                 Spacer()
             Button {
@@ -75,14 +74,17 @@ struct Chats: View {
 
     // ## FUNCTIONS ## \\
 
-    func refresh() {
+    func getChats() {
         let data = DM.md()
-        for id in data.chatting {
+        chatting.removeAll()
 
+        for id in data.chatting {
             if !(data.blocked.contains(id) || chatting.contains(id)) {
                 chatting.append(id)
-            }}}
-
+            }
+        }
+        isEmpty = chatting.isEmpty
+    }
     func delete(atOffsets offsets: IndexSet) {
         chatting.remove(atOffsets: offsets)
         var data = DM.md()
@@ -92,5 +94,9 @@ struct Chats: View {
     }
     func move(fromOffsets start: IndexSet, toOffset end: Int) {
         chatting.move(fromOffsets: start, toOffset: end)
+        var data = DM.md()
+
+        data.chatting = chatting
+        DM.editData(data: data)
     }
 }

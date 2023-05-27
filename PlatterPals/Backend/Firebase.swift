@@ -65,6 +65,7 @@ class DataManager: ObservableObject {
                             text, prof: prof)
             self.userList.append(user)
         }}}
+
         // access userData
         FS.collection("userData").getDocuments { col,_ in
             if let col = col {
@@ -81,6 +82,7 @@ class DataManager: ObservableObject {
             chatting: chatting, favUsers: favUsers, blocked: blocked)
             self.userData.append(userData)
         }}}
+
         // update version
         let doc = FS.collection("accFlags").document("APP_UPDATE")
         doc.getDocument { doc,_ in

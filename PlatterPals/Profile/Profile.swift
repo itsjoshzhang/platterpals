@@ -14,10 +14,9 @@ struct MyProfile: View {
 
         // ## SHOW PROFILE ## \\
 
-        Profile(id: my.id, title: false, pad: false, avatar:
-            DM.myAvatar, profile: DM.myProfile, showUpdate: true)
+        Profile(id: my.id, pad: 0, avatar: DM.myAvatar, profile:
+            DM.myProfile, showUpdate: true)
             .environmentObject(DM)
-            .navigationTitle(my.name)
 
         .toolbar {
             ToolbarItem {
@@ -50,9 +49,7 @@ struct Profile: View {
 
     // ## TRACK INFO ## \\
     var id: String
-    var title: Bool
-    var pad: Bool
-
+    var pad: Int
     @State var avatar: UIImage?
     @State var profile: UIImage?
     @State var showEdit = false
@@ -71,11 +68,10 @@ struct Profile: View {
         ScrollView {
         VStack(alignment: .leading, spacing: 16) {
 
-        if title {
-            Text(user.name)
-                .font(.largeTitle).bold()
-                .padding(.top, pad ? -48: 64)
-        }
+        Text(user.name)
+            .font(.largeTitle).bold()
+            .padding(.top, CGFloat(pad))
+
         HStack(spacing: 16) {
             RoundPic(width: 80, image: avatar)
 

@@ -30,7 +30,7 @@ struct Maps: View {
                             .environmentObject(DM)
                     }}}
             .navigationDestination(for: String.self) { id in
-                Profile(id: id, title: true, pad: true)
+                Profile(id: id, pad: -50)
                     .environmentObject(DM)
             }
             LocationButton(.currentLocation) {
