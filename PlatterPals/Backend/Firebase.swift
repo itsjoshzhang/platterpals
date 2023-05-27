@@ -194,13 +194,14 @@ class DataManager: ObservableObject {
         let SR = SR.child("\(path)/\(my().id).jpg")
         let pfp = (path == "avatars")
 
-        // resize jpg image
-        let image = image.resize(width: 200, pfp: pfp)
-        let jpeg = image.jpegData(compressionQuality: 1)
+        // resize the image
+        let width = min(image.size.width, 1024)
+        let image = image.resize(width: width, pfp: pfp)
 
         // compute metadata
         let meta = StorageMetadata()
         meta.contentType = "image/jpg"
+        let jpeg = image.jpegData(compressionQuality: pfp ? 0.25: 1)
 
         // put into storage
         if let jpeg = jpeg {
@@ -208,7 +209,7 @@ class DataManager: ObservableObject {
         }
         // update prof value
         if !pfp {
-            userList[myIndex].prof = -99
+            userList[myIndex].prof = -1
             editUser(user: my())
         }
     }

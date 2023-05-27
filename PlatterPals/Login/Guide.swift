@@ -1,52 +1,94 @@
 import SwiftUI
 
 struct Guide: View {
+
+    @State var tag: Int
+    @EnvironmentObject var DM: DataManager
+
     var body: some View {
-        TabView {
-            Guide2(image: 1, title: "Welcome to PlatterPals!",
-            text: "Find food and restaurants in your area using an intelligent AI. Make friends with similar palates and meet your culinary soulmate!")
+        TabView(selection: $tag) {
 
-            Guide2(image: 2, title: "Can't decide what to eat?",
-            text: "Let your GPT-powered AI assistant generate the perfect order. Just fill in your favorite cuisines and follow some foodies near you!")
+        Guide2(page: 0, title: "Welcome to PlatterPals!",
+            text: "Add an avatar and bio to tell us more about you.")
+            .tag(0)
 
-            Guide2(image: 3, title: "Go find your PlatterPal!",
-            text: "We've made it easy to match with people who meet your tastes. Simply swipe left on a profile to remove and swipe right to approve!")
+        Guide2(page: 1, title: "Find foodies near you!",
+            text: "Chat with friends or find new people on the map.")
+            .tag(1)
+
+        Guide2(page: 2, title: "Matchmaking made easy!",
+            text: "Swipe left or right on a profile to follow them.")
+            .tag(2)
+
+        Guide2(page: 3, title: "Don't know what to eat?",
+            text: "Let your AI PlatterPal choose the perfect order.")
+            .tag(3)
+
+        Guide2(page: 4, title: "Polish up your profile!",
+            text: "Add a cover photo so fellow foodies can see you.")
+            .tag(4)
         }
+        .environmentObject(DM)
         .indexViewStyle(.page(backgroundDisplayMode: .always))
         .tabViewStyle(.page(indexDisplayMode: .always))
     }
 }
 struct Guide2: View {
     
-    var image: Int
+    var page: Int
     var title: String
     var text: String
+    @State var image: UIImage?
+
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var DM: DataManager
     
     var body: some View {
+        var my = DM.my()
         VStack(spacing: 16) {
 
-            if image == 3 {
-                Text("").padding(10)
-            }
-            Image("guide\(image)")
+        Text(title)
+            .foregroundColor(.pink)
+            .font(.title).bold()
+
+        if page == 0 {
+            EditProf()
+                .environmentObject(DM)
+                .frame(height: UIwidth)
+
+        } else if page == 4 {
+            Upload2(scale: 0.5, image: $image)
+
+        } else {
+            Image("guide\(page)")
                 .resizable()
                 .scaledToFit()
-            
-            Text(title)
-                .foregroundColor(.pink)
-                .font(.title).bold()
-            
-            Text(text)
-                .multilineTextAlignment(.center)
-                .foregroundColor(.secondary)
-            
-            if image == 3 {
-                Button("Get Started") {
+        }
+        Text(text)
+            .multilineTextAlignment(.center)
+            .foregroundColor(.secondary)
+            .padding(.horizontal, 16)
+            .font(.title2)
+
+        if page == 4 {
+            Button("Get Started") {
+                if let image = image {
+                    DM.putImage(image: image, path: "profiles")
                     dismiss()
-                }
-                .buttonStyle(.borderedProminent)
-            }}.padding(16)}}
+                }}
+            .buttonStyle(.borderedProminent)
+        }}
+        .background {
+            Back()
+        }
+        .onAppear {
+            my.prof = page
+            DM.editUser(user: my)
+        }
+        .onDisappear {
+            my.prof = 4
+            DM.editUser(user: my)
+        }}}
 
 struct Terms: View {
     var body: some View {
@@ -69,8 +111,6 @@ struct Terms: View {
             Back()
         }}}}
 
-
-// ## CITIES MENU ## \\
 struct Cities: View {
 
     var addAll: Bool

@@ -5,7 +5,6 @@ import Firebase
 private let VERSION = 0
 // MARK: - CHANGE THIS
 
-
 @main
 // ## START APP ## \\
 struct AppInit: App {
@@ -18,15 +17,18 @@ struct AppInit: App {
             Splash()
         }}}
 
-// ## PAGE TABS ## \\
 struct MyTabView: View {
 
+    // ## TRACK INFO ## \\
     @State var tag = 3
+    @State var showGuide = false
+
     @StateObject var MD = MapsData()
     @EnvironmentObject var DM: DataManager
-    
+
     var body: some View {
         Group {
+            let my = DM.my()
         if DM.version == VERSION {
 
         // ## NO UPDATE ## \\
@@ -55,15 +57,23 @@ struct MyTabView: View {
                 Image(systemName: "person")
             }.tag(5)
         }
+        // ## MODIFIERS ## \\
+
         .environmentObject(DM)
+        .sheet(isPresented: $showGuide) {
+            Guide(tag: my.prof)
+                .environmentObject(DM)
+        }
         .onAppear {
+            showGuide = my.prof >= 0
+
             if let c = MD.LM?.location?.coordinate {
-                DM.sendPin(pin: Location(id: DM.my().id,
+                DM.sendPin(pin: Location(id: my.id,
                     lat: c.latitude, lon: c.longitude))
-        }}} else {
 
         // ## NEED UPDATE ## \\
 
+        }}} else {
         VStack(spacing: 16) {
 
         Image("logo")
@@ -86,13 +96,12 @@ struct MyTabView: View {
             Back()
         }}}}}
 
-// ## PILL BUTTON ## \\
+// ## GLOW BUTTON ## \\
 struct Glow: View {
+
     var text: String
     var body: some View {
         let spark = Image(systemName: "sparkles")
-
-        // ## SHOW TEXT ## \\
 
         Text("\(spark) \(text) \(spark)")
             .font(.headline)
@@ -110,11 +119,9 @@ struct Blank: View {
     var secure = false
     @Binding var text: String
 
+    // ## TEXT LOGIC ## \\
     var body: some View {
         VStack {
-
-            // ## TEXT LOGIC ## \\
-
             if secure {
                 SecureField(label, text: $text)
             } else {

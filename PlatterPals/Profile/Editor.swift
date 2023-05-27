@@ -56,11 +56,9 @@ struct EditProf: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
+    // ## USER INFO ## \\
+
     var body: some View {
-        NavigationStack {
-
-        // ## USER INFO ## \\
-
         VStack(spacing: 16) {
             var my = DM.my()
         HStack(spacing: 16) {
@@ -79,13 +77,12 @@ struct EditProf: View {
             Text("City: ")
                 .font(.headline)
             Cities(addAll: false, city: $city)
-                .buttonStyle(.bordered)
         }
         // ## UPLOAD PIC ## \\
 
         HStack {
-            PhotosPicker("Pick Photo", selection: $imageItem,
-                         matching: .images)
+            PhotosPicker("Photos \(Image(systemName: "photo"))",
+                         selection: $imageItem, matching: .images)
 
             if image != nil {
                 Button("\(Image(systemName: "crop"))") {
@@ -134,17 +131,15 @@ struct EditProf: View {
             text = my.text
             image = DM.myAvatar
         }
-        Spacer()
+        .onChange(of: DM.myAvatar) {_ in
+            image = DM.myAvatar
+        }
         }
         .padding(16)
-        .navigationTitle("Edit Profile")
-        .background {
-            Back()
-        }
         .fullScreenCover(isPresented: $showCrop) {
             ImageEditor(image: $image, show: $showCrop)
-        }}}
-    
+        }
+    }
     func count(_ text: String) -> Bool {
         return (text.isEmpty || text.count > 200)
     }

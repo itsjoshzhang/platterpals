@@ -2,6 +2,8 @@ import SwiftUI
 
 struct Chats: View {
 
+    // MARK: - TODO: - Add user to recipient's chatting. Prevent chatting / convos showing up at all if blocked.
+
     // ## TRACK INFO ## \\
     @State var isEmpty = false
     @State var showMaps = false

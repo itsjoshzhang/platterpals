@@ -119,7 +119,7 @@ struct Profile: View {
         // ## SHOW UPDATE ## \\
 
         VStack {
-        if user.prof < 0 {
+        if user.prof == -1 {
             Button("\(Image(systemName: "photo"))") {
                 withAnimation {
                     showUpdate.toggle()
@@ -151,9 +151,15 @@ struct Profile: View {
             }
         }
         .sheet(isPresented: $showEdit) {
-            EditProf()
-                .environmentObject(DM)
-        }
+            NavigationStack {
+                Group {
+                    EditProf(image: DM.myAvatar)
+                        .environmentObject(DM)
+                        .navigationTitle("Edit Profile")
+                }
+                .background {
+                    Back()
+                }}}
         .sheet(isPresented: $showChat) {
             Convo(id: id, pad: false)
                 .environmentObject(DM)

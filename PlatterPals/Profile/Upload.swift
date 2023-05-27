@@ -3,12 +3,10 @@ import PhotosUI
 
 struct Upload: View {
 
-    // ## IMAGE VARS ## \\
+    // ## TRACK INFO ## \\
     @State var text = ""
     @State var image: UIImage?
-    @State var showCrop = false
     @FocusState var focus: Bool
-    @State var imageItem: PhotosPickerItem?
 
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
@@ -20,50 +18,7 @@ struct Upload: View {
         ScrollView {
         VStack(spacing: 16) {
 
-        // ## SHOW IMAGE ## \\
-
-        if let image = image {
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFit()
-                .frame(maxHeight: UIheight * 0.75)
-        } else {
-            ZStack {
-                Rectangle()
-                    .fill(.white)
-                Image("upload")
-                    .resizable()
-                    .opacity(0.25)
-                    .border(.pink, width: 3)
-            }
-            .scaledToFit()
-            .frame(maxHeight: UIheight * 0.5)
-        }
-        // ## UPLOAD PIC ## \\
-
-        Text("Use template for best result")
-            .foregroundColor(.secondary)
-            .font(.subheadline)
-
-        HStack {
-            PhotosPicker("Pick Photo", selection: $imageItem,
-                         matching: .images)
-
-            if image != nil {
-                Button("\(Image(systemName: "crop"))") {
-                    showCrop = true
-        }}}
-        .buttonStyle(.bordered)
-
-        .onChange(of: imageItem) {_ in
-            imageItem?.loadTransferable(type: Data.self) { res in
-
-                switch res {
-                case .success(let data):
-                    image = UIImage(data: data ?? Data())
-                case .failure(_):
-                    return
-                }}}
+            Upload2(scale: 0.75, image: $image)
             
         // ## CLICKABLES ## \\
 
@@ -97,7 +52,61 @@ struct Upload: View {
         }
         .onTapGesture {
             focus = false
+        }}}}}
+
+struct Upload2: View {
+
+    // ## TRACK INFO ## \\
+    var scale: CGFloat
+    @State var showCrop = false
+    @Binding var image: UIImage?
+    @State var imageItem: PhotosPickerItem?
+
+    // ## SHOW IMAGE ## \\
+    var body: some View {
+        Group {
+        if let image = image {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFit()
+                .frame(maxHeight: UIheight * scale)
+        } else {
+            ZStack {
+                Rectangle()
+                    .fill(.white)
+                Image("upload")
+                    .resizable()
+                    .opacity(0.25)
+                    .border(.pink, width: 3)
+            }
+            .scaledToFit()
+            .frame(maxHeight: UIheight * 0.5)
+            
+            Text("Use template for best result")
+                .foregroundColor(.secondary)
+                .font(.subheadline)
         }
+        // ## UPLOAD PIC ## \\
+
+        HStack {
+            PhotosPicker("Photos \(Image(systemName: "photo"))",
+                         selection: $imageItem, matching: .images)
+
+            if image != nil {
+                Button("\(Image(systemName: "crop"))") {
+                    showCrop = true
+        }}}
+        .buttonStyle(.bordered)
+
+        .onChange(of: imageItem) {_ in
+            imageItem?.loadTransferable(type: Data.self) { res in
+
+                switch res {
+                case .success(let data):
+                    image = UIImage(data: data ?? Data())
+                case .failure(_):
+                    return
+                }}}}
         .fullScreenCover(isPresented: $showCrop) {
             ImageEditor(image: $image, show: $showCrop)
-        }}}}}
+        }}}

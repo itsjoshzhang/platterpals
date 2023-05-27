@@ -42,8 +42,8 @@ struct Signup: View {
                 .font(.subheadline)
         }
         HStack {
-            PhotosPicker("Pick Photo", selection: $imageItem,
-                         matching: .images)
+            PhotosPicker("Photos \(Image(systemName: "photo"))",
+                         selection: $imageItem, matching: .images)
 
             if image != nil {
                 Button("\(Image(systemName: "crop"))") {
@@ -113,7 +113,8 @@ struct Signup: View {
             ImageEditor(image: $image, show: $showCrop)
         }
         .sheet(isPresented: $showGuide) {
-            Guide()
+            Guide(tag: 0)
+                .environmentObject(DM)
         }
         .sheet(isPresented: $showTerms) {
             Terms()
