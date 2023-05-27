@@ -99,7 +99,7 @@ struct Profile: View {
         // ## USER INFO ## \\
 
         HStack {
-            Text("\(user.city), CA")
+            Text("\(user.city)")
                 .font(.headline)
             Spacer()
             Text("♥ \(DM.sumHeart(id: user.id))")

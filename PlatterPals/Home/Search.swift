@@ -21,7 +21,7 @@ struct Row: View {
             .foregroundColor(.pink)
             .font(.headline)
 
-        Text("\(user.city), CA")
+        Text("\(user.city)")
             .foregroundColor(.secondary)
             .font(.subheadline)
         }

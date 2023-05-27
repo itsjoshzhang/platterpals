@@ -56,7 +56,7 @@ struct Update: View {
                 .font(.largeTitle).bold()
 
         HStack {
-            Text("\(user.city), CA")
+            Text("\(user.city)")
                 .font(.headline)
             Spacer()
 

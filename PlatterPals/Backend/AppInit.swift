@@ -12,7 +12,7 @@ struct AppInit: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     init() {
-        FirebaseApp.configure()
+        // FirebaseApp.configure()
         UIView.appearance().tintColor = .systemPink
     }
     var body: some Scene {
