@@ -72,7 +72,7 @@ struct Login: View {
         .onAppear {
             Auth.auth().addStateDidChangeListener {_,user in
                 if let user = user {
-                    DM.initUser(id: user.email ?? "!")
+                    DM.initUser(id: user.email ?? email)
                     withAnimation {
                         loggedIn = true
                     }}}

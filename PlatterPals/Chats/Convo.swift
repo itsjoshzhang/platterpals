@@ -67,7 +67,7 @@ struct Convo: View {
         .onAppear {
             focus = true
             var data = DM.md()
-            getChats(sender: myID)
+            getChats(myID: myID)
 
             if !data.chatting.contains(id) {
                 data.chatting.insert(id, at: 0)
@@ -76,13 +76,14 @@ struct Convo: View {
 
     // ## FUNCTIONS ## \\
 
-    func getChats(sender: String) {
+    func getChats(myID: String) {
         FS.collection("messages").addSnapshotListener { snap, error in
         if let snap = snap {
         messages = snap.documents.compactMap { doc -> Message? in
 
         if let msg = try? doc.data(as: Message.self) {
-            if (msg.sender == sender && msg.getter == id) {
+            if (msg.sender == myID && msg.getter == id ||
+                msg.sender == id && msg.getter == myID) {
                 return msg }}
         return nil
         }

@@ -73,10 +73,10 @@ struct Signup: View {
         }
         // ## USER INFO ## \\
 
-        HStack(spacing: 0) {
+        HStack(spacing: 16) {
             Text("Nearest City: ")
                 .font(.headline)
-                .padding(.leading, 64)
+
             Cities(addAll: false, city: $city)
                 .buttonStyle(.bordered)
         }
@@ -124,6 +124,7 @@ struct Signup: View {
             showAlert = true
         } else {
             DM.makeUser(id: email, name: name, city: city)
+            DM.initUser(id: email)
             if let image = image {
                 DM.putImage(image: image, path: "avatars")
             }}}}

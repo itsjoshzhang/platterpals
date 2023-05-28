@@ -43,11 +43,11 @@ struct Home: View {
         // return shuffled copy of userList
         let data = DM.md()
 
-        if DM.my().id != user.id, user.prof,
-        // dont show my own prof, user must have a prof
+        if DM.my().id != user.id, user.id != "!",
+        // dont show my own profile or the debug account
 
-        !data.blocked.contains(user.id),
-        // don't show blocked users
+        !data.blocked.contains(user.id), user.prof,
+        // don't show blocked users and missing profiles
 
         (following && data.favUsers.contains(user.id))
         // if following checked, show from favUsers only

@@ -2,8 +2,6 @@ import SwiftUI
 
 struct Chats: View {
 
-    // MARK: - TODO: - Add sender's id to recipient's chatting list. Prevent chats / convos from showing up at all if blocked.
-
     // ## TRACK INFO ## \\
     @State var isEmpty = false
     @State var showMaps = false

@@ -136,7 +136,7 @@ class DataManager: ObservableObject {
                            suggest: true, privacy: false)
         editSets(sets: sets)
         
-        initUser(id: id)
+//        initUser(id: id)
     }
     
     // called at Profile
@@ -150,9 +150,12 @@ class DataManager: ObservableObject {
     
     // called everywhere
     func editData(data: UserData) {
-        let doc = FS.collection("userData").document(data.id)
         userData[myIndex] = data
-        
+        sendData(data: data)
+    }
+    private func sendData(data: UserData) {
+        let doc = FS.collection("userData").document(data.id)
+
         doc.setData(["id": data.id, "favFoods": data.favFoods, "favUsers":
         data.favUsers, "chatting": data.chatting, "blocked": data.blocked])
     }
@@ -172,8 +175,14 @@ class DataManager: ObservableObject {
         
         doc.setData(["id": msg.id, "text": msg.text, "sender":
             msg.sender, "getter": msg.getter, "time": msg.time])
+
+        var getter = data(id: msg.getter)
+        if !getter.chatting.contains(msg.sender) {
+
+            getter.chatting.insert(msg.sender, at: 0)
+            sendData(data: getter)
+        }
     }
-    
     // called at Order
     func sendOrder(ord: AIOrder) {
         let doc = FS.collection("aiOrders").document(ord.id)

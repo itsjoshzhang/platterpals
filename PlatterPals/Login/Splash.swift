@@ -26,6 +26,8 @@ struct Splash: View {
 
         // ## LOGO & TEXT ## \\
 
+        ZStack {
+        Back()
         VStack(spacing: 16) {
         Image("logo")
 
@@ -40,14 +42,11 @@ struct Splash: View {
                 .scaleEffect(2)
                 .tint(.pink)
                 .padding(16)
-            }
-        }
+        }}}
         .foregroundColor(.pink)
         .scaleEffect(scale)
         .opacity(opacity)
-        .background {
-            Back()
-        }
+
         // ## MODIFIERS ## \\
 
         .onAppear {

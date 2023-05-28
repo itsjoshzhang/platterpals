@@ -56,7 +56,7 @@ struct Search: View {
         NavigationStack {
         VStack(spacing: 16) {
 
-        // ## TEXTFIELDS ## \\
+        // ## PARAMETERS ## \\
 
         Group {
         TextField("Enter a username", text: $name)
@@ -102,6 +102,9 @@ struct Search: View {
                 Convo(id: id, pad: true)
                     .environmentObject(DM)
                 }}}
+
+        // ## MODIFIERS ## \\
+
         .navigationTitle("Search 🔍")
         .background {
             Back()
@@ -109,16 +112,23 @@ struct Search: View {
         .onAppear {
             focus = true
         }
-        // ## HACKY SHIT ## \\
-
         .onChange(of: name) {_ in
-            userIDs.removeAll()
+            search()
+        }
+        .onChange(of: following) {_ in
+            search()
+        }}}
 
-            for i in (0 ..< min(DM.userList.count, 4)) {
-            // loop through userList & show maximum 4 items
+    // ## HACKY SHIT ## \\
+
+    func search() {
+        userIDs.removeAll()
+
+        for i in (0 ..< min(DM.userList.count, 4)) {
+            // loop through userList and show max of 4 items
             let user = DM.userList[i]
 
-            if !name.isEmpty, compare(user.name, name),
+            if check(name), compare(user.name, name),
             // if name is valid and is a prefix of user.name
 
             (following && DM.md().favUsers.contains(user.id))
@@ -127,11 +137,15 @@ struct Search: View {
             || !following, (city == "All" || compare(user.city, city)) {
             // if not & (if no city: pass, else: check city)
                 userIDs.append(user.id)
-        }}}}}
+        }}}
 
     func compare(_ name1: String, _ name2: String) -> Bool {
         let l1 = name1.lowercased()
         let l2 = name2.lowercased()
         return (l1.hasPrefix(l2) || l2.hasPrefix(l1))
+    }
+    func check(_ name: String) -> Bool {
+        return !(name == "!" ||
+        name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
     }
 }

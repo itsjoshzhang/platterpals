@@ -38,7 +38,7 @@ struct TitleBar: View {
         if DM.my().id != id {
             Block(id: id)
                 .environmentObject(DM)
-                .padding(.bottom, -40)
+                .padding(.bottom, -64)
             }
         }
         .padding(.horizontal, 16)
@@ -112,7 +112,7 @@ struct Bubble: View {
         }
         Text(message.text)
             .padding(16)
-            .background(sender ? .pink.opacity(0.25): .secondary)
+            .background(sender ? .pink.opacity(0.25): UIgray)
             .cornerRadius(16)
 
             .frame(maxWidth: UIwidth, alignment: sender ?
