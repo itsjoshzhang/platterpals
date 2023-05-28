@@ -77,6 +77,7 @@ struct Guide2: View {
                     dismiss()
                 }}
             .buttonStyle(.borderedProminent)
+            .disabled(image == nil)
         }}
         .background {
             Back()
@@ -86,20 +87,21 @@ struct Guide2: View {
             DM.editUser(user: my)
         }
         .onDisappear {
-            my.prof = 4
-            DM.editUser(user: my)
-        }}}
+            if page != 4 {
+                my.prof = 4
+                DM.editUser(user: my)
+            }}}}
 
 struct Terms: View {
     var body: some View {
         NavigationStack {
-        VStack(spacing: 16) {
+        VStack(alignment: .leading, spacing: 16) {
 
-        Text("PlatterPals displays user-generated content. This includes other users and yourself. We take specific steps to moderate content and prevent abusive behavior.")
+        Text("PlatterPals displays user-generated content. This includes yourself and other users. We take specific steps to moderate content and prevent abusive behavior.")
 
-        Text("There is no tolerance for objectionable content or abusive users. This includes profiles and chats that have offensive content or are unsuitable for viewing.")
+        Text("There is no tolerance for offensive content or abusive users. This includes profiles and chats that display inappropiate images or are unsuitable for viewing.")
 
-        Text("Users may filter such content and hide specific profiles, flag users on any of their pages / posts, and block abusive accounts in the profile and chat pages.")
+        Text("Users may filter such content and hide specific profiles, report accounts by flagging any profile / post, and block abusive users in the profile / chat pages.")
 
         Text("PlatterPals will act on such content within 24 hours by removing it and banning the flagged user. For support or inquiries, please visit www.platterpals.com.")
         Spacer()

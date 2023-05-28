@@ -32,11 +32,12 @@ struct NewOrder: View {
                 Text("Menu item:")
                 TextField("Add a menu item", text: $order)
             }
+            Max(count: 32, text: $order)
             HStack {
                 Text("Restaurant:")
                 TextField("Add a restaurant", text: $place)
             }
-            Max(count: 32, text: $order, text2: place)
+            Max(count: 32, text: $place)
         }
         .textFieldStyle(.roundedBorder)
         .submitLabel(.done)

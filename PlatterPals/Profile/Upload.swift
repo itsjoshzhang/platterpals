@@ -81,11 +81,11 @@ struct Upload2: View {
             }
             .scaledToFit()
             .frame(maxHeight: UIheight * 0.5)
-            
-            Text("Use template for best result")
-                .foregroundColor(.secondary)
-                .font(.subheadline)
         }
+        Text("Use template for best result")
+            .foregroundColor(.secondary)
+            .font(.subheadline)
+
         // ## UPLOAD PIC ## \\
 
         HStack {

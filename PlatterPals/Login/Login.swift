@@ -104,10 +104,10 @@ struct Login: View {
             if let e = e {
                 text = e.localizedDescription
 
-                if text.hasPrefix("There ") {
+                if text.hasSuffix("ed.") {
                     text = "The email address is invalid."
-                } else if text.hasPrefix("The "){
-                    text = "The password is invalid."
+                } else if text.hasSuffix("rd.") {
+                    text = "The given password is invalid."
                 }
                 showAlert = true
             }}}}

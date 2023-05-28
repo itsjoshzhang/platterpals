@@ -97,9 +97,9 @@ struct AIOrder: Identifiable, Hashable, Codable {
 struct Setting: Identifiable, Hashable, Codable {
     var id = " "
     var notifs = true
-    var suggest = true
-    var privacy = true
     var locate = true
+    var suggest = true
+    var privacy = false
 }
 
 struct Div: View {
@@ -168,19 +168,17 @@ struct Max: View {
 
     var count: Int
     @Binding var text: String
-    var text2 = ""
 
     var body: some View {
         if text.count > count {
-            Text("32 chars max")
+            Text("\(count) chars max")
                 .foregroundColor(.secondary)
+                .font(.subheadline)
+
                 .onChange(of: text) {_ in
-                    text = String(text.dropLast())
-                }
-        } else if text2.count > count {
-            Text("32 chars max")
-                .foregroundColor(.secondary)
-        }}}
+                    if (text.count > count + 1) {
+                        text = String(text.dropLast())
+                    }}}}}
 
 struct ImageEditor: UIViewControllerRepresentable {
     typealias Coordinator = ImageEditorCoordinator

@@ -35,11 +35,12 @@ struct Splash: View {
         if internet {
             Text("Poor internet. Please refresh app.")
                 .font(.headline)
-        }
-        ProgressView()
-            .scaleEffect(2)
-            .tint(.pink)
-            .padding(16)
+        } else {
+            ProgressView()
+                .scaleEffect(2)
+                .tint(.pink)
+                .padding(16)
+            }
         }
         .foregroundColor(.pink)
         .scaleEffect(scale)
@@ -54,10 +55,8 @@ struct Splash: View {
                 scale = 1.0
                 opacity = 1.0
             }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-
-            // MARK: - TODO: - FIXME
-            if DM.userData.count > 0 {
+        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+            if DM.connect {
                 withAnimation {
                     showNext = true
                 }
@@ -111,8 +110,8 @@ struct Reset: View {
 
     func resetLogin() {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
-            if let error = error {
-                alertText = error.localizedDescription
+            if error != nil {
+                alertText = "The email address is invalid."
                 showAlert = true
             } else {
                 dismiss()

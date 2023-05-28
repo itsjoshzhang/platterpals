@@ -14,8 +14,9 @@ class DataManager: ObservableObject {
     @Published var settings = Setting()
 
     // keep user info
-    var version = -1
+    var version = 0
     var myIndex = 0
+    var connect = false
     @Published var myAvatar: UIImage?
     @Published var myProfile: UIImage?
 
@@ -84,9 +85,10 @@ class DataManager: ObservableObject {
         }}}
 
         // update version
-        let doc = FS.collection("accFlags").document("APP_UPDATE")
+        let doc = FS.collection("accFlags").document("APP_STATUS")
         doc.getDocument { doc,_ in
-            self.version = doc?.data()?["version"] as? Int ?? -1
+            self.version = doc?.data()?["version"] as? Int ?? 0
+            self.connect = doc?.data()?["connect"] as? Bool ?? false
         }
     }
     // called at init
@@ -100,12 +102,12 @@ class DataManager: ObservableObject {
 
         if self.my().id == id {
             let notifs  = data["notifs"]  as? Bool ?? true
-            let suggest = data["suggest"] as? Bool ?? true
-            let privacy = data["privacy"] as? Bool ?? true
             let locate  = data["locate"]  as? Bool ?? true
+            let suggest = data["suggest"] as? Bool ?? true
+            let privacy = data["privacy"] as? Bool ?? false
 
-            self.settings = Setting(id: id, notifs: notifs, suggest:
-                            suggest, privacy: privacy, locate: locate)
+            self.settings = Setting(id: id, notifs: notifs, locate:
+                        locate, suggest: suggest, privacy: privacy)
             }}}}}
 
     // called at Login
@@ -130,8 +132,8 @@ class DataManager: ObservableObject {
             [String](), favUsers: [String](), blocked: [String]())
         editData(data: data)
 
-        let sets = Setting(id: id, notifs: true, suggest: true,
-                           privacy: true, locate: true)
+        let sets = Setting(id: id, notifs: true, locate: true,
+                           suggest: true, privacy: true)
         editSets(sets: sets)
     }
     
@@ -201,7 +203,7 @@ class DataManager: ObservableObject {
         // compute metadata
         let meta = StorageMetadata()
         meta.contentType = "image/jpg"
-        let jpeg = image.jpegData(compressionQuality: pfp ? 0.25: 1)
+        let jpeg = image.jpegData(compressionQuality: 0.25)
 
         // put into storage
         if let jpeg = jpeg {

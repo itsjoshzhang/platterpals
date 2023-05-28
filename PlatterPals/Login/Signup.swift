@@ -27,20 +27,17 @@ struct Signup: View {
 
     var body: some View {
         NavigationStack {
-        ScrollView {
         VStack(spacing: 16) {
 
         // ## SHOW IMAGE ## \\
 
-        if let image = image {
-            RoundPic(width: 160, image: image)
-        } else {
-            RoundPic(width: 160, image: nil)
+        RoundPic(width: 160, image: image)
+            .padding(.top, -64)
 
-            Text("Crop to square for best result")
-                .foregroundColor(.secondary)
-                .font(.subheadline)
-        }
+        Text("Crop to square for best result")
+            .foregroundColor(.secondary)
+            .font(.subheadline)
+
         HStack {
             PhotosPicker("Photos \(Image(systemName: "photo"))",
                          selection: $imageItem, matching: .images)
@@ -80,6 +77,7 @@ struct Signup: View {
         HStack(spacing: 0) {
             Text("Nearest City: ")
                 .font(.headline)
+                .padding(.leading, 64)
             Cities(addAll: false, city: $city)
                 .buttonStyle(.bordered)
         }
@@ -93,7 +91,8 @@ struct Signup: View {
         Button("Sign Up") {
             signupAuth()
         }
-        .disabled(count(name) || count(city))
+        .disabled(email.isEmpty || pass.isEmpty
+                 || count(name) || count(city))
         .buttonStyle(.borderedProminent)
 
         // ## MODIFIERS ## \\
@@ -118,7 +117,7 @@ struct Signup: View {
         }
         .sheet(isPresented: $showTerms) {
             Terms()
-        }}}}
+        }}}
 
     // ## FUNCTIONS ## \\
 

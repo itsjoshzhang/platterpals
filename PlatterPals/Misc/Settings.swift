@@ -56,7 +56,8 @@ struct Settings: View {
                     Text(id == "..." ? id: DM.user(id: id).name)
                 }
             }
-            Spacer()
+            .frame(maxWidth: UIwidth, alignment: .leading)
+
             Button("Unblock") {
                 if let i = data.blocked.firstIndex(of: blockID) {
                     data.blocked.remove(at: i)
@@ -67,7 +68,7 @@ struct Settings: View {
             .disabled(blockID == "...")
             .buttonStyle(.bordered)
             .foregroundColor(.none)
-        }
+            }
         }
         // ## PROFILE INFO ## \\
 
@@ -77,17 +78,17 @@ struct Settings: View {
             .foregroundColor(.black)
         Div()
         HStack {
-            Text("Allow profile suggestions")
-            Spacer()
-            Toggle("", isOn: $suggest)
-                .frame(width: 50)
-        }
-        HStack {
             Text("Allow location sharing")
             Spacer()
             Toggle("", isOn: $locate)
                 .frame(width: 50)
         }
+        HStack {
+            Text("Allow profile suggestions")
+            Spacer()
+            Toggle("", isOn: $suggest)
+                .frame(width: 50)
+            }
         }
         // ## SECURITY ## \\
 
@@ -111,7 +112,7 @@ struct Settings: View {
             Spacer()
             Toggle("", isOn: $privacy)
                 .frame(width: 50)
-        }
+            }
         }
         // ## ACCOUNT INFO ## \\
 
@@ -123,6 +124,7 @@ struct Settings: View {
         if showDelete {
             HStack {
             Button("Cancel Deletion") {
+                DM.sendFlag(id: myID, type: "undelete")
                 showDelete = false
             }
             .buttonStyle(.bordered)
@@ -141,11 +143,11 @@ struct Settings: View {
         Button("Terms and EULA") {
             showTerms = true
         }
-        .padding(.bottom, 80)
         }
         // ## MODIFIERS ## \\
 
         .foregroundColor(.pink)
+        Spacer()
         }
         .padding(16)
         .foregroundColor(.secondary)
@@ -156,9 +158,15 @@ struct Settings: View {
         .onAppear {
             let sets = DM.settings
             notifs = sets.notifs
+            locate = sets.locate
             suggest = sets.suggest
             privacy = sets.privacy
-            locate = sets.locate
+
+            let doc = FS.collection("accFlags").document(sets.id)
+            doc.getDocument { doc,_ in
+                let type = doc?.data()?["type"] as? String ?? ""
+                showDelete = (type == "delete")
+            }
         }
         .sheet(isPresented: $showReset) {
             Reset()
@@ -166,7 +174,7 @@ struct Settings: View {
         .sheet(isPresented: $showTerms) {
             Terms()
         }
-        .alert("Deletion may take up to 24 hours.", isPresented:
+        .alert("Deletion takes up to 24 hours.", isPresented:
             $showAlert) {
             Button("OK", role: .cancel) {}
         }
@@ -178,19 +186,19 @@ struct Settings: View {
                 var sets = DM.settings
 
                 sets.notifs = notifs
+                sets.locate = locate
                 sets.suggest = suggest
                 sets.privacy = privacy
-                sets.locate = locate
-
                 DM.editSets(sets: sets)
                 dismiss()
             }
         }
         ToolbarItem {
-            let sn = "rectangle.portrait.and.arrow.right"
-            Button("\(Image(systemName: sn))") {
+            let s = "rectangle.portrait.and.arrow.right"
+            Button("\(Image(systemName: s))") {
 
-                try? Auth.auth().signOut()
+                do { try Auth.auth().signOut()
+                } catch { return }
                 withAnimation {
                     loggedOut = true
                 }
