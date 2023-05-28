@@ -126,10 +126,6 @@ struct EditProf: View {
         .onAppear {
             name = my.name
             text = my.text
-            image = DM.myAvatar
-        }
-        .onChange(of: DM.myAvatar) {_ in
-            image = DM.myAvatar
         }
         .fullScreenCover(isPresented: $showCrop) {
             ImageEditor(image: $image, show: $showCrop)

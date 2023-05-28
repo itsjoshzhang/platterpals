@@ -23,7 +23,7 @@ struct AppInit: App {
 struct MyTabView: View {
 
     // ## TRACK INFO ## \\
-    var id: String
+    @State var id = "!"
     @State var page = 2
     @State var showGuide = false
 
@@ -68,13 +68,12 @@ struct MyTabView: View {
                 .environmentObject(DM)
         }
         .onAppear {
-            print("id variable: " + id)
-            print("DM.my().id: " + DM.my().id)
+            id = DM.my().id
             showGuide = !DM.my().prof
-            if DM.my().id != "!" {
 
+            if id != "!" {
                 if let c = MD.LM?.location?.coordinate {
-                    DM.sendPin(pin: Location(id: DM.my().id,
+                    DM.sendPin(pin: Location(id: id,
                         lat: c.latitude, lon: c.longitude))
                 }}}
 

@@ -34,10 +34,10 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate,
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
-        }
-        print(userInfo)
+//        if let messageID = userInfo[gcmMessageIDKey] {
+//            print("Message ID: \(messageID)")
+//        }
+//        print(userInfo)
         completionHandler(UIBackgroundFetchResult.newData)
     }
 }
@@ -45,8 +45,8 @@ extension AppDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken
                    fcmToken: String?) {
 
-        let deviceToken:[String: String] = ["token": fcmToken ?? ""]
-        print("Device token: ", deviceToken)
+//        let deviceToken:[String: String] = ["token": fcmToken ?? ""]
+//        print("Device token: ", deviceToken)
     }
 }
 @available(iOS 10, *)
@@ -57,12 +57,12 @@ extension AppDelegate {
         completionHandler: @escaping (UNNotificationPresentationOptions)
         -> Void) {
 
-        let userInfo = notification.request.content.userInfo
-
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
-        }
-        print(userInfo)
+//        let userInfo = notification.request.content.userInfo
+//
+//        if let messageID = userInfo[gcmMessageIDKey] {
+//            print("Message ID: \(messageID)")
+//        }
+//        print(userInfo)
         completionHandler([[.banner, .badge, .sound]])
     }
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -73,12 +73,12 @@ extension AppDelegate {
         didReceive response: UNNotificationResponse, withCompletionHandler
         completionHandler: @escaping () -> Void) {
 
-        let userInfo = response.notification.request.content.userInfo
-
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID from userNotificationCenter didReceive: \(messageID)")
-        }
-        print(userInfo)
+//        let userInfo = response.notification.request.content.userInfo
+//
+//        if let messageID = userInfo[gcmMessageIDKey] {
+//            print("Message ID from userNotificationCenter didReceive: \(messageID)")
+//        }
+//        print(userInfo)
         completionHandler()
     }
 }

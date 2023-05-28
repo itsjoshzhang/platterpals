@@ -44,7 +44,6 @@ struct Guide2: View {
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
-        let my = DM.my()
         VStack(spacing: 16) {
 
         Text(title)
@@ -52,7 +51,7 @@ struct Guide2: View {
             .font(.title).bold()
 
         if page == 0 {
-            EditProf()
+            EditProf(image: DM.myAvatar)
                 .environmentObject(DM)
                 .frame(height: UIwidth)
 
@@ -83,9 +82,6 @@ struct Guide2: View {
         }
         .background {
             Back()
-        }
-        .onAppear {
-            DM.editUser(user: my)
         }}}
 
 struct Terms: View {

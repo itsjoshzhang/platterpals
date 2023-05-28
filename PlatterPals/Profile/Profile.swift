@@ -157,7 +157,7 @@ struct Profile: View {
         .sheet(isPresented: $showEdit) {
         NavigationStack {
             Group {
-            EditProf(image: DM.myAvatar)
+            EditProf(image: avatar)
                 .environmentObject(DM)
                 .navigationTitle("Edit Profile")
             }

@@ -133,8 +133,10 @@ class DataManager: ObservableObject {
         editData(data: data)
 
         let sets = Setting(id: id, notifs: true, locate: true,
-                           suggest: true, privacy: true)
+                           suggest: true, privacy: false)
         editSets(sets: sets)
+        
+        initUser(id: id)
     }
     
     // called at Profile

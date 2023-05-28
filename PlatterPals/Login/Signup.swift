@@ -124,7 +124,6 @@ struct Signup: View {
             showAlert = true
         } else {
             DM.makeUser(id: email, name: name, city: city)
-            DM.initUser(id: email)
             if let image = image {
                 DM.putImage(image: image, path: "avatars")
             }}}}
