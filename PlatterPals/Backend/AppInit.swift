@@ -23,7 +23,8 @@ struct AppInit: App {
 struct MyTabView: View {
 
     // ## TRACK INFO ## \\
-    @State var tag = 3
+    var id: String
+    @State var page = 2
     @State var showGuide = false
 
     @StateObject var MD = MapsData()
@@ -31,52 +32,55 @@ struct MyTabView: View {
 
     var body: some View {
         Group {
-            let my = DM.my()
         if DM.version == VERSION {
 
         // ## NO UPDATE ## \\
 
-        TabView(selection: $tag) {
+        TabView(selection: $page) {
         Orders()
             .tabItem {
                 Image(systemName: "menucard")
-            }.tag(1)
+            }.tag(0)
         Chats()
             .environmentObject(MD)
             .tabItem {
                 Image(systemName: "message")
-            }.tag(2)
+            }.tag(1)
         Home()
             .tabItem {
                 Image(systemName: "house")
-            }.tag(3)
+            }.tag(2)
         Suggest()
             .environmentObject(MD)
             .tabItem {
                 Image(systemName: "fork.knife")
-            }.tag(4)
+            }.tag(3)
         MyProfile()
             .tabItem {
                 Image(systemName: "person")
-            }.tag(5)
+            }.tag(4)
         }
         // ## MODIFIERS ## \\
 
         .environmentObject(DM)
         .sheet(isPresented: $showGuide) {
-            Guide(tag: my.prof)
+            Guide(page: id == "!" ? 0: 4)
                 .environmentObject(DM)
         }
         .onAppear {
-            showGuide = my.prof >= 0
+            print("id variable: " + id)
+            print("DM.my().id: " + DM.my().id)
+            showGuide = !DM.my().prof
+            if DM.my().id != "!" {
 
-            if let c = MD.LM?.location?.coordinate {
-                DM.sendPin(pin: Location(id: my.id,
-                    lat: c.latitude, lon: c.longitude))
+                if let c = MD.LM?.location?.coordinate {
+                    DM.sendPin(pin: Location(id: DM.my().id,
+                        lat: c.latitude, lon: c.longitude))
+                }}}
 
         // ## NEED UPDATE ## \\
 
-        }}} else {
+        } else {
         VStack(spacing: 16) {
 
         Image("logo")

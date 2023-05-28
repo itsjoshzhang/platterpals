@@ -47,10 +47,9 @@ struct EditProf: View {
     @State var text = ""
     @State var city = "Berkeley"
     @State var showCrop = false
-    @FocusState var focus: Bool
+    @State var image: UIImage?
 
     // ## SETUP VIEW ## \\
-    @State var image: UIImage?
     @State var imageItem: PhotosPickerItem?
 
     @Environment(\.dismiss) var dismiss
@@ -59,8 +58,8 @@ struct EditProf: View {
     // ## USER INFO ## \\
 
     var body: some View {
+        var my = DM.my()
         VStack(spacing: 16) {
-            var my = DM.my()
         HStack(spacing: 16) {
 
         RoundPic(width: 120, image: image)
@@ -69,10 +68,7 @@ struct EditProf: View {
 
         Blank(label: "Username", text: $name)
             .textFieldStyle(.roundedBorder)
-            .focused($focus)
-            .onTapGesture {
-                focus = true
-            }
+
         HStack(spacing: 0) {
             Text("City: ")
                 .font(.headline)
@@ -102,13 +98,12 @@ struct EditProf: View {
 
         // ## CLICKABLES ## \\
 
-        TextField("Add a bio", text: $text, axis: .vertical)
+        TextField("Write a short paragraph about your tastes.",
+                  text: $text, axis: .vertical)
             .textFieldStyle(.roundedBorder)
-            .focused($focus)
-            .lineLimit(8)
-            .onTapGesture {
-                focus = true
-            }
+            .submitLabel(.done)
+            .lineLimit(4...8)
+
         Max(count: 200, text: $text)
 
         Button("Save Edits") {
@@ -124,8 +119,10 @@ struct EditProf: View {
         }
         // ## MODIFIERS ## \\
 
-        .disabled(count(name) || count(city))
+        .disabled(text.count > 200 || count(name) || count(city))
         .buttonStyle(.borderedProminent)
+        }
+        .padding(16)
         .onAppear {
             name = my.name
             text = my.text
@@ -134,13 +131,12 @@ struct EditProf: View {
         .onChange(of: DM.myAvatar) {_ in
             image = DM.myAvatar
         }
-        }
-        .padding(16)
         .fullScreenCover(isPresented: $showCrop) {
             ImageEditor(image: $image, show: $showCrop)
         }
     }
     func count(_ text: String) -> Bool {
-        return (text.isEmpty || text.count > 200)
+        return (text.trimmingCharacters(in: .whitespacesAndNewlines)
+            .isEmpty || text.count > 32)
     }
 }

@@ -123,9 +123,9 @@ struct Cards: View {
             .font(.headline)
 
         if data.favFoods.isEmpty {
-            Text("No favorites yet")
-                .foregroundColor(.secondary)
-                .frame(maxWidth: UIwidth-32)
+            let ord = AIOrder(id: "❔", user: "", order: "No favorites yet.", place: "Check back soon!", stars: -1)
+            Card(ord: ord)
+
         } else {
             TabView {
             ForEach(data.favFoods, id: \.self) { id in
@@ -165,14 +165,14 @@ struct Card: View {
         .font(.headline)
         Spacer()
         }
-        HStack(spacing: 4) {
-            Stars(button: false, ord: ord)
-                .environmentObject(DM)
-            Spacer()
-            Text(ord.time.formatted(.dateTime.day().month()))
-                .foregroundColor(.secondary)
-        }
-        }
+        if ord.stars != -1 {
+            HStack(spacing: 4) {
+                Stars(button: false, ord: ord)
+                    .environmentObject(DM)
+                Spacer()
+                Text(ord.time.formatted(.dateTime.day().month()))
+                    .foregroundColor(.secondary)
+            }}}
         .padding(16)
         .background(Color(red: 0.949, green: 0.949, blue: 0.969))
         .cornerRadius(8)

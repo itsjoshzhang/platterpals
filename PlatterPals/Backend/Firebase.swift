@@ -60,7 +60,7 @@ class DataManager: ObservableObject {
             let name = data["name"] as? String ?? ""
             let city = data["city"] as? String ?? ""
             let text = data["text"] as? String ?? ""
-            let prof = data["prof"] as? Int ?? 0
+            let prof = data["prof"] as? Bool ?? false
 
             let user = User(id: id, name: name, city: city, text:
                             text, prof: prof)
@@ -125,7 +125,7 @@ class DataManager: ObservableObject {
     func makeUser(id: String, name: String, city: String) {
 
         let user = User(id: id, name: name, city: city, text: "",
-                        prof: 0)
+                        prof: false)
         editUser(user: user)
 
         let data = UserData(id: id, favFoods: [String](), chatting:
@@ -211,7 +211,7 @@ class DataManager: ObservableObject {
         }
         // update prof value
         if !pfp {
-            userList[myIndex].prof = -1
+            userList[myIndex].prof = true
             editUser(user: my())
         }
     }
@@ -232,7 +232,7 @@ class DataManager: ObservableObject {
         let SR = SR.child("\(path)/\(my().id).jpg")
         SR.delete {_ in}
 
-        userList[myIndex].prof = 4
+        userList[myIndex].prof = false
         editUser(user: my())
     }
 

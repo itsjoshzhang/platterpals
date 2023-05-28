@@ -66,7 +66,7 @@ struct User: Identifiable, Hashable, Codable {
     var name: String
     var city: String
     var text: String
-    var prof: Int
+    var prof: Bool
 }
 
 struct UserData: Identifiable, Hashable, Codable {
@@ -119,8 +119,10 @@ struct Back: View {
     }
 }
 struct Box: View {
+    var text: String
+
     var body: some View {
-        Text("Search for a user")
+        Text(text)
             .padding(.leading, 8)
             .foregroundColor(.secondary)
             .frame(width: UIwidth-32, height: 32, alignment: .leading)
@@ -177,7 +179,7 @@ struct Max: View {
 
                 .onChange(of: text) {_ in
                     if (text.count > count + 1) {
-                        text = String(text.dropLast())
+                        text = String(text.prefix(count + 1))
                     }}}}}
 
 struct ImageEditor: UIViewControllerRepresentable {
@@ -188,9 +190,11 @@ struct ImageEditor: UIViewControllerRepresentable {
     func makeCoordinator() -> ImageEditorCoordinator {
         return ImageEditorCoordinator(image: $image, show: $show)
     }
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
+    func updateUIViewController(_ uiViewController: UIViewControllerType,
+                                context: Context) {
     }
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ImageEditor>) -> CropViewController {
+    func makeUIViewController(context: UIViewControllerRepresentableContext
+                              <ImageEditor>) -> CropViewController {
         let Editor = cropViewController(image: image ?? UIImage())
         Editor.delegate = context.coordinator
         return Editor

@@ -3,6 +3,7 @@ import SwiftUI
 struct MyProfile: View {
 
     // ## TRACK INFO ## \\
+    @State var image: UIImage?
     @State var showSetts = false
     @State var showUpload = false
     @EnvironmentObject var DM: DataManager
@@ -18,6 +19,9 @@ struct MyProfile: View {
             DM.myProfile, showUpdate: true)
             .environmentObject(DM)
 
+        .onAppear {
+            image = DM.myAvatar
+        }
         .toolbar {
             ToolbarItem {
                 Button("\(Image(systemName: "gearshape"))") {
@@ -36,7 +40,7 @@ struct MyProfile: View {
         }
         // ## SHOW BUTTON ## \\
 
-        if my.prof >= 0 {
+        if !my.prof {
             VStack {
                 Spacer()
             Button {
@@ -106,7 +110,7 @@ struct Profile: View {
                 .foregroundColor(.pink)
                 .font(.title3)
         }}}
-        if !showUpdate {
+        if !(showUpdate && user.prof) {
             Text(user.text)
                 .foregroundColor(.secondary)
         }
@@ -119,23 +123,23 @@ struct Profile: View {
         // ## SHOW UPDATE ## \\
 
         VStack {
-        if user.prof == -1 {
-            Button("\(Image(systemName: "photo"))") {
-                withAnimation {
-                    showUpdate.toggle()
-                }
+        Button("\(Image(systemName: "photo"))") {
+            withAnimation {
+                showUpdate.toggle()
             }
-            .buttonStyle(.borderedProminent)
-            .shadow(color: .pink, radius: 3)
+        }
+        .buttonStyle(.borderedProminent)
+        .shadow(color: .pink, radius: 3)
 
-            if showUpdate {
+        if showUpdate {
+            if user.prof {
                 Update(id: id, showNext: false, profile: profile)
                     .environmentObject(DM)
-            }
-        } else {
-            Text("No profile yet.")
-                .foregroundColor(.secondary)
-        }}}
+            } else {
+                Text("No profile yet.")
+                    .foregroundColor(.secondary)
+                    .padding(16)
+        }}}}
 
         // ## MODIFIERS ## \\
 
@@ -151,15 +155,15 @@ struct Profile: View {
             }
         }
         .sheet(isPresented: $showEdit) {
-            NavigationStack {
-                Group {
-                    EditProf(image: DM.myAvatar)
-                        .environmentObject(DM)
-                        .navigationTitle("Edit Profile")
-                }
-                .background {
-                    Back()
-                }}}
+        NavigationStack {
+            Group {
+            EditProf(image: DM.myAvatar)
+                .environmentObject(DM)
+                .navigationTitle("Edit Profile")
+            }
+            .background {
+                Back()
+            }}}
         .sheet(isPresented: $showChat) {
             Convo(id: id, pad: false)
                 .environmentObject(DM)

@@ -22,10 +22,11 @@ struct Upload: View {
             
         // ## CLICKABLES ## \\
 
-        TextField("Add a bio", text: $text, axis: .vertical)
+        TextField("Write a short paragraph about your tastes.",
+                  text: $text, axis: .vertical)
             .textFieldStyle(.roundedBorder)
             .focused($focus)
-            .lineLimit(8)
+            .lineLimit(4...8)
             .onTapGesture {
                 focus = true
             }
@@ -38,7 +39,7 @@ struct Upload: View {
             dismiss()
         }
         .buttonStyle(.borderedProminent)
-        .disabled(text.isEmpty || text.count > 200)
+        .disabled(image == nil || text.count > 200)
         }
         // ## MODIFIERS ## \\
 

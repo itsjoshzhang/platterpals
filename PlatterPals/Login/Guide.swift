@@ -2,11 +2,11 @@ import SwiftUI
 
 struct Guide: View {
 
-    @State var tag: Int
+    @State var page: Int
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
-        TabView(selection: $tag) {
+        TabView(selection: $page) {
 
         Guide2(page: 0, title: "Welcome to PlatterPals!",
             text: "Add an avatar and bio to tell us more about you.")
@@ -25,7 +25,7 @@ struct Guide: View {
             .tag(3)
 
         Guide2(page: 4, title: "Polish up your profile!",
-            text: "Add a cover photo so fellow foodies can see you.")
+            text: "Add a cover photo so people can connect with you.")
             .tag(4)
         }
         .environmentObject(DM)
@@ -44,7 +44,7 @@ struct Guide2: View {
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
-        var my = DM.my()
+        let my = DM.my()
         VStack(spacing: 16) {
 
         Text(title)
@@ -75,22 +75,18 @@ struct Guide2: View {
                 if let image = image {
                     DM.putImage(image: image, path: "profiles")
                     dismiss()
-                }}
+                }
+            }
             .buttonStyle(.borderedProminent)
             .disabled(image == nil)
-        }}
+            }
+        }
         .background {
             Back()
         }
         .onAppear {
-            my.prof = page
             DM.editUser(user: my)
-        }
-        .onDisappear {
-            if page != 4 {
-                my.prof = 4
-                DM.editUser(user: my)
-            }}}}
+        }}}
 
 struct Terms: View {
     var body: some View {

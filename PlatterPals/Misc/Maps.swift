@@ -46,7 +46,8 @@ struct Maps: View {
             .tint(.pink)
             .padding(16)
         }
-        .navigationTitle("Near Me")
+        .navigationTitle(text.hasPrefix("T") ?
+                         "Near Me": "My Chats")
         .onAppear {
             getPins()
         }
@@ -60,7 +61,9 @@ struct Maps: View {
 
         locations = snap.documents.compactMap { doc -> Location? in
         if let pin = try? doc.data(as: Location.self) {
-            return pin
+            if DM.my().id != pin.id {
+                return pin
+            }
         }
         return nil
         }}}}}
@@ -92,7 +95,6 @@ struct MapPin: View {
         }
         .padding(.bottom, 80)
         .foregroundColor(.pink)
-        .opacity(DM.my().id == pin.id ? 0.5: 1)
         .onAppear {
             getImage(path: "avatars")
         }

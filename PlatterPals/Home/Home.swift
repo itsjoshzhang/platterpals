@@ -18,7 +18,7 @@ struct Home: View {
 
         // ## USER SEARCH ## \\
 
-        Box()
+        Box(text: "Search for a profile")
             .onTapGesture {
                 showSearch = true
             }
@@ -43,7 +43,7 @@ struct Home: View {
         // return shuffled copy of userList
         let data = DM.md()
 
-        if DM.my().id != user.id, user.prof == -1,
+        if DM.my().id != user.id, user.prof,
         // dont show my own prof, user must have a prof
 
         !data.blocked.contains(user.id),

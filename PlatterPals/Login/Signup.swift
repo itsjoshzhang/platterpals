@@ -22,7 +22,6 @@ struct Signup: View {
     @State var image: UIImage?
     @State var imageItem: PhotosPickerItem?
 
-    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
@@ -111,10 +110,6 @@ struct Signup: View {
         .fullScreenCover(isPresented: $showCrop) {
             ImageEditor(image: $image, show: $showCrop)
         }
-        .sheet(isPresented: $showGuide) {
-            Guide(tag: 0)
-                .environmentObject(DM)
-        }
         .sheet(isPresented: $showTerms) {
             Terms()
         }}}
@@ -130,14 +125,12 @@ struct Signup: View {
         } else {
             DM.makeUser(id: email, name: name, city: city)
             DM.initUser(id: email)
-
             if let image = image {
                 DM.putImage(image: image, path: "avatars")
-            }
-            dismiss()
-        }}}
+            }}}}
 
     func count(_ text: String) -> Bool {
-        return (text.isEmpty || text.count > 32)
+        return (text.trimmingCharacters(in: .whitespacesAndNewlines)
+            .isEmpty || text.count > 32)
     }
 }

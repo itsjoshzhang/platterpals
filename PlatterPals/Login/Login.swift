@@ -21,7 +21,7 @@ struct Login: View {
     // ## OTHER VIEWS ## \\
     var body: some View {
         if loggedIn {
-            MyTabView()
+            MyTabView(id: email)
                 .environmentObject(DM)
         } else {
             content
@@ -72,7 +72,9 @@ struct Login: View {
         .onAppear {
             Auth.auth().addStateDidChangeListener {_,user in
                 if let user = user {
-                    DM.initUser(id: user.email ?? email)
+                    email = user.email ?? ""
+
+                    DM.initUser(id: email)
                     withAnimation {
                         loggedIn = true
                     }}}

@@ -20,7 +20,7 @@ struct Chats: View {
         VStack(spacing: 16) {
 
         // ## SHOW CHATS ## \\
-        Box()
+        Box(text: "Start a new chat")
             .onTapGesture {
                 showSearch = true
             }
@@ -71,7 +71,7 @@ struct Chats: View {
             Button {
                 showMaps = true
             } label: {
-                Glow(text: "View users nearby!")
+                Glow(text: "Find foodies near you!")
             }}}}}}
 
     // ## FUNCTIONS ## \\
