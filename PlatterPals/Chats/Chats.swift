@@ -52,6 +52,9 @@ struct Chats: View {
         .onAppear {
             getChats()
         }
+        .onChange(of: chatting) {_ in
+            getChats()
+        }
         // ## OTHER VIEWS ## \\
 
         .sheet(isPresented: $showSearch) {

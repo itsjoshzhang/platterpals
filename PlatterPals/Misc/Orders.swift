@@ -30,6 +30,7 @@ struct Orders: View {
 
     var body: some View {
         NavigationStack {
+        ZStack {
             var data = DM.md()
 
         if OM.orders.isEmpty {
@@ -104,7 +105,13 @@ struct Orders: View {
         .sheet(isPresented: $showOrder) {
             NewOrder(text: "##;##")
                 .environmentObject(DM)
-        }}}
+            }
+        }
+        if data.favFoods.isEmpty {
+            VStack {
+                Spacer()
+                Glow(text: "No favorites yet? ♡ one above!")
+            }}}}
         .onAppear {
             OM.getOrders(id: DM.my().id)
         }}}
@@ -136,9 +143,9 @@ struct Cards: View {
             }}}
         .tabViewStyle(.page(indexDisplayMode: .always))
         .indexViewStyle(.page(backgroundDisplayMode: .always))
-        .frame(maxWidth: UIwidth-32, minHeight: 120, maxHeight: 120)
         }
         }
+        .frame(maxWidth: UIwidth-32, minHeight: 140, maxHeight: 140)
         .onAppear {
             OM.getOrders(id: id)
         }}}

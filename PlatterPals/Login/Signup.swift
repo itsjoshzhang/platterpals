@@ -88,6 +88,7 @@ struct Signup: View {
             }
         }
         Button("Sign Up") {
+            city += " , CA"
             signupAuth()
         }
         .disabled(email.isEmpty || pass.isEmpty

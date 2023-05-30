@@ -161,7 +161,7 @@ struct Suggest: View {
         if location == "My Location" {
             text += "My location (\(c.latitude), \(c.longitude)). "
         } else {
-            text += "\(location), CA."
+            text += "\(location). "
         }
         // ## FOOD INFO ## \\
 

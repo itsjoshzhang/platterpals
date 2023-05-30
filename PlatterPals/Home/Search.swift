@@ -70,10 +70,8 @@ struct Search: View {
 
         Text("Location: ")
             .foregroundColor(.secondary)
+
         Cities(addAll: true, city: $city)
-            .onChange(of: city) {_ in
-                name = ""
-            }
         Spacer()
 
         Toggle("Following ✓", isOn: $following)
@@ -113,6 +111,9 @@ struct Search: View {
             focus = true
         }
         .onChange(of: name) {_ in
+            search()
+        }
+        .onChange(of: city) {_ in
             search()
         }
         .onChange(of: following) {_ in
