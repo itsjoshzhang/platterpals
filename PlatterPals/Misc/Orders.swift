@@ -31,8 +31,9 @@ struct Orders: View {
         NavigationStack {
         ZStack {
             var data = DM.md()
+            let null = OM.orders.isEmpty
 
-        if OM.orders.isEmpty {
+        if null {
             if loading {
                 Text("")
                 .onAppear {
@@ -106,7 +107,7 @@ struct Orders: View {
                 .environmentObject(DM)
             }
         }
-        if data.favFoods.isEmpty {
+        if (data.favFoods.isEmpty && null) {
             VStack {
                 Spacer()
                 Glow(text: "No favs yet? ♡ one above!")

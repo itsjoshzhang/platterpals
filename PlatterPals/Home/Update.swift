@@ -24,10 +24,11 @@ struct Update: View {
             Button("Unhide Profile") {
                 withAnimation {
                     hideProf = false
-        }}} else {
+        }}
+        .foregroundColor(.secondary)
+        } else {
             content
-        }
-    }
+        }}
     // ## SETUP VIEW ## \\
 
     var content: some View {

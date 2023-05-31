@@ -129,7 +129,6 @@ struct Profile: View {
             }
         }
         .buttonStyle(.borderedProminent)
-        .shadow(color: .pink, radius: 3)
 
         if showUpdate {
             if user.prof {

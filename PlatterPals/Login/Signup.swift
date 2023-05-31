@@ -74,13 +74,15 @@ struct Signup: View {
         }
         // ## USER INFO ## \\
 
-        HStack(spacing: 16) {
+        HStack(spacing: 0) {
             Text("Nearest City: ")
                 .font(.headline)
 
             Cities(addAll: false, city: $city, page: $page)
                 .buttonStyle(.bordered)
         }
+        .frame(width: UIwidth * 0.8)
+
         HStack(spacing: 0) {
             Text("I agree to the ")
                 .foregroundColor(.secondary)

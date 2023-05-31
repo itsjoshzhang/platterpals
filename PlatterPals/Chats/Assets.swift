@@ -117,7 +117,7 @@ struct Bubble: View {
 
             .frame(maxWidth: UIwidth, alignment: sender ?
                 .trailing: .leading)
-            .onLongPressGesture(minimumDuration: 0.1) {
+            .onLongPressGesture(minimumDuration: 0.05) {
                 showTime.toggle()
             }
         if showTime {

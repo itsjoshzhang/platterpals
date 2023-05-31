@@ -7,6 +7,7 @@ struct Login: View {
     @State var email = ""
     @State var pass = ""
     @State var text = ""
+    @State var showLogo = true
     @FocusState var focus: Bool
 
     // ## CONDITIONS ## \\
@@ -41,13 +42,20 @@ struct Login: View {
             .foregroundColor(.pink)
             .padding(.bottom, 24)
 
-        Image("logo")
-            .onTapGesture {
-                focus = false
-            }
-        Group {
-        Group {
+        if showLogo {
+            Image("logo")
+                .onTapGesture {
+                    focus = false
+
+        }}; Group { Group { HStack {
             Blank(label: "Email", text: $email)
+            Spacer()
+            Button("\(Image(systemName: "chevron.up"))") {
+                withAnimation {
+                    showLogo.toggle()
+                }}
+            .padding(.top, -80)
+            }
             Div()
             Blank(label: "Password", secure: true, text: $pass)
             Div()

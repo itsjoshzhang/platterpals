@@ -93,8 +93,9 @@ struct MapPin: View {
                 .scaledToFit()
                 .frame(width: 32, height: 32)
         }
-        .padding(.bottom, 80)
+        .frame(maxWidth: UIwidth)
         .foregroundColor(.pink)
+        .padding(.bottom, 80)
         .onAppear {
             getImage(path: "avatars")
         }

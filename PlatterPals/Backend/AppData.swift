@@ -140,7 +140,6 @@ struct Glow: View {
             .foregroundColor(.pink)
             .frame(width: UIwidth-32, height: 50)
             .overlay(Capsule().stroke(.pink, lineWidth: 3))
-            .shadow(color: .pink, radius: 8)
             .padding(.bottom, 16)
     }
 }

@@ -111,7 +111,7 @@ struct EditProf: View {
             if let image = image {
                 DM.putImage(image: image, path: "avatars")
             }
-            if page != 2 {
+            if (page != 2 && !city.hasSuffix("CA")) {
                 city += ", CA"
             }
             my.name = name
