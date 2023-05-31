@@ -46,7 +46,7 @@ struct EditProf: View {
     @State var page = 0
     @State var name = ""
     @State var text = ""
-    @State var city = ""
+    @State var city = "Berkeley"
     @State var showCrop = false
 
     // ## SETUP VIEW ## \\
@@ -130,22 +130,28 @@ struct EditProf: View {
         .onAppear {
             name = my.name
             text = my.text
-            if cityList.contains(my.city) {
-                city = my.city
-            } else if allCities.contains(my.city) {
-                city = my.city
+            if cityList.contains(t(my.city)) {
+                city = t(my.city)
+            } else if allCities.contains(t(my.city)) {
                 page = 1
+                city = t(my.city)
             } else {
-                city = ""
                 page = 2
+                city = ""
             }
         }
         .fullScreenCover(isPresented: $showCrop) {
             ImageEditor(image: $image, show: $showCrop)
         }
     }
+    // ## FUNCTIONS ## \\
+
     func count(_ text: String) -> Bool {
         return (text.trimmingCharacters(in: .whitespacesAndNewlines)
             .isEmpty || text.count > 32)
+    }
+    func t(_ text: String) -> String {
+        return text.trimmingCharacters(in:
+            CharacterSet(charactersIn: ", CA"))
     }
 }

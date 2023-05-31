@@ -75,7 +75,7 @@ struct Suggest: View {
         }
         if friend == "None" {
             Text("Currently using: Your favorites")
-                .foregroundColor(.secondary)
+                .foregroundColor(block2 ? .secondary: .pink)
                 .onAppear {
                     OM.getOrders(id: DM.my().id)
                 }
@@ -156,6 +156,7 @@ struct Suggest: View {
             orderLogic()
         }
         .buttonStyle(.borderedProminent)
+        .padding(.bottom, 8)
 
         } else {
             Text("")
@@ -175,9 +176,9 @@ struct Suggest: View {
             text += "Search for \(cuisine) food. "
 
         } else if friend != "None" {
-            text += "\(addFavs(id: friend)). "
+            text += addFavs(id: friend)
         } else {
-            text += "\(addFavs(id: DM.my().id)). "
+            text += addFavs(id: DM.my().id)
         }
         // ## OPTIONALS ## \\
 
@@ -186,12 +187,15 @@ struct Suggest: View {
             text += "Find a \(style) place for \(people) \(n). "
 
             let p = (price >= 50 ? price - 10: price - 5)
-            text += "Find food from $\(p) - \(price). "
+            text += "Find food from $\(p)-\(price). "
+        }
+        if location.contains("erkeley") {
+            location = "UC Berkeley, CA"
         }
         // ## PARAMETERS ## \\
 
         text += "Search within \(miles) miles of \(location). "
-        text += "Show ONLY \(options) menu items / restaurants. "
+        text += "Show only \(options) menu item / restaurant. "
 
         VM.api = ChatGPTAPI(text: text)
         withAnimation {
@@ -201,15 +205,15 @@ struct Suggest: View {
     // ## TEXT LOGIC ## //
 
     func addFavs(id: String) -> String {
-        let ans = "Find food similar to "
+        let ans = "Find food similar to"
         let favs = DM.data(id: id).favFoods
 
         if !favs.isEmpty {
             let rand = favs.shuffled().first
             for ord in OM.orders {
                 if ord.id == rand {
-                    return ans + ord.order + " from " + ord.place
-                }}}
-        return ""
+                    return "\(ans) \(ord.order) from \(ord.place). "
+        }}}
+        return "Surprise me with a dish / restaurant nearby. "
     }
 }

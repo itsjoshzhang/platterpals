@@ -35,6 +35,9 @@ struct ChatGPT: View {
         // ## MODIFIERS ## \\
 
         .navigationTitle("Your AI")
+        .background {
+            Back()
+        }
         .toolbar {
         ToolbarItem {
         Button("\(Image(systemName: "arrowshape.turn.up.left"))") {
@@ -70,6 +73,7 @@ struct ContentView: View {
     var body: some View {
         ScrollViewReader { proxy in
             let rest = VM.messages.last?.responseText ?? ""
+            let item = rest.lowercased().contains("item")
 
         VStack(spacing: 0) {
         ScrollView {
@@ -81,7 +85,7 @@ struct ContentView: View {
                     await VM.retry(message: row)
                 }}}
 
-        // ## CONVO LOGIC ## \\
+        // ## CLICKABLES ## \\
 
         if VM.messages.isEmpty {
             Button("Find My Food") {
@@ -90,34 +94,29 @@ struct ContentView: View {
             .buttonStyle(.borderedProminent)
         }
         if let last = VM.messages.last {
-            if !(last.isInteractingWithChatGPT) {
+        if !(last.isInteractingWithChatGPT) {
 
-        Group {
-        if rest.contains("item") {
-            Button("Add to Orders") {
-                Task { @MainActor in
+        Button("Add to Orders") {
+        Task { @MainActor in
 
-                    VM.inputMessage = "Format your last reply as ##menu item; restaurant name##"
-                    await VM.sendTapped(show: true)
-                    showOrders = true
-                    text = ""
-        }}} else {
-            Button("Add to Orders") {
-                showOrders = true
+            VM.inputMessage =
+"Format the first menu item from your reply as ##menu item; restaurant name##"
+            await VM.sendTapped(show: true)
+            showOrders = true
+            text = ""
             }
-            .foregroundColor(.secondary)
         }
-        }
+        .foregroundColor(item ? .pink: .secondary)
         .buttonStyle(.bordered)
         .padding(16)
 
-        // ## CLICKABLES ## \\
+        // ## CONVO LOGIC ## \\
 
         HStack(spacing: 0) {
-        Text("Or find another: ")
+        Text("Or find another:  ")
             .foregroundColor(.secondary)
 
-        if rest.contains("item") {
+        if item {
             Button("Menu item") {
                 send(text: "Find another menu item at this restaurant.")
             }
@@ -189,6 +188,7 @@ struct ContentView: View {
         HStack {
         TextField("Ask me anything!", text: $text, axis: .vertical)
             .padding(.leading, 8)
+            .submitLabel(.done)
             .focused($focus)
             .lineLimit(8)
             .onTapGesture {

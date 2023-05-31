@@ -16,8 +16,7 @@ class OrderManager: ObservableObject {
         }
         self.orders.sort {
             $0.time > $1.time
-        }}}}
-}
+        }}}}}
 
 struct Orders: View {
 

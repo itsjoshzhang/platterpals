@@ -110,15 +110,16 @@ struct NewOrder: View {
 
         // ## BULLET CASE ## \\
 
-        } else if text.contains("•") {
-            let comp = text.components(separatedBy: "•")
+        } else if text.contains("-") {
+            let comp = text.components(separatedBy: "-")
             list = comp.last?.components(separatedBy: ";") ?? list
+        }
+        if list.count == 2 {
+            order = trimmed(list[0])
+            place = trimmed(list[1])
         } else {
             error = true
-        }
-        order = trimmed(list.first ?? "")
-        place = trimmed(list.last ?? "")
-        }}}
+        }}}}
 
     // ## FUNCTIONS ## \\
 
