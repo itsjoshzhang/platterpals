@@ -11,6 +11,7 @@ struct Splash: View {
 
     @Environment(\.dismiss) var dismiss
     @StateObject var DM = DataManager()
+    @StateObject var MD = MapsData()
 
     // ## SETUP VIEW ## \\
 
@@ -18,6 +19,7 @@ struct Splash: View {
         if showNext {
             Login()
                 .environmentObject(DM)
+                .environmentObject(MD)
         } else {
             content
         }

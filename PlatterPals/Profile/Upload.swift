@@ -25,6 +25,7 @@ struct Upload: View {
         TextField("Write a short paragraph about your tastes.",
                   text: $text, axis: .vertical)
             .textFieldStyle(.roundedBorder)
+            .submitLabel(.done)
             .focused($focus)
             .lineLimit(4...8)
             .onTapGesture {

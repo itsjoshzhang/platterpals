@@ -109,7 +109,7 @@ struct Cities: View {
 
     var addAll: Bool
     @Binding var city: String
-    @State var page = 0
+    @Binding var page: Int
 
     var body: some View {
         VStack {

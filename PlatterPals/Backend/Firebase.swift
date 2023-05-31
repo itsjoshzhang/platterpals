@@ -108,6 +108,7 @@ class DataManager: ObservableObject {
 
             self.settings = Setting(id: id, notifs: notifs, locate:
                         locate, suggest: suggest, privacy: privacy)
+            return
             }}}}}
 
     // called at Login
@@ -136,7 +137,7 @@ class DataManager: ObservableObject {
                            suggest: true, privacy: false)
         editSets(sets: sets)
         
-//        initUser(id: id)
+        // initUser(id: id)
     }
     
     // called at Profile

@@ -44,8 +44,8 @@ struct Orders: View {
         } else {
         VStack(spacing: 8) {
             Cards(id: DM.my().id)
-                .environmentObject(OM)
                 .environmentObject(DM)
+                .environmentObject(OM)
                 .padding(.top, 8)
 
         List {
@@ -91,7 +91,7 @@ struct Orders: View {
         .background {
             Back()
         }
-        .alert("3 favorite foods max.", isPresented: $showAlert) {
+        .alert("Maximum of 3 favorite foods.", isPresented: $showAlert) {
             Button("OK", role: .cancel) {}
         }
         .toolbar {
@@ -110,7 +110,7 @@ struct Orders: View {
         if data.favFoods.isEmpty {
             VStack {
                 Spacer()
-                Glow(text: "No favorites yet? ♡ one above!")
+                Glow(text: "No favs yet? ♡ one above!")
             }}}}
         .onAppear {
             OM.getOrders(id: DM.my().id)
@@ -119,8 +119,8 @@ struct Orders: View {
 struct Cards: View {
 
     var id: String
-    @EnvironmentObject var OM: OrderManager
     @EnvironmentObject var DM: DataManager
+    @EnvironmentObject var OM: OrderManager
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {

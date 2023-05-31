@@ -43,7 +43,28 @@ struct NewOrder: View {
         .submitLabel(.done)
         .focused($focus)
 
-        // ## STARS/EMOJI ## \\
+        // ## SHOW EMOJI ## \\
+
+        ScrollView(.horizontal) {
+        LazyHGrid(rows: [GridItem(), GridItem()], spacing: 8) {
+        ForEach(emojiList, id: \.self) { em in
+
+        Button(em) {
+            emoji = em
+        }
+        .background(emoji == em ? .pink: .white)
+        .font(.system(size: 32))
+        .cornerRadius(8)
+        }}}
+        .padding(8)
+        .frame(height: 100)
+        .border(.pink, width: 3)
+
+        // ## SHOW STARS ## \\
+
+        Text("Scroll for emojis!")
+            .foregroundColor(.secondary)
+            .font(.subheadline)
 
         HStack {
         ForEach(1...5, id: \.self) { i in
@@ -58,27 +79,7 @@ struct NewOrder: View {
             .foregroundColor(.secondary)
             .font(.subheadline)
 
-        ScrollView(.horizontal) {
-        LazyHGrid(rows: [GridItem(), GridItem()], spacing: 8) {
-        ForEach(emojiList, id: \.self) { em in
-
-        Button(em) {
-            emoji = em
-        }
-        .background(emoji == em ? .pink: .white)
-        .font(.system(size: 32))
-        .cornerRadius(8)
-        }}}
-
-        // ## MODIFIERS ## \\
-
-        .padding(8)
-        .frame(height: 100)
-        .border(.pink, width: 3)
-
-        Text("Scroll for emojis!")
-            .foregroundColor(.secondary)
-            .font(.subheadline)
+        // ## ORDER LOGIC ## \\
 
         Button("Add Order") {
             var ord = AIOrder(user: DM.my().id, order: order, place:
@@ -96,22 +97,30 @@ struct NewOrder: View {
         .background {
             Back()
         }
-        // ## STRING LOGIC ## \\
+        // ## HASHTAG CASE ## \\
 
         .onAppear {
-            if let range = text.range(of: "##.*##",
-                options: .regularExpression) {
+        var list = [String]()
 
-                let trim = trimmed(String(text[range]))
-                let list = trim.components(separatedBy: ";")
-                order = trimmed(list[0])
+        if let range = text.range(of: "##.*##",
+            options: .regularExpression) {
 
-                if list.count > 1 {
-                    place = trimmed(list[1])
-                }
-            } else {
-                error = true
-            }}}}
+            let trim = trimmed(String(text[range]))
+            list = trim.components(separatedBy: ";")
+
+        // ## BULLET CASE ## \\
+
+        } else if text.contains("•") {
+            let comp = text.components(separatedBy: "•")
+            list = comp.last?.components(separatedBy: ";") ?? list
+        } else {
+            error = true
+        }
+        order = trimmed(list.first ?? "")
+        place = trimmed(list.last ?? "")
+        }}}
+
+    // ## FUNCTIONS ## \\
 
     func trimmed(_ text: String) -> String {
         return text.trimmingCharacters(in:

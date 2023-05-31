@@ -49,6 +49,7 @@ struct Search: View {
 
     // ## SETUP VIEW ## \\
     var profile: Bool
+    @State var page = 0
     @FocusState var focus: Bool
     @EnvironmentObject var DM: DataManager
 
@@ -71,7 +72,7 @@ struct Search: View {
         Text("Location: ")
             .foregroundColor(.secondary)
 
-        Cities(addAll: true, city: $city)
+        Cities(addAll: true, city: $city, page: $page)
         Spacer()
 
         Toggle("Following ✓", isOn: $following)
@@ -141,9 +142,7 @@ struct Search: View {
         }}}
 
     func compare(_ name1: String, _ name2: String) -> Bool {
-        let l1 = name1.lowercased()
-        let l2 = name2.lowercased()
-        return (l1.hasPrefix(l2) || l2.hasPrefix(l1))
+        return name1.lowercased().hasPrefix(name2.lowercased())
     }
     func check(_ name: String) -> Bool {
         return !(name == "!" ||

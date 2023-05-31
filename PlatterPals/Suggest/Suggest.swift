@@ -14,18 +14,16 @@ struct Suggest: View {
     @State var cuisine = "All"
     @State var friend = "None"
     @State var style = "Casual"
-    @State var location = "My Location"
+    @State var location = ""
 
     // ## BOOLEANS ## \\
     @State var fuckery = false
+    @State var showCustom = false
     @State var showOption = false
-    @State var showParams = false
     @State var showChatGPT = false
 
     // ## OBJECTS ## \\
-    @EnvironmentObject var MD: MapsData
     @EnvironmentObject var DM: DataManager
-
     @StateObject var OM = OrderManager()
     @StateObject var VM = ViewModel(api: ChatGPTAPI())
 
@@ -41,7 +39,7 @@ struct Suggest: View {
     }
     var content: some View {
         NavigationStack {
-        VStack(spacing: 1) {
+        VStack {
 
         // ## ORDER INFO ## \\
 
@@ -78,14 +76,13 @@ struct Suggest: View {
         if friend == "None" {
             Text("Currently using: Your favorites")
                 .foregroundColor(.secondary)
-                .opacity(0.5)
                 .onAppear {
                     OM.getOrders(id: DM.my().id)
                 }
         } else {
             Cards(id: friend)
-                .environmentObject(OM)
                 .environmentObject(DM)
+                .environmentObject(OM)
             }
         }
         .disabled(block2)
@@ -95,12 +92,25 @@ struct Suggest: View {
 
         Section("Search settings") {
 
-        Picker("", selection: $location) {
-            ForEach(["My Location", DM.my().city], id: \.self) {
-                Text($0)
+        if showCustom {
+            TextField("Enter a location", text: $location)
+                .submitLabel(.done)
+                .onAppear {
+                    location = ""
+                }
+        } else {
+            Picker("", selection: $location) {
+                ForEach([DM.my().city, "Custom Location"], id: \.self) {
+                    Text($0)
+                }
             }
-        }
-        .pickerStyle(.segmented)
+            // ## SEARCH INFO ## \\
+
+            .pickerStyle(.segmented)
+            .onChange(of: location) {_ in
+                if location == "Custom Location" {
+                    showCustom = true
+                }}}
 
         let s = (miles == 1 ? "": "s")
         Stepper("Range: \(miles, specifier: "%.1f") mile\(s)",
@@ -119,6 +129,7 @@ struct Suggest: View {
                 withAnimation {
                     showOption.toggle()
                 }}){
+
         if showOption {
         Stepper("Number of people: \(people)",
                 value: $people, in: 1...10)
@@ -137,12 +148,14 @@ struct Suggest: View {
 
         // ## MODIFIERS ## \\
 
+        .onAppear {
+            location = DM.my().city
+        }
         .navigationTitle("Let's Order")
         Button("Let's Order") {
             orderLogic()
         }
         .buttonStyle(.borderedProminent)
-        .padding(16)
 
         } else {
             Text("")
@@ -151,19 +164,10 @@ struct Suggest: View {
                 fuckery = true
             }}}}}}
 
-    // ## POSITIONING ## \\
+    // ## FOOD LOGIC ## \\
 
     func orderLogic() {
         var text = ""
-        let c = MD.region.center
-        text += "Search within \(miles) miles of "
-
-        if location == "My Location" {
-            text += "My location (\(c.latitude), \(c.longitude)). "
-        } else {
-            text += "\(location). "
-        }
-        // ## FOOD INFO ## \\
 
         if !place.isEmpty {
             text += "Search the menu of \(place). "
@@ -184,6 +188,9 @@ struct Suggest: View {
             let p = (price >= 50 ? price - 10: price - 5)
             text += "Find food from $\(p) - \(price). "
         }
+        // ## PARAMETERS ## \\
+
+        text += "Search within \(miles) miles of \(location). "
         text += "Show ONLY \(options) menu items / restaurants. "
 
         VM.api = ChatGPTAPI(text: text)
@@ -194,16 +201,15 @@ struct Suggest: View {
     // ## TEXT LOGIC ## //
 
     func addFavs(id: String) -> String {
-        var ans = ""
-        for ord in OM.orders {
-            if (DM.data(id: id).favFoods).contains(ord.id) {
-                ans += ord.order + " from " + ord.place + ", and "
-            }
-        }
-        if !ans.isEmpty {
-            ans = "Find food similar to: " + ans
-        }
-        return ans.trimmingCharacters(in:
-            CharacterSet(charactersIn: ", and "))
+        let ans = "Find food similar to "
+        let favs = DM.data(id: id).favFoods
+
+        if !favs.isEmpty {
+            let rand = favs.shuffled().first
+            for ord in OM.orders {
+                if ord.id == rand {
+                    return ans + ord.order + " from " + ord.place
+                }}}
+        return ""
     }
 }

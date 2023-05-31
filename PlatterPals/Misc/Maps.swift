@@ -128,6 +128,7 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
     var LM: CLLocationManager?
     @Published var alertText = ""
     @Published var showAlert = false
+    @Published var locatable = false
 
     @Published var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 37.8715, longitude: -122.260),
@@ -141,6 +142,7 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
         if CLLocationManager.locationServicesEnabled() {
             LM = CLLocationManager()
             LM?.delegate = self
+            locatable = true
         }
     }
     private func checkAuthorization() {
@@ -150,7 +152,7 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
         case .notDetermined:
             LM.requestWhenInUseAuthorization()
         case .restricted, .denied:
-            alertText = "Location is restricted or denied in settings."
+            alertText = "Your location has been disabled in Settings."
             showAlert = true
         case .authorizedAlways, .authorizedWhenInUse:
             region = MKCoordinateRegion(center:

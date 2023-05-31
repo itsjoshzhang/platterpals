@@ -27,8 +27,8 @@ struct MyTabView: View {
     @State var page = 2
     @State var showGuide = false
 
-    @StateObject var MD = MapsData()
     @EnvironmentObject var DM: DataManager
+    @EnvironmentObject var MD: MapsData
 
     var body: some View {
         Group {
@@ -51,7 +51,6 @@ struct MyTabView: View {
                 Image(systemName: "house")
             }.tag(2)
         Suggest()
-            .environmentObject(MD)
             .tabItem {
                 Image(systemName: "fork.knife")
             }.tag(3)

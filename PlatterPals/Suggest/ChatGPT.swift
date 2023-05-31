@@ -1,7 +1,5 @@
 import SwiftUI
 
-// MARK: - TODO: - TEST THE ENTIRE APP. TEST CHATGPT AND VIEWS WITH MORE THAN 5 USERS.
-
 struct ChatGPT: View {
 
     // ## TRACK INFO ## \\
@@ -93,12 +91,12 @@ struct ContentView: View {
         }
         if let last = VM.messages.last {
             if !(last.isInteractingWithChatGPT) {
-                let valid = (rest.contains("item") && rest.contains("##"))
 
         Group {
-        if valid {
+        if rest.contains("item") {
             Button("Add to Orders") {
                 Task { @MainActor in
+
                     VM.inputMessage = "Format your last reply as ##menu item; restaurant name##"
                     await VM.sendTapped(show: true)
                     showOrders = true
@@ -115,23 +113,21 @@ struct ContentView: View {
 
         // ## CLICKABLES ## \\
 
-        HStack(spacing: 8) {
-        Text("Or find a:")
+        HStack(spacing: 0) {
+        Text("Or find another: ")
             .foregroundColor(.secondary)
 
-        if valid {
+        if rest.contains("item") {
             Button("Menu item") {
                 send(text: "Find another menu item at this restaurant.")
             }
-            Text("•")
+            Text(" • ")
         }
         Button("Restaurant") {
             send(text: "Find another restaurant.")
         }
         }
         .font(.subheadline)
-        } else {
-            DotLoadingView()
         }}}}
 
         // ## MODIFIERS ## \\
@@ -166,11 +162,11 @@ struct ContentView: View {
             Text("Your instructions: " + VM.api.instructions)
         } else {
             Text(
-                """
-                Ask your PlatterPal about restaurant hours, contact info, or directions!
-                You can alkso ask for suggestions more complex than our form can take.
-                PlatterPal is an AI language model, and not all replies may be accurate.
-                """
+            """
+            Ask your PlatterPal about hours, contact info, or directions!
+            You can also ask questions more complex than our form can take.
+            This is an AI language model. Not all replies may be accurate.
+            """
         )}}}
         .font(.subheadline)
         .foregroundColor(.secondary)

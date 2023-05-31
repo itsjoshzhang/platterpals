@@ -17,12 +17,14 @@ struct Login: View {
     @State var showSignup = false
 
     @EnvironmentObject var DM: DataManager
+    @EnvironmentObject var MD: MapsData
 
     // ## OTHER VIEWS ## \\
     var body: some View {
         if loggedIn {
             MyTabView()
                 .environmentObject(DM)
+                .environmentObject(MD)
         } else {
             content
         }

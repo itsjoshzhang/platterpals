@@ -43,13 +43,14 @@ struct ProfHead: View {
 struct EditProf: View {
 
     // ## TRACK INFO ## \\
+    @State var page = 0
     @State var name = ""
     @State var text = ""
-    @State var city = "Berkeley"
+    @State var city = ""
     @State var showCrop = false
-    @State var image: UIImage?
 
     // ## SETUP VIEW ## \\
+    @State var image: UIImage?
     @State var imageItem: PhotosPickerItem?
 
     @Environment(\.dismiss) var dismiss
@@ -72,7 +73,7 @@ struct EditProf: View {
         HStack(spacing: 0) {
             Text("City: ")
                 .font(.headline)
-            Cities(addAll: false, city: $city)
+            Cities(addAll: false, city: $city, page: $page)
         }
         // ## UPLOAD PIC ## \\
 
@@ -110,6 +111,9 @@ struct EditProf: View {
             if let image = image {
                 DM.putImage(image: image, path: "avatars")
             }
+            if page != 2 {
+                city += ", CA"
+            }
             my.name = name
             my.text = text
             my.city = city
@@ -126,6 +130,15 @@ struct EditProf: View {
         .onAppear {
             name = my.name
             text = my.text
+            if cityList.contains(my.city) {
+                city = my.city
+            } else if allCities.contains(my.city) {
+                city = my.city
+                page = 1
+            } else {
+                city = ""
+                page = 2
+            }
         }
         .fullScreenCover(isPresented: $showCrop) {
             ImageEditor(image: $image, show: $showCrop)

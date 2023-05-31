@@ -19,6 +19,7 @@ struct Signup: View {
     @State var showGuide = false
 
     // ## SETUP VIEW ## \\
+    @State var page = 0
     @State var image: UIImage?
     @State var imageItem: PhotosPickerItem?
 
@@ -77,7 +78,7 @@ struct Signup: View {
             Text("Nearest City: ")
                 .font(.headline)
 
-            Cities(addAll: false, city: $city)
+            Cities(addAll: false, city: $city, page: $page)
                 .buttonStyle(.bordered)
         }
         HStack(spacing: 0) {
@@ -88,7 +89,9 @@ struct Signup: View {
             }
         }
         Button("Sign Up") {
-            city += " , CA"
+            if page != 2 {
+                city += ", CA"
+            }
             signupAuth()
         }
         .disabled(email.isEmpty || pass.isEmpty

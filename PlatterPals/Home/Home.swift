@@ -3,6 +3,7 @@ import SwiftUI
 struct Home: View {
 
     // ## TRACK INFO ## \\
+    @State var page = 0
     @State var city = "All"
     @State var following = false
     @State var showSearch = false
@@ -26,7 +27,7 @@ struct Home: View {
 
         Text("Location: ")
             .foregroundColor(.secondary)
-        Cities(addAll: true, city: $city)
+        Cities(addAll: true, city: $city, page: $page)
         Spacer()
 
         Toggle("Following ✓", isOn: $following)
@@ -84,8 +85,6 @@ struct Home: View {
         }}}
     
     func compare(_ name1: String, _ name2: String) -> Bool {
-        let l1 = name1.lowercased()
-        let l2 = name2.lowercased()
-        return (l1.hasPrefix(l2) || l2.hasPrefix(l1))
+        return name1.lowercased().hasPrefix(name2.lowercased())
     }
 }
