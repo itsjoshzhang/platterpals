@@ -101,7 +101,7 @@ struct ContentView: View {
 
             VM.inputMessage =
 "Format the first menu item from your reply as ##menu item; restaurant name##"
-            await VM.sendTapped(show: true)
+            await VM.sendTapped(show: false)
             showOrders = true
             text = ""
             }
