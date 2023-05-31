@@ -10,6 +10,7 @@ struct Home: View {
     @State var showUpload = false
 
     // ## SETUP VIEW ## \\
+    var list: [User]
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
@@ -40,7 +41,7 @@ struct Home: View {
 
         // ## HACKY SHIT ## \\
 
-        ForEach(DM.userList.shuffled()) { user in
+        ForEach(list) { user in
         // return shuffled copy of userList
         let data = DM.md()
 

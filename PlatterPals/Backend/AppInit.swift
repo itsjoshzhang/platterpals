@@ -46,7 +46,7 @@ struct MyTabView: View {
             .tabItem {
                 Image(systemName: "message")
             }.tag(1)
-        Home()
+        Home(list: DM.userList.shuffled())
             .tabItem {
                 Image(systemName: "house")
             }.tag(2)

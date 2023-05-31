@@ -107,7 +107,7 @@ struct Orders: View {
                 .environmentObject(DM)
             }
         }
-        if (data.favFoods.isEmpty && null) {
+        if (data.favFoods.isEmpty && !null) {
             VStack {
                 Spacer()
                 Glow(text: "No favs yet? ♡ one above!")

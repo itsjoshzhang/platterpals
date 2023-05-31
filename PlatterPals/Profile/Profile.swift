@@ -146,12 +146,8 @@ struct Profile: View {
             Back()
         }
         .onAppear {
-            if avatar == nil {
-                getImage(path: "avatars")
-            }
-            if profile == nil {
-                getImage(path: "profiles")
-            }
+            getImage(path: "avatars")
+            getImage(path: "profiles")
         }
         .sheet(isPresented: $showEdit) {
         NavigationStack {

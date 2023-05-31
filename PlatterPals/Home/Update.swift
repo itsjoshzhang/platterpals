@@ -43,7 +43,7 @@ struct Update: View {
 
         Image(uiImage: profile)
             .resizable()
-            .scaledToFill()
+            .scaledToFit()
             .frame(maxHeight:
             UIwidth * 16.0 / 9.0)
             .cornerRadius(16)
@@ -126,12 +126,8 @@ struct Update: View {
         // ## MODIFIERS ## \\
 
         .onAppear {
-            if avatar == nil {
-                getImage(path: "avatars")
-            }
-            if profile == nil {
-                getImage(path: "profiles")
-            }
+            getImage(path: "avatars")
+            getImage(path: "profiles")
         }
         .sheet(isPresented: $showProf) {
             Profile(id: id, pad: 64, avatar: avatar)
