@@ -126,8 +126,8 @@ struct Update: View {
         // ## MODIFIERS ## \\
 
         .onAppear {
-            getImage(path: "avatars")
             getImage(path: "profiles")
+            getImage(path: "avatars")
         }
         .sheet(isPresented: $showProf) {
             Profile(id: id, pad: 64, avatar: avatar)

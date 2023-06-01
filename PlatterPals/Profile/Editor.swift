@@ -71,7 +71,7 @@ struct EditProf: View {
             .textFieldStyle(.roundedBorder)
 
         HStack(spacing: 0) {
-            Text("City: ")
+            Text("City:")
                 .font(.headline)
             Cities(addAll: false, city: $city, page: $page)
         }

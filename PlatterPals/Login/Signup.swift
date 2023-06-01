@@ -23,7 +23,6 @@ struct Signup: View {
     @State var image: UIImage?
     @State var imageItem: PhotosPickerItem?
 
-    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
@@ -33,7 +32,7 @@ struct Signup: View {
         // ## SHOW IMAGE ## \\
 
         RoundPic(width: 160, image: image)
-            .padding(.top, -120)
+            .padding(.top, -100)
 
         Text("Crop to square for best result")
             .foregroundColor(.secondary)
@@ -76,7 +75,7 @@ struct Signup: View {
         // ## USER INFO ## \\
 
         HStack(spacing: 0) {
-            Text("Nearest City: ")
+            Text("Nearest City:")
                 .font(.headline)
 
             Cities(addAll: false, city: $city, page: $page)
@@ -96,7 +95,6 @@ struct Signup: View {
                 city += ", CA"
             }
             signupAuth()
-            dismiss()
         }
         .disabled(email.isEmpty || pass.isEmpty
                  || count(name) || count(city))

@@ -16,7 +16,6 @@ class DataManager: ObservableObject {
     // keep user info
     var version = 0
     var myIndex = 0
-    var connect = false
     @Published var myAvatar: UIImage?
     @Published var myProfile: UIImage?
 
@@ -48,6 +47,12 @@ class DataManager: ObservableObject {
 
     // called at init
     private func initInfo() {
+
+        // update version
+        let doc = FS.collection("accFlags").document("APP_STATUS")
+        doc.getDocument { doc,_ in
+            self.version = doc?.data()?["version"] as? Int ?? 0
+        }
 
         // access userList
         FS.collection("userList").getDocuments { col,_ in
@@ -82,15 +87,8 @@ class DataManager: ObservableObject {
             let userData = UserData(id: id, favFoods: favFoods,
             chatting: chatting, favUsers: favUsers, blocked: blocked)
             self.userData.append(userData)
-        }}}
+        }}}}
 
-        // update version
-        let doc = FS.collection("accFlags").document("APP_STATUS")
-        doc.getDocument { doc,_ in
-            self.version = doc?.data()?["version"] as? Int ?? 0
-            self.connect = doc?.data()?["connect"] as? Bool ?? false
-        }
-    }
     // called at init
     private func getSetts() {
         FS.collection("settings").getDocuments { col,_ in

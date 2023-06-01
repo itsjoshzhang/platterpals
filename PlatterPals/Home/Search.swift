@@ -69,7 +69,7 @@ struct Search: View {
 
         HStack(spacing: 0) {
 
-        Text("Location: ")
+        Text("Location:")
             .foregroundColor(.secondary)
 
         Cities(addAll: true, city: $city, page: $page)
@@ -126,12 +126,12 @@ struct Search: View {
     func search() {
         userIDs.removeAll()
 
-        for i in (0 ..< min(DM.userList.count, 4)) {
-            // loop through userList and show max of 4 items
+        for i in 0 ..< DM.userList.count {
+            // loop through userList and track index of user
             let user = DM.userList[i]
 
-            if check(name), compare(user.name, name),
-            // if name is valid and is a prefix of user.name
+            if userIDs.count < 4, compare(user.name, name),
+            // if less than 4 and name is prefix of user.name
 
             (following && DM.md().favUsers.contains(user.id))
             // if following checked, show from favUsers only
@@ -142,10 +142,7 @@ struct Search: View {
         }}}
 
     func compare(_ name1: String, _ name2: String) -> Bool {
-        return name1.lowercased().hasPrefix(name2.lowercased())
-    }
-    func check(_ name: String) -> Bool {
-        return !(name == "!" ||
-        name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+        return (name1 != "!" && !name2.isEmpty &&
+        name1.lowercased().hasPrefix(name2.lowercased()))
     }
 }

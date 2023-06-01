@@ -206,6 +206,7 @@ struct Suggest: View {
         VM.api = ChatGPTAPI(text: text)
         withAnimation {
             showGPT = true
+            loading = false
         }
     }
     // ## TEXT LOGIC ## //
