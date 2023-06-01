@@ -34,12 +34,11 @@ struct Orders: View {
             let null = OM.orders.isEmpty
 
         if null {
-            if loading {
-                Text("")
-                .onAppear {
-                    withAnimation(.easeIn(duration: 1)) {
-                        loading = false
-            }}} else { NewOrder(text: "##;##") }
+        if loading {
+            Text("").onAppear {
+            withAnimation(.easeIn(duration: 1)) {
+                loading = false
+        }}} else { NewOrder(text: "##;##") }
 
         } else {
         VStack(spacing: 8) {
@@ -85,6 +84,7 @@ struct Orders: View {
             Text(ord.time.formatted(.dateTime.day().month()))
                 .foregroundColor(.secondary)
         }}}}
+        .padding(.bottom, 70)
         .listStyle(.plain)
         }
         .navigationTitle("My Orders")

@@ -3,25 +3,16 @@ import SwiftUI
 struct ChatGPT: View {
 
     // ## TRACK INFO ## \\
-    @State var dismiss = false
-    @State var fuckery = false
+    @State var loading = false
+    @Binding var showGPT: Bool
     @EnvironmentObject var DM: DataManager
     @EnvironmentObject var VM: ViewModel
 
-    // ## OTHER VIEWS ## \\
-    var body: some View {
-        if dismiss {
-            Suggest()
-                .environmentObject(DM)
-        } else {
-            content
-        }
-    }
     // ## SHOW CHATS ## \\
 
-    var content: some View {
+    var body: some View {
         NavigationStack {
-        if fuckery {
+        if loading {
 
         let system = MessageRow(
             isInteractingWithChatGPT: false, sendImage: "openai",
@@ -43,17 +34,16 @@ struct ChatGPT: View {
         Button("\(Image(systemName: "arrowshape.turn.up.left"))") {
             withAnimation {
                 VM.clearMessages()
-                dismiss = true
+                showGPT = false
             }
         }
         .buttonStyle(.borderedProminent)
         .disabled(VM.isInteractingWithChatGPT)
 
         }}} else {
-            Text("")
-            .onAppear {
+            Text("").onAppear {
             withAnimation {
-                fuckery = true
+                loading = true
             }}}}}}
 
 struct ContentView: View {
@@ -94,16 +84,21 @@ struct ContentView: View {
             .buttonStyle(.borderedProminent)
         }
         if let last = VM.messages.last {
-        if !(last.isInteractingWithChatGPT) {
+        if last.isInteractingWithChatGPT {
+            ProgressView()
+                .tint(.pink)
+                .padding(16)
 
+        } else {
         Button("Add to Orders") {
         Task { @MainActor in
 
             VM.inputMessage =
 "Format the first menu item from your reply as ##menu item; restaurant name##"
+
+            showHelp = false
             await VM.sendTapped(show: false)
             showOrders = true
-            text = ""
             }
         }
         .foregroundColor(item ? .pink: .secondary)
@@ -148,7 +143,7 @@ struct ContentView: View {
         Task { @MainActor in
             VM.inputMessage = text
             await VM.sendTapped(show: show)
-            self.text = ""
+            showHelp = false
         }
     }
     // ## SHOW HELP ## \\
@@ -188,7 +183,6 @@ struct ContentView: View {
         HStack {
         TextField("Ask me anything!", text: $text, axis: .vertical)
             .padding(.leading, 8)
-            .submitLabel(.done)
             .focused($focus)
             .lineLimit(8)
             .onTapGesture {
@@ -218,7 +212,7 @@ struct ContentView: View {
         .padding(8)
     }}}
     
-    private func scrollToBottom(proxy: ScrollViewProxy) {
+    func scrollToBottom(proxy: ScrollViewProxy) {
         guard let id = VM.messages.last?.id else { return }
         proxy.scrollTo(id, anchor: .bottomTrailing)
     }

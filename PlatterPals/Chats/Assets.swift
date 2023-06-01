@@ -24,7 +24,7 @@ struct TitleBar: View {
 
         VStack(alignment: .leading, spacing: 8) {
             Text(user.name)
-                .font(.title).bold()
+                .font(.title2).bold()
 
             Text("View Profile")
                 .foregroundColor(.secondary)

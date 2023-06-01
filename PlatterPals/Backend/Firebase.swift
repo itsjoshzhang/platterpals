@@ -244,10 +244,11 @@ class DataManager: ObservableObject {
         let SR = SR.child("\(path)/\(my().id).jpg")
         SR.delete {_ in}
 
-        userList[myIndex].prof = false
-        editUser(user: my())
+        if path != "avatars" {
+            userList[myIndex].prof = false
+            editUser(user: my())
+        }
     }
-
     // called at Maps
     func sendPin(pin: Location) {
         let doc = FS.collection("mapPins").document(pin.id)

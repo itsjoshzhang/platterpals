@@ -17,10 +17,10 @@ struct Suggest: View {
     @State var location = ""
 
     // ## BOOLEANS ## \\
-    @State var fuckery = false
+    @State var loading = false
+    @State var showGPT = false
     @State var showCustom = false
     @State var showOption = false
-    @State var showChatGPT = false
 
     // ## OBJECTS ## \\
     @EnvironmentObject var DM: DataManager
@@ -29,8 +29,8 @@ struct Suggest: View {
 
     // ## OTHER VIEWS ## \\
     var body: some View {
-        if showChatGPT {
-            ChatGPT()
+        if showGPT {
+            ChatGPT(showGPT: $showGPT)
                 .environmentObject(DM)
                 .environmentObject(VM)
         } else {
@@ -43,18 +43,20 @@ struct Suggest: View {
 
         // ## ORDER INFO ## \\
 
-        if fuckery {
+        if loading {
         Form {
             let block1 = !(friend == "None")
             let block2 = !(place.isEmpty && cuisine == "All")
 
         Section("Got something in mind?") {
 
-        Picker("Type of cuisine", selection: $cuisine) {
-            ForEach(foodList, id: \.self) { food in
-                Text(food)
-            }
-        }
+        HStack(spacing: 0){
+            Text("Type of cuisine: ")
+
+            Picker("", selection: $cuisine) {
+                ForEach(foodList, id: \.self) {
+                    Text($0)
+                }}}
         VStack {
             TextField("Restaurant name", text: $place)
                 .submitLabel(.done)
@@ -68,11 +70,14 @@ struct Suggest: View {
 
         Section("Ask someone you follow?") {
 
-        Picker("User's name: ", selection: $friend) {
+        HStack(spacing: 0) {
+            Text("User's name: ")
+            Picker("", selection: $friend) {
+
             ForEach(["None"] + DM.md().favUsers, id: \.self) { id in
                 Text(id == "None" ? id: DM.user(id: id).name)
-            }
-        }
+            }}}
+
         if friend == "None" {
             Text("Currently using: Your favorites")
                 .foregroundColor(block2 ? .secondary: .pink)
@@ -83,8 +88,10 @@ struct Suggest: View {
             Cards(id: friend)
                 .environmentObject(DM)
                 .environmentObject(OM)
-            }
-        }
+
+                .onChange(of: friend) {_ in
+                    OM.getOrders(id: friend)
+                }}}
         .disabled(block2)
         .opacity(block2 ? 0.5: 1)
 
@@ -159,10 +166,9 @@ struct Suggest: View {
         .padding(.bottom, 8)
 
         } else {
-            Text("")
-            .onAppear {
+            Text("").onAppear {
             withAnimation {
-                fuckery = true
+                loading = true
             }}}}}}
 
     // ## FOOD LOGIC ## \\
@@ -199,7 +205,7 @@ struct Suggest: View {
 
         VM.api = ChatGPTAPI(text: text)
         withAnimation {
-            showChatGPT = true
+            showGPT = true
         }
     }
     // ## TEXT LOGIC ## //

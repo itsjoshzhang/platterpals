@@ -102,7 +102,6 @@ struct EditProf: View {
         TextField("Write a short paragraph about your tastes.",
                   text: $text, axis: .vertical)
             .textFieldStyle(.roundedBorder)
-            .submitLabel(.done)
             .lineLimit(4...8)
 
         Max(count: 200, text: $text)

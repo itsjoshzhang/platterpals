@@ -26,9 +26,9 @@ struct Chats: View {
             Maps(text: "No chats yet? Explore below!")
                 .environmentObject(MD)
                 .environmentObject(DM)
+
         } else {
         List {
-
         ForEach(chatting, id: \.self) { id in
         NavigationLink(value: id) {
             Row(id: id)
@@ -40,7 +40,9 @@ struct Chats: View {
         .onDelete(perform: delete(atOffsets:))
         .onMove(perform: move(fromOffsets:toOffset:))
         }
+        .padding(.bottom, 70)
         .listStyle(.plain)
+
         .navigationDestination(for: String.self) { id in
             Convo(id: id, pad: true)
                 .environmentObject(DM)
@@ -67,9 +69,7 @@ struct Chats: View {
                 .environmentObject(DM)
         }
         if !isEmpty {
-            VStack {
-                Spacer()
-            Button {
+            VStack { Spacer(); Button {
                 showMaps = true
             } label: {
                 Glow(text: "Find foodies near you!")

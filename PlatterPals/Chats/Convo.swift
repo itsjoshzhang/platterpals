@@ -56,7 +56,7 @@ struct Convo: View {
         .padding(8)
         .background(UIgray)
         .cornerRadius(32)
-        .padding(16)
+        .padding(8)
         }
         .background {
             Back()

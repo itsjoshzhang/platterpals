@@ -156,8 +156,8 @@ class MapsData: NSObject, ObservableObject, CLLocationManagerDelegate {
             alertText = "Your location has been disabled in Settings."
             showAlert = true
         case .authorizedAlways, .authorizedWhenInUse:
-            region = MKCoordinateRegion(center:
-                LM.location!.coordinate, span: region.span)
+            region = MKCoordinateRegion(center: LM.location?.coordinate
+                ?? region.center, span: region.span)
         @unknown default:
             return
         }

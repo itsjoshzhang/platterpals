@@ -2,7 +2,7 @@ import SwiftUI
 import Firebase
 
 // ## APP VERSION ## \\
-private let VERSION = 0
+public let VERSION = 1
 // MARK: - CHANGE THIS
 
 @main
@@ -12,7 +12,6 @@ struct AppInit: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     init() {
-        // FirebaseApp.configure()
         UIView.appearance().tintColor = .systemPink
     }
     var body: some Scene {
@@ -32,11 +31,10 @@ struct MyTabView: View {
 
     var body: some View {
         Group {
-        if DM.version == VERSION {
-
-        // ## NO UPDATE ## \\
-
         TabView(selection: $page) {
+
+        // ## SHOW PAGES ## \\
+
         Orders()
             .tabItem {
                 Image(systemName: "menucard")
@@ -67,36 +65,11 @@ struct MyTabView: View {
                 .environmentObject(DM)
         }
         .onAppear {
-            id = DM.my().id
-            showGuide = !DM.my().prof
+        id = DM.my().id
+        showGuide = !DM.my().prof
 
-            if id != "!" {
-                if let c = MD.LM?.location?.coordinate {
-                    DM.sendPin(pin: Location(id: id,
-                        lat: c.latitude, lon: c.longitude))
-                }}}
-
-        // ## NEED UPDATE ## \\
-
-        } else {
-        VStack(spacing: 16) {
-
-        Image("logo")
-        Text("PlatterPals")
-            .font(.custom("Lobster", size: 50))
-
-        Text("An update to PlatterPals is here!")
-            .font(.headline)
-
-        HStack(spacing: 0) {
-        Text("Download now from the ")
-            .foregroundColor(.secondary)
-
-        Link(destination: URL(string:
-            "https://apps.apple.com/app/id1667418651")!) {
-            Text("App Store.")
-        }}}
-        .foregroundColor(.pink)
-        .background {
-            Back()
-        }}}}}
+        if id != "!" {
+            if let c = MD.LM?.location?.coordinate {
+                DM.sendPin(pin: Location(id: id,
+                    lat: c.latitude, lon: c.longitude))
+            }}}}}}

@@ -6,10 +6,9 @@ struct Splash: View {
     // ## TRACK INFO ## \\
     @State var scale = 0.9
     @State var opacity = 0.0
+    @State var update = false
     @State var showNext = false
-    @State var internet = false
 
-    @Environment(\.dismiss) var dismiss
     @StateObject var DM = DataManager()
     @StateObject var MD = MapsData()
 
@@ -36,10 +35,19 @@ struct Splash: View {
         Text("PlatterPals")
             .font(.custom("Lobster", size: 50))
 
-        if internet {
-            Text("Poor internet. Please refresh app.")
+        if update {
+            Text("An update to PlatterPals is here!")
                 .font(.headline)
-        } else {
+
+            HStack(spacing: 0) {
+            Text("Download now from the ")
+                .foregroundColor(.secondary)
+
+            Link(destination: URL(string:
+                "https://apps.apple.com/app/id1667418651")!) {
+                Text("App Store.")
+
+        }}} else {
             ProgressView()
                 .scaleEffect(2)
                 .tint(.pink)
@@ -57,13 +65,13 @@ struct Splash: View {
                 opacity = 1.0
             }
         DispatchQueue.main.asyncAfter(deadline: .now()+2) {
-            if DM.connect {
+            if DM.version == VERSION {
                 withAnimation {
                     showNext = true
                 }
             } else {
                 withAnimation {
-                    internet = true
+                    update = true
                 }}}}}}
 
 struct Reset: View {
