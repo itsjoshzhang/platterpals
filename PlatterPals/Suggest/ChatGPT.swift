@@ -108,7 +108,7 @@ struct ContentView: View {
         // ## CONVO LOGIC ## \\
 
         HStack(spacing: 0) {
-        Text("Or find another:  ")
+        Text("Or find another: ")
             .foregroundColor(.secondary)
 
         if item {
@@ -152,16 +152,30 @@ struct ContentView: View {
         VStack {
         Group {
         if showHelp {
-        if VM.messages.isEmpty {
-            Text("Your instructions: " + VM.api.instructions)
-        } else {
-            Text(
-            """
-            Ask your PlatterPal about hours, contact info, or directions!
-            You can also ask questions more complex than our form can take.
-            This is an AI language model. Not all replies may be accurate.
-            """
-        )}}}
+            if VM.messages.isEmpty {
+                Text("Your instructions: " + VM.api.instructions)
+            } else {
+                Text(
+        """
+        Ask your PlatterPal about hours, contact info, or directions!
+        You can also provide info more complex than our form can take.
+        This is an AI language model. Not all replies may be accurate.
+        """
+        )}} else {
+            HStack(spacing: 0) {
+            Text("Order on ")
+
+            Link(destination: URL(string:
+                "https://apps.apple.com/app/id719972451")!) {
+                Text("DoorDash")
+                    .foregroundColor(.pink)
+            }
+            Text(" • ")
+            Link(destination: URL(string:
+                "https://apps.apple.com/app/id1196524786")!) {
+                Text("SnackPass")
+                    .foregroundColor(.pink)
+            }}}}
         .font(.subheadline)
         .foregroundColor(.secondary)
         .frame(width: UIwidth-32, alignment: .leading)

@@ -129,20 +129,23 @@ struct Suggest: View {
         }
         // ## OPTIONALS ## \\
 
-        Section(header: Text(showOption ? "Clear options":
-            "Optional items")
-            .bold().underline()
-            .onTapGesture {
-                withAnimation {
-                    showOption.toggle()
-                }}){
-
+        Section(header: Button {
+            withAnimation {
+                showOption.toggle()
+        }} label: {
+            Text(showOption ? "Clear Options":
+                "Optional Items").textCase(.none)
+                .font(.headline)
+        }
+        .padding(8)
+        .background(RoundedRectangle(cornerRadius: 8).fill(.white))
+        .padding(.leading, -16)
+        ){
         if showOption {
         Stepper("Number of people: \(people)",
                 value: $people, in: 1...10)
 
-        let p = (price >= 50 ? price - 10: price - 5)
-        Stepper("Price range: $\(p)-\(price)",
+        Stepper("Price: $\(price) or lower",
                 value: $price, in: 10...100, step: 10)
 
         Picker("", selection: $style) {
@@ -186,20 +189,16 @@ struct Suggest: View {
         } else {
             text += addFavs(id: DM.my().id)
         }
-        // ## OPTIONALS ## \\
+        // ## MISC LOGIC ## \\
 
         if showOption {
             let n = (people == 1 ? "person": "people")
             text += "Find a \(style) place for \(people) \(n). "
-
-            let p = (price >= 50 ? price - 10: price - 5)
-            text += "Find food from $\(p)-\(price). "
+            text += "Find food at $\(price) or lower. "
         }
         if location.contains("erkeley") {
             location = "UC Berkeley"
         }
-        // ## PARAMETERS ## \\
-
         text += "Search within \(miles) miles of \(location). "
         text += "Show only \(options) menu item / restaurant. "
 

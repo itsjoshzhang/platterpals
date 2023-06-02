@@ -41,15 +41,15 @@ struct Home: View {
 
         ForEach(list) { user in
         // return shuffled copy of userList
-        let data = DM.md()
+        let priv = !DM.sets(id: user.id).privacy
 
-        if DM.my().id != user.id, user.id != "!",
+        if DM.my().id != user.id, user.id != "!", priv,
         // dont show my own profile or the debug account
 
-        !data.blocked.contains(user.id), user.prof,
+        !DM.md().blocked.contains(user.id), user.prof,
         // don't show blocked users and missing profiles
 
-        (following && data.favUsers.contains(user.id))
+        (following && DM.md().favUsers.contains(user.id))
         // if following checked, show from favUsers only
 
         || !following, compare(user.city, city) {
