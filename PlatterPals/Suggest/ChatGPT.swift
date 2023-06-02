@@ -119,9 +119,10 @@ struct ContentView: View {
         }
         Button("Restaurant") {
             send(text: "Find another restaurant.")
-        }
+            }
         }
         .font(.subheadline)
+        .padding(.bottom, 16)
         }}}}
 
         // ## MODIFIERS ## \\
@@ -142,8 +143,8 @@ struct ContentView: View {
     func send(show: Bool = true, text: String) {
         Task { @MainActor in
             VM.inputMessage = text
-            await VM.sendTapped(show: show)
             showHelp = false
+            await VM.sendTapped(show: show)
         }
     }
     // ## SHOW HELP ## \\
@@ -178,7 +179,7 @@ struct ContentView: View {
             }}}}
         .font(.subheadline)
         .foregroundColor(.secondary)
-        .frame(width: UIwidth-32, alignment: .leading)
+        .frame(width: UIwidth-32)
 
         HStack(spacing: 0) {
         Image(systemName: "questionmark.circle")
@@ -223,7 +224,8 @@ struct ContentView: View {
         .padding(8)
         .background(UIgray)
         .cornerRadius(32)
-        .padding(8)
+        .padding(.bottom, 8)
+        .padding(.horizontal, 8)
     }}}
     
     func scrollToBottom(proxy: ScrollViewProxy) {

@@ -20,6 +20,7 @@ class OrderManager: ObservableObject {
 
 struct Orders: View {
 
+    @State var page = ""
     @State var loading = true
     @State var showOrder = false
     @State var showAlert = false
@@ -31,18 +32,9 @@ struct Orders: View {
         NavigationStack {
         ZStack {
             var data = DM.md()
-            let null = OM.orders.isEmpty
 
-        if null {
-        if loading {
-            Text("").onAppear {
-            withAnimation(.easeIn(duration: 1)) {
-                loading = false
-        }}} else { NewOrder(text: "##;##") }
-
-        } else {
         VStack(spacing: 8) {
-            Cards(id: DM.my().id)
+            Cards(id: DM.my().id, page: $page)
                 .environmentObject(DM)
                 .environmentObject(OM)
                 .padding(.top, 8)
@@ -106,10 +98,12 @@ struct Orders: View {
             NewOrder(text: "##;##")
                 .environmentObject(DM)
             }
-        }
-        if (data.favFoods.isEmpty && !null) {
-            VStack {
-                Spacer()
+
+        if (OM.orders.isEmpty) {
+            VStack { Spacer()
+                Glow(text: "No orders yet? Ask your AI!")
+        }} else if data.favFoods.isEmpty {
+            VStack { Spacer()
                 Glow(text: "No favs yet? ♡ one above!")
             }}}}
         .onAppear {
@@ -119,6 +113,7 @@ struct Orders: View {
 struct Cards: View {
 
     var id: String
+    @Binding var page: String
     @EnvironmentObject var DM: DataManager
     @EnvironmentObject var OM: OrderManager
 
@@ -135,17 +130,22 @@ struct Cards: View {
                 .font(.headline)
         }
         if data.favFoods.isEmpty {
-            let ord = AIOrder(id: "❔", user: "", order: "No favorites yet.", place: "Check back soon!", stars: -1)
+            let ord = AIOrder(id: "❔", user: "", order:
+            "No favorites yet.", place: "Check back soon!", stars: -1)
             Card(ord: ord)
-
+                .onAppear {
+                    page = "nil!"
+                }
         } else {
             TabView {
             ForEach(data.favFoods, id: \.self) { id in
 
             if let ord = OM.orders.first { $0.id == id } {
                 Card(ord: ord)
-                    .environmentObject(DM)
-            }}}
+            .environmentObject(DM)
+            .onAppear {
+                page = "\(ord.order) from \(ord.place)"
+            }}}}
         .tabViewStyle(.page(indexDisplayMode: .always))
         .indexViewStyle(.page(backgroundDisplayMode: .always))
         }

@@ -182,12 +182,12 @@ class DataManager: ObservableObject {
         doc.setData(["id": msg.id, "text": msg.text, "sender":
             msg.sender, "getter": msg.getter, "time": msg.time])
 
-        var getter = data(id: msg.getter)
-        if !getter.chatting.contains(msg.sender) {
-
-            getter.chatting.insert(msg.sender, at: 0)
-            sendData(data: getter)
+        var get = data(id: msg.getter)
+        if let i = get.chatting.firstIndex(of: msg.sender) {
+            get.chatting.remove(at: i)
         }
+        get.chatting.insert(msg.sender, at: 0)
+        sendData(data: get)
     }
     // called at Order
     func sendOrder(ord: AIOrder) {

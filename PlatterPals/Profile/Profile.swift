@@ -54,9 +54,11 @@ struct Profile: View {
     // ## TRACK INFO ## \\
     var id: String
     var pad: Int
-
+    @State var page = ""
     @State var avatar: UIImage?
     @State var profile: UIImage?
+
+    // ## BOOLEANS ## \\
     @State var showEdit = false
     @State var showChat = false
     @State var showUpdate = false
@@ -122,7 +124,7 @@ struct Profile: View {
             Text(user.text)
                 .foregroundColor(.secondary)
         }
-        Cards(id: user.id)
+        Cards(id: user.id, page: $page)
             .environmentObject(DM)
             .environmentObject(OM)
         }

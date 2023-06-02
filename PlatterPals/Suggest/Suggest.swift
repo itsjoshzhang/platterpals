@@ -17,6 +17,7 @@ struct Suggest: View {
     @State var location = ""
 
     // ## BOOLEANS ## \\
+    @State var page = ""
     @State var loading = false
     @State var showGPT = false
     @State var showCustom = false
@@ -85,7 +86,7 @@ struct Suggest: View {
                     OM.getOrders(id: DM.my().id)
                 }
         } else {
-            Cards(id: friend)
+            Cards(id: friend, page: $page)
                 .environmentObject(DM)
                 .environmentObject(OM)
 
@@ -135,7 +136,7 @@ struct Suggest: View {
         }} label: {
             Text(showOption ? "Clear Options":
                 "Optional Items").textCase(.none)
-                .font(.headline)
+                .underline()
         }
         .padding(8)
         .background(RoundedRectangle(cornerRadius: 8).fill(.white))
@@ -161,8 +162,8 @@ struct Suggest: View {
         .onAppear {
             location = DM.my().city
         }
-        .navigationTitle("Let's Order")
-        Button("Let's Order") {
+        .navigationTitle("Ask Your AI 🤖")
+        Button("Get Started") {
             orderLogic()
         }
         .buttonStyle(.borderedProminent)
@@ -183,11 +184,8 @@ struct Suggest: View {
             text += "Search the menu of \(place). "
         } else if cuisine != "All" {
             text += "Search for \(cuisine) food. "
-
-        } else if friend != "None" {
-            text += addFavs(id: friend)
         } else {
-            text += addFavs(id: DM.my().id)
+            text += addFavs()
         }
         // ## MISC LOGIC ## \\
 
@@ -210,16 +208,22 @@ struct Suggest: View {
     }
     // ## TEXT LOGIC ## //
 
-    func addFavs(id: String) -> String {
+    func addFavs() -> String {
         let ans = "Find food similar to"
-        let favs = DM.data(id: id).favFoods
+        let sus = "Surprise me with a dish / restaurant nearby. "
 
-        if !favs.isEmpty {
-            let rand = favs.shuffled().first
-            for ord in OM.orders {
-                if ord.id == rand {
-                    return "\(ans) \(ord.order) from \(ord.place). "
+        if friend == "None" {
+            let favs = DM.md().favFoods
+            if !favs.isEmpty {
+
+                let rand = favs.shuffled().first
+                for ord in OM.orders {
+                    if ord.id == rand {
+                        return "\(ans) \(ord.order) from \(ord.place). "
+            }}}
+            return sus
+        } else if page == "nil!" {
+            return sus
+        } else {
+            return "\(ans) \(page). "
         }}}
-        return "Surprise me with a dish / restaurant nearby. "
-    }
-}
