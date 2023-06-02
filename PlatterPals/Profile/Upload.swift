@@ -44,7 +44,7 @@ struct Upload: View {
         // ## MODIFIERS ## \\
 
         .padding(16)
-        .navigationTitle("Profile 📸")
+        .navigationTitle("Profile \(upbox)")
         .background {
             Back()
         }

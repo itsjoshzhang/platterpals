@@ -69,7 +69,7 @@ struct Home: View {
         .navigationTitle("PlatterPals")
         .toolbar {
             ToolbarItem {
-                Button("\(Image(systemName: "square.and.arrow.up"))"){
+                Button("Profile \(upbox)"){
                     showUpload = true
                 }
             .buttonStyle(.borderedProminent)

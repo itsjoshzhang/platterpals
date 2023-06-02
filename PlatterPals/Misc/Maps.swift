@@ -19,32 +19,43 @@ struct Maps: View {
                 .font(.headline)
 
         ZStack(alignment: .bottom) {
-            Map(coordinateRegion: $MD.region, showsUserLocation: true,
-                annotationItems: locations) { pin in
+        Map(coordinateRegion: $MD.region, showsUserLocation: true,
+            annotationItems: locations) { pin in
 
-                MapAnnotation(coordinate: CLLocationCoordinate2D(
-                    latitude: pin.lat, longitude: pin.lon)) {
+            MapAnnotation(coordinate: CLLocationCoordinate2D(
+                latitude: pin.lat, longitude: pin.lon)) {
 
-                    NavigationLink(value: pin.id) {
-                        MapPin(pin: pin)
-                            .environmentObject(DM)
-                    }}}
-            .navigationDestination(for: String.self) { id in
-                Profile(id: id, pad: -50)
-                    .environmentObject(DM)
+                NavigationLink(value: pin.id) {
+                    MapPin(pin: pin)
+                        .environmentObject(DM)
+                }}}
+        .navigationDestination(for: String.self) { id in
+            Profile(id: id, pad: -50)
+                .environmentObject(DM)
+        }
+        VStack(spacing: 0) {
+
+        if !DM.ms().locate {
+            Text("Your location is not being shared.")
+                .shadow(color: .white, radius: 3)
+                .shadow(color: .white, radius: 3)
+                .shadow(color: .white, radius: 3)
+                .foregroundColor(.pink)
+                .font(.headline)
+        }
+        LocationButton(.currentLocation) {
+            MD.checkLocation()
+            if let c = MD.LM?.location?.coordinate {
+
+                DM.sendPin(pin: Location(id: DM.my().id,
+                    lat: c.latitude, lon: c.longitude))
             }
-            LocationButton(.currentLocation) {
-                MD.checkLocation()
-                if let c = MD.LM?.location?.coordinate {
-
-                    DM.sendPin(pin: Location(id: DM.my().id,
-                        lat: c.latitude, lon: c.longitude))
-                }
-            }
-            .foregroundColor(.white)
-            .cornerRadius(8)
-            .tint(.pink)
-            .padding(16)
+        }
+        .foregroundColor(.white)
+        .cornerRadius(8)
+        .tint(.pink)
+        .padding(16)
+        }
         }
         .navigationTitle(text.hasPrefix("T") ?
                          "Near Me": "My Chats")
@@ -61,19 +72,11 @@ struct Maps: View {
 
         locations = snap.documents.compactMap { doc -> Location? in
         if let pin = try? doc.data(as: Location.self) {
-            if DM.my().id != pin.id {
-                return pin
-            }
-        }
+
+            if (DM.sets(id: pin.id).locate && DM.my().id != pin.id) {
+                return pin }}
         return nil
         }}}}}
-
-struct Location: Identifiable, Hashable, Codable {
-    let id: String
-    let lat: Double
-    let lon: Double
-    var time = Date()
-}
 
 struct MapPin: View {
 
@@ -85,7 +88,9 @@ struct MapPin: View {
         VStack(spacing: 0) {
 
             Text(getTime(pin.time))
+                .shadow(color: .white, radius: 3)
                 .font(.headline)
+
             RoundPic(width: 50, image: image)
 
             Image(systemName: "pin.fill")

@@ -18,8 +18,9 @@ struct Settings: View {
     @State var showDelete = false
 
     // ## SETUP VIEW ## \\
-
     @State var blockID = "..."
+    @State var alertText = ""
+
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
@@ -78,7 +79,7 @@ struct Settings: View {
             .foregroundColor(.black)
         Div()
         HStack {
-            Text("Allow location sharing")
+            Text("Share location on Maps")
             Spacer()
             Toggle("", isOn: $locate)
                 .frame(width: 50)
@@ -135,6 +136,8 @@ struct Settings: View {
         } else {
             Button("Delete Account") {
                 DM.sendFlag(id: myID, type: "delete")
+                alertText = "Deletion takes up to 24 hours."
+
                 showAlert = true
                 showDelete = true
             }
@@ -174,9 +177,12 @@ struct Settings: View {
         .sheet(isPresented: $showTerms) {
             Terms()
         }
-        .alert("Deletion takes up to 24 hours.", isPresented:
-            $showAlert) {
+        .alert(alertText, isPresented: $showAlert) {
             Button("OK", role: .cancel) {}
+        }
+        .onChange(of: privacy) { bool in
+            alertText = "Your cover photo will be hidden from users."
+            showAlert = bool
         }
         // ## SAVE/SIGNOUT ## \\
 

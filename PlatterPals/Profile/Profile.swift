@@ -54,11 +54,13 @@ struct Profile: View {
     // ## TRACK INFO ## \\
     var id: String
     var pad: Int
+
     @State var avatar: UIImage?
     @State var profile: UIImage?
     @State var showEdit = false
     @State var showChat = false
     @State var showUpdate = false
+    @State var showUpload = false
 
     // ## SETUP VIEW ## \\
     @StateObject var OM = OrderManager()
@@ -82,12 +84,18 @@ struct Profile: View {
         // ## CLICKABLES ## \\
 
         VStack(alignment: .leading) {
-            if myID == id {
-                Button("Edit Profile") {
-                    showEdit = true
-                }
-                .buttonStyle(.bordered)
-            } else {
+        if myID == id {
+            HStack(spacing: 16) {
+            Button("Edit Profile") {
+                showEdit = true
+            }
+            .buttonStyle(.bordered)
+            Button("Upload \(upbox)") {
+                showUpload = true
+            }
+            .buttonStyle(.borderedProminent)
+            }
+        } else {
         HStack {
             ProfHead(id: id)
                 .environmentObject(DM)
@@ -131,13 +139,18 @@ struct Profile: View {
         .buttonStyle(.borderedProminent)
 
         if showUpdate {
-            if user.prof {
-                Update(id: id, showNext: false, profile: profile)
-                    .environmentObject(DM)
-            } else {
-                Text("No profile yet.")
-                    .foregroundColor(.secondary)
-                    .padding(16)
+        if (DM.sets(id: user.id).privacy && user.id != myID) {
+            Text("Private profile.")
+                .foregroundColor(.secondary)
+                .padding(16)
+
+        } else if user.prof {
+            Update(id: id, showNext: false, profile: profile)
+                .environmentObject(DM)
+        } else {
+            Text("No profile yet.")
+                .foregroundColor(.secondary)
+                .padding(16)
         }}}}
 
         // ## MODIFIERS ## \\
@@ -158,6 +171,10 @@ struct Profile: View {
         .background {
             Back()
         }}}
+        .sheet(isPresented: $showUpload) {
+            Upload()
+                .environmentObject(DM)
+        }
         .sheet(isPresented: $showChat) {
             Convo(id: id, pad: false)
                 .environmentObject(DM)

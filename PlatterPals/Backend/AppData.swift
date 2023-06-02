@@ -5,6 +5,9 @@ let UIwidth = UIScreen.main.bounds.size.width
 let UIheight = UIScreen.main.bounds.size.height
 let UIgray = Color.secondary.opacity(0.25)
 
+let spark = Image(systemName: "sparkles")
+let upbox = Image(systemName: "square.and.arrow.up")
+
 let foodList = ["All", "American", "Boba Tea", "Brazilian", "Caribbean", "Chinese",
                 "Ethiopian", "Hawaiian", "French", "Indian", "Italian", "Japanese",
                 "Korean", "Mexican", "Middle Eastern", "Thai", "Vietnamese"]
@@ -97,6 +100,13 @@ struct Setting: Identifiable, Hashable, Codable {
     var privacy = false
 }
 
+struct Location: Identifiable, Hashable, Codable {
+    let id: String
+    let lat: Double
+    let lon: Double
+    var time = Date()
+}
+
 struct Div: View {
     var body: some View {
         Divider()
@@ -124,8 +134,6 @@ struct Box: View {
             .overlay(RoundedRectangle(cornerRadius: 8).stroke(.secondary))
     }
 }
-let spark = Image(systemName: "sparkles")
-
 struct Glow: View {
 
     var text: String
