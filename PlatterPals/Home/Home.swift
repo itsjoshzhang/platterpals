@@ -3,8 +3,7 @@ import SwiftUI
 struct Home: View {
 
     // ## TRACK INFO ## \\
-    @State var page = 0
-    @State var city = "All"
+    @State var city = ""
     @State var following = false
     @State var showSearch = false
     @State var showUpload = false
@@ -24,12 +23,11 @@ struct Home: View {
             .onTapGesture {
                 showSearch = true
             }
-        HStack(spacing: 0) {
-
-        Text("Location:")
-            .foregroundColor(.secondary)
-        Cities(addAll: true, city: $city, page: $page)
-        Spacer()
+        HStack {
+            Text("City:")
+                .foregroundColor(.secondary)
+            City(city: $city)
+            Spacer()
 
         Toggle("Following ✓", isOn: $following)
             .toggleStyle(.button)
@@ -54,13 +52,17 @@ struct Home: View {
         (following && data.favUsers.contains(user.id))
         // if following checked, show from favUsers only
 
-        || !following, (city == "All" || compare(user.city, city)) {
+        || !following, compare(user.city, city) {
         // if not & (if no city: pass, else: check city)
 
-            Update(id: user.id, showNext: true)
+            let update = Update(id: user.id, showNext: true)
             // show update with link to profile
-                .environmentObject(DM)
-        }}}
+                            .environmentObject(DM)
+
+            if DM.ms().suggest { update
+            // don't suggest restaurant if rest
+            } else if !user.rest { update
+        }}}}
 
         // ## MODIFIERS ## \\
 

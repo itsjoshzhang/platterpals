@@ -43,11 +43,11 @@ struct ProfHead: View {
 struct EditProf: View {
 
     // ## TRACK INFO ## \\
-    @State var page = 0
     @State var name = ""
     @State var text = ""
     @State var city = "Berkeley"
     @State var showCrop = false
+    @State var rest = false
 
     // ## SETUP VIEW ## \\
     @State var image: UIImage?
@@ -70,10 +70,10 @@ struct EditProf: View {
         Blank(label: "Username", text: $name)
             .textFieldStyle(.roundedBorder)
 
-        HStack(spacing: 0) {
+        HStack {
             Text("City:")
                 .font(.headline)
-            Cities(addAll: false, city: $city, page: $page)
+            City(city: $city)
         }
         // ## UPLOAD PIC ## \\
 
@@ -106,51 +106,44 @@ struct EditProf: View {
 
         Max(count: 200, text: $text)
 
+        HStack {
+        Toggle("I'm a restaurant", isOn: $rest)
+            .toggleStyle(.button)
+            .overlay(RoundedRectangle(
+                cornerRadius: 8).stroke(.pink))
+        Spacer()
+
         Button("Save Edits") {
             if let image = image {
                 DM.putImage(image: image, path: "avatars")
             }
-            if (page != 2 && !city.hasSuffix("CA")) {
-                city += ", CA"
-            }
             my.name = name
             my.text = text
             my.city = city
+            my.rest = rest
 
             DM.editUser(user: my)
             dismiss()
         }
         // ## MODIFIERS ## \\
-
+            
         .disabled(text.count > 200 || count(name) || count(city))
         .buttonStyle(.borderedProminent)
+        }
         }
         .padding(16)
         .onAppear {
             name = my.name
             text = my.text
-            if cityList.contains(t(my.city)) {
-                city = t(my.city)
-            } else if allCities.contains(t(my.city)) {
-                page = 1
-                city = t(my.city)
-            } else {
-                page = 2
-                city = ""
-            }
+            city = my.city
+            rest = my.rest
         }
         .fullScreenCover(isPresented: $showCrop) {
             ImageEditor(image: $image, show: $showCrop)
         }
     }
-    // ## FUNCTIONS ## \\
-
     func count(_ text: String) -> Bool {
         return (text.trimmingCharacters(in: .whitespacesAndNewlines)
             .isEmpty || text.count > 32)
-    }
-    func t(_ text: String) -> String {
-        return text.trimmingCharacters(in:
-            CharacterSet(charactersIn: ", CA"))
     }
 }

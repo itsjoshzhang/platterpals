@@ -52,10 +52,17 @@ struct Update: View {
         // ## USER INFO ## \\
 
         VStack(alignment: .leading) {
+            if user.rest {
+                Text("\(spark) Restaurant")
+                    .font(.headline)
+            }
             Spacer()
-            Text(user.name)
-                .font(.largeTitle).bold()
-
+            Button {
+                showProf = true
+            } label: {
+                Text(user.name)
+                    .font(.largeTitle).bold()
+            }
         HStack {
             Text("\(user.city)")
                 .font(.headline)

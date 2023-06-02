@@ -5,12 +5,6 @@ let UIwidth = UIScreen.main.bounds.size.width
 let UIheight = UIScreen.main.bounds.size.height
 let UIgray = Color.secondary.opacity(0.25)
 
-let cityList = ["Berkeley", "Fremont", "Palo Alto", "San Fran.", "San Jose", "More..."]
-
-let allCities = ["Berkeley", "Fremont", "Irvine", "Los Angeles", "Oakland", "Palo Alto",
-                 "Pleasanton", "Riverside", "Sacramento", "San Diego", "San Francisco",
-                 "San Jose", "San Mateo", "Santa Barbara", "Santa Cruz", "More..."]
-
 let foodList = ["All", "American", "Boba Tea", "Brazilian", "Caribbean", "Chinese",
                 "Ethiopian", "Hawaiian", "French", "Indian", "Italian", "Japanese",
                 "Korean", "Mexican", "Middle Eastern", "Thai", "Vietnamese"]
@@ -67,6 +61,7 @@ struct User: Identifiable, Hashable, Codable {
     var city: String
     var text: String
     var prof: Bool
+    var rest: Bool
 }
 
 struct UserData: Identifiable, Hashable, Codable {
@@ -129,11 +124,12 @@ struct Box: View {
             .overlay(RoundedRectangle(cornerRadius: 8).stroke(.secondary))
     }
 }
+let spark = Image(systemName: "sparkles")
+
 struct Glow: View {
 
     var text: String
     var body: some View {
-        let spark = Image(systemName: "sparkles")
 
         Text("\(spark) \(text) \(spark)")
             .font(.headline)
@@ -165,6 +161,18 @@ struct Blank: View {
         .submitLabel(.done)
     }
 }
+struct City: View {
+    @Binding var city: String
+
+    var body: some View {
+        VStack {
+            TextField("Enter a city", text: $city)
+                .textFieldStyle(.roundedBorder)
+                .submitLabel(.done)
+
+            Max(count: 32, text: $city)
+        }}}
+
 struct Max: View {
 
     var count: Int

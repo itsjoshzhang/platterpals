@@ -84,7 +84,7 @@ struct Settings: View {
                 .frame(width: 50)
         }
         HStack {
-            Text("Allow profile suggestions")
+            Text("Restaurant suggestions")
             Spacer()
             Toggle("", isOn: $suggest)
                 .frame(width: 50)
@@ -156,7 +156,7 @@ struct Settings: View {
             Back()
         }
         .onAppear {
-            let sets = DM.settings
+            let sets = DM.ms()
             notifs = sets.notifs
             locate = sets.locate
             suggest = sets.suggest
@@ -183,7 +183,7 @@ struct Settings: View {
         .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
             Button("\(Image(systemName: "chevron.left")) Save") {
-                var sets = DM.settings
+                var sets = DM.ms()
 
                 sets.notifs = notifs
                 sets.locate = locate

@@ -11,7 +11,7 @@ class DataManager: ObservableObject {
     // track user info
     @Published var userList = [User]()
     @Published var userData = [UserData]()
-    @Published var settings = Setting()
+    @Published var settings = [Setting]()
 
     // keep user info
     var version = 0
@@ -30,6 +30,10 @@ class DataManager: ObservableObject {
     func md() -> UserData {
         return userData[myIndex]
     }
+    // return my sets
+    func ms() -> Setting {
+        return settings[myIndex]
+    }
     // returns a User
     func user(id: String) -> User {
         for user in userList {
@@ -44,6 +48,13 @@ class DataManager: ObservableObject {
                 return data }}
         return md()
     }
+    // returns Setting
+    func sets(id: String) -> Setting {
+        for sett in settings {
+            if sett.id == id {
+                return sett }}
+        return ms()
+    }
 
     // called at init
     private func initInfo() {
@@ -57,26 +68,27 @@ class DataManager: ObservableObject {
         // access userList
         FS.collection("userList").getDocuments { col,_ in
 
-            if let col = col {
-            for doc in col.documents {
-            let data = doc.data()
+        if let col = col {
+        for doc in col.documents {
+        let data = doc.data()
 
             let id   = data["id"]   as? String ?? ""
             let name = data["name"] as? String ?? ""
             let city = data["city"] as? String ?? ""
             let text = data["text"] as? String ?? ""
-            let prof = data["prof"] as? Bool ?? false
+            let prof = data["prof"] as? Bool   ?? false
+            let rest = data["rest"] as? Bool   ?? false
 
-            let user = User(id: id, name: name, city: city, text:
-                            text, prof: prof)
-            self.userList.append(user)
+        let user = User(id: id, name: name, city: city, text: text,
+                        prof: prof, rest: rest)
+        self.userList.append(user)
         }}}
 
         // access userData
         FS.collection("userData").getDocuments { col,_ in
-            if let col = col {
-            for doc in col.documents {
-            let data = doc.data()
+        if let col = col {
+        for doc in col.documents {
+        let data = doc.data()
 
             let id       = data["id"]       as? String   ?? ""
             let favFoods = data["favFoods"] as? [String] ?? [String]()
@@ -84,30 +96,27 @@ class DataManager: ObservableObject {
             let favUsers = data["favUsers"] as? [String] ?? [String]()
             let blocked  = data["blocked"]  as? [String] ?? [String]()
 
-            let userData = UserData(id: id, favFoods: favFoods,
-            chatting: chatting, favUsers: favUsers, blocked: blocked)
-            self.userData.append(userData)
-        }}}}
+        let userData = UserData(id: id, favFoods: favFoods, chatting:
+                       chatting, favUsers: favUsers, blocked: blocked)
+        self.userData.append(userData)
+        }}}
 
-    // called at init
-    private func getSetts() {
+        // access Settings
         FS.collection("settings").getDocuments { col,_ in
-
         if let col = col {
         for doc in col.documents {
         let data = doc.data()
-            let id      = data["id"]      as? String ?? " "
 
-        if self.my().id == id {
+            let id      = data["id"]      as? String ?? ""
             let notifs  = data["notifs"]  as? Bool ?? true
             let locate  = data["locate"]  as? Bool ?? true
             let suggest = data["suggest"] as? Bool ?? true
             let privacy = data["privacy"] as? Bool ?? false
 
-            self.settings = Setting(id: id, notifs: notifs, locate:
-                        locate, suggest: suggest, privacy: privacy)
-            return
-            }}}}}
+        let setting = Setting(id: id, notifs: notifs, locate: locate,
+                              suggest: suggest, privacy: privacy)
+        self.settings.append(setting)
+        }}}}
 
     // called at Login
     func initUser(id: String) {
@@ -117,14 +126,13 @@ class DataManager: ObservableObject {
                 break }}
         getImage(path: "avatars")
         getImage(path: "profiles")
-        getSetts()
     }
     
     // called at Signup
-    func makeUser(id: String, name: String, city: String) {
+    func makeUser(id: String, name: String, city: String, rest: Bool) {
 
         let user = User(id: id, name: name, city: city, text: "",
-                        prof: false)
+                        prof: false, rest: rest)
         editUser(user: user)
 
         let data = UserData(id: id, favFoods: [String](), chatting:
@@ -134,8 +142,6 @@ class DataManager: ObservableObject {
         let sets = Setting(id: id, notifs: true, locate: true,
                            suggest: true, privacy: false)
         editSets(sets: sets)
-        
-        // initUser(id: id)
     }
     
     // called at Profile
@@ -144,7 +150,8 @@ class DataManager: ObservableObject {
         userList[myIndex] = user
 
         doc.setData(["id": user.id, "name": user.name, "text":
-            user.text, "city": user.city, "prof": user.prof])
+            user.text, "city": user.city, "prof": user.prof,
+            "rest": user.rest])
     }
     
     // called everywhere
@@ -162,7 +169,7 @@ class DataManager: ObservableObject {
     // called at Settings
     func editSets(sets: Setting) {
         let doc = FS.collection("settings").document(sets.id)
-        settings = sets
+        settings[myIndex] = sets
         
         doc.setData(["id": sets.id, "notifs": sets.notifs, "suggest":
         sets.suggest, "privacy": sets.privacy, "locate": sets.locate])

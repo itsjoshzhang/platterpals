@@ -126,9 +126,14 @@ struct Cards: View {
         VStack(alignment: .leading, spacing: 8) {
             let data = DM.data(id: id)
 
-        Text("My favorite foods: ")
-            .font(.headline)
-
+        if DM.user(id: id).rest {
+            Text("\(spark) Restaurant favorites:")
+                .foregroundColor(.pink)
+                .font(.headline)
+        } else {
+            Text("My favorite foods:")
+                .font(.headline)
+        }
         if data.favFoods.isEmpty {
             let ord = AIOrder(id: "❔", user: "", order: "No favorites yet.", place: "Check back soon!", stars: -1)
             Card(ord: ord)

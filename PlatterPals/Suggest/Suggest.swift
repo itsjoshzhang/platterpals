@@ -196,7 +196,7 @@ struct Suggest: View {
             text += "Find food from $\(p)-\(price). "
         }
         if location.contains("erkeley") {
-            location = "UC Berkeley, CA"
+            location = "UC Berkeley"
         }
         // ## PARAMETERS ## \\
 

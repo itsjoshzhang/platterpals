@@ -8,19 +8,19 @@ struct Signup: View {
     @State var email = ""
     @State var pass = ""
     @State var name = ""
+    @State var city = ""
     @State var alertText = ""
-    @State var city = "Berkeley"
 
     // ## CONDITIONS ## \\
-    @FocusState var focus: Bool
+    @State var rest = false
     @State var showCrop = false
     @State var showAlert = false
     @State var showTerms = false
     @State var showGuide = false
 
     // ## SETUP VIEW ## \\
-    @State var page = 0
     @State var image: UIImage?
+    @FocusState var focus: Bool
     @State var imageItem: PhotosPickerItem?
 
     @EnvironmentObject var DM: DataManager
@@ -74,15 +74,19 @@ struct Signup: View {
         }
         // ## USER INFO ## \\
 
-        HStack(spacing: 0) {
-            Text("Nearest City:")
+        HStack {
+            Text("City:")
                 .font(.headline)
 
-            Cities(addAll: false, city: $city, page: $page)
-                .buttonStyle(.bordered)
+            City(city: $city)
+                .onTapGesture {
+                    focus = true
+                }
+            Toggle("I'm a restaurant", isOn: $rest)
+                .toggleStyle(.button)
+                .overlay(RoundedRectangle(
+                    cornerRadius: 8).stroke(.pink))
         }
-        .frame(width: UIwidth * 0.8)
-
         HStack(spacing: 0) {
             Text("I agree to the ")
                 .foregroundColor(.secondary)
@@ -91,16 +95,13 @@ struct Signup: View {
             }
         }
         Button("Sign Up") {
-            if page != 2 {
-                city += ", CA"
-            }
             signupAuth()
         }
+        // ## MODIFIERS ## \\
+
         .disabled(email.isEmpty || pass.isEmpty
                  || count(name) || count(city))
         .buttonStyle(.borderedProminent)
-
-        // ## MODIFIERS ## \\
 
         .alert(alertText, isPresented: $showAlert) {
             Button("OK", role: .cancel) {
@@ -129,7 +130,7 @@ struct Signup: View {
             alertText = e.localizedDescription
             showAlert = true
         } else {
-            DM.makeUser(id: email, name: name, city: city)
+            DM.makeUser(id: email, name: name, city: city, rest: rest)
             DM.initUser(id: email)
             if let image = image {
                 DM.putImage(image: image, path: "avatars")

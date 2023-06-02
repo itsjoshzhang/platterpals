@@ -150,15 +150,14 @@ struct Profile: View {
             getImage(path: "profiles")
         }
         .sheet(isPresented: $showEdit) {
-        NavigationStack {
-            Group {
-            EditProf(image: avatar)
-                .environmentObject(DM)
-                .navigationTitle("Edit Profile")
-            }
-            .background {
-                Back()
-            }}}
+            NavigationStack {
+                EditProf(image: avatar)
+
+        .environmentObject(DM)
+        .navigationTitle("Edit Profile")
+        .background {
+            Back()
+        }}}
         .sheet(isPresented: $showChat) {
             Convo(id: id, pad: false)
                 .environmentObject(DM)

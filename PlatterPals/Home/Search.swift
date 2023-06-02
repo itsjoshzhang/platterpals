@@ -42,14 +42,13 @@ struct Search: View {
 
     // ## TRACK INFO ## \\
     @State var name = ""
-    @State var city = "All"
+    @State var city = ""
     @State var showNext = false
     @State var following = false
     @State var userIDs = [String]()
 
     // ## SETUP VIEW ## \\
     var profile: Bool
-    @State var page = 0
     @FocusState var focus: Bool
     @EnvironmentObject var DM: DataManager
 
@@ -67,13 +66,11 @@ struct Search: View {
             .submitLabel(.done)
             .focused($focus)
 
-        HStack(spacing: 0) {
-
-        Text("Location:")
-            .foregroundColor(.secondary)
-
-        Cities(addAll: true, city: $city, page: $page)
-        Spacer()
+        HStack {
+            Text("City:")
+                .foregroundColor(.secondary)
+            City(city: $city)
+            Spacer()
 
         Toggle("Following ✓", isOn: $following)
             .toggleStyle(.button)
@@ -136,13 +133,14 @@ struct Search: View {
             (following && DM.md().favUsers.contains(user.id))
             // if following checked, show from favUsers only
 
-            || !following, (city == "All" || compare(user.city, city)) {
+            || !following, compare(user.city, city) {
             // if not & (if no city: pass, else: check city)
                 userIDs.append(user.id)
         }}}
 
+    // either name or city must exist. data.hp(query)
     func compare(_ name1: String, _ name2: String) -> Bool {
-        return (name1 != "!" && !name2.isEmpty &&
+        return (name1 != "!" && !(name.isEmpty && city.isEmpty) &&
         name1.lowercased().hasPrefix(name2.lowercased()))
     }
 }
