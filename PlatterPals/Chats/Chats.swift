@@ -54,7 +54,7 @@ struct Chats: View {
         .onAppear {
             getChats()
         }
-        .onChange(of: chatting) {_ in
+        .onChange(of: DM.md().chatting) {_ in
             getChats()
         }
         // ## OTHER VIEWS ## \\

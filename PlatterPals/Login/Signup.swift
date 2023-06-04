@@ -95,6 +95,7 @@ struct Signup: View {
             }
         }
         Button("Sign Up") {
+            focus = false
             signupAuth()
         }
         // ## MODIFIERS ## \\

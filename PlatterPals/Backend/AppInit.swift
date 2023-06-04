@@ -2,7 +2,7 @@ import SwiftUI
 import Firebase
 
 // ## APP VERSION ## \\
-public let VERSION = 2
+public let VERSION = 5
 // MARK: - CHANGE THIS
 
 @main
@@ -44,7 +44,7 @@ struct MyTabView: View {
             .tabItem {
                 Image(systemName: "message")
             }.tag(1)
-        Home(list: DM.userList.shuffled())
+        Home(userList: DM.userList.shuffled())
             .tabItem {
                 Image(systemName: "house")
             }.tag(2)

@@ -102,9 +102,10 @@ struct MapPin: View {
         .foregroundColor(.pink)
         .padding(.bottom, 80)
         .onAppear {
-            getImage(path: "avatars")
-        }
-    }
+            if image == nil {
+                getImage(path: "avatars")
+            }}}
+
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(pin.id).jpg")
         SR.getData(maxSize: 4 * 1024 * 1024) { data,_ in

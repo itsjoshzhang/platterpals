@@ -3,7 +3,6 @@ import SwiftUI
 struct MyProfile: View {
 
     // ## TRACK INFO ## \\
-    @State var image: UIImage?
     @State var showSetts = false
     @State var showUpload = false
     @EnvironmentObject var DM: DataManager
@@ -16,12 +15,17 @@ struct MyProfile: View {
         // ## SHOW PROFILE ## \\
 
         Profile(id: my.id, pad: 0, avatar: DM.myAvatar, profile:
-            DM.myProfile, showUpdate: true)
-            .environmentObject(DM)
+                DM.myProfile, showUpdate: true)
+        .environmentObject(DM)
 
-        .onAppear {
-            image = DM.myAvatar
-        }
+        // ## SHOW BUTTON ## \\
+
+        if !my.prof {
+            VStack { Spacer(); Button {
+                showUpload = true
+            } label: {
+                Glow(text: "No profile yet? Add one now!")
+            }}}}
         .toolbar {
             ToolbarItem {
                 Button("\(Image(systemName: "gearshape"))") {
@@ -37,17 +41,7 @@ struct MyProfile: View {
         .fullScreenCover(isPresented: $showSetts) {
             Settings()
                 .environmentObject(DM)
-        }
-        // ## SHOW BUTTON ## \\
-
-        if !my.prof {
-            VStack {
-                Spacer()
-            Button {
-                showUpload = true
-            } label: {
-                Glow(text: "No profile yet? Add one now!")
-            }}}}}}}
+        }}}}
 
 struct Profile: View {
 
@@ -88,6 +82,7 @@ struct Profile: View {
         VStack(alignment: .leading) {
         if myID == id {
             HStack(spacing: 16) {
+
             Button("Edit Profile") {
                 showEdit = true
             }
@@ -116,7 +111,7 @@ struct Profile: View {
             Text("\(user.city)")
                 .font(.headline)
             Spacer()
-            Text("♥ \(DM.sumHeart(id: user.id))")
+            Text("♥ \(DM.sumHeart(id: id))")
                 .foregroundColor(.pink)
                 .font(.title3)
         }}}
@@ -124,7 +119,7 @@ struct Profile: View {
             Text(user.text)
                 .foregroundColor(.secondary)
         }
-        Cards(id: user.id, page: $page)
+        Cards(id: id, page: $page)
             .environmentObject(DM)
             .environmentObject(OM)
         }
@@ -133,21 +128,34 @@ struct Profile: View {
         // ## SHOW UPDATE ## \\
 
         VStack {
+        HStack {
+        if id == myID {
+            Text("\(spark) Refresh")
+                .opacity(0)
+        }
         Button("\(Image(systemName: "photo"))") {
             withAnimation {
+                if id == myID {
+                    avatar = DM.myAvatar
+                    profile = DM.myProfile
+                }
                 showUpdate.toggle()
             }
         }
         .buttonStyle(.borderedProminent)
-
+        if id == myID {
+            Text("\(spark) Refresh")
+                .foregroundColor(.pink)
+            }
+        }
         if showUpdate {
-        if (DM.sets(id: user.id).privacy && user.id != myID) {
+        if (DM.sets(id: id).privacy && id != myID) {
             Text("Private profile.")
                 .foregroundColor(.secondary)
                 .padding(16)
 
         } else if user.prof {
-            Update(id: id, showNext: false, profile: profile)
+            Update(id: id, showNext: false, avatar: avatar, profile: profile)
                 .environmentObject(DM)
         } else {
             Text("No profile yet.")
@@ -161,12 +169,20 @@ struct Profile: View {
             Back()
         }
         .onAppear {
-            getImage(path: "avatars")
-            getImage(path: "profiles")
+            if id == myID {
+                avatar = DM.myAvatar
+                profile = DM.myProfile
+            }
+            if avatar == nil {
+                getImage(path: "avatars")
+            }
+            if profile == nil {
+                getImage(path: "profiles")
+            }
         }
         .sheet(isPresented: $showEdit) {
             NavigationStack {
-                EditProf(image: avatar)
+                EditProf(image: DM.myAvatar)
 
         .environmentObject(DM)
         .navigationTitle("Edit Profile")

@@ -214,22 +214,25 @@ class DataManager: ObservableObject {
         let pfp = (path == "avatars")
 
         // resize the image
-        let width = min(image.size.width, 1024)
+        let width = min(image.size.width, 500)
         let image = image.resize(width: width, pfp: pfp)
 
         // compute metadata
         let meta = StorageMetadata()
         meta.contentType = "image/jpg"
-        let jpeg = image.jpegData(compressionQuality: 0.25)
+        let jpeg = image.jpegData(compressionQuality: 0.2)
 
         // put into storage
         if let jpeg = jpeg {
             SR.putData(jpeg, metadata: meta)
         }
         // update prof value
-        if !pfp {
+        if pfp {
+            myAvatar = image
+        } else {
             userList[myIndex].prof = true
             editUser(user: my())
+            myProfile = image
         }
     }
     // called at init

@@ -50,6 +50,9 @@ struct EditProf: View {
     @State var rest = false
 
     // ## SETUP VIEW ## \\
+    @FocusState var focus0: Bool
+    @FocusState var focus1: Bool
+    @FocusState var focus2: Bool
     @State var image: UIImage?
     @State var imageItem: PhotosPickerItem?
 
@@ -69,11 +72,18 @@ struct EditProf: View {
 
         Blank(label: "Username", text: $name)
             .textFieldStyle(.roundedBorder)
-
+            .focused($focus0)
+            .onTapGesture {
+                focus0 = true
+            }
         HStack {
-            Text("City:")
-                .font(.headline)
-            City(city: $city)
+        Text("City:")
+            .font(.headline)
+        City(city: $city)
+            .focused($focus1)
+            .onTapGesture {
+                focus1 = true
+            }
         }
         // ## UPLOAD PIC ## \\
 
@@ -103,7 +113,10 @@ struct EditProf: View {
                   text: $text, axis: .vertical)
             .textFieldStyle(.roundedBorder)
             .lineLimit(4...8)
-
+            .focused($focus2)
+            .onTapGesture {
+                focus2 = true
+            }
         Max(count: 200, text: $text)
 
         HStack {
@@ -123,6 +136,9 @@ struct EditProf: View {
             my.rest = rest
 
             DM.editUser(user: my)
+            focus0 = false
+            focus1 = false
+            focus2 = false
             dismiss()
         }
         // ## MODIFIERS ## \\
@@ -132,11 +148,17 @@ struct EditProf: View {
         }
         }
         .padding(16)
+        .onTapGesture {
+            focus0 = false
+            focus1 = false
+            focus2 = false
+        }
         .onAppear {
             name = my.name
             text = my.text
             city = my.city
             rest = my.rest
+            image = DM.myAvatar
         }
         .fullScreenCover(isPresented: $showCrop) {
             ImageEditor(image: $image, show: $showCrop)

@@ -26,8 +26,9 @@ struct Row: View {
             .font(.subheadline)
         }
         .onAppear {
-            getImage(path: "avatars")
-        }}}
+            if image == nil {
+                getImage(path: "avatars")
+            }}}}
 
     // ## FUNCTIONS ## \\
 

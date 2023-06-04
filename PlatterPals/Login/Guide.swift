@@ -78,6 +78,10 @@ struct Guide2: View {
             }
             .buttonStyle(.borderedProminent)
             .disabled(image == nil)
+        } else {
+            Text("Swipe right for more >>>")
+                .foregroundColor(.pink)
+                .font(.headline)
             }
         }
         .background {

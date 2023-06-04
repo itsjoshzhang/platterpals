@@ -45,6 +45,7 @@ struct NewOrder: View {
 
         // ## SHOW EMOJI ## \\
 
+        HStack {
         ScrollView(.horizontal) {
         LazyHGrid(rows: [GridItem(), GridItem()], spacing: 8) {
         ForEach(emojiList, id: \.self) { em in
@@ -56,15 +57,14 @@ struct NewOrder: View {
         .font(.system(size: 32))
         .cornerRadius(8)
         }}}
+        Text("\(Image(systemName: "chevron.right"))")
+            .foregroundColor(.pink)
+        }
         .padding(8)
         .frame(height: 100)
         .border(.pink, width: 3)
 
         // ## SHOW STARS ## \\
-
-        Text("Scroll for emojis!")
-            .foregroundColor(.secondary)
-            .font(.subheadline)
 
         HStack {
         ForEach(1...5, id: \.self) { i in

@@ -25,8 +25,8 @@ struct Upload: View {
         TextField("Write a short paragraph about your tastes.",
                   text: $text, axis: .vertical)
             .textFieldStyle(.roundedBorder)
-            .focused($focus)
             .lineLimit(4...8)
+            .focused($focus)
             .onTapGesture {
                 focus = true
             }
@@ -44,7 +44,7 @@ struct Upload: View {
         // ## MODIFIERS ## \\
 
         .padding(16)
-        .navigationTitle("Profile \(upbox)")
+        .navigationTitle("Profile 📸")
         .background {
             Back()
         }

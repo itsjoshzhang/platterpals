@@ -58,7 +58,9 @@ struct Update: View {
             }
             Spacer()
             Button {
-                showProf = true
+                if showNext {
+                    showProf = true
+                }
             } label: {
                 Text(user.name)
                     .font(.largeTitle).bold()
@@ -133,11 +135,19 @@ struct Update: View {
         // ## MODIFIERS ## \\
 
         .onAppear {
-            getImage(path: "profiles")
-            getImage(path: "avatars")
+            if id == myID {
+                avatar = DM.myAvatar
+                profile = DM.myProfile
+            }
+            if profile == nil {
+                getImage(path: "profiles")
+            }
+            if avatar == nil {
+                getImage(path: "avatars")
+            }
         }
         .sheet(isPresented: $showProf) {
-            Profile(id: id, pad: 64, avatar: avatar)
+            Profile(id: id, pad: 64, avatar: avatar, profile: profile)
                 .environmentObject(DM)
         }
         .confirmationDialog("", isPresented: $showAlert) {

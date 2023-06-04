@@ -9,13 +9,13 @@ struct Home: View {
     @State var showUpload = false
 
     // ## SETUP VIEW ## \\
-    var list: [User]
+    var userList: [User]
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
         NavigationStack {
         ScrollView {
-        VStack(spacing: 16) {
+        LazyVStack(spacing: 16) {
 
         // ## USER SEARCH ## \\
 
@@ -39,7 +39,7 @@ struct Home: View {
 
         // ## HACKY SHIT ## \\
 
-        ForEach(list) { user in
+        ForEach(userList) { user in
         // return shuffled copy of userList
         let priv = !DM.sets(id: user.id).privacy
 

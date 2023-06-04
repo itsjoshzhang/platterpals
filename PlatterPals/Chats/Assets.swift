@@ -45,7 +45,9 @@ struct TitleBar: View {
         Div()
         }
         .onAppear {
-            getImage(path: "avatars")
+            if image == nil {
+                getImage(path: "avatars")
+            }
         }
         .sheet(isPresented: $showProf) {
             Profile(id: id, pad: 64, avatar: image)

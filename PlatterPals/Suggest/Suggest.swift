@@ -80,11 +80,19 @@ struct Suggest: View {
             }}}
 
         if friend == "None" {
+            VStack {
             Text("Currently using: Your favorites")
                 .foregroundColor(block2 ? .secondary: .pink)
                 .onAppear {
                     OM.getOrders(id: DM.my().id)
                 }
+            if DM.md().favFoods.isEmpty {
+                Text("No favs yet? We'll find something new!")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                }
+            }
+            .frame(maxWidth: UIwidth, alignment: .center)
         } else {
             Cards(id: friend, page: $page)
                 .environmentObject(DM)
