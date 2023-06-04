@@ -35,6 +35,7 @@ struct Settings: View {
         NavigationStack {
             var data = DM.md()
             let myID = DM.my().id
+        ScrollView {
         VStack(alignment: .leading, spacing: 16) {
 
         // ## CHATS INFO ## \\
@@ -188,26 +189,26 @@ struct Settings: View {
 
         .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button("\(Image(systemName: "chevron.left")) Save") {
-                var sets = DM.ms()
+        Button("\(Image(systemName: "chevron.left")) Save") {
+            var sets = DM.ms()
 
-                sets.notifs = notifs
-                sets.locate = locate
-                sets.suggest = suggest
-                sets.privacy = privacy
-                DM.editSets(sets: sets)
-                dismiss()
-            }
+            sets.notifs = notifs
+            sets.locate = locate
+            sets.suggest = suggest
+            sets.privacy = privacy
+            DM.editSets(sets: sets)
+            dismiss()
+        }
         }
         ToolbarItem {
-            let s = "rectangle.portrait.and.arrow.right"
-            Button("\(Image(systemName: s))") {
+        let s = "rectangle.portrait.and.arrow.right"
+        Button("\(Image(systemName: s))") {
 
-                do { try Auth.auth().signOut()
-                } catch { return }
-                withAnimation {
-                    loggedOut = true
-                }
+            do { try Auth.auth().signOut()
+            } catch { return }
+            withAnimation {
+                loggedOut = true
             }
-            .buttonStyle(.borderedProminent)
-        }}}}}
+        }
+        .buttonStyle(.borderedProminent)
+        }}}}}}

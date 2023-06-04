@@ -35,7 +35,7 @@ struct MyTabView: View {
 
         // ## SHOW PAGES ## \\
 
-        Orders()
+        Orders(AI: $page)
             .tabItem {
                 Image(systemName: "menucard")
             }.tag(0)

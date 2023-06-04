@@ -23,6 +23,7 @@ struct Signup: View {
     @FocusState var focus: Bool
     @State var imageItem: PhotosPickerItem?
 
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
@@ -120,7 +121,12 @@ struct Signup: View {
         }
         .sheet(isPresented: $showTerms) {
             Terms()
-        }}}
+        }
+        .toolbar {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button("\(Image(systemName: "chevron.left")) Back") {
+                dismiss()
+            }}}}}
 
     // ## FUNCTIONS ## \\
 
@@ -135,7 +141,9 @@ struct Signup: View {
             DM.initUser(id: email)
             if let image = image {
                 DM.putImage(image: image, path: "avatars")
-            }}}}
+            }
+            dismiss()
+            }}}
 
     func count(_ text: String) -> Bool {
         return (text.trimmingCharacters(in: .whitespacesAndNewlines)

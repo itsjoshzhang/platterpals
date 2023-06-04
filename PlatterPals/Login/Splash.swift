@@ -31,6 +31,7 @@ struct Splash: View {
         Back()
         VStack(spacing: 16) {
         Image("logo")
+            .frame(width: UIwidth-32)
 
         Text("PlatterPals")
             .font(.custom("Lobster", size: 50))

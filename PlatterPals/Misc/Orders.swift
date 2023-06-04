@@ -24,6 +24,7 @@ struct Orders: View {
     @State var loading = true
     @State var showOrder = false
     @State var showAlert = false
+    @Binding var AI: Int
 
     @StateObject var OM = OrderManager()
     @EnvironmentObject var DM: DataManager
@@ -32,6 +33,8 @@ struct Orders: View {
         NavigationStack {
         ZStack {
             var data = DM.md()
+            var noFood = OM.orders.isEmpty
+            var noFavs = data.favFoods.isEmpty
 
         VStack(spacing: 8) {
             Cards(id: DM.my().id, page: $page)
@@ -76,7 +79,8 @@ struct Orders: View {
             Text(ord.time.formatted(.dateTime.day().month()))
                 .foregroundColor(.secondary)
         }}}}
-        .padding(.bottom, 70)
+        .padding(.bottom, noFavs ? 70: 0)
+        .opacity(noFood ? 0: 1)
         .listStyle(.plain)
         }
         .navigationTitle("My Orders")
@@ -99,10 +103,12 @@ struct Orders: View {
                 .environmentObject(DM)
             }
 
-        if (OM.orders.isEmpty) {
-            VStack { Spacer()
+        if noFood {
+            VStack { Spacer(); Button {
+                AI = 3
+            } label: {
                 Glow(text: "No orders yet? Ask your AI!")
-        }} else if data.favFoods.isEmpty {
+        }}} else if noFavs {
             VStack { Spacer()
                 Glow(text: "No favs yet? ♡ one above!")
             }}}}

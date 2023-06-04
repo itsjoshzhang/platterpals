@@ -70,14 +70,14 @@ struct Guide2: View {
             .font(.title2)
 
         if page == 4 {
-            Button("Get Started") {
+            Button("Save Edits") {
                 if let image = image {
                     DM.putImage(image: image, path: "profiles")
-                    dismiss()
                 }
+                dismiss()
             }
             .buttonStyle(.borderedProminent)
-            .disabled(image == nil)
+            .padding(.bottom, 16)
         } else {
             Text("Swipe right for more >>>")
                 .foregroundColor(.pink)
