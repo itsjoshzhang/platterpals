@@ -16,19 +16,24 @@ struct Chats: View {
     var body: some View {
         NavigationStack {
         ZStack {
-        VStack(spacing: 16) {
+        VStack {
 
         // ## SHOW CHATS ## \\
         Box(text: "Start a new chat")
             .onTapGesture {
                 showSearch = true
             }
+        Text("Swipe left / long press to edit.")
+            .foregroundColor(.secondary)
+            .padding(.bottom, -8)
+            .font(.subheadline)
+
         if isEmpty {
             Maps(text: "No chats yet? Explore below!")
                 .environmentObject(MD)
                 .environmentObject(DM)
-
         } else {
+
         List {
         ForEach(chatting, id: \.self) { id in
         NavigationLink(value: id) {

@@ -122,7 +122,7 @@ struct ContentView: View {
             }
         }
         .font(.subheadline)
-        .padding(.bottom, 64)
+        .padding(.bottom, 16)
 
         HStack(spacing: 0) {
         Text("Order on ")
@@ -169,10 +169,11 @@ struct ContentView: View {
 
     func bottomView(proxy: ScrollViewProxy) -> some View {
         VStack {
-        Group {
+        HStack {
         if showHelp {
             if VM.messages.isEmpty {
                 Text("Your instructions: " + VM.api.instructions)
+                    .multilineTextAlignment(.leading)
             } else {
         Text(
         """
@@ -180,8 +181,9 @@ struct ContentView: View {
         You can also provide info more complex than our form can take.
         This is an AI language model. Not all replies may be accurate.
         """
-        ).multilineTextAlignment(.leading)
-        }}}
+        )}}
+        Spacer()
+        }
         .font(.subheadline)
         .foregroundColor(.secondary)
         .frame(width: UIwidth-32)
