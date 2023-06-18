@@ -122,7 +122,25 @@ struct ContentView: View {
             }
         }
         .font(.subheadline)
-        .padding(.bottom, 16)
+        .padding(.bottom, 64)
+
+        HStack(spacing: 0) {
+        Text("Order on ")
+                .foregroundColor(.secondary)
+
+        Link(destination: URL(string:
+            "https://apps.apple.com/app/id719972451")!) {
+            Text("DoorDash")
+                .foregroundColor(.pink)
+        }
+        Text(" • ")
+        Link(destination: URL(string:
+            "https://apps.apple.com/app/id1196524786")!) {
+            Text("SnackPass")
+                .foregroundColor(.pink)
+            }
+        }
+        .font(.subheadline)
         }}}}
 
         // ## MODIFIERS ## \\
@@ -156,27 +174,14 @@ struct ContentView: View {
             if VM.messages.isEmpty {
                 Text("Your instructions: " + VM.api.instructions)
             } else {
-                Text(
+        Text(
         """
         Ask your PlatterPal about hours, contact info, or directions!
         You can also provide info more complex than our form can take.
         This is an AI language model. Not all replies may be accurate.
         """
-        )}} else {
-            HStack(spacing: 0) {
-            Text("Order on ")
-
-            Link(destination: URL(string:
-                "https://apps.apple.com/app/id719972451")!) {
-                Text("DoorDash")
-                    .foregroundColor(.pink)
-            }
-            Text(" • ")
-            Link(destination: URL(string:
-                "https://apps.apple.com/app/id1196524786")!) {
-                Text("SnackPass")
-                    .foregroundColor(.pink)
-            }}}}
+        ).multilineTextAlignment(.leading)
+        }}}
         .font(.subheadline)
         .foregroundColor(.secondary)
         .frame(width: UIwidth-32)

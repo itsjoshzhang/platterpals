@@ -7,8 +7,6 @@ struct Match: View {
     @StateObject var VM = ViewModel(api: ChatGPTAPI())
 
     var body: some View {
-
-
         Button("Let's Go!") {
             matchLogic()
         }
