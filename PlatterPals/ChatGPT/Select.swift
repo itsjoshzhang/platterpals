@@ -1,7 +1,30 @@
 import SwiftUI
 import FirebaseFirestoreSwift
 
-struct Suggest: View {
+struct Select: View {
+    @State var suggest = true
+    @EnvironmentObject var DM: DataManager
+
+    var body: some View {
+        NavigationStack {
+        Group {
+        if suggest {
+            Suggest1()
+                .environmentObject(DM)
+        } else {
+            Suggest2()
+                .environmentObject(DM)
+        }}
+        .navigationTitle("Ask Your AI")
+        .toolbar {
+            ToolbarItem {
+                Button(suggest ? "Find Recipes": "Find Food") {
+                    suggest.toggle()
+                }
+                .buttonStyle(.bordered)
+            }}}}}
+
+struct Suggest1: View {
 
     // ## NUMBERS ## \\
     @State var miles = 0.5
@@ -35,11 +58,8 @@ struct Suggest: View {
                 .environmentObject(DM)
                 .environmentObject(VM)
         } else {
-            content
-        }
-    }
+            content }}
     var content: some View {
-        NavigationStack {
         VStack {
 
         // ## ORDER INFO ## \\
@@ -170,7 +190,6 @@ struct Suggest: View {
         .onAppear {
             location = DM.my().city
         }
-        .navigationTitle("Ask Your AI")
         Button("Get Started") {
             orderLogic()
         }
@@ -181,7 +200,7 @@ struct Suggest: View {
             Text("").onAppear {
             withAnimation {
                 loading = true
-            }}}}}}
+            }}}}}
 
     // ## FOOD LOGIC ## \\
 

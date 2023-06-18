@@ -97,10 +97,10 @@ struct Guide2: View {
             }
         }
         .toolbar {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button(" \(Image(systemName: "chevron.down"))") {
-                dismiss()
-            }}}
+            ToolbarItem {
+                Button("\(Image(systemName: "chevron.down")) ") {
+                    dismiss()
+                }}}
         .background {
             Back()
         }}}}

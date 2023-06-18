@@ -48,7 +48,7 @@ struct MyTabView: View {
             .tabItem {
                 Image(systemName: "house")
             }.tag(2)
-        Suggest()
+        Select()
             .tabItem {
                 Image(systemName: "fork.knife")
             }.tag(3)

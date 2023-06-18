@@ -2,6 +2,7 @@ import SwiftUI
 
 struct Match: View {
 
+    @State var index = 0
     @State var showGPT = false
     @FocusState var focus: Bool
 
@@ -40,10 +41,10 @@ struct Match: View {
             ForEach(DM.userList) { user in
             if trim(rest).contains(trim(user.name)) {
 
-            NavigationLink(value: user.id) {
-                Row(id: user.id)
-                    .environmentObject(DM)
-            }}}
+                NavigationLink(value: user.id) {
+                    Row(id: user.id)
+                        .environmentObject(DM)
+                }}}
             .navigationDestination(for: String.self) { id in
                 Profile(id: id, pad: -50)
                     .environmentObject(DM)
