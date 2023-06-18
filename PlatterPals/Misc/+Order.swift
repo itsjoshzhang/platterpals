@@ -127,8 +127,4 @@ struct NewOrder: View {
         return text.trimmingCharacters(in:
             CharacterSet(charactersIn: "# "))
     }
-    func count(_ text: String) -> Bool {
-        return (text.trimmingCharacters(in: .whitespacesAndNewlines)
-            .isEmpty || text.count > 32)
-    }
 }

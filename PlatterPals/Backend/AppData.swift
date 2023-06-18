@@ -17,6 +17,11 @@ let emojiList = ["🥡", "🧋", "🍵", "☕️", "🥐", "🥯", "🥞", "🧇
                  "🌯", "🥗", "🍝", "🍜", "🍲", "🍣", "🍱", "🥟",
                  "🍅", "🥑", "🥬", "🌶", "🍦", "🍩", "🍪", "🍰"]
 
+func count(_ text: String) -> Bool {
+    return (text.trimmingCharacters(in: .whitespacesAndNewlines)
+        .isEmpty || text.count > 32)
+}
+
 struct RoundPic: View {
     var width: Int
     var image: UIImage?

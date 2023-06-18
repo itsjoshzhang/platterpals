@@ -143,10 +143,4 @@ struct Signup: View {
                 DM.putImage(image: image, path: "avatars")
             }
             dismiss()
-            }}}
-
-    func count(_ text: String) -> Bool {
-        return (text.trimmingCharacters(in: .whitespacesAndNewlines)
-            .isEmpty || text.count > 32)
-    }
-}
+            }}}}

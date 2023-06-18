@@ -150,10 +150,4 @@ struct EditProf: View {
         }
         .fullScreenCover(isPresented: $showCrop) {
             ImageEditor(image: $image, show: $showCrop)
-        }
-    }
-    func count(_ text: String) -> Bool {
-        return (text.trimmingCharacters(in: .whitespacesAndNewlines)
-            .isEmpty || text.count > 32)
-    }
-}
+        }}}

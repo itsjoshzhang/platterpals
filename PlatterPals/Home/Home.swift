@@ -49,10 +49,10 @@ struct Home: View {
         !DM.md().blocked.contains(user.id), user.prof,
         // don't show blocked users and missing profiles
 
-        (following && DM.md().favUsers.contains(user.id))
+        // (following && DM.md().favUsers.contains(user.id))
         // if following checked, show from favUsers only
 
-        || !following, compare(user.city, city) {
+        compare(user.city, city) {
         // if not & (if no city: pass, else: check city)
 
             let update = Update(id: user.id, showNext: true)

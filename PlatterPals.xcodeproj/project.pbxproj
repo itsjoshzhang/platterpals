@@ -125,7 +125,7 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
-		F2D26E3A29F6EE1B005E2488 /* ChatGPT */ = {
+		F2D26E3A29F6EE1B005E2488 /* GPT-API */ = {
 			isa = PBXGroup;
 			children = (
 				F2D26E4429F6EE40005E2488 /* ChatGPTAPI.swift */,
@@ -135,16 +135,17 @@
 				F2D26E4129F6EE40005E2488 /* MessageView.swift */,
 				F2D26E3C29F6EE3F005E2488 /* ViewModel.swift */,
 			);
-			path = ChatGPT;
+			path = "GPT-API";
 			sourceTree = "<group>";
 		};
-		F2D26E5129F6EE50005E2488 /* Suggest */ = {
+		F2D26E5129F6EE50005E2488 /* ChatGPT */ = {
 			isa = PBXGroup;
 			children = (
+				F2DEDA1C2A3EC60100B328CB /* Match.swift */,
 				F2F6D84C2961730000B8F4D7 /* Suggest.swift */,
 				F2D26E5629F6EE50005E2488 /* ChatGPT.swift */,
 			);
-			path = Suggest;
+			path = ChatGPT;
 			sourceTree = "<group>";
 		};
 		F2F6D82B296172B100B8F4D7 = {
@@ -176,7 +177,7 @@
 				F2F6D8492961730000B8F4D7 /* Misc */,
 				F2F6D85D2961730000B8F4D7 /* Chats */,
 				F2F6D84D2961730000B8F4D7 /* Home */,
-				F2D26E5129F6EE50005E2488 /* Suggest */,
+				F2D26E5129F6EE50005E2488 /* ChatGPT */,
 				F2A0160029E34CA4005DFDAD /* Profile */,
 				F2F6D8512961730000B8F4D7 /* Assets.xcassets */,
 			);
@@ -188,7 +189,6 @@
 			children = (
 				F242CB592A149DFE00B5D969 /* Orders.swift */,
 				F2A9437129F8E97600F87492 /* +Order.swift */,
-				F2DEDA1C2A3EC60100B328CB /* Match.swift */,
 				F2F494B8298313E3000E35BB /* Settings.swift */,
 			);
 			path = Misc;
@@ -211,7 +211,7 @@
 				F2F6D8562961730000B8F4D7 /* AppInit.swift */,
 				F2F6D8532961730000B8F4D7 /* Firebase.swift */,
 				F218B1172A21E3EC0083BFC3 /* Notifs.swift */,
-				F2D26E3A29F6EE1B005E2488 /* ChatGPT */,
+				F2D26E3A29F6EE1B005E2488 /* GPT-API */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -483,7 +483,7 @@
 				CODE_SIGN_ENTITLEMENTS = PlatterPals/PlatterPals.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 4J2HAY73X5;
 				ENABLE_PREVIEWS = YES;
@@ -503,7 +503,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2.5;
+				MARKETING_VERSION = 2.3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.PlatterPals.PlatterPals;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -525,7 +525,7 @@
 				CODE_SIGN_ENTITLEMENTS = PlatterPals/PlatterPals.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 4J2HAY73X5;
 				ENABLE_PREVIEWS = YES;
@@ -545,7 +545,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2.5;
+				MARKETING_VERSION = 2.3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.PlatterPals.PlatterPals;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
