@@ -13,9 +13,10 @@ class DataManager: ObservableObject {
     @Published var userData = [UserData]()
     @Published var settings = [Setting]()
 
-    // keep user info
+    // track app info
     var version = 0
     var myIndex = 0
+    var aiModel = "gpt-3.5-turbo"
     @Published var myAvatar: UIImage?
     @Published var myProfile: UIImage?
 
@@ -63,8 +64,10 @@ class DataManager: ObservableObject {
         let doc = FS.collection("accFlags").document("APP_STATUS")
         doc.getDocument { doc,_ in
             self.version = doc?.data()?["version"] as? Int ?? 0
+            if let aiModel = doc?.data()?["aiModel"] as? String {
+                self.aiModel = aiModel
+            }
         }
-
         // access userList
         FS.collection("userList").getDocuments { col,_ in
 

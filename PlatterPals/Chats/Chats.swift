@@ -5,6 +5,7 @@ struct Chats: View {
     // ## TRACK INFO ## \\
     @State var isEmpty = false
     @State var showMaps = false
+    @State var showMatch = false
     @State var showSearch = false
     @State var chatting = [String]()
 
@@ -63,17 +64,33 @@ struct Chats: View {
             Search(profile: false)
                 .environmentObject(DM)
         }
+        .sheet(isPresented: $showMatch) {
+            Match()
+                .environmentObject(DM)
+        }
         .sheet(isPresented: $showMaps) {
             Maps(text: "Tap a pin to view a profile!")
                 .environmentObject(MD)
                 .environmentObject(DM)
         }
         if !isEmpty {
-            VStack { Spacer(); Button {
+            VStack { Spacer(); HStack { Button {
+                showMatch = true
+            } label: {
+                Glow(text: "Find me a match!")
+            }
+            Button {
                 showMaps = true
             } label: {
-                Glow(text: "Find foodies near you!")
-            }}}}}}
+                Text("Near Me")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(width: 100, height: 50)
+                    .background(Capsule().fill(.pink))
+                    .padding(.bottom, 16)
+            }}}
+            .padding(.horizontal, 16)
+        }}}}
 
     // ## FUNCTIONS ## \\
 

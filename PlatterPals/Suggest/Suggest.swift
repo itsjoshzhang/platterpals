@@ -186,6 +186,7 @@ struct Suggest: View {
     // ## FOOD LOGIC ## \\
 
     func orderLogic() {
+        let intro = "You're PlatterPal, an AI that finds food and restaurants. "
         var text = ""
 
         if !place.isEmpty {
@@ -208,7 +209,7 @@ struct Suggest: View {
         text += "Search within \(miles) miles of \(location). "
         text += "Show only \(options) menu item / restaurant. "
 
-        VM.api = ChatGPTAPI(text: text)
+        VM.api = ChatGPTAPI(aiModel: DM.aiModel, intro: intro, text: text)
         withAnimation {
             showGPT = true
             loading = false

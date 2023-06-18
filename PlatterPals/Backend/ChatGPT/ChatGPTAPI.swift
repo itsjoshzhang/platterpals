@@ -3,8 +3,8 @@ import SwiftUI
 class ChatGPTAPI: ObservableObject, @unchecked Sendable {
 
     // ## PARAMETERS ## \\
-    let apiKey = "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"
-    let model = "gpt-3.5-turbo"
+    let apiKey = "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"
+    let model: String
     let temperature = 0.5
     let instructions: String
     let systemMessage: GPTMessage
@@ -45,11 +45,11 @@ class ChatGPTAPI: ObservableObject, @unchecked Sendable {
     }
 
     // ## INITIALIZE ## \\
-
-    init(text: String = "") {
+    init(aiModel: String = "gpt-3.5-turbo", intro: String = "", text:
+         String = "") {
+        model = aiModel
         instructions = text
-        systemMessage = .init(role: "system", content:
-        "You're PlatterPal, an AI that finds food and restaurants." + text)
+        systemMessage = .init(role: "system", content: intro + text)
     }
 
     private func jsonBody(text: String, stream: Bool = true) throws -> Data {

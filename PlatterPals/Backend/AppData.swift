@@ -135,14 +135,13 @@ struct Box: View {
     }
 }
 struct Glow: View {
-
     var text: String
-    var body: some View {
 
+    var body: some View {
         Text("\(spark) \(text) \(spark)")
             .font(.headline)
             .foregroundColor(.pink)
-            .frame(width: UIwidth-32, height: 50)
+            .frame(maxWidth: UIwidth-32, maxHeight: 50)
             .overlay(Capsule().stroke(.pink, lineWidth: 3))
             .padding(.bottom, 16)
     }

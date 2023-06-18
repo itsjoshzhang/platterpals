@@ -7,25 +7,32 @@ struct Guide: View {
 
     var body: some View {
         TabView(selection: $page) {
+            let chat = Image(systemName: "message.fill")
+            let fork = Image(systemName: "fork.knife")
 
         Guide2(page: 0, title: "Welcome to PlatterPals!",
-            text: "Add an avatar and bio to tell us more about you.")
+               text: "Add an avatar and bio to tell us more about you.",
+               next: "Swipe right for more. >>>")
             .tag(0)
 
         Guide2(page: 1, title: "Find foodies near you!",
-            text: "Chat with friends or find new people on the map.")
+               text: "Chat with friends or find new people on the map.",
+               next: "Tap \"Find me a match!\" on the \(chat) page.")
             .tag(1)
 
         Guide2(page: 2, title: "Matchmaking made easy!",
-            text: "Swipe left or right on a profile to follow them.")
+               text: "Swipe left or right on a profile to follow them.",
+               next: "Swipe right for more. >>>")
             .tag(2)
 
         Guide2(page: 3, title: "Don't know what to eat?",
-            text: "Let your AI PlatterPal choose the perfect order.")
+               text: "Let your AI PlatterPal choose the perfect order.",
+               next: "Fill out some info on the \(fork) page.")
             .tag(3)
 
         Guide2(page: 4, title: "Polish up your profile!",
-            text: "Add a cover photo so people can connect with you.")
+               text: "Add a cover photo so people can connect with you.",
+               next: "")
             .tag(4)
         }
         .environmentObject(DM)
@@ -38,6 +45,7 @@ struct Guide2: View {
     var page: Int
     var title: String
     var text: String
+    var next: LocalizedStringKey
     @State var image: UIImage?
 
     @Environment(\.dismiss) var dismiss
@@ -70,7 +78,7 @@ struct Guide2: View {
             .font(.title2)
 
         if page == 4 {
-            Button("Save Edits") {
+            Button("Get Started") {
                 if let image = image {
                     DM.putImage(image: image, path: "profiles")
                 }
@@ -78,10 +86,13 @@ struct Guide2: View {
             }
             .buttonStyle(.borderedProminent)
             .padding(.bottom, 16)
+
         } else {
-            Text("Swipe right for more >>>")
+            Text(next)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 16)
                 .foregroundColor(.pink)
-                .font(.headline)
+                .font(.title3).bold()
             }
         }
         .background {

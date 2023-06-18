@@ -31,6 +31,8 @@ struct Splash: View {
         Back()
         VStack(spacing: 16) {
         Image("logo")
+            .resizable()
+            .scaledToFit()
             .frame(width: UIwidth-32)
 
         Text("PlatterPals")

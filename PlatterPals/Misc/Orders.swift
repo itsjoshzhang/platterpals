@@ -33,8 +33,8 @@ struct Orders: View {
         NavigationStack {
         ZStack {
             var data = DM.md()
-            var noFood = OM.orders.isEmpty
-            var noFavs = data.favFoods.isEmpty
+            let noFood = OM.orders.isEmpty
+            let noFavs = data.favFoods.isEmpty
 
         VStack(spacing: 8) {
             Cards(id: DM.my().id, page: $page)
