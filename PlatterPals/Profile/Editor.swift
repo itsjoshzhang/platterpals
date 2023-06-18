@@ -3,7 +3,6 @@ import PhotosUI
 
 struct ProfHead: View {
 
-    // ## SETUP VIEW ## \\
     var id: String
     @State var showFollow = false
     @EnvironmentObject var DM: DataManager
@@ -12,8 +11,6 @@ struct ProfHead: View {
         HStack {
         var data = DM.md()
         HStack {
-
-        // ## UNFOLLOW ## \\
 
         if showFollow {
         Button("Following") {
@@ -24,9 +21,6 @@ struct ProfHead: View {
             }
         }
         .buttonStyle(.bordered)
-
-        // ## REFOLLOW ## \\
-
         } else {
             Button("Follow ♥") {
                 data.favUsers.append(id)
@@ -42,14 +36,12 @@ struct ProfHead: View {
 
 struct EditProf: View {
 
-    // ## TRACK INFO ## \\
     @State var name = ""
     @State var text = ""
     @State var city = "Berkeley"
     @State var showCrop = false
     @State var rest = false
 
-    // ## SETUP VIEW ## \\
     @FocusState var focus0: Bool
     @FocusState var focus1: Bool
     @FocusState var focus2: Bool
@@ -58,8 +50,6 @@ struct EditProf: View {
 
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
-
-    // ## USER INFO ## \\
 
     var body: some View {
         var my = DM.my()
@@ -85,8 +75,6 @@ struct EditProf: View {
                 focus1 = true
             }
         }
-        // ## UPLOAD PIC ## \\
-
         HStack {
             PhotosPicker("Photos \(Image(systemName: "photo"))",
                          selection: $imageItem, matching: .images)
@@ -106,8 +94,6 @@ struct EditProf: View {
                 case .failure(_):
                     return
                 }}}}}
-
-        // ## CLICKABLES ## \\
 
         TextField("Write a short paragraph about your tastes.",
                   text: $text, axis: .vertical)
@@ -134,8 +120,6 @@ struct EditProf: View {
             DM.editUser(user: my)
             focus0 = false; focus1 = false; focus2 = false; dismiss()
         }
-        // ## MODIFIERS ## \\
-            
         .disabled(text.count > 200 || count(name) || count(city))
         .buttonStyle(.borderedProminent)
         }

@@ -2,15 +2,12 @@ import SwiftUI
 
 struct ChatGPT: View {
 
-    // ## TRACK INFO ## \\
     var recipes: Bool
     @State var loading = false
     @Binding var showGPT: Bool
 
     @EnvironmentObject var DM: DataManager
     @EnvironmentObject var VM: ViewModel
-
-    // ## SHOW CHATS ## \\
 
     var body: some View {
         NavigationStack {
@@ -24,8 +21,6 @@ struct ChatGPT: View {
         ContentView(system: system, recipes: recipes)
             .environmentObject(DM)
             .environmentObject(VM)
-
-        // ## MODIFIERS ## \\
 
         .navigationTitle("Your AI")
         .background {
@@ -50,7 +45,6 @@ struct ChatGPT: View {
 
 struct ContentView: View {
 
-    // ## TRACK INFO ## \\
     var system: MessageRow
     var recipes: Bool
 
@@ -61,8 +55,6 @@ struct ContentView: View {
 
     @EnvironmentObject var DM: DataManager
     @EnvironmentObject var VM: ViewModel
-
-    // ## SETUP VIEW ## \\
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -78,8 +70,6 @@ struct ContentView: View {
                 Task { @MainActor in
                     await VM.retry(message: row)
                 }}}
-
-        // ## CLICKABLES ## \\
 
         if VM.messages.isEmpty {
             Button("Find My Food") {
@@ -108,8 +98,6 @@ struct ContentView: View {
         .foregroundColor(item ? .pink: .secondary)
         .buttonStyle(.bordered)
         .padding(16)
-
-        // ## CONVO LOGIC ## \\
 
         HStack(spacing: 0) {
         Text("Or find another: ")
@@ -146,9 +134,6 @@ struct ContentView: View {
         }
         .font(.subheadline)
         }}}}
-
-        // ## MODIFIERS ## \\
-
         bottomView(proxy: proxy)
         }
         .onTapGesture {
@@ -169,8 +154,6 @@ struct ContentView: View {
             await VM.sendTapped(show: show)
         }
     }
-    // ## SHOW HELP ## \\
-
     func bottomView(proxy: ScrollViewProxy) -> some View {
         VStack {
         HStack {
@@ -204,8 +187,6 @@ struct ContentView: View {
                     showHelp.toggle()
                 }
             }
-        // ## TEXTFIELDS ## \\
-
         HStack {
         TextField("Ask me anything!", text: $text, axis: .vertical)
             .padding(.leading, 8)
@@ -227,8 +208,6 @@ struct ContentView: View {
                     .resizable()
                     .frame(width: 32, height: 32)
             }
-        // ## FUNCTIONS ## \\
-
         .disabled(text.isEmpty)
         }
         }

@@ -2,32 +2,27 @@ import SwiftUI
 
 struct Suggest: View {
 
-    // ## NUMBERS ## \\
     @State var miles = 0.5
     @State var options = 1
     @State var people = 1
     @State var price = 10
 
-    // ## STRINGS ## \\
     @State var place = ""
     @State var cuisine = "All"
     @State var friend = "None"
     @State var style = "Casual"
     @State var location = ""
 
-    // ## BOOLEANS ## \\
     @State var page = ""
     @State var loading = false
     @State var showGPT = false
     @State var showCustom = false
     @State var showOption = false
 
-    // ## OBJECTS ## \\
     @StateObject var OM = OrderManager()
     @EnvironmentObject var VM: ViewModel
     @EnvironmentObject var DM: DataManager
 
-    // ## OTHER VIEWS ## \\
     var body: some View {
         if showGPT {
             ChatGPT(recipes: false, showGPT: $showGPT)
@@ -38,9 +33,6 @@ struct Suggest: View {
         }}
     var content: some View {
         VStack {
-
-        // ## ORDER INFO ## \\
-
         if loading {
         Form {
             let block1 = !(friend == "None")
@@ -63,8 +55,6 @@ struct Suggest: View {
         }
         .disabled(block1)
         .opacity(block1 ? 0.5: 1)
-
-        // ## FRIEND INFO ## \\
 
         Section("Ask someone you follow?") {
 
@@ -101,8 +91,6 @@ struct Suggest: View {
         .disabled(block2)
         .opacity(block2 ? 0.5: 1)
 
-        // ## SEARCH INFO ## \\
-
         Section("Search settings") {
 
         if showCustom {
@@ -117,8 +105,6 @@ struct Suggest: View {
                     Text($0)
                 }
             }
-            // ## SEARCH INFO ## \\
-
             .pickerStyle(.segmented)
             .onChange(of: location) {_ in
                 if location == "Custom Location" {
@@ -133,8 +119,6 @@ struct Suggest: View {
         Stepper("Show: \(options) result\(z)",
                 value: $options, in: 1...5)
         }
-        // ## OPTIONALS ## \\
-
         Section(header: Button {
             withAnimation {
                 showOption.toggle()
@@ -161,9 +145,6 @@ struct Suggest: View {
         }
         .pickerStyle(.segmented)
         }}}
-
-        // ## MODIFIERS ## \\
-
         .onAppear {
             location = DM.my().city
         }
@@ -179,8 +160,6 @@ struct Suggest: View {
                 loading = true
             }}}}}
 
-    // ## FOOD LOGIC ## \\
-
     func orderLogic() {
         let intro = "You're PlatterPal, an AI that finds food and restaurants. "
         var text = ""
@@ -192,8 +171,6 @@ struct Suggest: View {
         } else {
             text += addFavs()
         }
-        // ## MISC LOGIC ## \\
-
         if showOption {
             let n = (people == 1 ? "person": "people")
             text += "Find a \(style) place for \(people) \(n). "
@@ -211,8 +188,6 @@ struct Suggest: View {
             loading = false
         }
     }
-    // ## TEXT LOGIC ## //
-
     func addFavs() -> String {
         let ans = "Find food similar to"
         let sus = "Surprise me with a dish / restaurant nearby. "

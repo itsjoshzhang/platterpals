@@ -2,7 +2,6 @@ import SwiftUI
 
 struct MyProfile: View {
 
-    // ## TRACK INFO ## \\
     @State var showSetts = false
     @State var showUpload = false
     @EnvironmentObject var DM: DataManager
@@ -12,13 +11,9 @@ struct MyProfile: View {
         ZStack {
             let my = DM.my()
 
-        // ## SHOW PROFILE ## \\
-
         Profile(id: my.id, pad: 0, avatar: DM.myAvatar, profile:
                 DM.myProfile, showUpdate: true)
         .environmentObject(DM)
-
-        // ## SHOW BUTTON ## \\
 
         if !my.prof {
             VStack { Spacer(); Button {
@@ -45,20 +40,17 @@ struct MyProfile: View {
 
 struct Profile: View {
 
-    // ## TRACK INFO ## \\
     var id: String
     var pad: Int
     @State var page = ""
     @State var avatar: UIImage?
     @State var profile: UIImage?
 
-    // ## BOOLEANS ## \\
     @State var showEdit = false
     @State var showChat = false
     @State var showUpdate = false
     @State var showUpload = false
 
-    // ## SETUP VIEW ## \\
     @StateObject var OM = OrderManager()
     @EnvironmentObject var DM: DataManager
 
@@ -76,8 +68,6 @@ struct Profile: View {
 
         HStack(spacing: 16) {
             RoundPic(width: 80, image: avatar)
-
-        // ## CLICKABLES ## \\
 
         VStack(alignment: .leading) {
         if myID == id {
@@ -105,8 +95,6 @@ struct Profile: View {
                 .environmentObject(DM)
             }
         }
-        // ## USER INFO ## \\
-
         HStack {
             Text("\(user.city)")
                 .font(.headline)
@@ -124,8 +112,6 @@ struct Profile: View {
             .environmentObject(OM)
         }
         .padding(.horizontal, 16)
-
-        // ## SHOW UPDATE ## \\
 
         VStack {
         HStack {
@@ -162,9 +148,6 @@ struct Profile: View {
                 .foregroundColor(.secondary)
                 .padding(16)
         }}}}
-
-        // ## MODIFIERS ## \\
-
         .background() {
             Back()
         }
@@ -197,8 +180,6 @@ struct Profile: View {
             Convo(id: id, pad: false)
                 .environmentObject(DM)
         }}}
-
-    // ## FUNCTIONS ## \\
 
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")

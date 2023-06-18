@@ -2,26 +2,20 @@ import SwiftUI
 
 struct NewOrder: View {
 
-    // ## TRACK INFO ## \\
     @State var order = ""
     @State var place = ""
     @State var stars = 0
     @State var emoji = "🥡"
     @State var text: String
 
-    // ## SETUP VIEW ## \\
     @State var error = false
     @FocusState var focus: Bool
-
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
         NavigationStack {
         VStack {
-
-        // ## TEXTFIELDS ## \\
-
         if error {
             Text("AI reply error. Add order below.")
                 .foregroundColor(.secondary)
@@ -43,8 +37,6 @@ struct NewOrder: View {
         .submitLabel(.done)
         .focused($focus)
 
-        // ## SHOW EMOJI ## \\
-
         HStack {
         ScrollView(.horizontal) {
         LazyHGrid(rows: [GridItem(), GridItem()], spacing: 8) {
@@ -64,8 +56,6 @@ struct NewOrder: View {
         .frame(height: 100)
         .border(.pink, width: 3)
 
-        // ## SHOW STARS ## \\
-
         HStack {
         ForEach(1...5, id: \.self) { i in
             Image(systemName: (i <= stars ? "star.fill": "star"))
@@ -78,8 +68,6 @@ struct NewOrder: View {
         Text("Add ★ anytime.")
             .foregroundColor(.secondary)
             .font(.subheadline)
-
-        // ## ORDER LOGIC ## \\
 
         Button("Add Order") {
             var ord = AIOrder(user: DM.my().id, order: order, place:
@@ -97,8 +85,6 @@ struct NewOrder: View {
         .background {
             Back()
         }
-        // ## HASHTAG CASE ## \\
-
         .onAppear {
         var list = [String]()
 
@@ -107,8 +93,6 @@ struct NewOrder: View {
 
             let trim = trimmed(String(text[range]))
             list = trim.components(separatedBy: ";")
-
-        // ## BULLET CASE ## \\
 
         } else if text.contains("-") {
             let comp = text.components(separatedBy: "-")
@@ -120,8 +104,6 @@ struct NewOrder: View {
         } else {
             error = true
         }}}}
-
-    // ## FUNCTIONS ## \\
 
     func trimmed(_ text: String) -> String {
         return text.trimmingCharacters(in:

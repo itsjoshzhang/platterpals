@@ -3,7 +3,6 @@ import FirebaseFirestoreSwift
 
 struct Convo: View {
 
-    // ## SETUP VIEW ## \\
     var id: String
     var pad: Bool
     @State var text = ""
@@ -16,8 +15,6 @@ struct Convo: View {
         Group {
         let myID = DM.my().id
         VStack {
-
-        // ## CHATS LOGIC ## \\
 
         TitleBar(id: id)
             .environmentObject(DM)
@@ -43,9 +40,6 @@ struct Convo: View {
             let msg = Message(text: text, sender: myID, getter: id)
             DM.sendChat(msg: msg)
             text = ""
-
-        // ## MODIFIERS ## \\
-
         } label: {
             Image(systemName: "paperplane.circle.fill")
                 .resizable()
@@ -73,8 +67,6 @@ struct Convo: View {
                 data.chatting.insert(id, at: 0)
                 DM.editData(data: data)
             }}}}
-
-    // ## FUNCTIONS ## \\
 
     func getChats(myID: String) {
         FS.collection("messages").addSnapshotListener { snap, error in

@@ -2,18 +2,15 @@ import SwiftUI
 import Firebase
 import FirebaseStorage
 
-// start Firebase
 let FS = Firestore.firestore()
 let SR = Storage.storage().reference()
 
 class DataManager: ObservableObject {
 
-    // track user info
     @Published var userList = [User]()
     @Published var userData = [UserData]()
     @Published var settings = [Setting]()
 
-    // track app info
     var version = 0
     var myIndex = 0
     var aiModel = "gpt-3.5-turbo"
@@ -23,33 +20,27 @@ class DataManager: ObservableObject {
     init() {
         initInfo()
     }
-    // returns myself
     func my() -> User {
         return userList[myIndex]
     }
-    // return my data
     func md() -> UserData {
         return userData[myIndex]
     }
-    // return my sets
     func ms() -> Setting {
         return settings[myIndex]
     }
-    // returns a User
     func user(id: String) -> User {
         for user in userList {
             if (user.id == id || user.name == id) {
                 return user }}
         return my()
     }
-    // returns UserData
     func data(id: String) -> UserData {
         for data in userData {
             if data.id == id {
                 return data }}
         return md()
     }
-    // returns Setting
     func sets(id: String) -> Setting {
         for sett in settings {
             if sett.id == id {
@@ -57,10 +48,8 @@ class DataManager: ObservableObject {
         return ms()
     }
 
-    // called at init
     private func initInfo() {
 
-        // update version
         let doc = FS.collection("accFlags").document("APP_STATUS")
         doc.getDocument { doc,_ in
             self.version = doc?.data()?["version"] as? Int ?? 0
@@ -68,7 +57,6 @@ class DataManager: ObservableObject {
                 self.aiModel = aiModel
             }
         }
-        // access userList
         FS.collection("userList").getDocuments { col,_ in
 
         if let col = col {
@@ -87,7 +75,6 @@ class DataManager: ObservableObject {
         self.userList.append(user)
         }}}
 
-        // access userData
         FS.collection("userData").getDocuments { col,_ in
         if let col = col {
         for doc in col.documents {
@@ -104,7 +91,6 @@ class DataManager: ObservableObject {
         self.userData.append(userData)
         }}}
 
-        // access Settings
         FS.collection("settings").getDocuments { col,_ in
         if let col = col {
         for doc in col.documents {
@@ -121,7 +107,6 @@ class DataManager: ObservableObject {
         self.settings.append(setting)
         }}}}
 
-    // called at Login
     func initUser(id: String) {
         for i in 0 ..< userList.count {
             if userList[i].id == id {
@@ -130,8 +115,7 @@ class DataManager: ObservableObject {
         getImage(path: "avatars")
         getImage(path: "profiles")
     }
-    
-    // called at Signup
+
     func makeUser(id: String, name: String, city: String, rest: Bool) {
 
         let user = User(id: id, name: name, city: city, text: "",
@@ -146,8 +130,7 @@ class DataManager: ObservableObject {
                            suggest: true, privacy: false)
         editSets(sets: sets)
     }
-    
-    // called at Profile
+
     func editUser(user: User) {
         let doc = FS.collection("userList").document(user.id)
         userList[myIndex] = user
@@ -156,8 +139,7 @@ class DataManager: ObservableObject {
             user.text, "city": user.city, "prof": user.prof,
             "rest": user.rest])
     }
-    
-    // called everywhere
+
     func editData(data: UserData) {
         userData[myIndex] = data
         sendData(data: data)
@@ -168,8 +150,7 @@ class DataManager: ObservableObject {
         doc.setData(["id": data.id, "favFoods": data.favFoods, "favUsers":
         data.favUsers, "chatting": data.chatting, "blocked": data.blocked])
     }
-    
-    // called at Settings
+
     func editSets(sets: Setting) {
         let doc = FS.collection("settings").document(sets.id)
         settings[myIndex] = sets
@@ -178,7 +159,6 @@ class DataManager: ObservableObject {
         sets.suggest, "privacy": sets.privacy, "locate": sets.locate])
     }
 
-    // called at Convo
     func sendChat(msg: Message) {
         let doc = FS.collection("messages").document(msg.id)
         
@@ -192,7 +172,7 @@ class DataManager: ObservableObject {
         get.chatting.insert(msg.sender, at: 0)
         sendData(data: get)
     }
-    // called at Order
+
     func sendOrder(ord: AIOrder) {
         let doc = FS.collection("aiOrders").document(ord.id)
         
@@ -200,7 +180,6 @@ class DataManager: ObservableObject {
             "place": ord.place, "stars": ord.stars, "time": ord.time])
     }
 
-    // called at Update
     func sumHeart(id: String) -> Int {
         var hearts = 0
         for data in userData {
@@ -209,27 +188,21 @@ class DataManager: ObservableObject {
         return hearts
     }
 
-    // called everywhere
     func putImage(image: UIImage, path: String) {
 
-        // get storage path
         let SR = SR.child("\(path)/\(my().id).jpg")
         let pfp = (path == "avatars")
 
-        // resize the image
         let width = min(image.size.width, 500)
         let image = image.resize(width: width, pfp: pfp)
 
-        // compute metadata
         let meta = StorageMetadata()
         meta.contentType = "image/jpg"
         let jpeg = image.jpegData(compressionQuality: 0.2)
 
-        // put into storage
         if let jpeg = jpeg {
             SR.putData(jpeg, metadata: meta)
         }
-        // update prof value
         if pfp {
             myAvatar = image
         } else {
@@ -238,7 +211,6 @@ class DataManager: ObservableObject {
             myProfile = image
         }
     }
-    // called at init
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(my().id).jpg")
         SR.getData(maxSize: 4 * 1024 * 1024) { data,_ in
@@ -250,7 +222,6 @@ class DataManager: ObservableObject {
             self.myProfile = UIImage(data: data)
         }}}}
 
-    // called at Profile
     func delImage(path: String) {
         let SR = SR.child("\(path)/\(my().id).jpg")
         SR.delete {_ in}
@@ -260,7 +231,6 @@ class DataManager: ObservableObject {
             editUser(user: my())
         }
     }
-    // called at Maps
     func sendPin(pin: Location) {
         let doc = FS.collection("mapPins").document(pin.id)
 
@@ -268,7 +238,6 @@ class DataManager: ObservableObject {
                      "time": pin.time])
     }
 
-    // called at Update
     func sendFlag(id: String, type: String) {
         let doc = FS.collection("accFlags").document(id)
 

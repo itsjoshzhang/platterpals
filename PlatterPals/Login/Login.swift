@@ -3,13 +3,11 @@ import Firebase
 
 struct Login: View {
 
-    // ## TEXTFIELDS ## \\
     @State var email = ""
     @State var pass = ""
     @State var text = ""
     @FocusState var focus: Bool
 
-    // ## CONDITIONS ## \\
     @State var loading = true
     @State var loggedIn = false
     @State var showAlert = false
@@ -19,22 +17,15 @@ struct Login: View {
     @EnvironmentObject var DM: DataManager
     @EnvironmentObject var MD: MapsData
 
-    // ## OTHER VIEWS ## \\
     var body: some View {
         if loggedIn {
             MyTabView()
                 .environmentObject(DM)
                 .environmentObject(MD)
         } else {
-            content
-        }
-    }
-    // ## NAME & LOGO ## \\
-
+            content }}
     var content: some View {
         VStack(spacing: 16) {
-
-        // ## SHOW CONTENT ## \\
 
         Text("PlatterPals")
             .font(.custom("Lobster", size: 50))
@@ -64,8 +55,6 @@ struct Login: View {
         }
         .buttonStyle(.bordered)
 
-        // ## LOGIN USER ## \\
-
         Button("Sign In") {
             loginAuth()
         }
@@ -83,9 +72,6 @@ struct Login: View {
             withAnimation(.easeIn(duration: 1)) {
                 loading = false
             }}}
-
-        // ## MODIFIERS ## \\
-
         .padding(16)
         .background {
             Back()
@@ -101,8 +87,6 @@ struct Login: View {
                 .environmentObject(DM)
         }
     }
-    // ## FUNCTIONS ## \\
-
     func loginAuth() {
         Auth.auth().signIn(withEmail: email, password: pass) {_,e in
             if let e = e {

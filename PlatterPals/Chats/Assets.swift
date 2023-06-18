@@ -2,7 +2,6 @@ import SwiftUI
 
 struct TitleBar: View {
 
-    // ## TRACK INFO ## \\
     var id: String
     @State var image: UIImage?
     @State var hideBar = false
@@ -10,7 +9,6 @@ struct TitleBar: View {
 
     @EnvironmentObject var DM: DataManager
 
-    // ## SETUP VIEW ## \\
     var body: some View {
         VStack {
             let user = DM.user(id: id)
@@ -32,9 +30,6 @@ struct TitleBar: View {
                 .underline()
         }}}
         Spacer()
-
-        // ## MODIFIERS ## \\
-
         if DM.my().id != id {
             Block(id: id)
                 .environmentObject(DM)
@@ -54,8 +49,6 @@ struct TitleBar: View {
                 .environmentObject(DM)
         }
     }
-    // ## FUNCTIONS ## \\
-
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
         SR.getData(maxSize: 4 * 1024 * 1024) { data,_ in
@@ -65,7 +58,6 @@ struct TitleBar: View {
 
 struct Block: View {
 
-    // ## SETUP VIEW ## \\
     var id: String
     @State var showAlert = false
     @EnvironmentObject var DM: DataManager
@@ -75,9 +67,6 @@ struct Block: View {
             showAlert = true
         }
         .buttonStyle(.bordered)
-
-        // ## SHOW ALERT ## \\
-
         .confirmationDialog("", isPresented: $showAlert) {
             var data = DM.md()
 
@@ -94,7 +83,6 @@ struct Block: View {
 
 struct Bubble: View {
 
-    // ## SETUP VIEW ## \\
     var message: Message
     var showDate: Bool
     @State var showTime: Bool
@@ -104,8 +92,6 @@ struct Bubble: View {
     var body: some View {
         let sender = (message.sender == DM.my().id)
         VStack(alignment: sender ? .trailing: .leading) {
-
-        // ## SHOW TEXT ## \\
 
         if showDate {
             Text(message.time.formatted(.dateTime.day().month()))

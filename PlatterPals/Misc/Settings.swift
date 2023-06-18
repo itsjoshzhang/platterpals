@@ -3,24 +3,20 @@ import Firebase
 
 struct Settings: View {
 
-    // ## TRUE BOOLS ## \\
     @State var notifs = true
     @State var suggest = true
     @State var privacy = true
     @State var locate = true
     @State var guide = false
 
-    // ## FALSE BOOLS ## \\
     @State var loggedOut = false
     @State var showReset = false
     @State var showTerms = false
     @State var showAlert = false
     @State var showDelete = false
 
-    // ## SETUP VIEW ## \\
     @State var blockID = "..."
     @State var alertText = ""
-
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
@@ -37,8 +33,6 @@ struct Settings: View {
             let myID = DM.my().id
         ScrollView {
         VStack(alignment: .leading, spacing: 16) {
-
-        // ## CHATS INFO ## \\
 
         Group {
         Text("Chats")
@@ -72,8 +66,6 @@ struct Settings: View {
             .foregroundColor(.none)
             }
         }
-        // ## PROFILE INFO ## \\
-
         Group {
         Text("Profiles")
             .font(.headline)
@@ -92,8 +84,6 @@ struct Settings: View {
                 .frame(width: 50)
             }
         }
-        // ## SECURITY ## \\
-
         Group {
         Text("Security")
             .font(.headline)
@@ -116,8 +106,6 @@ struct Settings: View {
                 .frame(width: 50)
             }
         }
-        // ## ACCOUNT INFO ## \\
-
         Group {
         Text("Account")
             .font(.headline)
@@ -148,8 +136,6 @@ struct Settings: View {
             showTerms = true
         }
         }
-        // ## MODIFIERS ## \\
-
         .foregroundColor(.pink)
         Spacer()
         }
@@ -185,8 +171,6 @@ struct Settings: View {
             alertText = "Your cover photo will be hidden from users."
             showAlert = bool
         }
-        // ## SAVE/SIGNOUT ## \\
-
         .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
         Button("\(Image(systemName: "chevron.left")) Save") {

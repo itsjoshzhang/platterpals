@@ -1,16 +1,12 @@
 import SwiftUI
 import Firebase
 
-// ## APP VERSION ## \\
-public let VERSION = 6
 // MARK: - CHANGE THIS
+public let VERSION = 6
 
 @main
-// ## START APP ## \\
 struct AppInit: App {
-
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
     init() {
         UIView.appearance().tintColor = .systemPink
     }
@@ -21,7 +17,6 @@ struct AppInit: App {
 
 struct MyTabView: View {
 
-    // ## TRACK INFO ## \\
     @State var id = "!"
     @State var page = 2
     @State var showGuide = false
@@ -32,8 +27,6 @@ struct MyTabView: View {
     var body: some View {
         Group {
         TabView(selection: $page) {
-
-        // ## SHOW PAGES ## \\
 
         Orders(AI: $page)
             .tabItem {
@@ -57,8 +50,6 @@ struct MyTabView: View {
                 Image(systemName: "person")
             }.tag(4)
         }
-        // ## MODIFIERS ## \\
-
         .environmentObject(DM)
         .sheet(isPresented: $showGuide) {
             Guide(page: id == "!" ? 0: 4)

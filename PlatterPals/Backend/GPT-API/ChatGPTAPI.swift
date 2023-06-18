@@ -2,15 +2,12 @@ import SwiftUI
 
 class ChatGPTAPI: ObservableObject, @unchecked Sendable {
 
-    // ## PARAMETERS ## \\
     let apiKey = "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"
     let model: String
     let temperature = 0.5
     let instructions: String
     let systemMessage: GPTMessage
     var historyList = [GPTMessage]()
-
-    // ## URL LOGIC ## \\
 
     private let urlSession = URLSession.shared
 
@@ -24,8 +21,6 @@ class ChatGPTAPI: ObservableObject, @unchecked Sendable {
         }
         return urlRequest
     }
-
-    // ## MISC LOGIC ## \\
     
     let dateFormatter: DateFormatter = {
         let df = DateFormatter()
@@ -44,7 +39,6 @@ class ChatGPTAPI: ObservableObject, @unchecked Sendable {
         "Authorization": "Bearer \(apiKey)"]
     }
 
-    // ## INITIALIZE ## \\
     init(aiModel: String = "gpt-3.5-turbo", intro: String = "", text:
          String = "") {
         model = aiModel
@@ -57,8 +51,6 @@ class ChatGPTAPI: ObservableObject, @unchecked Sendable {
                               messages: generateMessages(from: text), stream: stream)
         return try JSONEncoder().encode(request)
     }
-
-    // ## HISTORY LIST ## \\
     
     private func generateMessages(from text: String) -> [GPTMessage] {
         var messages = [systemMessage] + historyList + [GPTMessage(role: "user", content: text)]
@@ -78,8 +70,6 @@ class ChatGPTAPI: ObservableObject, @unchecked Sendable {
     func deleteHistoryList() {
         self.historyList.removeAll()
     }
-
-    // ## HTTP LOGIC ## \\
     
     func sendMessageStream(text: String) async throws -> AsyncThrowingStream<String, Error> {
         var urlRequest = self.urlRequest
@@ -103,8 +93,7 @@ class ChatGPTAPI: ObservableObject, @unchecked Sendable {
             
             throw "Bad Response: \(httpResponse.statusCode), \(errorText)"
         }
-        // ## CHAT STREAM ## \\
-        
+
         return AsyncThrowingStream<String, Error> { continuation in
             Task(priority: .userInitiated) { [weak self] in
                 guard let self else { return }

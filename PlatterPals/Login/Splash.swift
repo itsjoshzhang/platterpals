@@ -3,7 +3,6 @@ import Firebase
 
 struct Splash: View {
 
-    // ## TRACK INFO ## \\
     @State var scale = 0.9
     @State var opacity = 0.0
     @State var update = false
@@ -12,24 +11,18 @@ struct Splash: View {
     @StateObject var DM = DataManager()
     @StateObject var MD = MapsData()
 
-    // ## SETUP VIEW ## \\
-
     var body: some View {
         if showNext {
             Login()
                 .environmentObject(DM)
                 .environmentObject(MD)
         } else {
-            content
-        }
-    }
+            content }}
     var content: some View {
-
-        // ## LOGO & TEXT ## \\
-
         ZStack {
         Back()
         VStack(spacing: 16) {
+
         Image("logo")
             .resizable()
             .scaledToFit()
@@ -59,9 +52,6 @@ struct Splash: View {
         .foregroundColor(.pink)
         .scaleEffect(scale)
         .opacity(opacity)
-
-        // ## MODIFIERS ## \\
-
         .onAppear {
             withAnimation {
                 scale = 1.0
@@ -79,7 +69,6 @@ struct Splash: View {
 
 struct Reset: View {
 
-    // ## SETUP VIEW ## \\
     @State var email = ""
     @State var alertText = ""
     @State var showAlert = false
@@ -89,13 +78,10 @@ struct Reset: View {
     var body: some View {
         NavigationStack {
         VStack(spacing: 16) {
-
-        // ## TEXTFIELDS ## \\
             
         Blank(label: "Email", text: $email)
             .focused($focus)
         Div()
-
         Text("We'll send you a reset link!")
             .foregroundColor(.secondary)
 
@@ -108,9 +94,6 @@ struct Reset: View {
         .alert(alertText, isPresented: $showAlert) {
             Button("OK", role: .cancel) {
         }}}
-
-        // ## FUNCTIONS ## \\
-
         .padding(16)
         .navigationTitle("Reset Login")
         .background {

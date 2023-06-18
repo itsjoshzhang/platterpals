@@ -3,7 +3,6 @@ import PhotosUI
 
 struct Upload: View {
 
-    // ## TRACK INFO ## \\
     @State var text = ""
     @State var image: UIImage?
     @FocusState var focus: Bool
@@ -11,16 +10,13 @@ struct Upload: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var DM: DataManager
 
-    // ## SETUP VIEW ## \\
     var body: some View {
         NavigationStack {
             let my = DM.my()
         ScrollView {
         VStack(spacing: 16) {
 
-            Upload2(scale: 0.75, image: $image)
-            
-        // ## CLICKABLES ## \\
+        Upload2(scale: 0.75, image: $image)
 
         TextField("Write a short paragraph about your tastes.",
                   text: $text, axis: .vertical)
@@ -41,8 +37,6 @@ struct Upload: View {
         .buttonStyle(.borderedProminent)
         .disabled(image == nil || text.count > 200)
         }
-        // ## MODIFIERS ## \\
-
         .padding(16)
         .navigationTitle("Profile 📸")
         .background {
@@ -57,13 +51,11 @@ struct Upload: View {
 
 struct Upload2: View {
 
-    // ## TRACK INFO ## \\
     var scale: CGFloat
     @State var showCrop = false
     @Binding var image: UIImage?
     @State var imageItem: PhotosPickerItem?
 
-    // ## SHOW IMAGE ## \\
     var body: some View {
         Group {
         if let image = image {
@@ -86,8 +78,6 @@ struct Upload2: View {
         Text("Use template for best result")
             .foregroundColor(.secondary)
             .font(.subheadline)
-
-        // ## UPLOAD PIC ## \\
 
         HStack {
             PhotosPicker("Photos \(Image(systemName: "photo"))",

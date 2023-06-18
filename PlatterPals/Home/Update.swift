@@ -2,13 +2,11 @@ import SwiftUI
 
 struct Update: View {
 
-    // ## TRACK INFO ## \\
     var id: String
     var showNext: Bool
     @State var scale = 0.9
     @State var swipe = 0.0
 
-    // ## CONDITIONS ## \\
     @State var avatar: UIImage?
     @State var profile: UIImage?
     @State var showProf = false
@@ -16,8 +14,6 @@ struct Update: View {
     @State var showAlert = false
 
     @EnvironmentObject var DM: DataManager
-
-    // ## OTHER VIEWS ## \\
 
     var body: some View {
         if hideProf {
@@ -29,8 +25,6 @@ struct Update: View {
         } else {
             content
         }}
-    // ## SETUP VIEW ## \\
-
     var content: some View {
         Group {
             var data = DM.md()
@@ -48,8 +42,6 @@ struct Update: View {
             UIwidth * 16.0 / 9.0)
             .cornerRadius(16)
             .clipped()
-
-        // ## USER INFO ## \\
 
         VStack(alignment: .leading) {
             if user.rest {
@@ -84,8 +76,6 @@ struct Update: View {
         .foregroundColor(.white)
         .padding(16)
 
-        // ## OTHER VIEWS ## \\
-
         } else {
             ProgressView()
                 .scaleEffect(2)
@@ -106,8 +96,6 @@ struct Update: View {
         .scaleEffect(scale)
         .scaledToFit()
         }
-        // ## SWIPE LOGIC ## \\
-
         .gesture(DragGesture()
         .onChanged { drag in
             withAnimation {
@@ -131,9 +119,6 @@ struct Update: View {
                 scale = 0.9
                 swipe = 0.0
             }})
-
-        // ## MODIFIERS ## \\
-
         .onAppear {
             if id == myID {
                 avatar = DM.myAvatar
@@ -163,8 +148,6 @@ struct Update: View {
                     }}}
             Button("Cancel", role: .cancel) {}
         }}}
-
-    // ## FUNCTIONS ## \\
 
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")

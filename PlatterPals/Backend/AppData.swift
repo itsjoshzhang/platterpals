@@ -46,19 +46,15 @@ struct RoundPic: View {
     }}}
 
 extension UIImage {
-    // called at putImage
     func resize(width: CGFloat, pfp: Bool) -> UIImage {
 
-        // compute new scale
         let scale = width / self.size.width
         var height = self.size.height * scale
         if pfp { height = width }
 
-        // render new size
         let size = CGSize(width: width, height: height)
         let render = UIGraphicsImageRenderer(size: size)
 
-        // return new image
         return render.image {_ in
             self.draw(in: CGRect(origin: .zero, size: size))
         }}}

@@ -2,15 +2,12 @@ import SwiftUI
 
 struct Row: View {
 
-    // ## SETUP VIEW ## \\
     var id: String
     @State var image: UIImage?
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
         HStack(spacing: 16) {
-
-        // ## SHOW IMAGE ## \\
 
         RoundPic(width: 64, image: image)
 
@@ -30,8 +27,6 @@ struct Row: View {
                 getImage(path: "avatars")
             }}}}
 
-    // ## FUNCTIONS ## \\
-
     func getImage(path: String) {
         let SR = SR.child("\(path)/\(id).jpg")
         SR.getData(maxSize: 4 * 1024 * 1024) { data,_ in
@@ -41,14 +36,12 @@ struct Row: View {
 
 struct Search: View {
 
-    // ## TRACK INFO ## \\
     @State var name = ""
     @State var city = ""
     @State var showNext = false
     @State var following = false
     @State var userIDs = [String]()
 
-    // ## SETUP VIEW ## \\
     var profile: Bool
     @FocusState var focus: Bool
     @EnvironmentObject var DM: DataManager
@@ -56,8 +49,6 @@ struct Search: View {
     var body: some View {
         NavigationStack {
         VStack(spacing: 16) {
-
-        // ## PARAMETERS ## \\
 
         Group {
         TextField("Enter a username", text: $name)
@@ -80,8 +71,6 @@ struct Search: View {
             }}}
         .padding(.horizontal, 16)
 
-        // ## SHOW USERS ## \\
-
         List {
         ForEach(userIDs, id: \.self) { id in
             NavigationLink(value: id) {
@@ -99,9 +88,6 @@ struct Search: View {
                 Convo(id: id, pad: true)
                     .environmentObject(DM)
                 }}}
-
-        // ## MODIFIERS ## \\
-
         .navigationTitle("Search 🔍")
         .background {
             Back()
@@ -119,27 +105,19 @@ struct Search: View {
             search()
         }}}
 
-    // ## HACKY SHIT ## \\
-
     func search() {
         userIDs.removeAll()
 
         for i in 0 ..< DM.userList.count {
-            // loop through userList and track index of user
             let user = DM.userList[i]
 
             if userIDs.count < 4, compare(user.name, name),
-            // if less than 4 and name is prefix of user.name
-
             (following && DM.md().favUsers.contains(user.id))
-            // if following checked, show from favUsers only
 
             || !following, compare(user.city, city) {
-            // if not & (if no city: pass, else: check city)
                 userIDs.append(user.id)
         }}}
 
-    // either name or city must exist. data.hp(query)
     func compare(_ name1: String, _ name2: String) -> Bool {
         return (name1 != "!" && !(name.isEmpty && city.isEmpty) &&
         name1.lowercased().hasPrefix(name2.lowercased()))

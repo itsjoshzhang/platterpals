@@ -2,14 +2,12 @@ import SwiftUI
 
 struct Chats: View {
 
-    // ## TRACK INFO ## \\
     @State var isEmpty = false
     @State var showMaps = false
     @State var showMatch = false
     @State var showSearch = false
     @State var chatting = [String]()
 
-    // ## SETUP VIEW ## \\
     @EnvironmentObject var MD: MapsData
     @EnvironmentObject var DM: DataManager
 
@@ -18,7 +16,6 @@ struct Chats: View {
         ZStack {
         VStack {
 
-        // ## SHOW CHATS ## \\
         Box(text: "Start a new chat")
             .onTapGesture {
                 showSearch = true
@@ -39,8 +36,6 @@ struct Chats: View {
                 .environmentObject(DM)
             }
         }
-        // ## MODIFIERS ## \\
-
         .onDelete(perform: delete(atOffsets:))
         .onMove(perform: move(fromOffsets:toOffset:))
         }
@@ -61,8 +56,6 @@ struct Chats: View {
         .onChange(of: DM.md().chatting) {_ in
             getChats()
         }
-        // ## OTHER VIEWS ## \\
-
         .sheet(isPresented: $showSearch) {
             Search(profile: false)
                 .environmentObject(DM)
@@ -94,9 +87,7 @@ struct Chats: View {
             }}}
             .padding(.horizontal, 16)
         }}}}
-
-    // ## FUNCTIONS ## \\
-
+    
     func getChats() {
         let data = DM.md()
         chatting.removeAll()
