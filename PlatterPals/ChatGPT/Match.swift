@@ -2,7 +2,6 @@ import SwiftUI
 
 struct Match: View {
 
-    @State var city = ""
     @State var showGPT = false
     @FocusState var focus: Bool
 
@@ -18,6 +17,7 @@ struct Match: View {
             .multilineTextAlignment(.center)
             .foregroundColor(.pink)
             .font(.title3).bold()
+            .padding(.horizontal, 16)
 
             if showGPT {
                 ForEach(VM.messages) { row in
@@ -34,35 +34,40 @@ struct Match: View {
             .buttonStyle(.bordered)
             .disabled(VM.isInteractingWithChatGPT)
 
-            } else {
+            if !VM.isInteractingWithChatGPT {
+            let rest = VM.messages.last?.responseText ?? ""
+
+            ForEach(DM.userList) { user in
+            if trim(rest).contains(trim(user.name)) {
+
+            NavigationLink(value: user.id) {
+                Row(id: user.id)
+                    .environmentObject(DM)
+            }}}
+            .navigationDestination(for: String.self) { id in
+                Profile(id: id, pad: -50)
+                    .environmentObject(DM)
+
+            }}} else {
             Image("guide3")
                 .resizable()
                 .scaledToFit()
 
-            HStack {
-                Text("Search near:")
-                    .foregroundColor(.secondary)
-                City(city: $city)
-                    .focused($focus)
-            }
             Button("Get Started") {
                 focus = false
                 matchLogic()
             }
             .buttonStyle(.borderedProminent)
-            .disabled(count(city) || bioShort())
+            .disabled(bioShort(my))
         }
-        if bioShort() {
+        if bioShort(my) {
             Text("Your bio is too short to find a match! Head to your Profile page.")
+                .multilineTextAlignment(.center)
                 .foregroundColor(.secondary)
-                .font(.subheadline)
+                .padding(.horizontal, 16)
             }
         }
         .navigationTitle("Match Me")
-        .padding(16)
-        .onAppear {
-            city = my.city
-        }
         .onTapGesture {
             focus = false
         }
@@ -78,10 +83,9 @@ struct Match: View {
         let list = DM.userList
 
         let intro = "You're an AI that matches users based on their bios. "
-        var input = "My bio is: \(my.text). "
-
-        input += "Reply with the info of ONE user that best matches me. "
+        var input = "Reply with a random user whose bio is similar to mine. "
         input += "End your reply with the following - Name: user's name "
+        input += "My bio is: \(my.text). "
 
         var index = 1
         input += "... Here is a list of users: "
@@ -107,14 +111,12 @@ struct Match: View {
         }
     }
     func trim(_ text: String) -> String {
-        return text.trimmingCharacters(in: .whitespacesAndNewlines)
-            .lowercased()
+        return text.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
     }
     func check(user: User, my: User) -> Bool {
-        return user.id != my.id && !user.rest && user.prof &&
-        trim(user.city) == trim(my.city)
+        return user.id != my.id && !user.rest && user.prof && !bioShort(user)
     }
-    func bioShort() -> Bool {
-        return DM.my().text.count < 16
+    func bioShort(_ user: User) -> Bool {
+        return user.text.count < 16
     }
 }
