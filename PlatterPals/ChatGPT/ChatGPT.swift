@@ -3,8 +3,10 @@ import SwiftUI
 struct ChatGPT: View {
 
     // ## TRACK INFO ## \\
+    var recipes: Bool
     @State var loading = false
     @Binding var showGPT: Bool
+
     @EnvironmentObject var DM: DataManager
     @EnvironmentObject var VM: ViewModel
 
@@ -16,10 +18,10 @@ struct ChatGPT: View {
 
         let system = MessageRow(
             isInteractingWithChatGPT: false, sendImage: "openai",
-            send: .rawText("Hi! I'm your PlatterPal, an AI that finds food and restaurants. Tap Find My Food to get started!"),
+            send: .rawText(recipes ? "Hi! I'm your PlatterPal, an AI that finds recipes from your fridge. Tap Find My Food to get started!": "Hi! I'm your PlatterPal, an AI that finds food and restaurants. Tap Find My Food to get started!"),
             responseImage: "logo")
 
-        ContentView(system: system)
+        ContentView(system: system, recipes: recipes)
             .environmentObject(DM)
             .environmentObject(VM)
 
@@ -30,8 +32,8 @@ struct ChatGPT: View {
             Back()
         }
         .toolbar {
-        ToolbarItem {
-        Button("\(Image(systemName: "arrowshape.turn.up.left"))") {
+            ToolbarItem {
+            Button("\(Image(systemName: "arrowshape.turn.up.left"))") {
             withAnimation {
                 VM.clearMessages()
                 showGPT = false
@@ -50,10 +52,12 @@ struct ContentView: View {
 
     // ## TRACK INFO ## \\
     var system: MessageRow
-    @FocusState var focus: Bool
-    @State var showOrders = false
-    @State var showHelp = false
+    var recipes: Bool
+
     @State var text = ""
+    @FocusState var focus: Bool
+    @State var showHelp = false
+    @State var showOrders = false
 
     @EnvironmentObject var DM: DataManager
     @EnvironmentObject var VM: ViewModel
@@ -89,7 +93,7 @@ struct ContentView: View {
                 .tint(.pink)
                 .padding(16)
 
-        } else {
+        } else if !recipes {
         Button("Add to Orders") {
         Task { @MainActor in
 

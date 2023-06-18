@@ -26,7 +26,7 @@
 		F2D26E4F29F6EE40005E2488 /* ChatGPTAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E4429F6EE40005E2488 /* ChatGPTAPI.swift */; };
 		F2D26E5B29F6EE50005E2488 /* ChatGPT.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D26E5629F6EE50005E2488 /* ChatGPT.swift */; };
 		F2DEDA1D2A3EC60100B328CB /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2DEDA1C2A3EC60100B328CB /* Match.swift */; };
-		F2DEDA1F2A3F136200B328CB /* Recipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2DEDA1E2A3F136200B328CB /* Recipes.swift */; };
+		F2DEDA1F2A3F136200B328CB /* Suggest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2DEDA1E2A3F136200B328CB /* Suggest.swift */; };
 		F2E3553F2A21E2F2004D26F4 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F2E3553E2A21E2F2004D26F4 /* FirebaseAnalytics */; };
 		F2E355412A21E2F2004D26F4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F2E355402A21E2F2004D26F4 /* FirebaseAuth */; };
 		F2E355432A21E2F2004D26F4 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = F2E355422A21E2F2004D26F4 /* FirebaseFirestore */; };
@@ -70,7 +70,7 @@
 		F2D26E4429F6EE40005E2488 /* ChatGPTAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatGPTAPI.swift; sourceTree = "<group>"; };
 		F2D26E5629F6EE50005E2488 /* ChatGPT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatGPT.swift; sourceTree = "<group>"; };
 		F2DEDA1C2A3EC60100B328CB /* Match.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
-		F2DEDA1E2A3F136200B328CB /* Recipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipes.swift; sourceTree = "<group>"; };
+		F2DEDA1E2A3F136200B328CB /* Suggest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Suggest.swift; sourceTree = "<group>"; };
 		F2F494B8298313E3000E35BB /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		F2F6D834296172B100B8F4D7 /* PlatterPals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlatterPals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2F6D8472961730000B8F4D7 /* Maps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Maps.swift; sourceTree = "<group>"; };
@@ -145,7 +145,7 @@
 			children = (
 				F2DEDA1C2A3EC60100B328CB /* Match.swift */,
 				F2F6D84C2961730000B8F4D7 /* Select.swift */,
-				F2DEDA1E2A3F136200B328CB /* Recipes.swift */,
+				F2DEDA1E2A3F136200B328CB /* Suggest.swift */,
 				F2D26E5629F6EE50005E2488 /* ChatGPT.swift */,
 			);
 			path = ChatGPT;
@@ -343,7 +343,7 @@
 				F2F6D86C2961730000B8F4D7 /* Upload.swift in Sources */,
 				F2B1A7B129DD59A600AB305B /* Search.swift in Sources */,
 				F2F6D8782961730000B8F4D7 /* Chats.swift in Sources */,
-				F2DEDA1F2A3F136200B328CB /* Recipes.swift in Sources */,
+				F2DEDA1F2A3F136200B328CB /* Suggest.swift in Sources */,
 				F2D26E4729F6EE40005E2488 /* ViewModel.swift in Sources */,
 				F2F6D8662961730000B8F4D7 /* Maps.swift in Sources */,
 				F2B1A7B329DD5A4C00AB305B /* Editor.swift in Sources */,

@@ -2,7 +2,7 @@ import SwiftUI
 import Firebase
 
 // ## APP VERSION ## \\
-public let VERSION = 5
+public let VERSION = 6
 // MARK: - CHANGE THIS
 
 @main
