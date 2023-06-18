@@ -52,6 +52,7 @@ struct Guide2: View {
     @EnvironmentObject var DM: DataManager
     
     var body: some View {
+        NavigationStack {
         VStack(spacing: 16) {
 
         Text(title)
@@ -95,9 +96,14 @@ struct Guide2: View {
                 .font(.title3).bold()
             }
         }
+        .toolbar {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(" \(Image(systemName: "chevron.down"))") {
+                dismiss()
+            }}}
         .background {
             Back()
-        }}}
+        }}}}
 
 struct Terms: View {
     var body: some View {

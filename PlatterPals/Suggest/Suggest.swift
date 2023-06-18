@@ -170,7 +170,7 @@ struct Suggest: View {
         .onAppear {
             location = DM.my().city
         }
-        .navigationTitle("Ask Your AI 🤖")
+        .navigationTitle("Ask Your AI")
         Button("Get Started") {
             orderLogic()
         }

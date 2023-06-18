@@ -130,16 +130,9 @@ struct EditProf: View {
             if let image = image {
                 DM.putImage(image: image, path: "avatars")
             }
-            my.name = name
-            my.text = text
-            my.city = city
-            my.rest = rest
-
+            my.name = name; my.text = text; my.city = city; my.rest = rest
             DM.editUser(user: my)
-            focus0 = false
-            focus1 = false
-            focus2 = false
-            dismiss()
+            focus0 = false; focus1 = false; focus2 = false; dismiss()
         }
         // ## MODIFIERS ## \\
             
@@ -149,15 +142,10 @@ struct EditProf: View {
         }
         .padding(16)
         .onTapGesture {
-            focus0 = false
-            focus1 = false
-            focus2 = false
+            focus0 = false; focus1 = false; focus2 = false
         }
         .onAppear {
-            name = my.name
-            text = my.text
-            city = my.city
-            rest = my.rest
+            name = my.name; text = my.text; city = my.city; rest = my.rest
             image = DM.myAvatar
         }
         .fullScreenCover(isPresented: $showCrop) {

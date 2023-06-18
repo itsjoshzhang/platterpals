@@ -23,17 +23,15 @@ struct Chats: View {
             .onTapGesture {
                 showSearch = true
             }
-        Text("Swipe left / long press to edit.")
-            .foregroundColor(.secondary)
-            .padding(.bottom, -8)
-            .font(.subheadline)
-
         if isEmpty {
-            Maps(text: "No chats yet? Explore below!")
+            Maps(text: "No chats yet? Explore below!", match: true)
                 .environmentObject(MD)
                 .environmentObject(DM)
         } else {
-
+            Text("Swipe left / long press to edit.")
+                .foregroundColor(.secondary)
+                .padding(.bottom, -8)
+                .font(.subheadline)
         List {
         ForEach(chatting, id: \.self) { id in
         NavigationLink(value: id) {
@@ -74,7 +72,7 @@ struct Chats: View {
                 .environmentObject(DM)
         }
         .sheet(isPresented: $showMaps) {
-            Maps(text: "Tap a pin to view a profile!")
+            Maps(text: "Tap a pin to view a profile!", match: false)
                 .environmentObject(MD)
                 .environmentObject(DM)
         }

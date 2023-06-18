@@ -6,6 +6,8 @@ import FirebaseFirestoreSwift
 struct Maps: View {
 
     var text: String
+    var match: Bool
+    @State var showMatch = false
     @State var locations = [Location]()
 
     @EnvironmentObject var MD: MapsData
@@ -13,11 +15,16 @@ struct Maps: View {
     
     var body: some View {
         NavigationStack {
-        VStack(spacing: 16) {
-            Text(text)
-                .foregroundColor(.secondary)
-                .font(.headline)
-
+        VStack {
+        Text(text)
+            .foregroundColor(.secondary)
+            .font(.headline)
+        if match {
+            Button("Find me a match!") {
+                showMatch = true
+            }
+            .buttonStyle(.borderedProminent)
+        }
         ZStack(alignment: .bottom) {
         Map(coordinateRegion: $MD.region, showsUserLocation: true,
             annotationItems: locations) { pin in
@@ -49,18 +56,19 @@ struct Maps: View {
 
                 DM.sendPin(pin: Location(id: DM.my().id,
                     lat: c.latitude, lon: c.longitude))
-            }
-        }
+            }}
         .foregroundColor(.white)
         .cornerRadius(8)
         .tint(.pink)
         .padding(16)
-        }
-        }
-        .navigationTitle(text.hasPrefix("T") ?
-                         "Near Me": "My Chats")
+        }}
+        .navigationTitle(match ? "My Chats": "Near Me")
         .onAppear {
             getPins()
+        }
+        .sheet(isPresented: $showMatch) {
+            Match()
+                .environmentObject(DM)
         }
         .alert(MD.alertText, isPresented: $MD.showAlert) {
             Button("OK", role: .cancel) {}
