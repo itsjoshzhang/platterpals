@@ -35,7 +35,7 @@
 		F2E355492A21E2F2004D26F4 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = F2E355482A21E2F2004D26F4 /* FirebaseStorage */; };
 		F2F494B9298313E3000E35BB /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F494B8298313E3000E35BB /* Settings.swift */; };
 		F2F6D8662961730000B8F4D7 /* Maps.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D8472961730000B8F4D7 /* Maps.swift */; };
-		F2F6D86A2961730000B8F4D7 /* Select.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84C2961730000B8F4D7 /* Select.swift */; };
+		F2F6D86A2961730000B8F4D7 /* Recipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84C2961730000B8F4D7 /* Recipes.swift */; };
 		F2F6D86B2961730000B8F4D7 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84E2961730000B8F4D7 /* Profile.swift */; };
 		F2F6D86C2961730000B8F4D7 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D84F2961730000B8F4D7 /* Upload.swift */; };
 		F2F6D86D2961730000B8F4D7 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6D8502961730000B8F4D7 /* Home.swift */; };
@@ -74,7 +74,7 @@
 		F2F494B8298313E3000E35BB /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		F2F6D834296172B100B8F4D7 /* PlatterPals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlatterPals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2F6D8472961730000B8F4D7 /* Maps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Maps.swift; sourceTree = "<group>"; };
-		F2F6D84C2961730000B8F4D7 /* Select.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Select.swift; sourceTree = "<group>"; };
+		F2F6D84C2961730000B8F4D7 /* Recipes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipes.swift; sourceTree = "<group>"; };
 		F2F6D84E2961730000B8F4D7 /* Profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		F2F6D84F2961730000B8F4D7 /* Upload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
 		F2F6D8502961730000B8F4D7 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
@@ -144,7 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				F2DEDA1C2A3EC60100B328CB /* Match.swift */,
-				F2F6D84C2961730000B8F4D7 /* Select.swift */,
+				F2F6D84C2961730000B8F4D7 /* Recipes.swift */,
 				F2DEDA1E2A3F136200B328CB /* Suggest.swift */,
 				F2D26E5629F6EE50005E2488 /* ChatGPT.swift */,
 			);
@@ -339,7 +339,7 @@
 				F2F6D86D2961730000B8F4D7 /* Home.swift in Sources */,
 				F2F6D87B2961730000B8F4D7 /* Splash.swift in Sources */,
 				F2D26E5B29F6EE50005E2488 /* ChatGPT.swift in Sources */,
-				F2F6D86A2961730000B8F4D7 /* Select.swift in Sources */,
+				F2F6D86A2961730000B8F4D7 /* Recipes.swift in Sources */,
 				F2F6D86C2961730000B8F4D7 /* Upload.swift in Sources */,
 				F2B1A7B129DD59A600AB305B /* Search.swift in Sources */,
 				F2F6D8782961730000B8F4D7 /* Chats.swift in Sources */,
@@ -507,7 +507,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.PlatterPals.PlatterPals;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -549,7 +549,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3.4;
+				MARKETING_VERSION = 2.3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.PlatterPals.PlatterPals;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

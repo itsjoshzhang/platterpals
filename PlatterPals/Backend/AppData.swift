@@ -131,7 +131,7 @@ struct Box: View {
         Text(text)
             .padding(.leading, 8)
             .foregroundColor(.secondary)
-            .frame(width: UIwidth-32, height: 32, alignment: .leading)
+            .frame(width: UIwidth - 32, height: 32, alignment: .leading)
             .overlay(RoundedRectangle(cornerRadius: 8).stroke(.secondary))
     }
 }
@@ -142,7 +142,7 @@ struct Glow: View {
         Text("\(spark) \(text) \(spark)")
             .font(.headline)
             .foregroundColor(.pink)
-            .frame(maxWidth: UIwidth-32, maxHeight: 50)
+            .frame(maxWidth: UIwidth - 32, maxHeight: 50)
             .overlay(Capsule().stroke(.pink, lineWidth: 3))
             .padding(.bottom, 16)
     }

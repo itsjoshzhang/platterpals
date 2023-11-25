@@ -59,7 +59,6 @@ struct ContentView: View {
     var body: some View {
         ScrollViewReader { proxy in
             let rest = VM.messages.last?.responseText ?? ""
-            let item = rest.lowercased().contains("item")
 
         VStack(spacing: 0) {
         ScrollView {
@@ -87,15 +86,13 @@ struct ContentView: View {
         Button("Add to Orders") {
         Task { @MainActor in
 
-            VM.inputMessage =
-"Format the first menu item from your reply as ##menu item; restaurant name##"
+            VM.inputMessage = "For your next single reply ONLY, format the first menu item as ##menu item; restaurant name##. Speak normally in all replies afterward"
 
             showHelp = false
             await VM.sendTapped(show: false)
             showOrders = true
             }
         }
-        .foregroundColor(item ? .pink: .secondary)
         .buttonStyle(.bordered)
         .padding(16)
 
@@ -103,12 +100,11 @@ struct ContentView: View {
         Text("Or find another: ")
             .foregroundColor(.secondary)
 
-        if item {
-            Button("Menu item") {
-                send(text: "Find another menu item at this restaurant.")
-            }
-            Text(" • ")
+        Button("Menu item") {
+            send(text: "Find another menu item at this restaurant.")
         }
+        Text(" • ")
+
         Button("Restaurant") {
             send(text: "Find another restaurant.")
             }
@@ -173,7 +169,7 @@ struct ContentView: View {
         }
         .font(.subheadline)
         .foregroundColor(.secondary)
-        .frame(width: UIwidth-32)
+        .frame(width: UIwidth - 32)
 
         HStack(spacing: 0) {
         Image(systemName: "questionmark.circle")
@@ -182,11 +178,11 @@ struct ContentView: View {
             .frame(width: 24, height: 24)
 
             .padding(.leading, 8)
+            .padding(.bottom, 8)
             .onTapGesture {
                 withAnimation {
                     showHelp.toggle()
-                }
-            }
+                }}
         HStack {
         TextField("Ask me anything!", text: $text, axis: .vertical)
             .padding(.leading, 8)
@@ -209,8 +205,7 @@ struct ContentView: View {
                     .frame(width: 32, height: 32)
             }
         .disabled(text.isEmpty)
-        }
-        }
+        }}
         .padding(8)
         .background(UIgray)
         .cornerRadius(32)

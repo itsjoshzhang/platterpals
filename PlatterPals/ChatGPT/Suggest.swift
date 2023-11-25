@@ -14,7 +14,6 @@ struct Suggest: View {
     @State var location = ""
 
     @State var page = ""
-    @State var loading = false
     @State var showGPT = false
     @State var showCustom = false
     @State var showOption = false
@@ -24,16 +23,7 @@ struct Suggest: View {
     @EnvironmentObject var DM: DataManager
 
     var body: some View {
-        if showGPT {
-            ChatGPT(recipes: false, showGPT: $showGPT)
-                .environmentObject(DM)
-                .environmentObject(VM)
-        } else {
-            content
-        }}
-    var content: some View {
         VStack {
-        if loading {
         Form {
             let block1 = !(friend == "None")
             let block2 = !(place.isEmpty && cuisine == "All")
@@ -152,16 +142,17 @@ struct Suggest: View {
             orderLogic()
         }
         .buttonStyle(.borderedProminent)
+        .disabled(location.isEmpty)
         .padding(.bottom, 8)
-
-        } else {
-            Text("").onAppear {
-            withAnimation {
-                loading = true
-            }}}}}
+        }
+        .fullScreenCover(isPresented: $showGPT) {
+            ChatGPT(recipes: false, showGPT: $showGPT)
+                .environmentObject(DM)
+                .environmentObject(VM)
+        }}
 
     func orderLogic() {
-        let intro = "You're PlatterPal, an AI that finds food and restaurants. "
+        let intro = "You're PlatterPal, an AI that finds food and restaurants. Do not apologize for your limitations as an AI. Use what's in your database."
         var text = ""
 
         if !place.isEmpty {
@@ -176,18 +167,14 @@ struct Suggest: View {
             text += "Find a \(style) place for \(people) \(n). "
             text += "Find food at $\(price) or lower. "
         }
-        if location.contains("erkeley") {
-            location = "UC Berkeley"
-        }
         text += "Search within \(miles) miles of \(location). "
         text += "Show only \(options) menu item / restaurant. "
 
         VM.api = ChatGPTAPI(aiModel: DM.aiModel, intro: intro, text: text)
         withAnimation {
             showGPT = true
-            loading = false
-        }
-    }
+        }}
+
     func addFavs() -> String {
         let ans = "Find food similar to"
         let sus = "Surprise me with a dish / restaurant nearby. "

@@ -2,7 +2,7 @@ import SwiftUI
 
 class ChatGPTAPI: ObservableObject, @unchecked Sendable {
 
-    let apiKey = "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"
+    let apiKey = "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"
     let model: String
     let temperature = 0.5
     let instructions: String

@@ -11,7 +11,7 @@ class DataManager: ObservableObject {
     @Published var userData = [UserData]()
     @Published var settings = [Setting]()
 
-    var version = 0
+    var version = -1
     var myIndex = 0
     var aiModel = "gpt-3.5-turbo"
     @Published var myAvatar: UIImage?

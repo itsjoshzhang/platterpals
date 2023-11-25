@@ -2,7 +2,7 @@ import SwiftUI
 import Firebase
 
 // MARK: - CHANGE THIS
-public let VERSION = 6
+public let VERSION = 0
 
 @main
 struct AppInit: App {
@@ -13,7 +13,7 @@ struct AppInit: App {
     var body: some Scene {
         WindowGroup {
             Splash()
-        }}}
+}}}
 
 struct MyTabView: View {
 
@@ -28,7 +28,7 @@ struct MyTabView: View {
         Group {
         TabView(selection: $page) {
 
-        Orders(AI: $page)
+        Orders(pageDir: $page)
             .tabItem {
                 Image(systemName: "menucard")
             }.tag(0)
@@ -56,11 +56,11 @@ struct MyTabView: View {
                 .environmentObject(DM)
         }
         .onAppear {
-        id = DM.my().id
-        showGuide = !DM.my().prof
+            id = DM.my().id
+            showGuide = !DM.my().prof
 
-        if id != "!" {
+            if id != "!" {
             if let c = MD.LM?.location?.coordinate {
                 DM.sendPin(pin: Location(id: id,
-                    lat: c.latitude, lon: c.longitude))
-            }}}}}}
+                lat: c.latitude, lon: c.longitude))
+}}}}}}

@@ -24,7 +24,7 @@ struct Orders: View {
     @State var loading = true
     @State var showOrder = false
     @State var showAlert = false
-    @Binding var AI: Int
+    @Binding var pageDir: Int
 
     @StateObject var OM = OrderManager()
     @EnvironmentObject var DM: DataManager
@@ -105,7 +105,7 @@ struct Orders: View {
 
         if noFood {
             VStack { Spacer(); Button {
-                AI = 3
+                pageDir = 3
             } label: {
                 Glow(text: "No orders yet? Ask your AI!")
         }}} else if noFavs {
@@ -156,7 +156,7 @@ struct Cards: View {
         .indexViewStyle(.page(backgroundDisplayMode: .always))
         }
         }
-        .frame(maxWidth: UIwidth-32, minHeight: 140, maxHeight: 140)
+        .frame(maxWidth: UIwidth - 32, minHeight: 140, maxHeight: 140)
         .onAppear {
             OM.getOrders(id: id)
         }}}

@@ -23,7 +23,8 @@ struct Login: View {
                 .environmentObject(DM)
                 .environmentObject(MD)
         } else {
-            content }}
+            content
+        }}
     var content: some View {
         VStack(spacing: 16) {
 
@@ -85,8 +86,8 @@ struct Login: View {
         .fullScreenCover(isPresented: $showSignup) {
             Signup()
                 .environmentObject(DM)
-        }
-    }
+        }}
+
     func loginAuth() {
         Auth.auth().signIn(withEmail: email, password: pass) {_,e in
             if let e = e {
@@ -98,4 +99,49 @@ struct Login: View {
                     text = "The given password is invalid."
                 }
                 showAlert = true
+            }}}}
+
+struct Reset: View {
+
+    @State var email = ""
+    @State var alertText = ""
+    @State var showAlert = false
+    @FocusState var focus: Bool
+    @Environment(\.dismiss) var dismiss
+
+    var body: some View {
+        NavigationStack {
+        VStack(spacing: 16) {
+
+        Blank(label: "Email", text: $email)
+            .focused($focus)
+        Div()
+        Text("We'll send you a reset link!")
+            .foregroundColor(.secondary)
+
+        Button("Reset Login") {
+            resetLogin()
+        }
+        .disabled(email.isEmpty)
+        .buttonStyle(.borderedProminent)
+
+        .alert(alertText, isPresented: $showAlert) {
+            Button("OK", role: .cancel) {
+        }}}
+        .padding(16)
+        .navigationTitle("Reset Login")
+        .background {
+            Back()
+        }
+        .onAppear {
+            focus = true
+        }}}
+
+    func resetLogin() {
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            if error != nil {
+                alertText = "The email address is invalid."
+                showAlert = true
+            } else {
+                dismiss()
             }}}}
